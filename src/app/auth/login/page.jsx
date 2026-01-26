@@ -23,7 +23,7 @@ const LoginPage = () => {
     const result = await login(formData);
     
     if (result.success) {
-      toast.success('Welcome back to Swapner Thikana!');
+      toast.success('Welcome back to shwapner Thikana!');
       router.push('/');
     } else {
       toast.error(result.error || 'Login failed');
@@ -49,7 +49,7 @@ const LoginPage = () => {
           <div className="text-center mb-10">
             <div className="flex justify-center mb-8">
               <Link href="/" className="inline-block">
-                <img src="/logo.png" alt="Swapner Thikana" className="h-[60px] w-auto" />
+                <img src="/logo.png" alt="shwapner Thikana" className="h-[60px] w-auto" />
               </Link>
             </div>
             <p className="text-zinc-400 text-sm mt-2">Enter your credentials to access your dream address.</p>

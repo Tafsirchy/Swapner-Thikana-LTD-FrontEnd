@@ -43,7 +43,7 @@ const ForgotPasswordPage = () => {
           <div className="text-center mb-10">
             <div className="flex justify-center mb-10">
               <Link href="/" className="inline-block">
-                <img src="/logo.png" alt="Swapner Thikana" className="h-[60px] w-auto" />
+                <img src="/logo.png" alt="shwapner Thikana" className="h-[60px] w-auto" />
               </Link>
             </div>
             <h2 className="text-2xl font-bold text-zinc-100">Reset Password</h2>

@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Swapner Thikana Ltd - Your Dream Address",
-  description: "Excellence in luxury real estate. Find your dream home with Swapner Thikana Ltd.",
+  title: "shwapner Thikana Ltd - Your Dream Address",
+  description: "Excellence in luxury real estate. Find your dream home with shwapner Thikana Ltd.",
 };
 
 export default function RootLayout({ children }) {

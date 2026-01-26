@@ -25,7 +25,7 @@ const AboutPage = () => {
                 Redefining the Art of <span className="text-brand-gold italic">Luxury Living</span>
               </h1>
               <p className="text-zinc-400 text-lg leading-relaxed italic">
-                &quot;Swapner Thikana Ltd was established with a singular vision: to bring world-class architectural standards and uncompromising service to Bangladesh&apos;s premium real estate landscape.&quot;
+                &quot;shwapner Thikana Ltd was established with a singular vision: to bring world-class architectural standards and uncompromising service to Bangladesh&apos;s premium real estate landscape.&quot;
               </p>
               <div className="flex items-center gap-12 pt-6">
                 <div>

@@ -57,7 +57,7 @@ const ResetPasswordContent = () => {
       <div className="text-center mb-10">
         <div className="flex justify-center mb-8">
           <Link href="/" className="inline-block">
-            <img src="/logo.png" alt="Swapner Thikana" className="h-[60px] w-auto" />
+            <img src="/logo.png" alt="shwapner Thikana" className="h-[60px] w-auto" />
           </Link>
         </div>
         <h2 className="text-2xl font-bold text-zinc-100">Set New Password</h2>

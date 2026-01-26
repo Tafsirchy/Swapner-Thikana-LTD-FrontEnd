@@ -79,7 +79,7 @@ const DashboardLayout = ({ children }) => {
         `}>
           <div className="lg:hidden p-8 flex items-center justify-between">
              {/* Mobile Logo only */}
-             <img src="/logo.png" alt="Swapner Thikana" className="h-10 w-auto" />
+             <img src="/logo.png" alt="shwapner Thikana" className="h-10 w-auto" />
             <button onClick={toggleSidebar} className="text-zinc-400">
               <X size={24} />
             </button>
@@ -119,7 +119,7 @@ const DashboardLayout = ({ children }) => {
           </div>
 
           <div className="absolute bottom-0 left-0 w-full p-6 text-center text-xs text-zinc-600">
-            &copy; 2024 Swapner Thikana Ltd.
+            &copy; 2024 shwapner Thikana Ltd.
           </div>
         </aside>
 

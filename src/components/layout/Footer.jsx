@@ -18,7 +18,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="flex flex-col gap-6">
             <Link href="/" className="inline-block shrink-0">
-              <img src="/logo.png" alt="Swapner Thikana" className="h-20 w-auto" />
+              <img src="/logo.png" alt="shwapner Thikana" className="h-20 w-auto" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
               Excellence in luxury real estate. We guide you to your dream address with integrity, 
@@ -83,7 +83,7 @@ const Footer = () => {
                 </div>
                 <div className="text-sm">
                   <span className="block text-zinc-100 font-medium">Email Address</span>
-                  <a href="mailto:info@swapner-thikana.com" className="text-zinc-400 hover:text-brand-gold transition-colors">info@swapner-thikana.com</a>
+                  <a href="mailto:info@shwapner-thikana.com" className="text-zinc-400 hover:text-brand-gold transition-colors">info@shwapner-thikana.com</a>
                 </div>
               </li>
             </ul>
@@ -111,7 +111,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-brand-gold/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-zinc-500">
-          <p>© {currentYear} Swapner Thikana Ltd. All Rights Reserved.</p>
+          <p>© {currentYear} shwapner Thikana Ltd. All Rights Reserved.</p>
           <div className="flex items-center gap-8">
             <Link href="#" className="hover:text-brand-gold transition-colors">Privacy Policy</Link>
             <Link href="#" className="hover:text-brand-gold transition-colors">Terms of Service</Link>
