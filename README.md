@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Swapner Thikana LTD - Frontend
 
-## Getting Started
+🏗️ **Premium Real Estate Development Platform** - Frontend Application
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![React](https://img.shields.io/badge/React-19-blue)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8)
+
+## 🎨 Live Demo
+
+Coming soon after Vercel deployment!
+
+## ✨ Features
+
+- **Luxury Brand Design** - Premium gold, emerald, and royal blue color palette
+- **Dark Mode** - Seamless theme switching with next-themes
+- **Glass Morphism** - Modern UI with backdrop blur effects
+- **Responsive Design** - Mobile-first approach
+- **Premium Animations** - Smooth transitions and hover effects
+- **SEO Optimized** - Server-side rendering with Next.js
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Styling**: Tailwind CSS + Custom Theme
+- **UI Components**: Shadcn UI
+- **Icons**: Lucide React
+- **Forms**: React Hook Form + Zod
+- **State Management**: TanStack Query
+- **Dark Mode**: next-themes
+- **Animations**: Framer Motion
+
+## 🎨 Brand Colors
+
+- **Luxury Gold**: `#F59E0B` - Premium highlights, CTAs
+- **Emerald Green**: `#059669` - Growth, success, eco-luxury
+- **Royal Blue**: `#2563EB` - Innovation, information
+- **Dark Mode**: Deep Charcoal `#0F172A` backgrounds
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/              # Next.js App Router
+│   ├── layout.js     # Root layout with theme provider
+│   ├── page.js       # Homepage
+│   └── globals.css   # Global styles & theme
+├── components/       # Reusable components
+│   ├── theme-provider.jsx
+│   └── theme-toggle.jsx
+└── lib/              # Utilities
+    └── utils.js      # Helper functions
+```
 
-## Learn More
+## 🌍 Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+Create a `.env.local` file:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+NEXT_PUBLIC_API_URL=your_backend_api_url
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+NEXT_PUBLIC_GOOGLE_MAPS_KEY=your_google_maps_key
+NEXTAUTH_URL=your_frontend_url
+NEXTAUTH_SECRET=your_nextauth_secret
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📦 Deployment to Vercel
 
-## Deploy on Vercel
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Deploy to production
+vercel --prod
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎯 Features Roadmap
+
+- [x] Luxury brand theme with dark mode
+- [x] Responsive homepage
+- [x] Theme toggle
+- [ ] Property listing page
+- [ ] Property detail page with gallery
+- [ ] Advanced search & filters
+- [ ] Google Maps integration
+- [ ] Agent profiles
+- [ ] Project showcase
+- [ ] Blog section
+- [ ] Contact forms
+- [ ] User authentication
+
+## 👥 Company
+
+**Swapner Thikana Ltd** (স্বপ্নের ঠিকানা)  
+*Building Dreams, Creating Addresses*
+
+Premium Real Estate Development Company  
+Established: 2009  
+Location: Dhaka, Bangladesh
+
+## 📄 License
+
+Private - © 2026 Swapner Thikana Ltd
+
+---
+
+**Backend Repository**: [Swapner-Thikana-LTD-BackEnd](https://github.com/Tafsirchy/Swapner-Thikana-LTD-BackEnd)

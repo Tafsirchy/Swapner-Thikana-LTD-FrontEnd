@@ -1,26 +1,313 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* SWAPNER THIKANA LTD - Luxury Real Estate Color System */
+    
+    /* Brand Core Colors */
+    --gold: 38 92% 50%; /* #F59E0B - Luxury Gold */
+    --gold-hover: 33 93% 44%; /* #D97706 */
+    
+    --emerald: 160 84% 39%; /* #059669 - Emerald Green */
+    --emerald-hover: 161 94% 30%; /* #047857 */
+    
+    --royal: 221 83% 53%; /* #2563EB - Royal Blue */
+    --royal-hover: 221 83% 45%; /* #1D4ED8 */
+    
+    /* Light Mode - Soft & Elegant */
+    --background: 210 40% 98%; /* #F8FAFC - Soft Pearl */
+    --foreground: 222 84% 5%; /* #020617 - Deep Slate */
+    
+    --card: 0 0% 100%; /* Pure White */
+    --card-foreground: 222 84% 5%; /* Deep Slate */
+    
+    --muted: 220 14% 91%; /* #E5E7EB - Soft Gray */
+    --muted-foreground: 215 16% 47%; /* #64748B */
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 84% 5%;
+    
+    --border: 220 14% 91%; /* #E5E7EB */
+    --input: 220 14% 91%;
+    --ring: 38 92% 50%; /* Gold ring focus */
+    
+    /* Semantic Colors */
+    --primary: 38 92% 50%; /* Luxury Gold */
+    --primary-foreground: 222 84% 5%; /* Dark text on gold */
+    
+    --secondary: 160 84% 39%; /* Emerald Green */
+    --secondary-foreground: 0 0% 100%; /* White on emerald */
+    
+    --accent: 221 83% 53%; /* Royal Blue */
+    --accent-foreground: 0 0% 100%; /* White on royal */
+    
+    --success: 160 84% 39%; /* Green for available */
+    --success-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%; /* Red for sold */
+    --destructive-foreground: 0 0% 100%;
+    
+    --radius: 0.75rem; /* 12px - Premium rounded corners */
+  }
+
+  .dark {
+    /* DARK MODE - Luxury Premium Feel */
+    
+    /* Same brand colors (don't change) */
+    --gold: 38 92% 50%; /* #F59E0B */
+    --gold-hover: 33 93% 44%;
+    
+    --emerald: 160 84% 39%; /* #059669 */
+    --emerald-hover: 161 94% 30%;
+    
+    --royal: 221 83% 53%; /* #2563EB */
+    --royal-hover: 221 83% 45%;
+    
+    /* Dark Luxury Backgrounds */
+    --background: 222 47% 11%; /* #0F172A - Deep Charcoal */
+    --foreground: 210 40% 98%; /* #F8FAFC - Soft Pearl (light text) */
+    
+    --card: 222 84% 5%; /* #020617 - Dark Slate */
+    --card-foreground: 210 40% 98%;
+    
+    --muted: 217 33% 17%; /* #1E293B - Muted Dark */
+    --muted-foreground: 215 20% 65%; /* #94A3B8 */
+    
+    --popover: 222 84% 5%;
+    --popover-foreground: 210 40% 98%;
+    
+    --border: 217 33% 17%; /* #1E293B */
+    --input: 217 33% 17%;
+    --ring: 38 92% 50%; /* Gold ring */
+    
+    /* Brighter in dark mode for visibility */
+    --primary: 38 92% 50%; /* Gold stays vibrant */
+    --primary-foreground: 222 84% 5%;
+    
+    --secondary: 160 84% 39%; /* Emerald */
+    --secondary-foreground: 0 0% 100%;
+    
+    --accent: 221 91% 60%; /* Lighter royal for dark */
+    --accent-foreground: 222 84% 5%;
+    
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+    
+    --destructive: 0 62% 30%; /* Darker red for dark mode */
+    --destructive-foreground: 0 0% 100%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+  }
+  
+  /* Premium Typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-foreground;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+  
+  h4 {
+    @apply text-xl md:text-2xl;
+  }
+  
+  p {
+    @apply text-muted-foreground leading-7;
+  }
+  
+  a {
+    @apply text-accent hover:text-accent/80 transition-colors;
+  }
+}
+
+@layer utilities {
+  /* Luxury Gradients */
+  .gradient-luxury {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--card)) 0%,
+      hsl(var(--background)) 50%,
+      hsl(var(--card)) 100%
+    );
+  }
+  
+  .gradient-gold {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--gold)) 0%,
+      hsl(var(--gold-hover)) 100%
+    );
+  }
+  
+  .gradient-emerald {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--emerald)) 0%,
+      hsl(var(--emerald-hover)) 100%
+    );
+  }
+  
+  .gradient-hero {
+    background: linear-gradient(
+      135deg,
+      rgba(245, 158, 11, 0.1) 0%,
+      rgba(5, 150, 105, 0.05) 50%,
+      rgba(37, 99, 235, 0.1) 100%
+    );
+  }
+  
+  /* Glass Morphism - Premium Effect */
+  .glass {
+    @apply bg-background/80 dark:bg-card/80 backdrop-blur-xl border border-border/50;
+  }
+  
+  .glass-gold {
+    background: rgba(245, 158, 11, 0.1);
+    backdrop-filter: blur(16px);
+    @apply border border-primary/20;
+  }
+  
+  /* Premium Shadows */
+  .shadow-luxury {
+    box-shadow: 
+      0 1px 2px 0 rgb(0 0 0 / 0.05),
+      0 10px 25px -5px rgb(0 0 0 / 0.1),
+      0 20px 40px -10px rgb(0 0 0 / 0.1);
+  }
+  
+  .shadow-gold {
+    box-shadow: 
+      0 10px 30px -5px rgba(245, 158, 11, 0.3),
+      0 20px 50px -10px rgba(245, 158, 11, 0.2);
+  }
+  
+  .shadow-emerald {
+    box-shadow: 
+      0 10px 30px -5px rgba(5, 150, 105, 0.3),
+      0 20px 50px -10px rgba(5, 150, 105, 0.2);
+  }
+  
+  /* Custom Scrollbar */
+  .scrollbar-luxury::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .scrollbar-luxury::-webkit-scrollbar-track {
+    @apply bg-muted rounded-lg;
+  }
+  
+  .scrollbar-luxury::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-lg;
+  }
+  
+  .scrollbar-luxury::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+  
+  /* Text Gradients */
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  }
+  
+  .text-gradient-luxury {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #F59E0B 0%, #059669 50%, #2563EB 100%);
+  }
+  
+  /* Hover Effects */
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-luxury;
+  }
+  
+  .hover-glow-gold {
+    @apply transition-all duration-300 hover:shadow-gold;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  /* Badge Styles */
+  .badge-available {
+    @apply bg-success/10 text-success border border-success/20;
+  }
+  
+  .badge-sold {
+    @apply bg-destructive/10 text-destructive border border-destructive/20;
+  }
+  
+  .badge-featured {
+    @apply bg-primary/10 text-primary border border-primary/20;
+  }
+  
+  .badge-upcoming {
+    @apply bg-accent/10 text-accent border border-accent/20;
+  }
+}
+
+@layer components {
+  /* Premium Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 
+           font-medium transition-all duration-300 focus:outline-none focus:ring-2 
+           focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 
+           focus:ring-primary shadow-gold hover:shadow-gold;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90 
+           focus:ring-secondary shadow-emerald hover:scale-105;
+  }
+  
+  .btn-accent {
+    @apply bg-accent text-accent-foreground hover:bg-accent/90 
+           focus:ring-accent hover:scale-105;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary text-primary bg-transparent 
+           hover:bg-primary hover:text-primary-foreground;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent hover:bg-muted text-foreground;
+  }
+  
+  /* Premium Cards */
+  .card-luxury {
+    @apply bg-card border border-border rounded-2xl p-6 
+           hover-lift shadow-sm hover:shadow-luxury;
+  }
+  
+  .card-property {
+    @apply bg-card border border-border rounded-2xl overflow-hidden
+           hover-lift shadow-sm hover:shadow-luxury group;
+  }
 }
