@@ -1,398 +1,95 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* =========================================
-   SWAPNER THIKANA LTD – LUXURY REAL ESTATE
-   Complete Color System with Dark/Light Mode
-   ========================================= */
-
-@layer base {
-  :root {
-    /* ===== BRAND CORE COLORS ===== */
-    --gold: 38 92% 50%;           /* #F59E0B - Luxury Gold */
-    --gold-hover: 33 93% 44%;     /* #D97706 - Gold Hover */
-    
-    --emerald: 160 84% 39%;       /* #059669 - Emerald Green */
-    --emerald-hover: 161 94% 30%; /* #047857 - Emerald Hover */
-    
-    --royal: 221 83% 53%;         /* #2563EB - Royal Blue */
-    --royal-hover: 221 83% 45%;   /* #1D4ED8 - Royal Blue Hover */
-
-    /* ===== LIGHT MODE (Default) ===== */
-    --background: 210 40% 98%;    /* #F8FAFC - Soft Pearl */
-    --foreground: 222 84% 5%;     /* #020617 - Deep Slate */
-    
-    --card: 0 0% 100%;            /* #FFFFFF - Pure White */
-    --card-foreground: 222 84% 5%;
-    
-    --muted: 220 14% 91%;         /* #E5E7EB - Light Gray */
-    --muted-foreground: 215 16% 47%; /* #64748B */
-    
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 84% 5%;
-    
-    --border: 220 14% 91%;        /* #E5E7EB */
-    --input: 220 14% 91%;
-    --ring: 38 92% 50%;           /* Gold focus ring */
-    
-    /* Semantic Colors */
-    --primary: 38 92% 50%;        /* Gold */
-    --primary-foreground: 222 84% 5%;
-    
-    --secondary: 160 84% 39%;     /* Emerald */
-    --secondary-foreground: 0 0% 100%;
-    
-    --accent: 221 83% 53%;        /* Royal Blue */
-    --accent-foreground: 0 0% 100%;
-    
-    --success: 160 84% 39%;       /* Emerald */
-    --success-foreground: 0 0% 100%;
-    
-    --destructive: 0 84% 60%;     /* #DC2626 - Red */
-    --destructive-foreground: 0 0% 100%;
-    
-    --radius: 0.75rem;
-  }
-
-  /* ===== DARK MODE ===== */
-  .dark {
-    --background: 222 47% 11%;    /* #0F172A - Deep Charcoal */
-    --foreground: 210 40% 98%;    /* #F8FAFC - Soft Pearl */
-    
-    --card: 222 84% 5%;           /* #020617 - Darker Slate */
-    --card-foreground: 210 40% 98%;
-    
-    --muted: 217 33% 17%;         /* #1E293B - Dark Slate */
-    --muted-foreground: 215 20% 65%; /* #94A3B8 */
-    
-    --popover: 222 84% 5%;
-    --popover-foreground: 210 40% 98%;
-    
-    --border: 217 33% 17%;        /* #1E293B */
-    --input: 217 33% 17%;
-    
-    --accent: 221 91% 60%;        /* Brighter Royal in dark mode */
-    --destructive: 0 62% 30%;
-  }
-}
-
-@layer base {
-  /* ===== GLOBAL RESET ===== */
-  * {
-    border-color: hsl(var(--border));
-  }
+@theme {
+  /* Swapner Thikana Ltd - Luxury Real Estate Brand Colors */
+  --color-brand-gold: #F59E0B;
+  --color-brand-gold-light: #fbbf24;
+  --color-brand-gold-dark: #b45309;
   
-  html {
-    scroll-behavior: smooth;
-  }
+  --color-brand-emerald: #059669;
+  --color-brand-emerald-light: #10b981;
+  --color-brand-emerald-dark: #065f46;
   
-  body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    font-feature-settings: "rlig" 1, "calt" 1;
-    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.6;
-  }
+  --color-brand-royal: #2563EB;
+  --color-brand-royal-light: #3b82f6;
+  --color-brand-royal-dark: #1e40af;
   
-  /* ===== TYPOGRAPHY ===== */
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    color: hsl(var(--foreground));
-  }
-  
-  h1 {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
-  }
-  
-  @media (min-width: 768px) {
-    h1 { font-size: 3rem; line-height: 1; }
-  }
-  
-  @media (min-width: 1024px) {
-    h1 { font-size: 3.75rem; line-height: 1; }
-  }
-  
-  h2 {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-  }
-  
-  @media (min-width: 768px) {
-    h2 { font-size: 2.25rem; line-height: 2.5rem; }
-  }
-  
-  @media (min-width: 1024px) {
-    h2 { font-size: 3rem; line-height: 1; }
-  }
-  
-  h3 {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-  
-  p {
-    color: hsl(var(--muted-foreground));
-    line-height: 1.75rem;
-  }
-  
-  a {
-    color: hsl(var(--accent));
-    transition: color 0.2s;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    color: hsl(var(--accent) / 0.8);
-  }
-}
+  --color-royal-deep: #0F172A;
 
-@layer utilities {
-  /* ===== GLASS EFFECTS (LUXURY) ===== */
-  .glass {
-    background-color: hsl(var(--background) / 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.5);
+  /* Keyframes & Animations */
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  
-  .dark .glass {
-    background-color: hsl(var(--card) / 0.8);
+  @keyframes slide-in-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-
-  .glass-gold {
-    background-color: hsla(38, 92%, 50%, 0.1);
-    backdrop-filter: blur(16px);
-    border: 1px solid hsla(38, 92%, 50%, 0.2);
-  }
-
-  /* ===== LUXURY CARDS ===== */
-  .card-luxury {
-    background-color: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-    border-radius: 1.5rem;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  }
-
-  .card-luxury:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px -10px rgb(0 0 0 / 0.25);
-  }
-
-  /* ===== PREMIUM BUTTONS ===== */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border-radius: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: none;
-    outline: none;
-  }
-
-  .btn-primary {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    box-shadow: 0 10px 30px -5px hsla(38, 92%, 50%, 0.3);
-  }
-
-  .btn-primary:hover {
-    background-color: hsl(var(--gold-hover));
-    transform: scale(1.02);
-  }
-
-  .btn-secondary {
-    background-color: hsl(var(--secondary));
-    color: hsl(var(--secondary-foreground));
-  }
-
-  .btn-secondary:hover {
-    filter: brightness(1.1);
-    background-color: hsl(var(--emerald-hover));
-  }
-
-  .btn-outline {
-    background: transparent;
-    color: hsl(var(--primary));
-    border: 1px solid hsl(var(--primary));
-  }
-
-  .btn-outline:hover {
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-  }
-
-  /* ===== TEXT GRADIENTS ===== */
-  .text-gradient-gold {
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .text-gradient-luxury {
-    background: linear-gradient(135deg, #F59E0B 0%, #059669 50%, #2563EB 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* ===== HERO GRADIENTS ===== */
-  .gradient-hero {
-    background: linear-gradient(135deg, 
-      hsla(38, 92%, 50%, 0.1) 0%, 
-      hsla(160, 84%, 39%, 0.05) 50%, 
-      hsla(221, 83%, 53%, 0.1) 100%
-    );
-  }
-
-  .gradient-dark {
-    background: linear-gradient(135deg, 
-      hsl(var(--card)) 0%, 
-      hsl(var(--background)) 50%, 
-      hsl(var(--card)) 100%
-    );
-  }
-
-  /* ===== PREMIUM SHADOWS ===== */
-  .shadow-luxury {
-    box-shadow: 
-      0 1px 2px 0 rgb(0 0 0 / 0.05), 
-      0 10px 25px -5px rgb(0 0 0 / 0.1), 
-      0 20px 40px -10px rgb(0 0 0 / 0.1);
-  }
-
-  .shadow-gold {
-    box-shadow: 
-      0 10px 30px -5px rgba(245, 158, 11, 0.3), 
-      0 20px 50px -10px rgba(245, 158, 11, 0.2);
-  }
-
-  .shadow-emerald {
-    box-shadow: 
-      0 10px 30px -5px rgba(5, 150, 105, 0.3), 
-      0 20px 50px -10px rgba(5, 150, 105, 0.2);
-  }
-
-  /* ===== BADGES ===== */
-  .badge {
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-
-  .badge-available { 
-    background-color: hsla(160, 84%, 39%, 0.15); 
-    color: hsl(var(--success)); 
-    border: 1px solid hsla(160, 84%, 39%, 0.2); 
-  }
-  
-  .badge-sold {
-    background-color: hsla(0, 84%, 60%, 0.15);
-    color: hsl(var(--destructive));
-    border: 1px solid hsla(0, 84%, 60%, 0.2);
-  }
-
-  .badge-featured {
-    background-color: hsla(38, 92%, 50%, 0.2);
-    color: hsl(var(--primary));
-    border: 1px solid hsla(38, 92%, 50%, 0.3);
-  }
-
-  .badge-upcoming {
-    background-color: hsla(221, 83%, 53%, 0.15);
-    color: hsl(var(--accent));
-    border: 1px solid hsla(221, 83%, 53%, 0.2);
-  }
-
-  /* ===== ANIMATIONS ===== */
-  .animate-glow-pulse {
-    animation: glow-pulse 2s ease-in-out infinite;
-  }
-
   @keyframes glow-pulse {
-    0%, 100% { 
-      box-shadow: 0 0 20px hsla(38, 92%, 50%, 0.3); 
-    }
-    50% { 
-      box-shadow: 0 0 40px hsla(38, 92%, 50%, 0.6); 
-    }
+    0%, 100% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(245, 158, 11, 0.6); }
   }
 
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-in;
-  }
+  --animate-fade-in: fade-in 0.6s ease-out;
+  --animate-slide-in-up: slide-in-up 0.6s ease-out;
+  --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
 
-  .animate-slide-in-up {
-    animation: slideInUp 0.6s ease-out;
-  }
+  /* Font setup */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: ui-serif, Georgia, serif;
+}
 
-  @keyframes fadeIn {
-    from { 
-      opacity: 0; 
-    }
-    to { 
-      opacity: 1; 
-    }
-  }
+/* Base Styles */
+:root {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #020617;
+  --border: rgba(255, 255, 255, 0.1);
+  --primary: #f59e0b;
+  --radius: 0.75rem;
+}
 
-  @keyframes slideInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  /* ===== HOVER UTILITIES ===== */
-  .hover-scale {
-    transition: transform 0.3s ease;
-  }
+/* Custom Utilities (Tailwind 4 Syntax) */
+@utility max-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
 
-  .hover-scale:hover {
-    transform: scale(1.05);
-  }
+@utility glass {
+  background-color: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-  .hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+@utility glass-gold {
+  background-color: rgba(245, 158, 11, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
 
-  .hover-lift:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25);
-  }
+@utility card-luxury {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
 
-  /* ===== FORM ELEMENTS ===== */
-  input,
-  textarea,
-  select {
-    background: hsl(var(--card));
-    color: hsl(var(--foreground));
-    border: 1px solid hsl(var(--border));
-  }
-
-  input::placeholder,
-  textarea::placeholder {
-    color: hsl(var(--muted-foreground));
-  }
-
-  input:focus,
-  textarea:focus,
-  select:focus {
-    outline: none;
-    border-color: hsl(var(--primary));
-    box-shadow: 0 0 0 3px hsla(38, 92%, 50%, 0.1);
-  }
+@utility text-gradient-gold {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

@@ -2,27 +2,37 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
 
 export const metadata = {
-  title: "Swapner Thikana Ltd",
-  description: "Real Estate Platform",
+  title: "Swapner Thikana Ltd - Your Dream Address",
+  description: "Excellence in luxury real estate. Find your dream home with Swapner Thikana Ltd.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
+      <body className={`${inter.variable} font-sans antialiased text-zinc-100 bg-royal-deep`}>
+        <Navbar />
+        <main className="min-h-screen">
+          {children}
+        </main>
+        <Footer />
         <Toaster 
           position="top-right"
           toastOptions={{
             duration: 3000,
             style: {
-              borderRadius: '8px',
+              background: '#0F172A',
+              color: '#F59E0B',
+              border: '1px solid rgba(245, 158, 11, 0.2)',
+              borderRadius: '12px',
               padding: '16px',
             },
           }}

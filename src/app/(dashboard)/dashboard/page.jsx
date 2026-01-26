@@ -1,0 +1,200 @@
+'use client';
+
+import React from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { Link } from 'next/link';
+import { 
+  Building2, Users, Heart, Search, MessageSquare, 
+  TrendingUp, PlusCircle, ArrowRight, LayoutDashboard,
+  CheckCircle, XCircle, Clock
+} from 'lucide-react';
+
+const StatCard = ({ title, value, icon: Icon, color, trend }) => (
+  <div className="bg-white/5 border border-white/5 p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-all">
+    <div className={`absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity ${color}`}>
+      <Icon size={80} />
+    </div>
+    <div className="relative z-10">
+      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${color} bg-white/5`}>
+        <Icon size={24} />
+      </div>
+      <h3 className="text-zinc-400 text-sm font-medium uppercase tracking-wider mb-1">{title}</h3>
+      <div className="flex items-end gap-3">
+        <span className="text-3xl font-bold text-zinc-100">{value}</span>
+        {trend && (
+           <span className="text-xs font-bold text-emerald-400 mb-1 flex items-center gap-1">
+             <TrendingUp size={12} /> {trend}
+           </span>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
+const ViewAllLink = ({ href }) => (
+  <a href={href} className="text-brand-gold text-sm font-bold flex items-center gap-1 hover:underline">
+    View All <ArrowRight size={14} />
+  </a>
+);
+
+const CustomerDashboard = () => (
+  <div className="space-y-8">
+     {/* Stats Grid */}
+     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StatCard title="Saved Homes" value="12" icon={Heart} color="text-pink-500" />
+        <StatCard title="Active Inquiries" value="3" icon={MessageSquare} color="text-brand-gold" trend="+1 new" />
+        <StatCard title="Saved Searches" value="5" icon={Search} color="text-blue-500" />
+     </div>
+
+     {/* Recent Activity */}
+     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+           <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-zinc-100">Recent Inquiries</h2>
+              <ViewAllLink href="/dashboard/inquiries" />
+           </div>
+           <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                 <div key={i} className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-brand-gold/30 transition-colors">
+                    <div className="w-12 h-12 rounded-xl bg-zinc-800 flex-shrink-0"></div>
+                    <div>
+                       <h4 className="font-bold text-sm text-zinc-100">Luxury Villa in Gulshan</h4>
+                       <p className="text-xs text-zinc-400 mt-1">Pending Response • 2h ago</p>
+                    </div>
+                    <div className="ml-auto text-xs font-bold text-yellow-500 bg-yellow-500/10 px-3 py-1 rounded-full">
+                       Pending
+                    </div>
+                 </div>
+              ))}
+           </div>
+        </div>
+        
+        <div className="bg-brand-gold/10 border border-brand-gold/20 rounded-3xl p-8 flex flex-col justify-center text-center">
+           <h2 className="text-2xl font-bold text-brand-gold mb-2">Find Your Dream Home</h2>
+           <p className="text-zinc-400 mb-6 max-w-sm mx-auto">Explore our latest premium listings tailored to your preferences.</p>
+           <a href="/properties" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
+              Browse Properties
+           </a>
+        </div>
+     </div>
+  </div>
+);
+
+const AgentDashboard = () => (
+  <div className="space-y-8">
+     {/* Stats Grid */}
+     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <StatCard title="My Listings" value="8" icon={Building2} color="text-brand-emerald" trend="+2 this month" />
+        <StatCard title="Total Leads" value="45" icon={Users} color="text-blue-500" trend="+12%" />
+        <StatCard title="Total Views" value="1.2k" icon={Search} color="text-purple-500" trend="+8%" />
+        <StatCard title="Pending" value="2" icon={Clock} color="text-yellow-500" />
+     </div>
+
+     <div className="flex items-center justify-end">
+        <a href="/dashboard/properties/add" className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
+           <PlusCircle size={18} /> Add New Property
+        </a>
+     </div>
+
+     {/* Ongoing Leads */}
+     <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+        <div className="flex items-center justify-between mb-6">
+           <h2 className="text-xl font-bold text-zinc-100">Recent Leads</h2>
+           <ViewAllLink href="/dashboard/leads" />
+        </div>
+        <div className="overflow-x-auto">
+           <table className="w-full text-left text-sm text-zinc-400">
+              <thead>
+                 <tr className="border-b border-white/10">
+                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Client</th>
+                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Property</th>
+                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Date</th>
+                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Status</th>
+                 </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                 {[1, 2, 3, 4].map((i) => (
+                    <tr key={i} className="group hover:bg-white/5">
+                       <td className="py-4 font-bold text-zinc-200">Wasi Al-Shatib</td>
+                       <td className="py-4">Lake City Concord - Apt 4B</td>
+                       <td className="py-4">Oct 24, 2025</td>
+                       <td className="py-4"><span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold">New</span></td>
+                    </tr>
+                 ))}
+              </tbody>
+           </table>
+        </div>
+     </div>
+  </div>
+);
+
+const AdminDashboard = () => (
+  <div className="space-y-8">
+     {/* Stats Grid */}
+     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <StatCard title="Total Users" value="1,204" icon={Users} color="text-blue-500" trend="+5%" />
+        <StatCard title="Active Listings" value="342" icon={Building2} color="text-brand-gold" />
+        <StatCard title="Pending Approvals" value="12" icon={CheckCircle} color="text-yellow-500" />
+        <StatCard title="Total Revenue" value="$45k" icon={TrendingUp} color="text-emerald-500" trend="+18%" />
+     </div>
+
+     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Approvals Queue */}
+        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+           <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-zinc-100">Pending Approvals</h2>
+              <ViewAllLink href="/dashboard/admin/properties" />
+           </div>
+           <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                 <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
+                    <div className="flex items-center gap-4">
+                       <div className="w-12 h-12 rounded-xl bg-zinc-800"></div>
+                       <div>
+                          <h4 className="font-bold text-sm text-zinc-100">Penthouse in Banani</h4>
+                          <p className="text-xs text-zinc-400 mt-1">Submitted by Agent Smith</p>
+                       </div>
+                    </div>
+                    <div className="flex gap-2">
+                       <button className="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"><CheckCircle size={18} /></button>
+                       <button className="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"><XCircle size={18} /></button>
+                    </div>
+                 </div>
+              ))}
+           </div>
+        </div>
+
+        {/* System Health */}
+        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+           <h2 className="text-xl font-bold text-zinc-100 mb-6">System Health</h2>
+           <div className="space-y-6">
+              {[
+                 { label: 'Database Connection', status: 'Healthy', color: 'text-emerald-500' },
+                 { label: 'API Response Time', status: '45ms', color: 'text-emerald-500' },
+                 { label: 'Storage Usage', status: '45%', color: 'text-blue-500' },
+                 { label: 'Error Rate', status: '0.01%', color: 'text-emerald-500' },
+              ].map((item, i) => (
+                 <div key={i} className="flex items-center justify-between border-b border-white/5 pb-4 last:border-0 last:pb-0">
+                    <span className="text-zinc-400 text-sm font-medium">{item.label}</span>
+                    <span className={`font-bold text-sm ${item.color}`}>{item.status}</span>
+                 </div>
+              ))}
+           </div>
+        </div>
+     </div>
+  </div>
+);
+
+const DashboardPage = () => {
+  const { user } = useAuth();
+
+  return (
+    <>
+      {user?.role === 'agent' && <AgentDashboard />}
+      {user?.role === 'admin' && <AdminDashboard />}
+      {user?.role === 'customer' && <CustomerDashboard />}
+    </>
+  );
+};
+
+export default DashboardPage;

@@ -1,0 +1,116 @@
+'use client';
+
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import { Building2, Loader2 } from 'lucide-react';
+import ProjectCard from '@/components/shared/ProjectCard';
+import { api } from '@/lib/api';
+
+const ProjectsPage = () => {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('all');
+
+  const fetchProjects = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await api.projects.getAll();
+      setProjects(data.data.projects);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
+
+  const filteredProjects = filter === 'all' 
+    ? projects 
+    : projects.filter(p => p.status === filter);
+
+  return (
+    <div className="min-h-screen bg-royal-deep pt-32 pb-24">
+      <section className="mb-16">
+        <div className="max-container px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] mb-6"
+          >
+            <Building2 size={16} />
+            Architectural Landmarks
+          </motion.div>
+          <h1 className="text-5xl md:text-7xl font-bold text-zinc-100 mb-8 tracking-tight">
+            Our Iconic <span className="text-brand-gold italic">Developments</span>
+          </h1>
+          <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
+            From skyline-defining towers to boutique residential havens, explore our portfolio of ongoing and completed architectural masterpieces across Bangladesh.
+          </p>
+
+          {/* Status Tabs */}
+          <div className="flex justify-center mt-12">
+            <div className="flex p-1.5 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10">
+              {['all', 'ongoing', 'completed', 'upcoming'].map((status) => (
+                <button
+                  key={status}
+                  onClick={() => setFilter(status)}
+                  className={`px-8 py-2.5 rounded-xl text-sm font-bold capitalize transition-all ${filter === status ? 'bg-brand-gold text-royal-deep shadow-lg shadow-brand-gold/20' : 'text-zinc-500 hover:text-zinc-300'}`}
+                >
+                  {status}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="max-container px-4">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <Loader2 size={48} className="text-brand-gold animate-spin" />
+              <p className="mt-4 text-zinc-500 font-medium">Curating architectural masterpieces...</p>
+            </div>
+          ) : filteredProjects.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              {filteredProjects.map((project) => (
+                <ProjectCard key={project._id} project={project} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20 glass rounded-[3rem] border-white/5">
+              <h3 className="text-2xl font-bold text-zinc-400 italic">No projects found in this category</h3>
+              <p className="text-zinc-500 mt-2">Check back soon for upcoming luxury developments.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Newsletter / CTA */}
+      <section className="mt-32">
+        <div className="max-container px-4">
+          <div className="relative p-12 lg:p-20 glass rounded-[4rem] border-brand-gold/20 overflow-hidden text-center">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-brand-gold/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+            <h2 className="text-3xl md:text-5xl font-bold text-zinc-100 mb-6">Want early access to <span className="text-brand-gold">VIP</span> launches?</h2>
+            <p className="text-zinc-400 mb-10 max-w-xl mx-auto">Subscribe for private viewings and pre-launch architectural insights before they hit the open market.</p>
+            <form className="flex flex-col md:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
+              <input 
+                type="email" 
+                placeholder="Ex. elegance@lifestyle.com"
+                className="flex-1 bg-zinc-900/80 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-brand-gold/50 text-zinc-100"
+              />
+              <button className="bg-brand-gold text-royal-deep px-8 py-4 rounded-2xl font-bold hover:bg-brand-gold-light transition-all active:scale-95 shadow-lg shadow-brand-gold/20">
+                Join VIP List
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default ProjectsPage;

@@ -1,0 +1,173 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  LayoutDashboard, Heart, Search, MessageSquare, Settings, 
+  LogOut, Menu, X, Building2, PlusCircle, Users, FileText, 
+  BarChart3, UserCircle, Bell
+} from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import ProtectedRoute from '@/components/shared/ProtectedRoute';
+
+const DashboardLayout = ({ children }) => {
+  const { user, logout } = useAuth();
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+
+  // Role-based Navigation
+  const getNavLinks = () => {
+    switch (user?.role) {
+      case 'agent':
+        return [
+          { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+          { name: 'My Listings', href: '/dashboard/properties', icon: Building2 },
+          { name: 'Add Property', href: '/dashboard/properties/add', icon: PlusCircle },
+          { name: 'My Leads', href: '/dashboard/leads', icon: Users },
+          { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+          { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+        ];
+      case 'admin':
+        return [
+          { name: 'Overview', href: '/dashboard/admin', icon: LayoutDashboard },
+          { name: 'Users', href: '/dashboard/admin/users', icon: Users },
+          { name: 'Properties', href: '/dashboard/admin/properties', icon: Building2 },
+          { name: 'Projects', href: '/dashboard/admin/projects', icon: Building2 },
+          { name: 'Blogs', href: '/dashboard/admin/blogs', icon: FileText },
+          { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+        ];
+      case 'customer':
+      default:
+        return [
+          { name: 'My Dashboard', href: '/dashboard', icon: LayoutDashboard },
+          { name: 'Saved Homes', href: '/dashboard/saved', icon: Heart },
+          { name: 'Saved Searches', href: '/dashboard/searches', icon: Search },
+          { name: 'My Inquiries', href: '/dashboard/inquiries', icon: MessageSquare },
+          { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+        ];
+    }
+  };
+
+  const links = getNavLinks();
+
+  return (
+    <ProtectedRoute>
+      <div className="min-h-screen bg-zinc-950 flex font-sans text-zinc-100">
+        
+        {/* Mobile Sidebar Overlay */}
+        <AnimatePresence>
+          {isSidebarOpen && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSidebarOpen(false)}
+              className="fixed inset-0 bg-black/80 z-40 lg:hidden backdrop-blur-sm"
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Sidebar */}
+        <aside className={`
+          fixed lg:static top-0 left-0 h-full w-72 bg-zinc-900/50 border-r border-white/5 
+          z-50 transform transition-transform duration-300 ease-in-out
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
+          <div className="p-8 flex items-center justify-between">
+            <Link href="/" className="inline-flex flex-col">
+              <span className="text-2xl font-bold tracking-tighter text-brand-gold italic">
+                স্বপ্নের ঠিকানা
+              </span>
+              <span className="text-[10px] text-zinc-500 tracking-[0.2em] font-medium uppercase">
+                Concierge Panel
+              </span>
+            </Link>
+            <button onClick={toggleSidebar} className="lg:hidden text-zinc-400">
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="px-4 py-6">
+            <div className="flex items-center gap-3 px-4 py-4 mb-8 bg-white/5 rounded-2xl border border-white/5">
+              <div className="w-10 h-10 rounded-full bg-brand-gold flex items-center justify-center text-royal-deep font-bold text-lg">
+                {user?.name?.[0] || 'U'}
+              </div>
+              <div className="flex-1 overflow-hidden">
+                <h4 className="text-sm font-bold truncate">{user?.name}</h4>
+                <span className="text-xs text-brand-gold uppercase tracking-wider font-bold">{user?.role}</span>
+              </div>
+            </div>
+
+            <nav className="space-y-1">
+              {links.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium text-sm group ${
+                      isActive 
+                        ? 'bg-brand-gold text-royal-deep font-bold shadow-lg shadow-brand-gold/20' 
+                        : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
+                    }`}
+                  >
+                    <link.icon size={18} className={isActive ? 'text-royal-deep' : 'text-zinc-500 group-hover:text-zinc-300'} />
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+
+          <div className="absolute bottom-0 left-0 w-full p-6 border-t border-white/5">
+            <button 
+              onClick={logout}
+              className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all text-sm font-medium"
+            >
+              <LogOut size={18} />
+              Sign Out
+            </button>
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+          {/* Topbar (Mobile Only) */}
+          <header className="lg:hidden h-16 border-b border-white/5 bg-zinc-900/50 flex items-center justify-between px-4">
+            <button onClick={toggleSidebar} className="text-zinc-400">
+              <Menu size={24} />
+            </button>
+            <span className="font-bold text-lg">Dashboard</span>
+            <div className="w-8"></div> {/* Spacer */}
+          </header>
+
+          {/* Scrollable Content Area */}
+          <div className="flex-1 overflow-y-auto p-4 lg:p-8 relative">
+            {/* Top Header (Desktop) */}
+            <header className="hidden lg:flex items-center justify-between mb-8 pb-6 border-b border-white/5">
+               <div>
+                  <h1 className="text-2xl font-bold text-zinc-100">Overview</h1>
+                  <p className="text-zinc-400 text-sm">Welcome back, {user?.name}</p>
+               </div>
+               <div className="flex items-center gap-4">
+                  <button className="p-3 rounded-full bg-white/5 border border-white/5 text-zinc-400 hover:text-brand-gold transition-colors relative">
+                     <Bell size={20} />
+                     <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                  </button>
+               </div>
+            </header>
+
+            {children}
+          </div>
+        </main>
+      </div>
+    </ProtectedRoute>
+  );
+};
+
+export default DashboardLayout;
