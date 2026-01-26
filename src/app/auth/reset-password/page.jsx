@@ -55,11 +55,11 @@ const ResetPasswordContent = () => {
   return (
     <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl">
       <div className="text-center mb-10">
-        <Link href="/" className="inline-flex flex-col items-center mb-8">
-          <span className="text-3xl font-bold tracking-tighter text-brand-gold italic">
-            স্বপ্নের ঠিকানা
-          </span>
-        </Link>
+        <div className="flex justify-center mb-8">
+          <Link href="/" className="inline-block">
+            <img src="/logo.png" alt="Swapner Thikana" className="h-[60px] w-auto" />
+          </Link>
+        </div>
         <h2 className="text-2xl font-bold text-zinc-100">Set New Password</h2>
         <p className="text-zinc-400 text-sm mt-2">Almost there! Create a strong password for your account.</p>
       </div>

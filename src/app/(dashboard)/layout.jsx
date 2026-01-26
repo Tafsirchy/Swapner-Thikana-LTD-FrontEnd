@@ -79,9 +79,7 @@ const DashboardLayout = ({ children }) => {
         `}>
           <div className="lg:hidden p-8 flex items-center justify-between">
              {/* Mobile Logo only */}
-             <span className="text-xl font-bold tracking-tighter text-brand-gold italic">
-                স্বপ্নের ঠিকানা
-             </span>
+             <img src="/logo.png" alt="Swapner Thikana" className="h-10 w-auto" />
             <button onClick={toggleSidebar} className="text-zinc-400">
               <X size={24} />
             </button>

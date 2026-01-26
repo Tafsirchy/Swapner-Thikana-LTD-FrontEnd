@@ -47,11 +47,11 @@ const VerifyEmailContent = () => {
         className="w-full max-w-md relative z-10"
       >
         <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-10 text-center shadow-2xl">
-          <Link href="/" className="inline-flex flex-col items-center mb-10">
-            <span className="text-3xl font-bold tracking-tighter text-brand-gold italic">
-              স্বপ্নের ঠিকানা
-            </span>
-          </Link>
+          <div className="flex justify-center mb-10">
+            <Link href="/" className="inline-block">
+              <img src="/logo.png" alt="Swapner Thikana" className="h-[60px] w-auto" />
+            </Link>
+          </div>
 
           {status === 'verifying' && (
             <div className="space-y-6">

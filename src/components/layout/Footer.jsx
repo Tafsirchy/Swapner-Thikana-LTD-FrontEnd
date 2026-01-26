@@ -21,9 +21,7 @@ const Footer = () => {
               <span className="text-3xl font-bold tracking-tighter text-brand-gold leading-none italic">
                 স্বপনের ঠিকানা
               </span>
-              <span className="text-xs text-zinc-400 tracking-[0.2em] font-medium uppercase font-serif mt-1">
-                Swapner Thikana Ltd
-              </span>
+              <img src="/logo.png" alt="Swapner Thikana" className="h-16 w-auto" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
               Excellence in luxury real estate. We guide you to your dream address with integrity, 

@@ -47,13 +47,8 @@ const Navbar = () => {
     >
       <div className="max-container flex justify-between items-center px-4">
         {/* Logo */}
-        <Link href="/" className="flex flex-col items-start">
-          <span className="text-2xl font-bold tracking-tighter text-brand-gold leading-none italic">
-            স্বপ্নের ঠিকানা
-          </span>
-          <span className="text-[10px] text-zinc-400 tracking-[0.2em] font-medium uppercase font-serif">
-            Swapner Thikana Ltd
-          </span>
+        <Link href="/" className="flex items-center">
+            <img src="/logo.png" alt="Swapner Thikana" className="h-[43px] w-auto" />
         </Link>
 
         {/* Desktop Navigation - Hidden on Dashboard */}
