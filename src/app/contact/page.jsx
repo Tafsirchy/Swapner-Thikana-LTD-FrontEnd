@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send, Globe, MessageSquare, Loader2 } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquare, Loader2 } from 'lucide-react';
+import { api } from '@/lib/api';
+import { toast } from 'react-hot-toast';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -14,15 +16,19 @@ const ContactPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      alert('Your message has been received. Our concierge will contact you within 24 hours.');
+    try {
+      await api.leads.create(formData);
+      toast.success('Your message has been received. Our concierge will contact you shortly.');
       setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' });
-    }, 1500);
+    } catch (error) {
+      console.error('Submission failed:', error);
+      toast.error('Failed to submit message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

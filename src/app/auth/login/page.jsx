@@ -24,7 +24,7 @@ const LoginPage = () => {
     
     if (result.success) {
       toast.success('Welcome back to Swapner Thikana!');
-      router.push('/dashboard');
+      router.push('/');
     } else {
       toast.error(result.error || 'Login failed');
     }

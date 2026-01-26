@@ -56,7 +56,7 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-zinc-950 flex font-sans text-zinc-100">
+      <div className="min-h-screen bg-zinc-950 flex font-sans text-zinc-100 pt-20">
         
         {/* Mobile Sidebar Overlay */}
         <AnimatePresence>
@@ -73,20 +73,16 @@ const DashboardLayout = ({ children }) => {
 
         {/* Sidebar */}
         <aside className={`
-          fixed lg:static top-0 left-0 h-full w-72 bg-zinc-900/50 border-r border-white/5 
-          z-50 transform transition-transform duration-300 ease-in-out
+          fixed lg:static top-20 left-0 h-[calc(100vh-80px)] w-72 bg-zinc-900/50 border-r border-white/5 
+          z-40 transform transition-transform duration-300 ease-in-out
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}>
-          <div className="p-8 flex items-center justify-between">
-            <Link href="/" className="inline-flex flex-col">
-              <span className="text-2xl font-bold tracking-tighter text-brand-gold italic">
+          <div className="lg:hidden p-8 flex items-center justify-between">
+             {/* Mobile Logo only */}
+             <span className="text-xl font-bold tracking-tighter text-brand-gold italic">
                 স্বপ্নের ঠিকানা
-              </span>
-              <span className="text-[10px] text-zinc-500 tracking-[0.2em] font-medium uppercase">
-                Concierge Panel
-              </span>
-            </Link>
-            <button onClick={toggleSidebar} className="lg:hidden text-zinc-400">
+             </span>
+            <button onClick={toggleSidebar} className="text-zinc-400">
               <X size={24} />
             </button>
           </div>
@@ -124,14 +120,8 @@ const DashboardLayout = ({ children }) => {
             </nav>
           </div>
 
-          <div className="absolute bottom-0 left-0 w-full p-6 border-t border-white/5">
-            <button 
-              onClick={logout}
-              className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all text-sm font-medium"
-            >
-              <LogOut size={18} />
-              Sign Out
-            </button>
+          <div className="absolute bottom-0 left-0 w-full p-6 text-center text-xs text-zinc-600">
+            &copy; 2024 Swapner Thikana Ltd.
           </div>
         </aside>
 

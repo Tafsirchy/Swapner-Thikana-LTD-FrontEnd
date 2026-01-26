@@ -56,6 +56,7 @@ export const api = {
   user: {
     updateProfile: (data) => apiInstance.put('/users/profile', data),
     getPublicProfile: (id) => apiInstance.get(`/users/${id}`),
+    getAgents: () => apiInstance.get('/users/agents'),
     getSavedProperties: () => apiInstance.get('/users/saved-properties'),
   },
   properties: {
