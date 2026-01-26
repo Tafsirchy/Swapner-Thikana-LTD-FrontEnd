@@ -17,11 +17,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Company Info */}
           <div className="flex flex-col gap-6">
-            <Link href="/" className="flex flex-col items-start shrink-0">
-              <span className="text-3xl font-bold tracking-tighter text-brand-gold leading-none italic">
-                স্বপনের ঠিকানা
-              </span>
-              <img src="/logo.png" alt="Swapner Thikana" className="h-16 w-auto" />
+            <Link href="/" className="inline-block shrink-0">
+              <img src="/logo.png" alt="Swapner Thikana" className="h-20 w-auto" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
               Excellence in luxury real estate. We guide you to your dream address with integrity, 

@@ -48,7 +48,7 @@ const Navbar = () => {
       <div className="max-container flex justify-between items-center px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Swapner Thikana" className="h-[43px] w-auto" />
+            <img src="/logo.png" alt="Swapner Thikana" className="h-14 w-24" />
         </Link>
 
         {/* Desktop Navigation - Hidden on Dashboard */}
