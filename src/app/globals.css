@@ -102,212 +102,78 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
   
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-feature-settings: "rlig" 1, "calt" 1;
     font-family: "Inter", system-ui, -apple-system, sans-serif;
   }
   
   /* Premium Typography */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight text-foreground;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: hsl(var(--foreground));
   }
   
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    h1 { font-size: 3rem; line-height: 1; }
+  }
+  
+  @media (min-width: 1024px) {
+    h1 { font-size: 3.75rem; line-height: 1; }
   }
   
   h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  @media (min-width: 768px) {
+    h2 { font-size: 2.25rem; line-height: 2.5rem; }
+  }
+  
+  @media (min-width: 1024px) {
+    h2 { font-size: 3rem; line-height: 1; }
   }
   
   h3 {
-    @apply text-2xl md:text-3xl;
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    h3 { font-size: 1.875rem; line-height: 2.25rem; }
   }
   
   h4 {
-    @apply text-xl md:text-2xl;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  @media (min-width: 768px) {
+    h4 { font-size: 1.5rem; line-height: 2rem; }
   }
   
   p {
-    @apply text-muted-foreground leading-7;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.75rem;
   }
   
   a {
-    @apply text-accent hover:text-accent/80 transition-colors;
-  }
-}
-
-@layer utilities {
-  /* Luxury Gradients */
-  .gradient-luxury {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--card)) 0%,
-      hsl(var(--background)) 50%,
-      hsl(var(--card)) 100%
-    );
+    color: hsl(var(--accent));
+    transition: color 0.2s;
   }
   
-  .gradient-gold {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--gold)) 0%,
-      hsl(var(--gold-hover)) 100%
-    );
-  }
-  
-  .gradient-emerald {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--emerald)) 0%,
-      hsl(var(--emerald-hover)) 100%
-    );
-  }
-  
-  .gradient-hero {
-    background: linear-gradient(
-      135deg,
-      rgba(245, 158, 11, 0.1) 0%,
-      rgba(5, 150, 105, 0.05) 50%,
-      rgba(37, 99, 235, 0.1) 100%
-    );
-  }
-  
-  /* Glass Morphism - Premium Effect */
-  .glass {
-    @apply bg-background/80 dark:bg-card/80 backdrop-blur-xl border border-border/50;
-  }
-  
-  .glass-gold {
-    background: rgba(245, 158, 11, 0.1);
-    backdrop-filter: blur(16px);
-    @apply border border-primary/20;
-  }
-  
-  /* Premium Shadows */
-  .shadow-luxury {
-    box-shadow: 
-      0 1px 2px 0 rgb(0 0 0 / 0.05),
-      0 10px 25px -5px rgb(0 0 0 / 0.1),
-      0 20px 40px -10px rgb(0 0 0 / 0.1);
-  }
-  
-  .shadow-gold {
-    box-shadow: 
-      0 10px 30px -5px rgba(245, 158, 11, 0.3),
-      0 20px 50px -10px rgba(245, 158, 11, 0.2);
-  }
-  
-  .shadow-emerald {
-    box-shadow: 
-      0 10px 30px -5px rgba(5, 150, 105, 0.3),
-      0 20px 50px -10px rgba(5, 150, 105, 0.2);
-  }
-  
-  /* Custom Scrollbar */
-  .scrollbar-luxury::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  
-  .scrollbar-luxury::-webkit-scrollbar-track {
-    @apply bg-muted rounded-lg;
-  }
-  
-  .scrollbar-luxury::-webkit-scrollbar-thumb {
-    @apply bg-primary/30 rounded-lg;
-  }
-  
-  .scrollbar-luxury::-webkit-scrollbar-thumb:hover {
-    @apply bg-primary/50;
-  }
-  
-  /* Text Gradients */
-  .text-gradient-gold {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-  }
-  
-  .text-gradient-luxury {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, #F59E0B 0%, #059669 50%, #2563EB 100%);
-  }
-  
-  /* Hover Effects */
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-luxury;
-  }
-  
-  .hover-glow-gold {
-    @apply transition-all duration-300 hover:shadow-gold;
-  }
-  
-  .hover-scale {
-    @apply transition-transform duration-300 hover:scale-105;
-  }
-  
-  /* Badge Styles */
-  .badge-available {
-    @apply bg-success/10 text-success border border-success/20;
-  }
-  
-  .badge-sold {
-    @apply bg-destructive/10 text-destructive border border-destructive/20;
-  }
-  
-  .badge-featured {
-    @apply bg-primary/10 text-primary border border-primary/20;
-  }
-  
-  .badge-upcoming {
-    @apply bg-accent/10 text-accent border border-accent/20;
-  }
-}
-
-@layer components {
-  /* Premium Buttons */
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 
-           font-medium transition-all duration-300 focus:outline-none focus:ring-2 
-           focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-  
-  .btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 
-           focus:ring-primary shadow-gold hover:shadow-gold;
-  }
-  
-  .btn-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90 
-           focus:ring-secondary shadow-emerald hover:scale-105;
-  }
-  
-  .btn-accent {
-    @apply bg-accent text-accent-foreground hover:bg-accent/90 
-           focus:ring-accent hover:scale-105;
-  }
-  
-  .btn-outline {
-    @apply border-2 border-primary text-primary bg-transparent 
-           hover:bg-primary hover:text-primary-foreground;
-  }
-  
-  .btn-ghost {
-    @apply bg-transparent hover:bg-muted text-foreground;
-  }
-  
-  /* Premium Cards */
-  .card-luxury {
-    @apply bg-card border border-border rounded-2xl p-6 
-           hover-lift shadow-sm hover:shadow-luxury;
-  }
-  
-  .card-property {
-    @apply bg-card border border-border rounded-2xl overflow-hidden
-           hover-lift shadow-sm hover:shadow-luxury group;
+  a:hover {
+    color: hsl(var(--accent) / 0.8);
   }
 }
