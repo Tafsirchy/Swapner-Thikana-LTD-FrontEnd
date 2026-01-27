@@ -85,41 +85,43 @@ const DashboardLayout = ({ children }) => {
             </button>
           </div>
 
-          <div className="px-4 py-6">
-            <div className="flex items-center gap-3 px-4 py-4 mb-8 bg-white/5 rounded-2xl border border-white/5">
-              <div className="w-10 h-10 rounded-full bg-brand-gold flex items-center justify-center text-royal-deep font-bold text-lg">
-                {user?.name?.[0] || 'U'}
+          <div className="flex flex-col h-full">
+            <div className="px-4 py-6 flex-1 overflow-y-auto min-h-0">
+              <div className="flex items-center gap-3 px-4 py-4 mb-8 bg-white/5 rounded-2xl border border-white/5">
+                <div className="w-10 h-10 rounded-full bg-brand-gold flex items-center justify-center text-royal-deep font-bold text-lg">
+                  {user?.name?.[0] || 'U'}
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <h4 className="text-sm font-bold truncate">{user?.name}</h4>
+                  <span className="text-xs text-brand-gold uppercase tracking-wider font-bold">{user?.role}</span>
+                </div>
               </div>
-              <div className="flex-1 overflow-hidden">
-                <h4 className="text-sm font-bold truncate">{user?.name}</h4>
-                <span className="text-xs text-brand-gold uppercase tracking-wider font-bold">{user?.role}</span>
-              </div>
+
+              <nav className="space-y-1 mb-4">
+                {links.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setSidebarOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium text-sm group ${
+                        isActive 
+                          ? 'bg-brand-gold text-royal-deep font-bold shadow-lg shadow-brand-gold/20' 
+                          : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
+                      }`}
+                    >
+                      <link.icon size={18} className={isActive ? 'text-royal-deep' : 'text-zinc-500 group-hover:text-zinc-300'} />
+                      {link.name}
+                    </Link>
+                  );
+                })}
+              </nav>
             </div>
 
-            <nav className="space-y-1">
-              {links.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium text-sm group ${
-                      isActive 
-                        ? 'bg-brand-gold text-royal-deep font-bold shadow-lg shadow-brand-gold/20' 
-                        : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
-                    }`}
-                  >
-                    <link.icon size={18} className={isActive ? 'text-royal-deep' : 'text-zinc-500 group-hover:text-zinc-300'} />
-                    {link.name}
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
-
-          <div className="absolute bottom-0 left-0 w-full p-6 text-center text-xs text-zinc-600">
-            &copy; 2024 shwapner Thikana Ltd.
+            <div className="p-6 text-center text-xs text-zinc-600">
+              &copy; 2024 shwapner Thikana Ltd.
+            </div>
           </div>
         </aside>
 

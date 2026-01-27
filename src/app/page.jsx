@@ -20,13 +20,13 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-royal-deep/80 via-royal-deep/40 to-royal-deep/90"></div>
         </div>
 
-        <div className="max-container px-4 relative z-10 text-center text-zinc-100">
+        <div className="max-container px-4 pt-44 relative z-10 text-center text-zinc-100">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="inline-block px-4 py-1.5 rounded-full bg-brand-gold/20 border border-brand-gold/30 text-brand-gold text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-sm">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-brand-gold/20 border border-brand-gold/30 text-brand-gold text-xs font-semibold md:font-bold tracking-[0.2em] uppercase mb-5 backdrop-blur-sm">
               Premium Real Estate in Bangladesh
             </span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
