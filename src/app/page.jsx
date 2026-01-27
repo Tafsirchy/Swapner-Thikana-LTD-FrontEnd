@@ -20,7 +20,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-royal-deep/80 via-royal-deep/40 to-royal-deep/90"></div>
         </div>
 
-        <div className="max-container px-4 pt-44 relative z-10 text-center text-zinc-100">
+        <div className="max-container px-4 pt-20 relative z-10 text-center text-zinc-100">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

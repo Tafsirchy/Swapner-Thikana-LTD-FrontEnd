@@ -63,6 +63,21 @@ const StructuredData = ({ type, data }) => {
       },
       ...data.extra
     };
+  } else if (type === 'RealEstateAgent') {
+    schema = {
+      '@context': 'https://schema.org',
+      '@type': 'RealEstateAgent',
+      name: data.name,
+      description: data.bio || `Real Estate Agent at Shwapner Thikana`,
+      image: data.image || data.avatar,
+      url: `https://shwapner-thikana.com/agents/${data._id}`,
+      telephone: data.phone,
+      email: data.email,
+      parentOrganization: {
+        '@type': 'Organization',
+        name: 'Shwapner Thikana Ltd'
+      }
+    };
   } else if (type === 'BreadcrumbList') {
     schema = {
       '@context': 'https://schema.org',

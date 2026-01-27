@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast';
 import { exportComparisonPDF, exportPropertiesCSV } from '@/utils/exportUtils';
 import SocialShare from '@/components/shared/SocialShare';
 
-export default function ComparePage() {
+function CompareContent() {
   const searchParams = useSearchParams();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -221,5 +221,17 @@ export default function ComparePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ComparePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-royal-deep flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-brand-gold"></div>
+      </div>
+    }>
+      <CompareContent />
+    </Suspense>
   );
 }
