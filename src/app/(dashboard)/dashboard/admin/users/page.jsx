@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Users, Search, Shield, UserCheck, UserX, MoreVertical, Filter } from 'lucide-react';
+import { Users, Search, MoreVertical, Filter, Download } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import { exportUsersCSV } from '@/utils/exportUtils';
 
 const roleColors = {
   admin: 'bg-purple-500/10 text-purple-500',
@@ -45,7 +46,7 @@ const AdminUsersPage = () => {
       await api.admin.updateUserRole(userId, newRole);
       setUsers(users.map(u => u._id === userId ? { ...u, role: newRole } : u));
       toast.success('User role updated successfully');
-    } catch (error) {
+    } catch (e) {
       toast.error('Failed to update user role');
     }
   };
@@ -56,7 +57,7 @@ const AdminUsersPage = () => {
       await api.admin.updateUserStatus(userId, isActive);
       setUsers(users.map(u => u._id === userId ? { ...u, status: newStatus } : u));
       toast.success('User status updated successfully');
-    } catch (error) {
+    } catch (e) {
       toast.error('Failed to update user status');
     }
   };
@@ -89,6 +90,16 @@ const AdminUsersPage = () => {
           <p className="text-zinc-400 mt-1">
             Manage user roles and permissions
           </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => exportUsersCSV(users)}
+            disabled={users.length === 0}
+            className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-bold hover:bg-white/10 transition-all disabled:opacity-50"
+          >
+            <Download size={18} className="text-brand-gold" />
+            Export CSV
+          </button>
         </div>
       </div>
 

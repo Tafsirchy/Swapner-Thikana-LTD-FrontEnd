@@ -9,37 +9,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 
-// Global comparison state (simple client-side storage)
-let compareList = [];
-let compareListeners = [];
+import { addToCompare, removeFromCompare, subscribeToCompare } from '@/utils/compareStore';
 
-const addToCompare = (property) => {
-  if (compareList.length >= 4) {
-    toast.error('You can compare up to 4 properties');
-    return false;
-  }
-  if (!compareList.find(p => p._id === property._id)) {
-    compareList = [...compareList, property];
-    compareListeners.forEach(fn => fn(compareList));
-    toast.success('Added to comparison');
-    return true;
-  }
-  return false;
-};
-
-const removeFromCompare = (propertyId) => {
-  compareList = compareList.filter(p => p._id !== propertyId);
-  compareListeners.forEach(fn => fn(compareList));
-  toast.success('Removed from comparison');
-};
-
-const subscribeToCompare = (listener) => {
-  compareListeners.push(listener);
-  listener(compareList);
-  return () => {
-    compareListeners = compareListeners.filter(fn => fn !== listener);
-  };
-};
 
 const PropertyCard = ({ property }) => {
   const { user } = useAuth();
@@ -174,6 +145,7 @@ const PropertyCard = ({ property }) => {
         >
           <Heart size={18} fill={isSaved ? 'currentColor' : 'none'} />
         </button>
+        </div>
 
         <div className="absolute bottom-4 left-4">
           <span className="text-brand-gold font-bold text-xl">

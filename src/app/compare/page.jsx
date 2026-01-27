@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { X, ArrowLeft, CheckCircle2, XCircle, Minus, Download } from 'lucide-react';
+import { X, ArrowLeft, CheckCircle2, XCircle, Download, FileSpreadsheet } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
-import { exportComparisonPDF } from '@/utils/exportUtils';
+import { exportComparisonPDF, exportPropertiesCSV } from '@/utils/exportUtils';
+import SocialShare from '@/components/shared/SocialShare';
 
 export default function ComparePage() {
   const searchParams = useSearchParams();
@@ -104,13 +104,26 @@ export default function ComparePage() {
               <p className="text-zinc-400">Compare up to 4 properties side-by-side</p>
             </div>
             {properties.length >= 2 && (
-              <button
-                onClick={() => exportComparisonPDF(properties)}
-                className="flex items-center gap-2 px-4 py-2.5 bg-brand-gold/10 border border-brand-gold/30 text-brand-gold rounded-xl font-medium hover:bg-brand-gold/20 transition-all"
-              >
-                <Download size={18} />
-                Export PDF
-              </button>
+              <div className="flex items-center gap-3">
+                <SocialShare 
+                  url={typeof window !== 'undefined' ? window.location.href : ''} 
+                  title={`Compare: ${properties.map(p => p.title).join(' vs ')}`}
+                />
+                <button
+                  onClick={() => exportPropertiesCSV(properties)}
+                  className="flex items-center gap-2 px-4 py-2.5 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-medium hover:bg-white/10 transition-all"
+                >
+                  <FileSpreadsheet size={18} className="text-brand-gold" />
+                  Export CSV
+                </button>
+                <button
+                  onClick={() => exportComparisonPDF(properties)}
+                  className="flex items-center gap-2 px-4 py-2.5 bg-brand-gold/10 border border-brand-gold/30 text-brand-gold rounded-xl font-medium hover:bg-brand-gold/20 transition-all"
+                >
+                  <Download size={18} />
+                  Export PDF
+                </button>
+              </div>
             )}
           </div>
         </div>

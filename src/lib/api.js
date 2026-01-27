@@ -85,6 +85,7 @@ export const api = {
     getAll: () => apiInstance.get('/leads'),
     getMyInquiries: () => apiInstance.get('/leads/my-inquiries'),
     updateStatus: (id, status) => apiInstance.patch(`/leads/${id}/status`, { status }),
+    addNote: (id, text) => apiInstance.post(`/leads/${id}/notes`, { text }),
   },
   blogs: {
     getAll: (params) => apiInstance.get('/blogs', { params }),
@@ -118,6 +119,14 @@ export const api = {
     markAsRead: (id) => apiInstance.put(`/notifications/${id}/read`),
     markAllAsRead: () => apiInstance.put('/notifications/read-all'),
     delete: (id) => apiInstance.delete(`/notifications/${id}`),
+  },
+  reviews: {
+    create: (data) => apiInstance.post('/reviews', data),
+    getPropertyReviews: (propertyId) => apiInstance.get(`/reviews/property/${propertyId}`),
+    getAgentReviews: (agentId) => apiInstance.get(`/reviews/agent/${agentId}`),
+    getAllAdmin: (params) => apiInstance.get('/reviews/admin/all', { params }),
+    updateStatus: (id, status) => apiInstance.put(`/reviews/${id}/status`, { status }),
+    delete: (id) => apiInstance.delete(`/reviews/${id}`),
   }
 };
 

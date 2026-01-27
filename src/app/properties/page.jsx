@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2 } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
@@ -44,7 +44,9 @@ const PropertiesPage = () => {
     amenities: [],
     sort: 'featured',
     page: 1,
-    limit: 12
+    limit: 12,
+    bounds: '',
+    polygon: ''
   });
 
   const fetchProperties = useCallback(async () => {
@@ -62,7 +64,7 @@ const PropertiesPage = () => {
 
   useEffect(() => {
     fetchProperties();
-  }, [filters.page, filters.listingType, filters.propertyType, filters.city, fetchProperties]);
+  }, [filters.page, filters.listingType, filters.propertyType, filters.city, filters.bounds, filters.polygon, fetchProperties]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -417,7 +419,11 @@ const PropertiesPage = () => {
               <div className="mb-4 text-zinc-300 text-sm">
                 Showing {properties.length} {properties.length === 1 ? 'property' : 'properties'} on map
               </div>
-              <PropertiesMapView properties={properties} />
+              <PropertiesMapView 
+                properties={properties} 
+                onMapChange={(bounds) => setFilters(prev => ({ ...prev, bounds, polygon: '', page: 1 }))}
+                onPolygonChange={(polygon) => setFilters(prev => ({ ...prev, polygon, bounds: '', page: 1 }))}
+              />
             </div>
           ) : (
             <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>

@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import CompareBar from "@/components/shared/CompareBar";
 import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
             {children}
           </main>
           <Footer />
+          <CompareBar />
           <Toaster 
             position="top-right"
             toastOptions={{

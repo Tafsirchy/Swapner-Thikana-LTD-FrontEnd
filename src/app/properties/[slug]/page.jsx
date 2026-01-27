@@ -13,6 +13,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import MortgageCalculator from '@/components/tools/MortgageCalculator';
+import NearbyPlaces from '@/components/shared/NearbyPlaces';
+import ReviewSection from '@/components/property/ReviewSection';
 
 // Dynamic import for map (client-side only)
 const PropertyMap = dynamic(() => import('@/components/map/PropertyMap'), {
@@ -220,6 +222,11 @@ const PropertyDetailPage = () => {
               </div>
             </div>
 
+            {/* Reviews Section */}
+            <div className="p-10 bg-white/5 rounded-[3rem] border border-white/10">
+              <ReviewSection propertyId={property._id} />
+            </div>
+
             {/* Location & Map */}
             <div className="p-10 bg-white/5 rounded-[3rem] border border-white/10">
               <h2 className="text-2xl font-bold text-zinc-100 mb-6 pb-4 border-b border-white/10 flex items-center gap-3">
@@ -234,6 +241,10 @@ const PropertyDetailPage = () => {
                   <span className="font-semibold text-zinc-200">Area:</span> {property.location.area}, {property.location.city}
                 </p>
               </div>
+              <div className="mb-10">
+                <NearbyPlaces lat={property.coordinates?.lat} lng={property.coordinates?.lng} />
+              </div>
+
               <PropertyMap property={property} height="450px" />
             </div>
           </div>

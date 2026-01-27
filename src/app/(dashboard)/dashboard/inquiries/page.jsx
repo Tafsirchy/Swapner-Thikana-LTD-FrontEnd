@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MessageSquare, Building2, Clock, Filter, Search } from 'lucide-react';
+import { MessageSquare, Building2, Clock, Filter, Search, Download } from 'lucide-react';
 import { api } from '@/lib/api';
+import { exportLeadsCSV } from '@/utils/exportUtils';
 
 const statusColors = {
   new: 'bg-blue-500/10 text-blue-500',
@@ -59,7 +60,17 @@ const InquiriesPage = () => {
           <p className="text-zinc-400 mt-1">
             <span className="text-zinc-100 font-bold">{filteredInquiries.length}</span> {statusFilter !== 'all' ? statusFilter : 'total'} inquiries
           </p>
+          <div className="flex items-center gap-3">
+          <button
+            onClick={() => exportLeadsCSV(inquiries)}
+            disabled={inquiries.length === 0}
+            className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-bold hover:bg-white/10 transition-all disabled:opacity-50 text-sm"
+          >
+            <Download size={16} className="text-brand-gold" />
+            Export CSV
+          </button>
         </div>
+      </div>
         
         {/* Filter Dropdown */}
         <div className="flex items-center gap-2">

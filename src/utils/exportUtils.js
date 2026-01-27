@@ -249,3 +249,71 @@ export const exportPropertiesCSV = (properties) => {
   link.click();
   document.body.removeChild(link);
 };
+
+/**
+ * Export leads as CSV
+ * @param {Array} leads - Array of leads
+ */
+export const exportLeadsCSV = (leads) => {
+  const headers = ['Name', 'Email', 'Phone', 'Message', 'Status', 'Property', 'Date'];
+  
+  const rows = leads.map(l => [
+    l.name,
+    l.email,
+    l.phone,
+    l.message?.replace(/\n/g, ' '),
+    l.status,
+    l.property?.title || 'General Inquiry',
+    new Date(l.createdAt).toLocaleDateString()
+  ]);
+  
+  const csvContent = [
+    headers.join(','),
+    ...rows.map(row => row.map(cell => `"${cell || ''}"`).join(','))
+  ].join('\n');
+  
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', `leads-${new Date().getTime()}.csv`);
+  link.style.visibility = 'hidden';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+/**
+ * Export users as CSV
+ * @param {Array} users - Array of users
+ */
+export const exportUsersCSV = (users) => {
+  const headers = ['Name', 'Email', 'Role', 'Status', 'Joined Date'];
+  
+  const rows = users.map(u => [
+    u.name,
+    u.email,
+    u.role,
+    u.isActive ? 'Active' : 'Inactive',
+    new Date(u.createdAt).toLocaleDateString()
+  ]);
+  
+  const csvContent = [
+    headers.join(','),
+    ...rows.map(row => row.map(cell => `"${cell || ''}"`).join(','))
+  ].join('\n');
+  
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', `users-${new Date().getTime()}.csv`);
+  link.style.visibility = 'hidden';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};

@@ -5,15 +5,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  LayoutDashboard, Heart, Search, MessageSquare, Settings, 
-  LogOut, Menu, X, Building2, PlusCircle, Users, FileText, 
-  BarChart3, UserCircle, Bell
+  LayoutDashboard, Heart, Search, Settings, 
+  Menu, X, Building2, PlusCircle, Users, FileText, 
+  BarChart3, Bell
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import Image from 'next/image';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 
 const DashboardLayout = ({ children }) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
 
@@ -44,6 +45,8 @@ const DashboardLayout = ({ children }) => {
           { name: 'Users', href: '/dashboard/admin/users', icon: Users },
           { name: 'Properties', href: '/dashboard/admin/properties', icon: Building2 },
           { name: 'Projects', href: '/dashboard/admin/projects', icon: Building2 },
+          { name: 'Leads Pipeline', href: '/dashboard/leads', icon: BarChart3 },
+          { name: 'Reviews', href: '/dashboard/admin/reviews', icon: MessageSquare },
           { name: 'Blogs', href: '/dashboard/admin/blogs', icon: FileText },
           { name: 'Settings', href: '/dashboard/settings', icon: Settings },
         ];
@@ -80,7 +83,7 @@ const DashboardLayout = ({ children }) => {
         `}>
           <div className="lg:hidden p-8 flex items-center justify-between">
              {/* Mobile Logo only */}
-             <img src="/logo.png" alt="shwapner Thikana" className="h-10 w-auto" />
+             <Image src="/logo.png" alt="shwapner Thikana" width={160} height={40} className="h-10 w-auto" />
             <button onClick={toggleSidebar} className="text-zinc-400">
               <X size={24} />
             </button>
