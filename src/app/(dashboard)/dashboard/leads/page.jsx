@@ -9,7 +9,6 @@ import {
   XCircle, 
   MoreVertical, 
   Search, 
-  Filter, 
   Plus,
   Send,
   User,
@@ -17,11 +16,12 @@ import {
   Mail,
   Building2,
   Calendar,
-  ChevronRight
+  Bell
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import ReminderForm from '@/components/dashboard/ReminderForm';
 
 const STATUS_COLUMNS = [
   { id: 'new', title: 'New Leads', icon: <MessageSquare size={18} />, color: 'text-blue-500', bg: 'bg-blue-500/10' },
@@ -36,6 +36,7 @@ const LeadsPage = () => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [newNote, setNewNote] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showReminderForm, setShowReminderForm] = useState(false);
 
   useEffect(() => {
     fetchLeads();
@@ -62,7 +63,7 @@ const LeadsPage = () => {
         setSelectedLead({ ...selectedLead, status: newStatus });
       }
       toast.success(`Moved to ${newStatus}`);
-    } catch (error) {
+    } catch {
       toast.error('Failed to update status');
     }
   };
@@ -84,7 +85,7 @@ const LeadsPage = () => {
       setSelectedLead({ ...selectedLead, notes: [...(selectedLead.notes || []), note] });
       setNewNote('');
       toast.success('Note added');
-    } catch (error) {
+    } catch {
       toast.error('Failed to add note');
     }
   };
@@ -256,8 +257,24 @@ const LeadsPage = () => {
                       </div>
                     </div>
 
-                    <div className="pt-4">
-                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Quick Move</p>
+                    <div className="pt-4 space-y-4">
+                        {!showReminderForm ? (
+                          <button 
+                            onClick={() => setShowReminderForm(true)}
+                            className="w-full py-4 bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs font-bold uppercase tracking-widest rounded-2xl hover:bg-brand-gold/20 transition-all flex items-center justify-center gap-2"
+                          >
+                            <Bell size={14} /> Set Follow-up Reminder
+                          </button>
+                        ) : (
+                          <ReminderForm 
+                            leadId={selectedLead._id}
+                            leadName={selectedLead.name}
+                            onClose={() => setShowReminderForm(false)}
+                            onSuccess={() => setShowReminderForm(false)}
+                          />
+                        )}
+
+                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Quick Move Status</p>
                       <div className="grid grid-cols-2 gap-2">
                         {STATUS_COLUMNS.map(col => (
                           <button

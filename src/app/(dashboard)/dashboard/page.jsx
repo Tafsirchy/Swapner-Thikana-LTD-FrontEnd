@@ -2,12 +2,14 @@
 
 import React from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import { 
   Building2, Users, Heart, Search, MessageSquare, 
-  TrendingUp, PlusCircle, ArrowRight, LayoutDashboard,
-  CheckCircle, XCircle, Clock
+  TrendingUp, PlusCircle, ArrowRight,
+  CheckCircle, XCircle, Clock, Bell, Send, Mail
 } from 'lucide-react';
+import RecentlyViewed from '@/components/dashboard/RecentlyViewed';
+import UpcomingReminders from '@/components/dashboard/UpcomingReminders';
 
 const StatCard = ({ title, value, icon: Icon, color, trend }) => (
   <div className="bg-white/5 border border-white/5 p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-all">
@@ -68,15 +70,16 @@ const CustomerDashboard = () => (
               ))}
            </div>
         </div>
-        
         <div className="bg-brand-gold/10 border border-brand-gold/20 rounded-3xl p-8 flex flex-col justify-center text-center">
            <h2 className="text-2xl font-bold text-brand-gold mb-2">Find Your Dream Home</h2>
            <p className="text-zinc-400 mb-6 max-w-sm mx-auto">Explore our latest premium listings tailored to your preferences.</p>
-           <a href="/properties" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
+           <Link href="/properties" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
               Browse Properties
-           </a>
+           </Link>
         </div>
      </div>
+
+     <RecentlyViewed />
   </div>
 );
 
@@ -96,35 +99,39 @@ const AgentDashboard = () => (
         </a>
      </div>
 
-     {/* Ongoing Leads */}
-     <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
-        <div className="flex items-center justify-between mb-6">
-           <h2 className="text-xl font-bold text-zinc-100">Recent Leads</h2>
-           <ViewAllLink href="/dashboard/leads" />
-        </div>
-        <div className="overflow-x-auto">
-           <table className="w-full text-left text-sm text-zinc-400">
-              <thead>
-                 <tr className="border-b border-white/10">
-                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Client</th>
-                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Property</th>
-                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Date</th>
-                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Status</th>
-                 </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5">
-                 {[1, 2, 3, 4].map((i) => (
-                    <tr key={i} className="group hover:bg-white/5">
-                       <td className="py-4 font-bold text-zinc-200">Wasi Al-Shatib</td>
-                       <td className="py-4">Lake City Concord - Apt 4B</td>
-                       <td className="py-4">Oct 24, 2025</td>
-                       <td className="py-4"><span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold">New</span></td>
-                    </tr>
-                 ))}
-              </tbody>
-           </table>
-        </div>
-     </div>
+      {/* Ongoing Leads & Reminders */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+         <div className="lg:col-span-3 bg-white/5 border border-white/5 rounded-3xl p-8">
+            <div className="flex items-center justify-between mb-6">
+               <h2 className="text-xl font-bold text-zinc-100">Recent Leads</h2>
+               <ViewAllLink href="/dashboard/leads" />
+            </div>
+            <div className="overflow-x-auto">
+               <table className="w-full text-left text-sm text-zinc-400">
+                  <thead>
+                     <tr className="border-b border-white/10">
+                        <th className="pb-4 font-bold uppercase tracking-wider text-xs">Client</th>
+                        <th className="pb-4 font-bold uppercase tracking-wider text-xs">Property</th>
+                        <th className="pb-4 font-bold uppercase tracking-wider text-xs">Status</th>
+                     </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                     {[1, 2, 3, 4, 5].map((i) => (
+                        <tr key={i} className="group hover:bg-white/5">
+                           <td className="py-4 font-bold text-zinc-200">Wasi Al-Shatib</td>
+                           <td className="py-4">Lake City Concord - Apt 4B</td>
+                           <td className="py-4"><span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase">New</span></td>
+                        </tr>
+                     ))}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <div className="lg:col-span-2">
+            <UpcomingReminders />
+         </div>
+      </div>
   </div>
 );
 
@@ -174,14 +181,48 @@ const AdminDashboard = () => (
                  { label: 'Storage Usage', status: '45%', color: 'text-blue-500' },
                  { label: 'Error Rate', status: '0.01%', color: 'text-emerald-500' },
               ].map((item, i) => (
-                 <div key={i} className="flex items-center justify-between border-b border-white/5 pb-4 last:border-0 last:pb-0">
-                    <span className="text-zinc-400 text-sm font-medium">{item.label}</span>
-                    <span className={`font-bold text-sm ${item.color}`}>{item.status}</span>
-                 </div>
-              ))}
-           </div>
-        </div>
-     </div>
+                  <div key={i} className="flex items-center justify-between border-b border-white/5 pb-4 last:border-0 last:pb-0">
+                     <span className="text-zinc-400 text-sm font-medium">{item.label}</span>
+                     <span className={`font-bold text-sm ${item.color}`}>{item.status}</span>
+                  </div>
+               ))}
+            </div>
+         </div>
+
+         {/* Connectivity Test */}
+         <div className="bg-brand-gold/5 border border-brand-gold/20 rounded-3xl p-8 lg:col-span-2">
+            <div className="flex items-center justify-between">
+               <div>
+                  <h2 className="text-xl font-bold text-zinc-100 mb-2 flex items-center gap-2">
+                    <Bell size={20} className="text-brand-gold" />
+                    System Tools
+                  </h2>
+                  <p className="text-zinc-500 text-sm">Manage notifications and email templates.</p>
+               </div>
+               <div className="flex gap-3">
+                  <Link 
+                    href="/dashboard/admin/email-preview"
+                    className="px-6 py-3 bg-white/5 text-zinc-300 font-bold rounded-xl hover:bg-white/10 transition-all flex items-center gap-2"
+                  >
+                    <Mail size={18} /> Email Templates
+                  </Link>
+                  <button 
+                      onClick={async () => {
+                        try {
+                          await api.notifications.sendTest();
+                          toast.success('Test notification sent!');
+                        } catch {
+                          toast.error('Failed to send test notification');
+                        }
+                      }}
+                      className="px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all flex items-center gap-2"
+                    >
+                      <Send size={18} /> Send Test Alert
+                  </button>
+               </div>
+            </div>
+         </div>
+      </div>
   </div>
 );
 

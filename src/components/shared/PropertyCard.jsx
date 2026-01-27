@@ -6,17 +6,18 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { MapPin, Bed, Bath, Move, Heart, Plus, Check } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import WishlistModal from './WishlistModal';
+import { AnimatePresence } from 'framer-motion';
 
 import { addToCompare, removeFromCompare, subscribeToCompare } from '@/utils/compareStore';
 
 
 const PropertyCard = ({ property }) => {
   const { user } = useAuth();
-  const [isSaved, setIsSaved] = useState(false);
-  const [saving, setSaving] = useState(false);
+
   const [isInCompare, setIsInCompare] = useState(false);
+  const [showWishlistModal, setShowWishlistModal] = useState(false);
 
   const {
     _id,
@@ -33,12 +34,9 @@ const PropertyCard = ({ property }) => {
     featured
   } = property;
 
-  // Check if property is saved
-  useEffect(() => {
-    if (user && user.savedProperties) {
-      setIsSaved(user.savedProperties.some(id => id === _id));
-    }
-  }, [user, _id]);
+  const isSaved = React.useMemo(() => {
+    return user?.savedProperties?.some(id => id === _id) || false;
+  }, [user?.savedProperties, _id]);
 
   // Subscribe to comparison changes
   useEffect(() => {
@@ -57,29 +55,7 @@ const PropertyCard = ({ property }) => {
       return;
     }
 
-    if (saving) return;
-
-    try {
-      setSaving(true);
-      
-      // Optimistic UI update
-      setIsSaved(!isSaved);
-
-      if (isSaved) {
-        await api.users.removeFromWishlist(_id);
-        toast.success('Removed from wishlist');
-      } else {
-        await api.users.addToWishlist(_id);
-        toast.success('Added to wishlist');
-      }
-    } catch (error) {
-      // Revert on error
-      setIsSaved(isSaved);
-      console.error('Error toggling wishlist:', error);
-      toast.error(error.response?.data?.message || 'Failed to update wishlist');
-    } finally {
-      setSaving(false);
-    }
+    setShowWishlistModal(true);
   };
 
   return (
@@ -130,18 +106,19 @@ const PropertyCard = ({ property }) => {
                 : 'bg-white/10 border-white/20 text-white hover:bg-brand-emerald hover:text-white'
             }`}
             title={isInCompare ? "Remove from comparison" : "Add to comparison"}
+            aria-label={isInCompare ? "Remove from comparison" : "Add to comparison"}
           >
             {isInCompare ? <Check size={18} /> : <Plus size={18} />}
           </button>
 
           <button 
           onClick={handleToggleWishlist}
-          disabled={saving}
-          className={`p-2.5 rounded-full backdrop-blur-md border transition-all active:scale-95 shadow-lg disabled:opacity-50 ${
+          className={`p-2.5 rounded-full backdrop-blur-md border transition-all active:scale-95 shadow-lg ${
             isSaved 
               ? 'bg-brand-gold border-brand-gold text-royal-deep' 
               : 'bg-white/10 border-white/20 text-white hover:bg-brand-gold hover:text-royal-deep'
           }`}
+          aria-label={isSaved ? "Remove from Wishlist" : "Add to Wishlist"}
         >
           <Heart size={18} fill={isSaved ? 'currentColor' : 'none'} />
         </button>
@@ -196,6 +173,19 @@ const PropertyCard = ({ property }) => {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {showWishlistModal && (
+          <WishlistModal 
+            propertyId={_id}
+            propertyTitle={title}
+            onClose={() => setShowWishlistModal(false)}
+            onUpdate={() => {
+              // Optionally update isSaved state if needed
+            }}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

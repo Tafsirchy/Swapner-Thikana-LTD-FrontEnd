@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Mail, ArrowLeft, Send } from 'lucide-react';
 import { api } from '@/lib/api';
@@ -43,7 +44,7 @@ const ForgotPasswordPage = () => {
           <div className="text-center mb-10">
             <div className="flex justify-center mb-10">
               <Link href="/" className="inline-block">
-                <img src="/logo.png" alt="shwapner Thikana" className="h-[60px] w-auto" />
+                <Image src="/logo.png" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
               </Link>
             </div>
             <h2 className="text-2xl font-bold text-zinc-100">Reset Password</h2>

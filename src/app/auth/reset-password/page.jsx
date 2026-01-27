@@ -7,6 +7,7 @@ import { Lock, Eye, EyeOff, CheckCircle2, Loader2, ArrowRight } from 'lucide-rea
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const ResetPasswordContent = () => {
   const searchParams = useSearchParams();
@@ -57,7 +58,7 @@ const ResetPasswordContent = () => {
       <div className="text-center mb-10">
         <div className="flex justify-center mb-8">
           <Link href="/" className="inline-block">
-            <img src="/logo.png" alt="shwapner Thikana" className="h-[60px] w-auto" />
+            <Image src="/logo.png" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
           </Link>
         </div>
         <h2 className="text-2xl font-bold text-zinc-100">Set New Password</h2>

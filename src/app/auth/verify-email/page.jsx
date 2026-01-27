@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle2, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import { api } from '@/lib/api';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const VerifyEmailContent = () => {
   const searchParams = useSearchParams();
@@ -49,7 +50,7 @@ const VerifyEmailContent = () => {
         <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-10 text-center shadow-2xl">
           <div className="flex justify-center mb-10">
             <Link href="/" className="inline-block">
-              <img src="/logo.png" alt="shwapner Thikana" className="h-[60px] w-auto" />
+              <Image src="/logo.png" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
             </Link>
           </div>
 

@@ -7,6 +7,7 @@ import {
   Building2, MapPin, DollarSign, Image as ImageIcon, 
   CheckCircle, ArrowRight, ArrowLeft, Upload, X, PlusCircle 
 } from 'lucide-react';
+import Image from 'next/image';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 
@@ -383,7 +384,7 @@ const AddPropertyPage = () => {
                   <div className="grid grid-cols-3 gap-4">
                      {images.map((img, i) => (
                         <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group">
-                           <img src={img.preview} alt="" className="w-full h-full object-cover" />
+                           <Image src={img.preview} alt="" fill className="object-cover" />
                            <button 
                               onClick={() => removeImage(i)}
                               className="absolute top-2 right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin, Send } from 'lucide-react';
 
 const Footer = () => {
@@ -18,23 +19,23 @@ const Footer = () => {
           {/* Company Info */}
           <div className="flex flex-col gap-6">
             <Link href="/" className="inline-block shrink-0">
-              <img src="/logo.png" alt="shwapner Thikana" className="h-20 w-auto" />
+              <Image src="/logo.png" alt="shwapner Thikana" width={120} height={80} className="h-20 w-auto object-contain" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
               Excellence in luxury real estate. We guide you to your dream address with integrity, 
               sophistication, and world-class service.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300">
+              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Facebook">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300">
+              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Instagram">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300">
+              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Twitter">
                 <Twitter size={18} />
               </a>
-              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300">
+              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="LinkedIn">
                 <Linkedin size={18} />
               </a>
             </div>

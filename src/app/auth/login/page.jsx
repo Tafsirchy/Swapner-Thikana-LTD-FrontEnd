@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Github } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -49,7 +50,7 @@ const LoginPage = () => {
           <div className="text-center mb-10">
             <div className="flex justify-center mb-8">
               <Link href="/" className="inline-block">
-                <img src="/logo.png" alt="shwapner Thikana" className="h-[60px] w-auto" />
+                <Image src="/logo.png" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
               </Link>
             </div>
             <p className="text-zinc-400 text-sm mt-2">Enter your credentials to access your dream address.</p>

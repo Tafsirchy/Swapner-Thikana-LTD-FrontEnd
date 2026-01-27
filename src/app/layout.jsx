@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CompareBar from "@/components/shared/CompareBar";
+import PushNotificationManager from "@/components/shared/PushNotificationManager";
 import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
@@ -22,12 +23,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased text-zinc-100 bg-royal-deep`}>
         <AuthProvider>
-          <Navbar />
-          <main className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
-          <CompareBar />
+          <PushNotificationManager>
+            <Navbar />
+            <main className="min-h-screen">
+              {children}
+            </main>
+            <Footer />
+            <CompareBar />
+          </PushNotificationManager>
           <Toaster 
             position="top-right"
             toastOptions={{

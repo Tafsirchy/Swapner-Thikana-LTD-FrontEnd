@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Building2, PlusCircle, Edit, Trash2, Eye, MoreVertical, Filter } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 
@@ -117,7 +118,7 @@ const AgentPropertiesPage = () => {
                       <div className="flex items-center gap-4">
                         <div className="w-16 h-16 rounded-xl bg-zinc-800 overflow-hidden relative">
                            {property.images?.[0] && (
-                              <img src={property.images[0]} alt="" className="w-full h-full object-cover" />
+                              <Image src={property.images[0]} alt="" width={64} height={64} className="w-full h-full object-cover" />
                            )}
                         </div>
                         <div>

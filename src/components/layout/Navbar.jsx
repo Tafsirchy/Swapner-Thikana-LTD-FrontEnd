@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X, Search, Heart, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -49,7 +50,7 @@ const Navbar = () => {
       <div className="max-container flex justify-between items-center px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="shwapner Thikana" className="h-14 w-24" />
+            <Image src="/logo.png" alt="shwapner Thikana" width={96} height={56} className="h-14 w-24 object-contain" />
         </Link>
 
         {/* Desktop Navigation - Hidden on Dashboard */}
@@ -108,6 +109,7 @@ const Navbar = () => {
           <button
             className="md:hidden text-brand-gold p-2"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close Menu" : "Open Menu"}
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -142,6 +144,7 @@ const Navbar = () => {
                     setIsOpen(false);
                   }}
                   className="w-full py-4 rounded-xl bg-red-500/10 text-red-500 font-bold text-center text-lg active:scale-95 duration-150"
+                  aria-label="Sign Out"
                 >
                   Sign Out
                 </button>

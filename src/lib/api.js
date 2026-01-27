@@ -61,6 +61,8 @@ export const api = {
     addToWishlist: (propertyId) => apiInstance.post(`/users/saved-properties/${propertyId}`),
     removeFromWishlist: (propertyId) => apiInstance.delete(`/users/saved-properties/${propertyId}`),
     getAgents: () => apiInstance.get('/users/agents'),
+    getRecentlyViewed: () => apiInstance.get('/users/recently-viewed'),
+    addRecentlyViewed: (propertyId) => apiInstance.post(`/users/recently-viewed/${propertyId}`),
   },
   properties: {
     getAll: (params) => apiInstance.get('/properties', { params }),
@@ -105,6 +107,7 @@ export const api = {
     approveProperty: (propertyId) => apiInstance.put(`/admin/properties/${propertyId}/approve`),
     rejectProperty: (propertyId, reason) => apiInstance.put(`/admin/properties/${propertyId}/reject`, { reason }),
     toggleFeatured: (propertyId, featured) => apiInstance.put(`/admin/properties/${propertyId}/feature`, { featured }),
+    getEmailTemplates: () => apiInstance.get('/admin/email-templates'),
   },
   savedSearches: {
     create: (data) => apiInstance.post('/saved-searches', data),
@@ -119,6 +122,8 @@ export const api = {
     markAsRead: (id) => apiInstance.put(`/notifications/${id}/read`),
     markAllAsRead: () => apiInstance.put('/notifications/read-all'),
     delete: (id) => apiInstance.delete(`/notifications/${id}`),
+    registerFcmToken: (token) => apiInstance.post('/notifications/fcm-token', { token }),
+    sendTest: () => apiInstance.post('/notifications/test'),
   },
   reviews: {
     create: (data) => apiInstance.post('/reviews', data),
@@ -127,6 +132,25 @@ export const api = {
     getAllAdmin: (params) => apiInstance.get('/reviews/admin/all', { params }),
     updateStatus: (id, status) => apiInstance.put(`/reviews/${id}/status`, { status }),
     delete: (id) => apiInstance.delete(`/reviews/${id}`),
+  },
+  analytics: {
+    getAdmin: () => apiInstance.get('/analytics/admin'),
+    getAgent: () => apiInstance.get('/analytics/agent'),
+  },
+  reminders: {
+    create: (data) => apiInstance.post('/reminders', data),
+    getAll: (params) => apiInstance.get('/reminders', { params }),
+    complete: (id, isCompleted) => apiInstance.patch(`/reminders/${id}/complete`, { isCompleted }),
+    delete: (id) => apiInstance.delete(`/reminders/${id}`),
+  },
+  wishlists: {
+    getAll: () => apiInstance.get('/wishlists'),
+    create: (data) => apiInstance.post('/wishlists', data),
+    update: (id, data) => apiInstance.patch(`/wishlists/${id}`, data),
+    delete: (id) => apiInstance.delete(`/wishlists/${id}`),
+    getProperties: (id) => apiInstance.get(`/wishlists/${id}/properties`),
+    addProperty: (wishlistId, propertyId) => apiInstance.post(`/wishlists/${wishlistId}/properties/${propertyId}`),
+    removeProperty: (wishlistId, propertyId) => apiInstance.delete(`/wishlists/${wishlistId}/properties/${propertyId}`),
   }
 };
 

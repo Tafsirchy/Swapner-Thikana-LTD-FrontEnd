@@ -47,6 +47,7 @@ const DashboardLayout = ({ children }) => {
           { name: 'Projects', href: '/dashboard/admin/projects', icon: Building2 },
           { name: 'Leads Pipeline', href: '/dashboard/leads', icon: BarChart3 },
           { name: 'Reviews', href: '/dashboard/admin/reviews', icon: MessageSquare },
+          { name: 'Analytics', href: '/dashboard/admin/analytics', icon: BarChart3 },
           { name: 'Blogs', href: '/dashboard/admin/blogs', icon: FileText },
           { name: 'Settings', href: '/dashboard/settings', icon: Settings },
         ];
