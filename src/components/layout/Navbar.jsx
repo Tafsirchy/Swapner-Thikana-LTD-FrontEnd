@@ -7,9 +7,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
+import NotificationBell from './NotificationBell';
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -80,6 +81,9 @@ const Navbar = () => {
             </>
           )}
           
+          {/* Notification Bell - Always visible when logged in */}
+          {user && <NotificationBell />}
+
           {isAuthenticated ? (
             <button
                onClick={logout}

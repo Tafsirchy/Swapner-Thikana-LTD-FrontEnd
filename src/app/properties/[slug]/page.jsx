@@ -3,13 +3,26 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { 
   MapPin, Bed, Bath, Move, Heart, Share2, 
   Calendar, CheckCircle2, ShieldCheck,
-  ChevronLeft, ChevronRight, Loader2, Send
+  ChevronLeft, ChevronRight, Loader2, Send, Calculator, X
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import MortgageCalculator from '@/components/tools/MortgageCalculator';
+
+// Dynamic import for map (client-side only)
+const PropertyMap = dynamic(() => import('@/components/map/PropertyMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[400px] rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center">
+      <Loader2 className="animate-spin text-brand-gold" size={32} />
+    </div>
+  )
+});
 
 const PropertyDetailPage = () => {
   const { slug } = useParams();
@@ -28,6 +41,7 @@ const PropertyDetailPage = () => {
     interestType: 'property'
   });
   const [submitting, setSubmitting] = useState(false);
+  const [showCalculator, setShowCalculator] = useState(false);
 
   const fetchProperty = useCallback(async () => {
     try {
@@ -205,6 +219,23 @@ const PropertyDetailPage = () => {
                 ))}
               </div>
             </div>
+
+            {/* Location & Map */}
+            <div className="p-10 bg-white/5 rounded-[3rem] border border-white/10">
+              <h2 className="text-2xl font-bold text-zinc-100 mb-6 pb-4 border-b border-white/10 flex items-center gap-3">
+                <MapPin className="text-brand-gold" size={28} />
+                Location
+              </h2>
+              <div className="mb-6 space-y-2">
+                <p className="text-zinc-300">
+                  <span className="font-semibold text-zinc-200">Address:</span> {property.location.address}
+                </p>
+                <p className="text-zinc-300">
+                  <span className="font-semibold text-zinc-200">Area:</span> {property.location.area}, {property.location.city}
+                </p>
+              </div>
+              <PropertyMap property={property} height="450px" />
+            </div>
           </div>
 
           {/* Sidebar */}
@@ -261,6 +292,27 @@ const PropertyDetailPage = () => {
               </p>
             </div>
 
+            {/* Mortgage Calculator Button */}
+            {property.listingType === 'sale' && (
+              <button
+                onClick={() => setShowCalculator(true)}
+                className="w-full p-6 glass border-brand-gold/20 rounded-2xl hover:border-brand-gold/40 transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center group-hover:bg-brand-gold/20 transition-colors">
+                      <Calculator className="text-brand-gold" size={22} />
+                    </div>
+                    <div className="text-left">
+                      <h4 className="font-bold text-zinc-100 mb-0.5">Calculate Mortgage</h4>
+                      <p className="text-xs text-zinc-400">Estimate monthly payments</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="text-zinc-500 group-hover:text-brand-gold transition-colors" size={20} />
+                </div>
+              </button>
+            )}
+
             {/* Social Share */}
             <div className="flex justify-center gap-4">
               <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-zinc-300 text-sm hover:border-brand-gold transition-all">
@@ -273,6 +325,30 @@ const PropertyDetailPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Mortgage Calculator Modal */}
+      <AnimatePresence>
+        {showCalculator && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative w-full max-w-7xl max-h-[90vh] overflow-auto bg-royal-deep rounded-3xl p-8"
+            >
+              <button
+                onClick={() => setShowCalculator(false)}
+                className="absolute top-6 right-6 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-zinc-100 transition-colors z-10"
+              >
+                <X size={24} />
+              </button>
+              
+              <h2 className="text-3xl font-bold text-zinc-100 mb-8">Mortgage Calculator</h2>
+              <MortgageCalculator defaultPrice={property.price} />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

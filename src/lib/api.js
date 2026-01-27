@@ -43,6 +43,7 @@ export const api = {
         return res;
       }),
     me: () => apiInstance.get('/auth/me'),
+    changePassword: (data) => apiInstance.post('/auth/change-password', data),
     verifyEmail: (token) => apiInstance.post('/auth/verify-email', { token }),
     forgotPassword: (email) => apiInstance.post('/auth/forgot-password', { email }),
     resetPassword: (token, password) => apiInstance.post('/auth/reset-password', { token, password }),
@@ -54,10 +55,12 @@ export const api = {
     }
   },
   user: {
+    getProfile: () => apiInstance.get('/users/profile'),
     updateProfile: (data) => apiInstance.put('/users/profile', data),
-    getPublicProfile: (id) => apiInstance.get(`/users/${id}`),
-    getAgents: () => apiInstance.get('/users/agents'),
     getSavedProperties: () => apiInstance.get('/users/saved-properties'),
+    addToWishlist: (propertyId) => apiInstance.post(`/users/saved-properties/${propertyId}`),
+    removeFromWishlist: (propertyId) => apiInstance.delete(`/users/saved-properties/${propertyId}`),
+    getAgents: () => apiInstance.get('/users/agents'),
   },
   properties: {
     getAll: (params) => apiInstance.get('/properties', { params }),
@@ -90,6 +93,31 @@ export const api = {
     create: (data) => apiInstance.post('/blogs', data),
     update: (id, data) => apiInstance.put(`/blogs/${id}`, data),
     delete: (id) => apiInstance.delete(`/blogs/${id}`),
+  },
+  admin: {
+    getDashboard: () => apiInstance.get('/admin/dashboard'),
+    getUsers: (params) => apiInstance.get('/admin/users', { params }),
+    updateUserRole: (userId, role) => apiInstance.put(`/admin/users/${userId}/role`, { role }),
+    updateUserStatus: (userId, isActive) => apiInstance.put(`/admin/users/${userId}/status`, { isActive }),
+    deleteUser: (userId) => apiInstance.delete(`/admin/users/${userId}`),
+    getProperties: (params) => apiInstance.get('/admin/properties', { params }),
+    approveProperty: (propertyId) => apiInstance.put(`/admin/properties/${propertyId}/approve`),
+    rejectProperty: (propertyId, reason) => apiInstance.put(`/admin/properties/${propertyId}/reject`, { reason }),
+    toggleFeatured: (propertyId, featured) => apiInstance.put(`/admin/properties/${propertyId}/feature`, { featured }),
+  },
+  savedSearches: {
+    create: (data) => apiInstance.post('/saved-searches', data),
+    getAll: () => apiInstance.get('/saved-searches'),
+    getById: (id) => apiInstance.get(`/saved-searches/${id}`),
+    update: (id, data) => apiInstance.put(`/saved-searches/${id}`, data),
+    delete: (id) => apiInstance.delete(`/saved-searches/${id}`),
+    getMatches: (id) => apiInstance.get(`/saved-searches/${id}/matches`),
+  },
+  notifications: {
+    getAll: (params) => apiInstance.get('/notifications', { params }),
+    markAsRead: (id) => apiInstance.put(`/notifications/${id}/read`),
+    markAllAsRead: () => apiInstance.put('/notifications/read-all'),
+    delete: (id) => apiInstance.delete(`/notifications/${id}`),
   }
 };
 

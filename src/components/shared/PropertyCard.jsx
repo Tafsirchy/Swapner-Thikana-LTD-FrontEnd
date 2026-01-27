@@ -1,13 +1,54 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { MapPin, Bed, Bath, Move, Heart } from 'lucide-react';
+import { MapPin, Bed, Bath, Move, Heart, Plus, Check } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { api } from '@/lib/api';
+import { toast } from 'react-hot-toast';
+
+// Global comparison state (simple client-side storage)
+let compareList = [];
+let compareListeners = [];
+
+const addToCompare = (property) => {
+  if (compareList.length >= 4) {
+    toast.error('You can compare up to 4 properties');
+    return false;
+  }
+  if (!compareList.find(p => p._id === property._id)) {
+    compareList = [...compareList, property];
+    compareListeners.forEach(fn => fn(compareList));
+    toast.success('Added to comparison');
+    return true;
+  }
+  return false;
+};
+
+const removeFromCompare = (propertyId) => {
+  compareList = compareList.filter(p => p._id !== propertyId);
+  compareListeners.forEach(fn => fn(compareList));
+  toast.success('Removed from comparison');
+};
+
+const subscribeToCompare = (listener) => {
+  compareListeners.push(listener);
+  listener(compareList);
+  return () => {
+    compareListeners = compareListeners.filter(fn => fn !== listener);
+  };
+};
 
 const PropertyCard = ({ property }) => {
+  const { user } = useAuth();
+  const [isSaved, setIsSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [isInCompare, setIsInCompare] = useState(false);
+
   const {
+    _id,
     title,
     slug,
     price,
@@ -20,6 +61,55 @@ const PropertyCard = ({ property }) => {
     listingType,
     featured
   } = property;
+
+  // Check if property is saved
+  useEffect(() => {
+    if (user && user.savedProperties) {
+      setIsSaved(user.savedProperties.some(id => id === _id));
+    }
+  }, [user, _id]);
+
+  // Subscribe to comparison changes
+  useEffect(() => {
+    const unsubscribe = subscribeToCompare((list) => {
+      setIsInCompare(list.some(p => p._id === _id));
+    });
+    return unsubscribe;
+  }, [_id]);
+
+  const handleToggleWishlist = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      toast.error('Please login to save properties');
+      return;
+    }
+
+    if (saving) return;
+
+    try {
+      setSaving(true);
+      
+      // Optimistic UI update
+      setIsSaved(!isSaved);
+
+      if (isSaved) {
+        await api.users.removeFromWishlist(_id);
+        toast.success('Removed from wishlist');
+      } else {
+        await api.users.addToWishlist(_id);
+        toast.success('Added to wishlist');
+      }
+    } catch (error) {
+      // Revert on error
+      setIsSaved(isSaved);
+      console.error('Error toggling wishlist:', error);
+      toast.error(error.response?.data?.message || 'Failed to update wishlist');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <motion.div
@@ -52,8 +142,37 @@ const PropertyCard = ({ property }) => {
           </span>
         </div>
 
-        <button className="absolute top-4 right-4 p-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-brand-gold hover:text-royal-deep transition-all active:scale-95 shadow-lg">
-          <Heart size={18} />
+        <div className="absolute top-4 right-4 flex gap-2">
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (isInCompare) {
+                removeFromCompare(_id);
+              } else {
+                addToCompare(property);
+              }
+            }}
+            className={`p-2.5 rounded-full backdrop-blur-md border transition-all active:scale-95 shadow-lg ${
+              isInCompare
+                ? 'bg-brand-emerald border-brand-emerald text-white' 
+                : 'bg-white/10 border-white/20 text-white hover:bg-brand-emerald hover:text-white'
+            }`}
+            title={isInCompare ? "Remove from comparison" : "Add to comparison"}
+          >
+            {isInCompare ? <Check size={18} /> : <Plus size={18} />}
+          </button>
+
+          <button 
+          onClick={handleToggleWishlist}
+          disabled={saving}
+          className={`p-2.5 rounded-full backdrop-blur-md border transition-all active:scale-95 shadow-lg disabled:opacity-50 ${
+            isSaved 
+              ? 'bg-brand-gold border-brand-gold text-royal-deep' 
+              : 'bg-white/10 border-white/20 text-white hover:bg-brand-gold hover:text-royal-deep'
+          }`}
+        >
+          <Heart size={18} fill={isSaved ? 'currentColor' : 'none'} />
         </button>
 
         <div className="absolute bottom-4 left-4">

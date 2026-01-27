@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { MessageSquare, Calendar, Building2, Clock } from 'lucide-react';
+import Link from 'next/link';
+import { MessageSquare, Building2, Clock, Filter, Search } from 'lucide-react';
 import { api } from '@/lib/api';
 
 const statusColors = {
@@ -14,6 +15,7 @@ const statusColors = {
 const InquiriesPage = () => {
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState('all');
 
   useEffect(() => {
     const fetchInquiries = async () => {
@@ -31,6 +33,11 @@ const InquiriesPage = () => {
     fetchInquiries();
   }, []);
 
+  // Filter inquiries based on status
+  const filteredInquiries = statusFilter === 'all' 
+    ? inquiries 
+    : inquiries.filter(inquiry => inquiry.status === statusFilter);
+
   if (loading) {
     return (
        <div className="space-y-4">
@@ -43,19 +50,37 @@ const InquiriesPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
-          <MessageSquare size={32} className="text-brand-gold" />
-          My Inquiries
-        </h1>
-        <div className="text-zinc-400">
-          <span className="text-zinc-100 font-bold">{inquiries.length}</span> active threads
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
+            <MessageSquare size={32} className="text-brand-gold" />
+            My Inquiries
+          </h1>
+          <p className="text-zinc-400 mt-1">
+            <span className="text-zinc-100 font-bold">{filteredInquiries.length}</span> {statusFilter !== 'all' ? statusFilter : 'total'} inquiries
+          </p>
+        </div>
+        
+        {/* Filter Dropdown */}
+        <div className="flex items-center gap-2">
+          <Filter size={18} className="text-zinc-400" />
+          <select 
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
+          >
+            <option value="all">All Status</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="converted">Converted</option>
+            <option value="closed">Closed</option>
+          </select>
         </div>
       </div>
 
-      {inquiries.length > 0 ? (
+      {filteredInquiries.length > 0 ? (
         <div className="space-y-4">
-          {inquiries.map((lead) => (
+          {filteredInquiries.map((lead) => (
             <div key={lead._id} className="bg-white/5 border border-white/5 rounded-2xl p-6 hover:border-brand-gold/20 transition-all group">
               <div className="flex flex-col md:flex-row gap-6">
                  <div className="flex-1 space-y-2">
@@ -99,13 +124,13 @@ const InquiriesPage = () => {
           <p className="text-zinc-500 mb-8 max-w-md mx-auto">
             Have questions about a property? Send an inquiry and track the conversation here.
           </p>
-          <a 
+          <Link 
             href="/properties" 
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/20"
           >
             <Search size={18} />
             Find Properties
-          </a>
+          </Link>
         </div>
       )}
     </div>

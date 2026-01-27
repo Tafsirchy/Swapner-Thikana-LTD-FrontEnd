@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Building2, PlusCircle, Edit, Trash2, Eye, MoreVertical } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Building2, PlusCircle, Edit, Trash2, Eye, MoreVertical, Filter } from 'lucide-react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
@@ -10,6 +9,7 @@ import { toast } from 'react-hot-toast';
 const AgentPropertiesPage = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState('all');
 
   useEffect(() => {
     fetchProperties();
@@ -27,6 +27,12 @@ const AgentPropertiesPage = () => {
       setLoading(false);
     }
   };
+
+	// Filter properties by status
+	const filteredProperties = useMemo(() => {
+		if (statusFilter === 'all') return properties;
+		return properties.filter(prop => prop.status === statusFilter);
+	}, [properties, statusFilter]);
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
@@ -58,18 +64,40 @@ const AgentPropertiesPage = () => {
             <Building2 size={32} className="text-brand-emerald" />
             My Listings
           </h1>
-          <p className="text-zinc-400 mt-1">Manage your active and pending property listings</p>
+          <p className="text-zinc-400 mt-1">
+            Manage your active and pending property listings
+          </p>
         </div>
-        <Link 
-          href="/dashboard/properties/add" 
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/20"
-        >
-          <PlusCircle size={18} />
-          Add New Property
-        </Link>
+        
+        <div className="flex items-center gap-3">
+          {/* Status Filter */}
+          {properties.length > 0 && (
+            <div className="flex items-center gap-2">
+              <Filter size={18} className="text-zinc-400" />
+              <select 
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
+              >
+                <option value="all">All Status</option>
+                <option value="published">Published</option>
+                <option value="pending">Pending</option>
+                <option value="sold">Sold</option>
+              </select>
+            </div>
+          )}
+          
+          <Link 
+            href="/dashboard/properties/add" 
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/20"
+          >
+            <PlusCircle size={18} />
+            Add New Property
+          </Link>
+        </div>
       </div>
 
-      {properties.length > 0 ? (
+      {filteredProperties.length > 0 ? (
         <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-zinc-400">
@@ -83,7 +111,7 @@ const AgentPropertiesPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {properties.map((property) => (
+                {filteredProperties.map((property) => (
                   <tr key={property._id} className="group hover:bg-white/5 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">

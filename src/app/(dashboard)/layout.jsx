@@ -19,6 +19,13 @@ const DashboardLayout = ({ children }) => {
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
+  const commonCustomerLinks = [
+    { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Saved Searches', href: '/dashboard/saved-searches', icon: Search },
+    { name: 'Wishlist', href: '/dashboard/wishlist', icon: Heart },
+    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+  ];
+
   // Role-based Navigation
   const getNavLinks = () => {
     switch (user?.role) {
@@ -42,13 +49,7 @@ const DashboardLayout = ({ children }) => {
         ];
       case 'customer':
       default:
-        return [
-          { name: 'My Dashboard', href: '/dashboard', icon: LayoutDashboard },
-          { name: 'Saved Homes', href: '/dashboard/saved', icon: Heart },
-          { name: 'Saved Searches', href: '/dashboard/searches', icon: Search },
-          { name: 'My Inquiries', href: '/dashboard/inquiries', icon: MessageSquare },
-          { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-        ];
+        return commonCustomerLinks;
     }
   };
 

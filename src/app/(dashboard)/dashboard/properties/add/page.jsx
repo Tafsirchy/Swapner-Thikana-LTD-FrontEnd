@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, MapPin, DollarSign, Image as ImageIcon, 
-  CheckCircle, ArrowRight, ArrowLeft, Upload, X 
+  CheckCircle, ArrowRight, ArrowLeft, Upload, X, PlusCircle 
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
@@ -41,6 +41,52 @@ const AddPropertyPage = () => {
     { title: 'Details', icon: DollarSign },
     { title: 'Images', icon: ImageIcon },
   ];
+
+  // Validation function
+  const validateStep = (step) => {
+    switch (step) {
+      case 1:
+        if (!formData.title.trim()) {
+          toast.error('Property title is required');
+          return false;
+        }
+        if (!formData.description.trim()) {
+          toast.error('Property description is required');
+          return false;
+        }
+        return true;
+      case 2:
+        if (!formData.location.address.trim()) {
+          toast.error('Address is required');
+          return false;
+        }
+        if (!formData.location.area.trim()) {
+          toast.error('Area/Neighborhood is required');
+          return false;
+        }
+        return true;
+      case 3:
+        if (!formData.price || formData.price <= 0) {
+          toast.error('Valid price is required');
+          return false;
+        }
+        if (!formData.area || formData.area <= 0) {
+          toast.error('Valid area is required');
+          return false;
+        }
+        if (!formData.bedrooms || formData.bedrooms <= 0) {
+          toast.error('Number of bedrooms is required');
+          return false;
+        }
+        if (!formData.bathrooms || formData.bathrooms <= 0) {
+          toast.error('Number of bathrooms is required');
+          return false;
+        }
+        return true;
+      default:
+        return true;
+    }
+  };
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -365,7 +411,11 @@ const AddPropertyPage = () => {
 
          {currentStep < 4 ? (
             <button 
-               onClick={() => setCurrentStep(prev => prev + 1)}
+               onClick={() => {
+                 if (validateStep(currentStep)) {
+                   setCurrentStep(prev => prev + 1);
+                 }
+               }}
                className="flex items-center gap-2 px-8 py-3.5 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/20"
             >
                Next Step <ArrowRight size={18} />
