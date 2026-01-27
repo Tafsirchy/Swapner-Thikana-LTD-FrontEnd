@@ -46,7 +46,7 @@ const LoginPage = () => {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         className="w-full max-w-md relative z-10"
       >
-        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl">
+        <div className="bg-white/5 backdrop-blur-2xl rounded-3xl p-8 md:p-10 shadow-2xl">
           <div className="text-center mb-10">
             <div className="flex justify-center mb-8">
               <Link href="/" className="inline-block">

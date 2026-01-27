@@ -54,7 +54,7 @@ const ResetPasswordContent = () => {
   }
 
   return (
-    <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl">
+    <div className="bg-white/5 backdrop-blur-2xl rounded-3xl p-8 md:p-10 shadow-2xl">
       <div className="text-center mb-10">
         <div className="flex justify-center mb-8">
           <Link href="/" className="inline-block">

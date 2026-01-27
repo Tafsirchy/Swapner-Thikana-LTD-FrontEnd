@@ -43,14 +43,14 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled || isDashboard
-          ? 'bg-royal-deep/90 backdrop-blur-md py-3 shadow-lg border-b border-brand-gold/20'
+          ? 'bg-royal-deep/90 backdrop-blur-md py-3 shadow-lg'
           : 'bg-transparent py-5'
       }`}
     >
       <div className="max-container flex justify-between items-center px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-            <Image src="/logo.png" alt="shwapner Thikana" width={96} height={56} className="h-14 w-24 object-contain" />
+            <Image src="/logo.png" alt="shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
         </Link>
 
         {/* Desktop Navigation - Hidden on Dashboard */}

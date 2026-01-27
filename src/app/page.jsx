@@ -40,10 +40,10 @@ export default function Home() {
 
           {/* Quick Search Bar */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-2xl border border-white/10 shadow-2xl"
+            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-2xl shadow-2xl"
           >
             <div className="flex flex-col md:flex-row items-center gap-2">
               <div className="flex-1 w-full flex items-center px-4 gap-3 bg-white/5 rounded-xl border border-white/5 focus-within:border-brand-gold/30 transition-all">
@@ -73,14 +73,14 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - Moved down to avoid overlap */}
         <motion.div 
-          animate={{ y: [0, 10, 0] }}
+          animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40 hover:opacity-100 transition-opacity"
         >
-          <span className="text-[10px] text-zinc-400 uppercase tracking-widest">Explore</span>
-          <div className="w-px h-12 bg-gradient-to-b from-brand-gold/60 to-transparent"></div>
+          <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-medium">Explore</span>
+          <div className="w-px h-10 bg-gradient-to-b from-brand-gold/60 to-transparent"></div>
         </motion.div>
       </section>
 
