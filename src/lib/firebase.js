@@ -33,11 +33,21 @@ export { messaging };
 
 export const requestForToken = async () => {
   try {
-    const vapidKey = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY;
+    const vapidKey = (process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY || '').trim();
     
     // Validate VAPID key before use
     if (!vapidKey || vapidKey === 'your_vapid_key' || vapidKey.length < 50) {
       console.warn('Invalid or missing VAPID key. Notifications disabled.');
+      return null;
+    }
+
+    // atob safety check: ensuring it's valid base64url or base64
+    try {
+      if (typeof window !== 'undefined') {
+        window.atob(vapidKey.replace(/-/g, '+').replace(/_/g, '/'));
+      }
+    } catch (e) {
+      console.error('VAPID key is not correctly base64 encoded:', e.message);
       return null;
     }
 
