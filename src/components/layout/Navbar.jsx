@@ -223,20 +223,22 @@ const Navbar = () => {
 
         {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
-          <div className="hidden md:flex items-center w-full justify-center">
+          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full">
             
-            {/* Left Nav */}
-            <div className="flex items-center gap-10">
+            {/* Left Nav - Aligned Left */}
+            <div className="flex items-center gap-8 justify-start pl-4 xl:pl-12">
                {leftNav.map(renderNavLink)}
             </div>
 
             {/* Centered Logo */}
-            <Link href="/" className="mx-12 hover:scale-105 transition-transform duration-300">
-                <Image src="/logo.png" alt="shwapner Thikana" width={140} height={80} className="h-20 w-auto object-contain drop-shadow-2xl" />
-            </Link>
+            <div className="flex justify-center">
+              <Link href="/" className="hover:scale-105 transition-transform duration-300">
+                  <Image src="/logo.png" alt="shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain drop-shadow-2xl" />
+              </Link>
+            </div>
 
-            {/* Right Nav */}
-            <div className="flex items-center gap-10">
+            {/* Right Nav - Aligned Right */}
+            <div className="flex items-center gap-8 justify-end pr-4 xl:pr-12">
                {rightNav.map(renderNavLink)}
             </div>
 
