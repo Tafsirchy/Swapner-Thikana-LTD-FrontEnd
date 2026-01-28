@@ -159,13 +159,13 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled || isDashboard
-          ? 'bg-royal-deep/90 backdrop-blur-md shadow-lg h-[90px]'
-          : 'bg-gradient-to-b from-black/50 to-transparent h-[120px]'
+          ? 'bg-royal-deep/90 backdrop-blur-md shadow-lg'
+          : 'bg-gradient-to-b from-black/50 to-transparent'
       }`}
     >
       {/* Utility Bar - Absolute Top Right */}
       {!isDashboard && (
-        <div className="absolute top-4 right-8 z-50 hidden md:flex items-center gap-6">
+        <div className="absolute mb-2 top-2 right-8 z-50 hidden md:flex items-center gap-6">
            {/* Utility Icons */}
            <button className="text-zinc-100 hover:text-brand-gold transition-colors">
              <Search size={18} />
@@ -199,7 +199,7 @@ const Navbar = () => {
       )}
 
       {/* Main Navigation Container */}
-      <div className="w-full h-full flex justify-center items-center  relative">
+      <div className="max-container h-full flex justify-center px-4 relative">
         
         {/* Mobile: Logo Centered, Menu Icon Left */}
         <div className="md:hidden w-full flex justify-between items-center">
@@ -223,22 +223,22 @@ const Navbar = () => {
 
         {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
-          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-end pb-6 w-full h-full">
+          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] py-2 items-center w-full">
             
             {/* Left Nav - Aligned Left */}
-            <div className="flex items-center gap-10 justify-start">
+            <div className="flex items-center gap-8 justify-start">
                {leftNav.map(renderNavLink)}
             </div>
 
             {/* Centered Logo */}
-            <div className="flex justify-center -mb-2">
+            <div className="flex justify-center">
               <Link href="/" className="hover:scale-105 transition-transform duration-300">
-                  <Image src="/logo.png" alt="shwapner Thikana" width={160} height={96} className="h-24 w-auto object-contain drop-shadow-2xl" />
+                  <Image src="/logo.png" alt="shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain drop-shadow-2xl" />
               </Link>
             </div>
 
             {/* Right Nav - Aligned Right */}
-            <div className="flex items-center gap-10 justify-end">
+            <div className="flex items-center gap-8 justify-end">
                {rightNav.map(renderNavLink)}
             </div>
 
