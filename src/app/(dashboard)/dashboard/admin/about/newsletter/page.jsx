@@ -1,11 +1,17 @@
 'use client';
 
 import React from 'react';
-import { Mail, Plus, Search, Send } from 'lucide-react';
+import { Mail, Plus, Search, Send, UserCheck, Clock, ShieldCheck } from 'lucide-react';
 
 const AdminNewsletterPage = () => {
+  const subscribers = [
+    { id: 1, email: "john.doe@example.com", name: "John Doe", date: "2025-01-28", status: "Active" },
+    { id: 2, email: "n.jahan@lifestyle.com", name: "Nusrat Jahan", date: "2025-01-27", status: "Active" },
+    { id: 3, email: "m.arif@arch.daily", name: "Mahmud Arif", date: "2025-01-25", status: "Unsubscribed" },
+  ];
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-bold text-zinc-100 italic">Newsletter Management</h2>
@@ -23,24 +29,53 @@ const AdminNewsletterPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
          {[
-           { label: 'Total Subscribers', value: '1,284', trend: '+12% this month' },
-           { label: 'Open Rate', value: '42.5%', trend: '+2.1% higher' },
-           { label: 'Click Rate', value: '18.2%', trend: '-0.5% lower' },
+           { label: 'Total Subscribers', value: '1,284', trend: '+12% this month', icon: UserCheck },
+           { label: 'Open Rate', value: '42.5%', trend: '+2.1% higher', icon: ShieldCheck },
+           { label: 'Click Rate', value: '18.2%', trend: '-0.5% lower', icon: Clock },
          ].map((stat, i) => (
-           <div key={i} className="bg-white/5 border border-white/5 p-6 rounded-3xl">
-              <span className="text-zinc-500 text-xs font-bold uppercase tracking-widest">{stat.label}</span>
-              <div className="text-3xl font-bold text-white mt-2">{stat.value}</div>
-              <div className="text-xs text-brand-gold mt-1 font-medium">{stat.trend}</div>
+           <div key={i} className="bg-white/5 border border-white/5 p-6 rounded-3xl group hover:border-brand-gold/20 transition-all">
+              <div className="flex justify-between items-start mb-4">
+                <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">{stat.label}</span>
+                <stat.icon size={18} className="text-brand-gold/40 group-hover:text-brand-gold transition-colors" />
+              </div>
+              <div className="text-3xl font-bold text-white">{stat.value}</div>
+              <div className="text-[10px] text-brand-gold mt-1 font-bold tracking-wider">{stat.trend}</div>
            </div>
          ))}
       </div>
 
-      <div className="glass rounded-[2rem] border-white/5 p-20 flex flex-col items-center text-center">
-        <div className="w-20 h-20 rounded-3xl bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-6">
-           <Mail size={40} />
-        </div>
-        <h3 className="text-xl font-bold text-zinc-300">Newsletter List is Private</h3>
-        <p className="text-zinc-500 mt-2 max-w-sm">Subscription management and broadcast systems are being prepared for deployment. Check back for live stats.</p>
+      <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-white/5 border-b border-white/10">
+              <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Subscriber</th>
+              <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Date Joined</th>
+              <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest text-right">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {subscribers.map((sub) => (
+              <tr key={sub.id} className="hover:bg-white/5 transition-colors group">
+                <td className="px-6 py-4">
+                  <div>
+                    <div className="font-bold text-zinc-100">{sub.name}</div>
+                    <div className="text-xs text-zinc-500">{sub.email}</div>
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                   <span className="text-sm text-zinc-400">{sub.date}</span>
+                </td>
+                <td className="px-6 py-4 text-right">
+                   <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                    sub.status === 'Active' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
+                  }`}>
+                    {sub.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
