@@ -59,6 +59,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
 /* Custom Utilities (Tailwind 4 Syntax) */
 @utility max-container {
   max-width: 1440px;
