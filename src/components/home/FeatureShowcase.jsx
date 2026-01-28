@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
 const FEATURES = [
@@ -36,25 +36,31 @@ const FeatureShowcase = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Move definitions up
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % FEATURES.length);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + FEATURES.length) % FEATURES.length);
+  };
+
   useEffect(() => {
     let interval;
     if (!isPaused) {
       interval = setInterval(() => {
-        setActiveIndex((prev) => (prev + 1) % FEATURES.length);
-      }, 5000); // 5 seconds rotation
+        handleNext();
+      }, 5000); 
     }
     return () => clearInterval(interval);
-  }, [isPaused]);
-
-  const handleThumbnailClick = (index) => {
-    setActiveIndex(index);
-    setIsPaused(true);
-    // Optional: Resume after some time? For now, let's keep it paused if manually interacted, 
-    // or we could just let the user resume. 
-    // Let's implement a temporary pause resume logic if desired, but for now simple manual override is safer.
-    // Actually, let's just reset the timer logic by clearing/setting interval effectively if we didn't use `isPaused` state for robust pausing.
-    // But since we want "click pauses temporarily", let's handle "Resume on mouse leave" from the main container generally.
-  };
+  }, [isPaused, activeIndex]); // Removed handleNext from dependency array as it is stable component-scope function now, but technically it changes every render unless wrapped in useCallback. 
+  // Ideally wrap handleNext in useCallback or ignore dependency. Given simplicity, this is fine or we can omit it if linter complains.
+  // Actually, to avoid stale referencing in interval if handleNext depends on state, we should use functional update in handleNext (which we do).
+  // But handleNext is re-created every render.
+  // Let's just suppress or keep simple. The previous code didn't have handleNext in deps.
+  // I will just use the function inside effect or useCallback.
+  // EASIEST FIX: Define the interval callback inline or use a ref.
+  // Reserving to simple structure:
 
   return (
     <section 
@@ -63,120 +69,122 @@ const FeatureShowcase = () => {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="max-container px-4">
-        <div className="mb-12">
-          <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block">Exclusive Highlights</span>
-          <h2 className="text-4xl md:text-5xl font-bold font-heading">
-            Curated <span className="text-brand-gold italic">Lifestyles</span>
-          </h2>
+        {/* Header Section: Split Layout */}
+        <div className="flex flex-col lg:flex-row justify-between items-start mb-16 gap-8">
+          <div className="max-w-md">
+            <span className="text-zinc-400 font-serif tracking-wider text-sm mb-2 block uppercase">Discover The</span>
+            <h2 className="text-5xl md:text-6xl font-serif italic text-white leading-tight">
+              LIFESTYLE
+            </h2>
+          </div>
+          <div className="max-w-xl text-zinc-400 text-sm leading-relaxed text-justify">
+            <p>
+              The shwapner Thikana Group opens the doors to the most beautiful properties in authentic Dhaka, 
+              passing through the wild Cox&apos;s Bazar coastline leading to the Saint Martin peninsula, extended by its Gulf and 
+              the Sylhet Massif, reaching Chittagong and the Hill Tracts. Immerse yourself in the timeless 
+              art of living of our destinations...
+            </p>
+          </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row h-[600px] lg:h-[700px] w-full gap-6">
+        <div className="flex flex-col lg:flex-row w-full gap-8">
           
-          {/* Left Column: Large Display */}
-          <div className="relative w-full lg:w-[65%] h-full rounded-[2.5rem] overflow-hidden group">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, scale: 1.1 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.7, ease: "easeInOut" }}
-                className="absolute inset-0 w-full h-full"
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
-                <Image 
-                  src={FEATURES[activeIndex].image} 
-                  alt={FEATURES[activeIndex].title}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                
-                {/* Content Overlay */}
-                <div className="absolute bottom-0 left-0 p-8 md:p-14 z-20 w-full md:max-w-xl">
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
-                  >
-                    <span className="inline-block px-3 py-1 mb-4 border border-brand-gold/30 rounded-full text-brand-gold text-xs font-bold uppercase tracking-widest bg-brand-gold/10 backdrop-blur-md">
-                      {FEATURES[activeIndex].label}
-                    </span>
-                    <h3 className="text-3xl md:text-5xl font-bold mb-4 font-heading leading-tight">
-                      {FEATURES[activeIndex].title}
-                    </h3>
-                    <p className="text-zinc-300 text-lg mb-8 line-clamp-3 md:line-clamp-none">
-                      {FEATURES[activeIndex].description}
-                    </p>
-                    <button className="flex items-center gap-3 text-white font-bold tracking-widest uppercase text-sm group/btn">
-                      Explore Collection
-                      <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover/btn:bg-brand-gold group-hover/btn:text-royal-deep transition-all">
-                        <ArrowRight size={14} />
-                      </span>
-                    </button>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Progress Bar for Active Item */}
-             <div className="absolute top-0 left-0 w-full h-1 bg-white/10 z-30">
-                <motion.div 
-                    key={activeIndex} // Reset animation on change
-                    initial={{ width: "0%" }}
-                    animate={{ width: isPaused ? "100%" : "100%" }} // If paused we might want to stop, but for simple visualization let's just animate.
-                    // Better approach for "timer" visual:
-                />
-                {!isPaused && (
-                     <motion.div 
-                        key={`progress-${activeIndex}`}
-                        initial={{ width: "0%" }}
-                        animate={{ width: "100%" }}
-                        transition={{ duration: 5, ease: "linear" }}
-                        className="h-full bg-brand-gold"
-                     />
-                )}
-                {isPaused && (
-                     <div 
-                        className="h-full bg-brand-gold w-full opacity-50"
-                     />
-                )}
-             </div>
+          {/* Left Column: Main Display (65%) */}
+          <div className="w-full lg:w-[65%] flex flex-col gap-6">
+            <div className="relative w-full h-[500px] lg:h-[650px] overflow-hidden group">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <div className="absolute inset-0 bg-black/20 z-10" />
+                  <Image 
+                    src={FEATURES[activeIndex].image} 
+                    alt={FEATURES[activeIndex].title}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                  
+                  {/* Center Overlay Content */}
+                  <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-8">
+                    <motion.h3 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="text-4xl md:text-6xl font-serif text-white mb-8 tracking-wide drop-shadow-lg"
+                    >
+                      {FEATURES[activeIndex].label.toUpperCase()}
+                    </motion.h3>
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      className="flex items-center gap-8 text-xs font-bold tracking-[0.3em] uppercase"
+                    >
+                      <button className="hover:text-brand-gold transition-colors flex items-center gap-2">
+                        <span className="w-px h-3 bg-brand-gold"></span> Buy
+                      </button>
+                      <span className="text-brand-gold/50">|</span>
+                      <button className="hover:text-brand-gold transition-colors flex items-center gap-2">
+                        <span className="w-px h-3 bg-brand-gold"></span> Rent
+                      </button>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            
+            {/* Navigation Arrows */}
+            <div className="hidden lg:flex justify-center items-center gap-12 mt-4 text-zinc-400">
+              <button onClick={handlePrev} className="hover:text-brand-gold transition-colors p-2">
+                <ChevronRight size={32} className="rotate-180" strokeWidth={1} />
+              </button>
+              <button onClick={handleNext} className="hover:text-brand-gold transition-colors p-2">
+                <ChevronRight size={32} strokeWidth={1} />
+              </button>
+            </div>
           </div>
 
-          {/* Right Column: Thumbnails */}
-          <div className="w-full lg:w-[35%] flex lg:flex-col gap-4 overflow-x-auto lg:overflow-hidden scrollbar-hide">
-            {FEATURES.map((feature, index) => (
-              <button
-                key={feature.id}
-                onClick={() => handleThumbnailClick(index)}
-                className={`relative flex-1 lg:flex-grow lg:h-auto min-w-[280px] lg:min-w-0 rounded-3xl overflow-hidden transition-all duration-500 group text-left ${
-                  activeIndex === index 
-                    ? 'ring-2 ring-brand-gold ring-offset-2 ring-offset-royal-deep grayscale-0' 
-                    : 'opacity-60 hover:opacity-100 grayscale'
-                }`}
-              >
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors z-10" />
-                <Image 
-                  src={feature.image} 
-                  alt={feature.label}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                
-                <div className="absolute bottom-0 left-0 p-6 z-20 w-full">
-                  <div className={`transition-all duration-300 ${activeIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-80'}`}>
-                    <p className="text-xs font-bold text-brand-gold uppercase tracking-widest mb-1">{feature.subtitle}</p>
-                    <h4 className="text-xl font-bold text-white flex items-center justify-between">
-                      {feature.label}
-                      {activeIndex === index && <ChevronRight className="text-brand-gold" size={20} />}
-                    </h4>
-                  </div>
-                </div>
-
-                {/* Vertical Progress/Indicator for desktop could go here, but top bar on main image is cleaner */}
+          {/* Right Column: Thumbnails (35%) */}
+          <div className="w-full lg:w-[35%] flex flex-col justify-between h-[500px] lg:h-[650px]">
+             <div className="grid grid-cols-3 gap-4 h-full">
+                {FEATURES.map((feature, index) => (
+                  <button
+                    key={feature.id}
+                    onClick={() => setActiveIndex(index)}
+                    className={`flex flex-col h-full group text-center transition-all duration-500`}
+                  >
+                    <div className={`relative w-full flex-grow overflow-hidden mb-6 ${activeIndex === index ? 'opacity-100' : 'opacity-60 group-hover:opacity-80'}`}>
+                      <Image 
+                        src={feature.image} 
+                        alt={feature.label}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
+                    <span className={`text-[10px] md:text-xs font-serif tracking-widest uppercase transition-colors ${activeIndex === index ? 'text-brand-gold' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+                      {feature.subtitle || feature.label}
+                    </span>
+                    {index < FEATURES.length - 1 && (
+                      <span className="hidden md:block absolute right-0 top-full w-px h-4 bg-zinc-800 lg:hidden"></span> 
+                    )}
+                  </button>
+                ))}
+             </div>
+             {/* Mobile Navigation Arrows */}
+             <div className="flex lg:hidden justify-center items-center gap-12 mt-8 text-zinc-400">
+              <button onClick={handlePrev} className="hover:text-brand-gold transition-colors">
+                <ChevronRight size={24} className="rotate-180" />
               </button>
-            ))}
+              <button onClick={handleNext} className="hover:text-brand-gold transition-colors">
+                <ChevronRight size={24} />
+              </button>
+            </div>
           </div>
 
         </div>
