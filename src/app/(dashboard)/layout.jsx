@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutDashboard, Heart, Search, Settings, 
   Menu, X, Building2, PlusCircle, Users, FileText, 
-  BarChart3, Bell, MessageSquare
+  BarChart3, Bell, MessageSquare, ChevronDown, ChevronUp, Info
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image';
@@ -17,8 +17,15 @@ const DashboardLayout = ({ children }) => {
   const { user } = useAuth();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const [expandedItems, setExpandedItems] = useState(['about']);
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+  
+  const toggleExpand = (name) => {
+    setExpandedItems(prev => 
+      prev.includes(name) ? prev.filter(i => i !== name) : [...prev, name]
+    );
+  };
 
   const commonCustomerLinks = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
@@ -43,6 +50,13 @@ const DashboardLayout = ({ children }) => {
         return [
           { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
           { name: 'Users', href: '/dashboard/admin/users', icon: Users },
+          { name: 'About CMS', id: 'about', icon: Info, isCollapsible: true, subLinks: [
+            { name: 'Magazines', href: '/dashboard/admin/about/magazines' },
+            { name: 'Agencies', href: '/dashboard/admin/about/agencies' },
+            { name: 'History', href: '/dashboard/admin/about/history' },
+            { name: 'Management', href: '/dashboard/admin/about/management' },
+            { name: 'Newsletter', href: '/dashboard/admin/about/newsletter' },
+          ]},
           { name: 'Properties', href: '/dashboard/admin/properties', icon: Building2 },
           { name: 'Projects', href: '/dashboard/admin/projects', icon: Building2 },
           { name: 'Leads Pipeline', href: '/dashboard/leads', icon: BarChart3 },
@@ -104,6 +118,59 @@ const DashboardLayout = ({ children }) => {
 
               <nav className="space-y-1 mb-4">
                 {links.map((link) => {
+                  if (link.subLinks) {
+                    const isExpanded = expandedItems.includes(link.id);
+                    const isAnySubActive = link.subLinks.some(sub => pathname === sub.href);
+                    
+                    return (
+                      <div key={link.id} className="space-y-1">
+                        <button
+                          onClick={() => toggleExpand(link.id)}
+                          className={`w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl transition-all font-medium text-sm group ${
+                            isAnySubActive && !isExpanded
+                              ? 'bg-brand-gold/10 text-brand-gold' 
+                              : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <link.icon size={18} className={isAnySubActive ? 'text-brand-gold' : 'text-zinc-500 group-hover:text-zinc-300'} />
+                            {link.name}
+                          </div>
+                          {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        </button>
+                        
+                        <AnimatePresence>
+                          {isExpanded && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="overflow-hidden pl-11 space-y-1"
+                            >
+                              {link.subLinks.map((sub) => {
+                                const isSubActive = pathname === sub.href;
+                                return (
+                                  <Link
+                                    key={sub.href}
+                                    href={sub.href}
+                                    onClick={() => setSidebarOpen(false)}
+                                    className={`flex items-center px-4 py-2 rounded-lg transition-all text-sm ${
+                                      isSubActive 
+                                        ? 'text-brand-gold font-bold' 
+                                        : 'text-zinc-500 hover:text-zinc-300'
+                                    }`}
+                                  >
+                                    {sub.name}
+                                  </Link>
+                                );
+                              })}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  }
+
                   const isActive = pathname === link.href;
                   return (
                     <Link
