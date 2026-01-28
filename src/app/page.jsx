@@ -11,14 +11,22 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Background Image with Overlay */}
-        <div 
-          className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-10000 hover:scale-110"
+        <motion.div 
+          className="absolute inset-0 z-0 bg-cover bg-center"
           style={{ 
             backgroundImage: "url('/luxury_home_hero.png')",
           }}
+          initial={{ scale: 1 }}
+          animate={{ scale: 1.1 }}
+          transition={{ 
+            duration: 20, 
+            repeat: Infinity, 
+            repeatType: "reverse", 
+            ease: "linear" 
+          }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-royal-deep/80 via-royal-deep/40 to-royal-deep/90"></div>
-        </div>
+        </motion.div>
 
         <div className="max-container px-4 pt-20 relative z-10 text-center text-zinc-100">
           <motion.div
