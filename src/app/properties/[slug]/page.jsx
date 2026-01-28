@@ -1,6 +1,7 @@
 import api from '@/lib/api';
 import PropertyDetailClient from '@/components/property/PropertyDetailClient';
 import StructuredData from '@/components/seo/StructuredData';
+import Link from 'next/link';
 
 // This is a Server Component
 const PropertyDetailPage = async ({ params }) => {
@@ -39,12 +40,12 @@ const PropertyDetailPage = async ({ params }) => {
              {apiErrorType && <p>API Error Type: <span className="text-red-400">{apiErrorType}</span></p>}
           </div>
 
-          <button 
-            onClick={() => window.location.href = '/properties'}
-            className="mt-10 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all"
+          <Link 
+            href="/properties"
+            className="mt-10 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all inline-block"
           >
             Back to All Properties
-          </button>
+          </Link>
         </div>
       </div>
     );
