@@ -15,6 +15,7 @@ const Navbar = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,13 +25,14 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-
-  const navLinks = [
+  const leftNav = [
     { name: 'Home', href: '/' },
     { name: 'Properties', href: '/properties' },
     { name: 'Projects', href: '/projects' },
     { name: 'Blog', href: '/blog' },
+  ];
+
+  const rightNav = [
     { 
       name: 'About', 
       href: '/about',
@@ -43,7 +45,7 @@ const Navbar = () => {
         ],
         right: [
           { name: 'Management', href: '/about/management' },
-          { name: 'Agents', href: '/agents' },
+          { name: 'Agents', href: '/about/agents' },
           { name: 'Newsletter', href: '/about/newsletter' }
         ]
       }
@@ -52,198 +54,229 @@ const Navbar = () => {
   ];
 
   if (isAuthenticated) {
-    navLinks.push({ name: 'Dashboard', href: '/dashboard' });
+    rightNav.push({ name: 'Dashboard', href: '/dashboard' });
   }
 
   const isDashboard = pathname.startsWith('/dashboard');
+
+  const renderNavLink = (link) => {
+    const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+
+    if (link.hasDropdown) {
+      return (
+        <div 
+          key={link.name}
+          className="relative h-full flex items-center"
+          onMouseEnter={() => setIsAboutOpen(true)}
+          onMouseLeave={() => setIsAboutOpen(false)}
+        >
+          <Link
+            href={link.href}
+            className={`text-sm tracking-widest uppercase font-medium transition-colors relative group py-2 flex items-center gap-1 ${
+              isActive || isAboutOpen ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
+            }`}
+          >
+            {link.name}
+            <span className={`absolute -bottom-1 left-0 h-0.5 bg-brand-gold transition-all duration-300 ${
+              isActive ? 'w-full' : 'w-0 group-hover:w-full'
+            }`}></span>
+          </Link>
+
+          {/* Mega Menu Dropdown */}
+          <AnimatePresence>
+            {isAboutOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="absolute left-1/2 -translate-x-1/2 top-full pt-6"
+              >
+                <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl min-w-[500px] flex gap-12 overflow-hidden relative">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl"></div>
+                  
+                  {/* Left Column */}
+                  <div className="flex-1">
+                    <h4 className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em] mb-6 border-b border-white/5 pb-2">Experience</h4>
+                    <div className="flex flex-col gap-4">
+                      {link.dropdownItems.left.map((sub) => (
+                        <Link 
+                          key={sub.name} 
+                          href={sub.href}
+                          className="text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap flex items-center group/sub"
+                        >
+                          <span className="w-0 group-hover/sub:w-2 h-px bg-brand-gold mr-0 group-hover/sub:mr-2 transition-all"></span>
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="w-px bg-white/5 self-stretch"></div>
+
+                  {/* Right Column */}
+                  <div className="flex-1">
+                    <h4 className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em] mb-6 border-b border-white/5 pb-2">Network</h4>
+                    <div className="flex flex-col gap-4">
+                      {link.dropdownItems.right.map((sub) => (
+                        <Link 
+                          key={sub.name} 
+                          href={sub.href}
+                          className="text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap flex items-center group/sub"
+                        >
+                          <span className="w-0 group-hover/sub:w-2 h-px bg-brand-gold mr-0 group-hover/sub:mr-2 transition-all"></span>
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    return (
+      <Link
+        key={link.name}
+        href={link.href}
+        className={`text-sm tracking-widest uppercase font-medium transition-colors relative group py-2 ${
+          isActive ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
+        }`}
+      >
+        {link.name}
+        <span className={`absolute -bottom-1 left-0 h-0.5 bg-brand-gold transition-all duration-300 ${
+          isActive ? 'w-full' : 'w-0 group-hover:w-full'
+        }`}></span>
+      </Link>
+    );
+  };
 
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled || isDashboard
-          ? 'bg-royal-deep/90 backdrop-blur-md py-3 shadow-lg'
-          : 'bg-transparent py-5'
+          ? 'bg-royal-deep/90 backdrop-blur-md shadow-lg h-[90px]'
+          : 'bg-gradient-to-b from-black/50 to-transparent h-[120px]'
       }`}
     >
-      <div className="max-container flex justify-between items-center px-4">
-        {/* Logo */}
-        <Link href="/" className="flex items-center">
-            <Image src="/logo.png" alt="shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
-        </Link>
+      {/* Utility Bar - Absolute Top Right */}
+      {!isDashboard && (
+        <div className="absolute top-4 right-8 z-50 hidden md:flex items-center gap-6">
+           {/* Utility Icons */}
+           <button className="text-zinc-100 hover:text-brand-gold transition-colors">
+             <Search size={18} />
+           </button>
+           <button className="text-zinc-100 hover:text-brand-gold transition-colors">
+             <Heart size={18} />
+           </button>
+           
+           {/* Notification Bell */}
+           {user && <NotificationBell />}
 
-        {/* Desktop Navigation - Hidden on Dashboard */}
-        {!isDashboard && (
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
-              
-              if (link.hasDropdown) {
-                return (
-                  <div 
-                    key={link.name}
-                    className="relative"
-                    onMouseEnter={() => setIsAboutOpen(true)}
-                    onMouseLeave={() => setIsAboutOpen(false)}
-                  >
-                    <Link
-                      href={link.href}
-                      className={`text-sm font-medium transition-colors relative group py-2 flex items-center gap-1 ${
-                        isActive || isAboutOpen ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
-                      }`}
-                    >
-                      {link.name}
-                      <span className={`absolute -bottom-1 left-0 h-0.5 bg-brand-gold transition-all duration-300 ${
-                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                      }`}></span>
-                    </Link>
-
-                    {/* Mega Menu Dropdown */}
-                    <AnimatePresence>
-                      {isAboutOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute left-1/2 -translate-x-1/2 top-full pt-4"
-                        >
-                          <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl min-w-[500px] flex gap-12 overflow-hidden relative">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl"></div>
-                            
-                            {/* Left Column */}
-                            <div className="flex-1">
-                              <h4 className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em] mb-6 border-b border-white/5 pb-2">Experience</h4>
-                              <div className="flex flex-col gap-4">
-                                {link.dropdownItems.left.map((sub) => (
-                                  <Link 
-                                    key={sub.name} 
-                                    href={sub.href}
-                                    className="text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap flex items-center group/sub"
-                                  >
-                                    <span className="w-0 group-hover/sub:w-2 h-px bg-brand-gold mr-0 group-hover/sub:mr-2 transition-all"></span>
-                                    {sub.name}
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="w-px bg-white/5 self-stretch"></div>
-
-                            {/* Right Column */}
-                            <div className="flex-1">
-                              <h4 className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em] mb-6 border-b border-white/5 pb-2">Network</h4>
-                              <div className="flex flex-col gap-4">
-                                {link.dropdownItems.right.map((sub) => (
-                                  <Link 
-                                    key={sub.name} 
-                                    href={sub.href}
-                                    className="text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap flex items-center group/sub"
-                                  >
-                                    <span className="w-0 group-hover/sub:w-2 h-px bg-brand-gold mr-0 group-hover/sub:mr-2 transition-all"></span>
-                                    {sub.name}
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              }
-
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`text-sm font-medium transition-colors relative group ${
-                    isActive ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
-                  }`}
-                >
-                  {link.name}
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-brand-gold transition-all duration-300 ${
-                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}></span>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Action Buttons */}
-        <div className="hidden md:flex items-center gap-4">
-          {!isDashboard && (
-            <>
-              <button className="p-2 text-zinc-100 hover:text-brand-gold transition-colors">
-                <Search size={20} />
-              </button>
-              <button className="p-2 text-zinc-100 hover:text-brand-gold transition-colors">
-                <Heart size={20} />
-              </button>
-            </>
-          )}
-          
-          {/* Notification Bell - Always visible when logged in */}
-          {user && <NotificationBell />}
-
-          {isAuthenticated ? (
+           {/* Auth Button */}
+           {isAuthenticated ? (
             <button
                onClick={logout}
-               className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-red-500/50 text-red-500 font-semibold text-sm hover:bg-red-500 hover:text-white transition-all"
+               className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-500/30 text-red-400 font-semibold text-xs hover:bg-red-500/10 hover:text-red-300 transition-all uppercase tracking-wider"
             >
-               <User size={16} />
+               <User size={14} />
                Logout
             </button>
           ) : (
             <Link
               href="/auth/login"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-gold text-royal-deep font-semibold text-sm hover:bg-brand-gold-light transition-colors shadow-lg shadow-brand-gold/10 active:scale-95 duration-150"
+              className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold font-bold text-xs hover:bg-brand-gold hover:text-royal-deep transition-all uppercase tracking-wider"
             >
-              <User size={16} />
+              <User size={14} />
               Login
             </Link>
           )}
         </div>
+      )}
 
-        {/* Mobile Menu Button - Hidden on Dashboard (Dashboard has its own sidebar) */}
+      {/* Main Navigation Container */}
+      <div className="max-container h-full flex justify-center items-center px-4 relative">
+        
+        {/* Mobile: Logo Centered, Menu Icon Left */}
+        <div className="md:hidden w-full flex justify-between items-center">
+             {!isDashboard && (
+              <button
+                className="text-brand-gold p-2"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label={isOpen ? "Close Menu" : "Open Menu"}
+              >
+                {isOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
+            )}
+            
+            <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2">
+                <Image src="/logo.png" alt="shwapner Thikana" width={110} height={64} className="h-14 w-auto object-contain" />
+            </Link>
+
+            {/* Mobile Search/Cart Placeholder for balance */}
+            <div className="w-10"></div>
+        </div>
+
+        {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
-          <button
-            className="md:hidden text-brand-gold p-2"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Close Menu" : "Open Menu"}
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          <div className="hidden md:flex items-center w-full justify-center">
+            
+            {/* Left Nav */}
+            <div className="flex items-center gap-10">
+               {leftNav.map(renderNavLink)}
+            </div>
+
+            {/* Centered Logo */}
+            <Link href="/" className="mx-12 hover:scale-105 transition-transform duration-300">
+                <Image src="/logo.png" alt="shwapner Thikana" width={140} height={80} className="h-20 w-auto object-contain drop-shadow-2xl" />
+            </Link>
+
+            {/* Right Nav */}
+            <div className="flex items-center gap-10">
+               {rightNav.map(renderNavLink)}
+            </div>
+
+          </div>
+        )}
+
+        {/* Dashboard Logo View (Keep simple) */}
+        {isDashboard && (
+           <Link href="/" className="flex items-center mr-auto">
+               <Image src="/logo.png" alt="shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
+           </Link>
         )}
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation Menu Overlay */}
       <AnimatePresence>
         {isOpen && !isDashboard && (
           <motion.div
-            initial={{ opacity: 0, x: '100%' }}
+            initial={{ opacity: 0, x: '-100%' }} // Slide from left for hamburger
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
+            exit={{ opacity: 0, x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 top-[60px] bg-royal-deep/98 z-40 md:hidden flex flex-col p-8 gap-6 backdrop-blur-xl overflow-y-auto"
+            className="fixed inset-0 top-[90px] bg-royal-deep/98 z-40 md:hidden flex flex-col p-8 gap-6 backdrop-blur-xl overflow-y-auto border-t border-white/5"
           >
-            {navLinks.map((link) => {
+            {[...leftNav, ...rightNav].map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
               
               if (link.hasDropdown) {
                 return (
                   <div key={link.name} className="flex flex-col gap-4">
-                    <span className="text-2xl font-bold text-brand-gold italic">{link.name}</span>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-3 pl-4">
+                    <span className="text-xl font-bold text-brand-gold italic border-b border-brand-gold/20 pb-2">{link.name}</span>
+                    <div className="grid grid-cols-1 gap-y-3 pl-4">
                       {[...link.dropdownItems.left, ...link.dropdownItems.right].map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.href}
-                          className="text-lg font-medium text-zinc-300 hover:text-brand-gold py-1"
+                          className="text-base font-medium text-zinc-300 hover:text-brand-gold py-1 flex items-center gap-2"
                           onClick={() => setIsOpen(false)}
                         >
+                          <div className="w-1.5 h-1.5 rounded-full bg-brand-gold/50"></div>
                           {sub.name}
                         </Link>
                       ))}
@@ -256,7 +289,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`text-2xl font-semibold border-b border-brand-gold/10 pb-4 transition-colors ${
+                  className={`text-xl font-semibold border-b border-white/5 pb-4 transition-colors ${
                     isActive ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
                   }`}
                   onClick={() => setIsOpen(false)}
@@ -265,7 +298,9 @@ const Navbar = () => {
                 </Link>
               );
             })}
-            <div className="mt-auto flex flex-col gap-4">
+            
+            <div className="mt-8 pt-8 border-t border-white/10 flex flex-col gap-4">
+               {/* Mobile Utilities */}
               {isAuthenticated ? (
                 <button
                   onClick={() => {
@@ -273,7 +308,6 @@ const Navbar = () => {
                     setIsOpen(false);
                   }}
                   className="w-full py-4 rounded-xl bg-red-500/10 text-red-500 font-bold text-center text-lg active:scale-95 duration-150"
-                  aria-label="Sign Out"
                 >
                   Sign Out
                 </button>
@@ -286,10 +320,16 @@ const Navbar = () => {
                   Login / Register
                 </Link>
               )}
-              <div className="flex justify-center gap-8 py-4">
-                <Search className="text-brand-gold" size={24} />
-                <Heart className="text-brand-gold" size={24} />
-              </div>
+               <div className="flex justify-center gap-8 py-4 text-zinc-400">
+                  <div className="flex flex-col items-center gap-2">
+                     <Search size={24} />
+                     <span className="text-xs uppercase tracking-widest">Search</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                     <Heart size={24} />
+                     <span className="text-xs uppercase tracking-widest">Wishlist</span>
+                  </div>
+               </div>
             </div>
           </motion.div>
         )}
