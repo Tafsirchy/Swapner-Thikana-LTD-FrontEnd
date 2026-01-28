@@ -45,11 +45,18 @@ const Footer = () => {
           <div className="flex flex-col gap-6">
             <h4 className="text-brand-gold font-semibold tracking-wide uppercase text-sm">Quick Links</h4>
             <ul className="flex flex-col gap-3">
-              {['Properties', 'New Projects', 'Luxury Villas', 'Commercial Space', 'Sell with Us', 'Agents'].map((item) => (
-                <li key={item}>
-                  <Link href="#" className="text-zinc-400 hover:text-brand-gold text-sm transition-colors flex items-center group">
+              {[
+                { label: 'Properties', href: '/properties' },
+                { label: 'New Projects', href: '/projects' },
+                { label: 'Luxury Villas', href: '/properties/luxury-villas' },
+                { label: 'Commercial Space', href: '/properties/commercial' },
+                { label: 'Sell with Us', href: '/sell' },
+                { label: 'Agents', href: '/agents' }
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-zinc-400 hover:text-brand-gold text-sm transition-colors flex items-center group">
                     <span className="w-0 h-0.5 bg-brand-gold mr-0 transition-all duration-300 group-hover:w-2 group-hover:mr-2"></span>
-                    {item}
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -59,7 +66,7 @@ const Footer = () => {
           {/* Contact Info */}
           <div className="flex flex-col gap-6">
             <h4 className="text-brand-gold font-semibold tracking-wide uppercase text-sm">Contact Us</h4>
-            <ul className="flex flex-col gap-4">
+            <ul className="flex flex-col gap-6">
               <li className="flex items-start gap-3 group">
                 <div className="p-2 rounded-lg bg-zinc-900 group-hover:bg-brand-emerald/10 transition-colors">
                   <MapPin size={18} className="text-brand-gold group-hover:text-brand-emerald transition-colors" />
