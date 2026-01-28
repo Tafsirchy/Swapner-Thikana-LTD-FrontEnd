@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="flex flex-col w-full">
       {/* Hero Section */}
-      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Background Image with Overlay */}
         <motion.div 
           className="absolute inset-0 z-0 bg-cover bg-center"
@@ -19,7 +19,7 @@ export default function Home() {
           initial={{ scale: 1 }}
           animate={{ scale: 1.1 }}
           transition={{ 
-            duration: 10, 
+            duration: 5, 
             repeat: Infinity, 
             repeatType: "reverse", 
             ease: "linear" 
@@ -28,7 +28,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-royal-deep/80 via-royal-deep/40 to-royal-deep/90"></div>
         </motion.div>
 
-        <div className="max-container px-4 pt-20 relative z-10 text-center text-zinc-100">
+        <div className="max-container px-4 pt-44 md:pt-32 relative z-10 text-center text-zinc-100">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
