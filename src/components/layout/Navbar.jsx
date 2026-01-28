@@ -223,7 +223,7 @@ const Navbar = () => {
 
         {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
-          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] py-2 items-center w-full">
+          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] py-6 items-end w-full">
             
             {/* Left Nav - Aligned Left */}
             <div className="flex items-center gap-8 justify-start">
