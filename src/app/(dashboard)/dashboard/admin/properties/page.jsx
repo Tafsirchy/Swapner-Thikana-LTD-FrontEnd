@@ -68,7 +68,7 @@ const AdminPropertiesPage = () => {
         p._id === propertyId ? { ...p, status: 'published' } : p
       ));
       toast.success('Property approved and published');
-    } catch (error) {
+    } catch {
       toast.error('Failed to approve property');
     }
   };
@@ -81,7 +81,7 @@ const AdminPropertiesPage = () => {
         p._id === propertyId ? { ...p, status: 'rejected' } : p
       ));
       toast.success('Property rejected');
-    } catch (error) {
+    } catch {
       toast.error('Failed to reject property');
     }
   };
@@ -93,7 +93,7 @@ const AdminPropertiesPage = () => {
         p._id === propertyId ? { ...p, featured: !currentStatus } : p
       ));
       toast.success(currentStatus ? 'Removed from featured' : 'Added to featured');
-    } catch (error) {
+    } catch {
       toast.error('Failed to update featured status');
     }
   };
@@ -206,7 +206,7 @@ const AdminPropertiesPage = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <Link
-                        href={`/properties/${property._id}`}
+                        href={`/properties/${property.slug}`}
                         className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                         title="View"
                       >
