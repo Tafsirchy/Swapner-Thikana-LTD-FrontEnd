@@ -82,6 +82,26 @@ const FeatureShowcase = () => {
   const activeProperty = properties[activeIndex];
   const thumbnailIndices = [0, 1, 2].map(offset => (activeIndex + offset) % properties.length);
 
+  // Helper to split property title for mixed typography
+  const renderMixedTitle = (title) => {
+    const words = title.split(' ');
+    if (words.length <= 1) return title;
+    
+    // Pick a word to italicize/goldify - usually the middle one or a descriptive one
+    // For simplicity, we'll italicize the second word if it's more than 2 words, or the last word
+    const indexToStylize = words.length > 2 ? 1 : words.length - 1;
+    
+    return words.map((word, i) => (
+      <span key={i}>
+        {i === indexToStylize ? (
+          <span className="text-brand-gold italic font-normal ml-2 mr-2">{word}</span>
+        ) : (
+          word
+        )}{' '}
+      </span>
+    ));
+  };
+
   return (
     <section 
       className="py-24 bg-royal-deep text-white overflow-hidden relative" 
@@ -92,30 +112,30 @@ const FeatureShowcase = () => {
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand-gold/5 to-transparent pointer-events-none" />
 
       <div className="max-container px-4 relative z-10">
-        {/* Editorial Header */}
+        {/* Editorial Header - Integrated style from "Invest" section */}
         <div className="flex flex-col lg:flex-row justify-between items-end mb-20 gap-12">
           <div className="flex flex-col">
             <motion.span 
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              className="text-brand-gold font-cinzel tracking-[0.4em] text-xs mb-4 block uppercase font-bold"
+              className="text-brand-emerald font-bold tracking-[0.2em] uppercase text-xs mb-4 block"
             >
               Exclusivity Defined
             </motion.span>
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="text-6xl md:text-8xl font-cinzel text-white leading-[0.9] flex flex-col"
+              className="text-5xl md:text-7xl lg:text-8xl font-cinzel text-white leading-tight flex flex-col font-bold"
             >
               <span>THE SELECTION</span>
-              <span className="text-zinc-800 italic ml-12 md:ml-32 -mt-2">Portfolio</span>
+              <span className="text-brand-gold italic font-normal ml-12 md:ml-32 -mt-2">Portfolio</span>
             </motion.h2>
           </div>
           
           <div className="max-w-md lg:text-right">
-            <p className="text-zinc-500 font-inter text-sm leading-relaxed italic border-l-2 lg:border-l-0 lg:border-r-2 border-brand-gold/30 pl-4 lg:pl-0 lg:pr-4">
-              "shwapner Thikana curates only the most architecturally significant residences across Bangladesh, 
-              focusing on heritage, innovation, and the art of modern luxury."
+            <p className="text-zinc-400 font-cinzel text-lg leading-relaxed italic border-l-2 lg:border-l-0 lg:border-r-2 border-brand-gold/30 pl-4 lg:pl-0 lg:pr-4">
+              &quot;shwapner Thikana curates only the most architecturally significant residences across Bangladesh, 
+              focusing on heritage, innovation, and the art of modern luxury.&quot;
             </p>
           </div>
         </div>
@@ -168,9 +188,9 @@ const FeatureShowcase = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6 }}
-                        className="text-4xl md:text-5xl font-cinzel text-white tracking-tight drop-shadow-2xl"
+                        className="text-4xl md:text-5xl font-cinzel text-white tracking-tight drop-shadow-2xl font-bold uppercase"
                       >
-                        {activeProperty.title}
+                        {renderMixedTitle(activeProperty.title)}
                       </motion.h3>
                     </div>
 
@@ -180,8 +200,8 @@ const FeatureShowcase = () => {
                       transition={{ delay: 0.8 }}
                     >
                       <Link 
-                        href={`/properties/${activeProperty._id}`}
-                        className="group/btn flex items-center justify-center bg-brand-gold text-royal-deep px-8 py-5 rounded-full font-cinzel font-bold text-xs tracking-[0.2em] uppercase hover:bg-white transition-all transform hover:-translate-y-1 shadow-lg"
+                        href={`/properties/${activeProperty.slug}`}
+                        className="group/btn flex items-center justify-center bg-brand-gold text-royal-deep px-8 py-5 rounded-full font-cinzel font-bold text-xs tracking-[0.2em] uppercase hover:bg-white transition-all transform hover:-translate-y-1 shadow-lg shadow-brand-gold/20"
                       >
                         Explore Now
                         <ChevronRight className="ml-2 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -203,7 +223,7 @@ const FeatureShowcase = () => {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex justify-between items-center text-zinc-500">
                <div className="flex items-center gap-4 font-cinzel text-[10px] tracking-[0.3em] uppercase">
-                  <span className="text-brand-gold">0{(activeIndex + 1)}</span>
+                  <span className="text-brand-gold font-bold">0{(activeIndex + 1)}</span>
                   <div className="w-20 h-[1px] bg-zinc-800 relative">
                      <motion.div 
                        className="absolute top-0 left-0 h-full bg-brand-gold"
@@ -214,16 +234,16 @@ const FeatureShowcase = () => {
                   <span>0{properties.length}</span>
                </div>
 
-               <div className="flex items-center gap-6">
+               <div className="flex items-center gap-6 text-brand-gold">
                 <button 
                   onClick={handlePrev} 
-                  className="hover:text-brand-gold transition-all p-3 border border-zinc-800 rounded-full hover:border-brand-gold group"
+                  className="hover:text-white transition-all p-3 border border-brand-gold/30 rounded-full hover:bg-brand-gold group"
                 >
                   <ChevronRight size={20} className="rotate-180 group-active:scale-95 transition-transform" />
                 </button>
                 <button 
                    onClick={handleNext} 
-                   className="hover:text-brand-gold transition-all p-3 border border-zinc-800 rounded-full hover:border-brand-gold group"
+                   className="hover:text-white transition-all p-3 border border-brand-gold/30 rounded-full hover:bg-brand-gold group"
                 >
                   <ChevronRight size={20} className="group-active:scale-95 transition-transform" />
                 </button>
@@ -252,7 +272,7 @@ const FeatureShowcase = () => {
                         src={property.images[0] || '/placeholder.jpg'} 
                         alt={property.title}
                         fill
-                        className={`object-cover transition-transform duration-700 ${isSelected ? 'scale-110' : 'group-hover:scale-110 grayscale group-hover:grayscale-0'}`}
+                        className={`object-cover transition-transform duration-700 ${isSelected ? 'scale-110' : 'group-hover:scale-110'}`}
                       />
                       {isSelected && (
                         <div className="absolute inset-0 ring-2 ring-inset ring-brand-gold rounded-2xl z-10" />
@@ -263,7 +283,7 @@ const FeatureShowcase = () => {
                       <span className={`text-[10px] font-cinzel tracking-[0.2em] uppercase mb-2 ${isSelected ? 'text-brand-gold' : 'text-zinc-600'}`}>
                         {property.location?.city} • {property.propertyType}
                       </span>
-                      <h4 className={`text-lg font-cinzel leading-snug transition-colors ${isSelected ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
+                      <h4 className={`text-lg font-cinzel leading-snug transition-colors font-bold uppercase ${isSelected ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300'}`}>
                         {property.title}
                       </h4>
                       <div className={`mt-3 flex items-center gap-2 text-xs font-inter ${isSelected ? 'text-brand-gold/80' : 'text-zinc-600'}`}>
