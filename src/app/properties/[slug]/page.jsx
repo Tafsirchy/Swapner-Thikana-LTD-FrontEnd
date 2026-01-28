@@ -1,41 +1,21 @@
-
-import React from 'react';
+import api from '@/lib/api';
 import PropertyDetailClient from '@/components/property/PropertyDetailClient';
 import StructuredData from '@/components/seo/StructuredData';
 
 // This is a Server Component
 const PropertyDetailPage = async ({ params }) => {
   const { slug } = await params;
+  let property = null;
   
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties/slug/${slug}`, {
-      cache: 'no-store' // Ensure fresh data, or use 'force-cache' / next: { revalidate: 60 } for ISR
-    });
+    // Using the same API library as the client for consistency and better error handling
+    const res = await api.properties.getBySlug(slug);
+    property = res.data.property;
+  } catch (error) {
+    console.error('Error fetching property by slug:', error);
+  }
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch property');
-    }
-
-    const data = await res.json();
-    const property = data.data.property;
-
-    return (
-      <>
-        <StructuredData type="RealEstateListing" data={property} />
-        <StructuredData 
-          type="BreadcrumbList" 
-          data={{
-            items: [
-              { name: 'Home', path: '/' },
-              { name: 'Properties', path: '/properties' },
-              { name: property.title, path: `/properties/${slug}` }
-            ]
-          }} 
-        />
-        <PropertyDetailClient initialProperty={property} />
-      </>
-    );
-  } catch {
+  if (!property) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-royal-deep text-zinc-400">
         <div className="text-center">
@@ -45,15 +25,31 @@ const PropertyDetailPage = async ({ params }) => {
       </div>
     );
   }
+
+  return (
+    <>
+      <StructuredData type="RealEstateListing" data={property} />
+      <StructuredData 
+        type="BreadcrumbList" 
+        data={{
+          items: [
+            { name: 'Home', path: '/' },
+            { name: 'Properties', path: '/properties' },
+            { name: property.title, path: `/properties/${slug}` }
+          ]
+        }} 
+      />
+      <PropertyDetailClient initialProperty={property} />
+    </>
+  );
 };
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties/slug/${slug}`);
-    const data = await res.json();
-    const property = data.data.property;
+    const res = await api.properties.getBySlug(slug);
+    const property = res.data.property;
 
     if (!property) {
         return {

@@ -1,3 +1,5 @@
+import api from '@/lib/api';
+
 export const dynamic = 'force-dynamic';
 
 export default async function sitemap() {
@@ -18,10 +20,7 @@ export default async function sitemap() {
 
   try {
     // Fetch dynamic property routes
-    // Note: Fetching ALL properties might be heavy. For sitemap, usually we want a lighter endpoint or pagination.
-    // For now, assuming standard get call works or we limit to recent 1000.
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties?limit=1000`);
-    const data = await res.json();
+    const data = await api.properties.getAll({ limit: 1000 });
     const properties = data.data.properties || [];
 
     const propertyRoutes = properties.map((property) => ({
