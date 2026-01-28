@@ -48,10 +48,9 @@ const Footer = () => {
               {[
                 { label: 'Properties', href: '/properties' },
                 { label: 'New Projects', href: '/projects' },
-                { label: 'Luxury Villas', href: '/properties/luxury-villas' },
-                { label: 'Commercial Space', href: '/properties/commercial' },
                 { label: 'Sell with Us', href: '/sell' },
-                { label: 'Agents', href: '/agents' }
+                { label: 'Agents', href: '/agents' },
+                { label: 'Contact Us', href: '/contact' }
               ].map((item) => (
                 <li key={item.label}>
                   <Link href={item.href} className="text-zinc-400 hover:text-brand-gold text-sm transition-colors flex items-center group">
