@@ -1,4 +1,4 @@
-import { Playfair_Display, Lato } from "next/font/google";
+import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
@@ -10,15 +10,14 @@ import StructuredData from "@/components/seo/StructuredData";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { AuthProvider } from "@/context/AuthContext";
 
-const playfair = Playfair_Display({
+const cinzel = Cinzel({
   subsets: ["latin"],
   variable: "--font-serif",
   display: "swap",
 });
 
-const lato = Lato({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "700", "900"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -55,7 +54,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${lato.variable} ${playfair.variable} font-sans antialiased text-zinc-100 bg-royal-deep`}>
+      <body className={`${inter.variable} ${cinzel.variable} font-sans antialiased text-zinc-100 bg-royal-deep`}>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         <AuthProvider>
           <PushNotificationManager>

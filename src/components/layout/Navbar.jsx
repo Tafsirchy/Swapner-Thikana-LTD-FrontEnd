@@ -143,7 +143,7 @@ const Navbar = () => {
       <Link
         key={link.name}
         href={link.href}
-        className={`text-sm tracking-widest uppercase font-medium transition-colors relative group py-2 ${
+        className={`text-sm tracking-widest uppercase font-bold font-serif transition-colors relative group py-2 ${
           isActive ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
         }`}
       >
