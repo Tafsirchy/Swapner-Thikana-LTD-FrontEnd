@@ -55,6 +55,7 @@ const DashboardLayout = ({ children }) => {
             { name: 'Agencies', href: '/dashboard/admin/about/agencies' },
             { name: 'History', href: '/dashboard/admin/about/history' },
             { name: 'Management', href: '/dashboard/admin/about/management' },
+            { name: 'Agents', href: '/dashboard/admin/about/agents' },
             { name: 'Newsletter', href: '/dashboard/admin/about/newsletter' },
           ]},
           { name: 'Properties', href: '/dashboard/admin/properties', icon: Building2 },

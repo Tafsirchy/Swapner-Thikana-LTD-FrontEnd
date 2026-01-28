@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { History, Plus, Search } from 'lucide-react';
+import { History, Plus } from 'lucide-react';
 
 const AdminHistoryPage = () => {
   return (
