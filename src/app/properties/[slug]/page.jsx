@@ -5,7 +5,7 @@ import StructuredData from '@/components/seo/StructuredData';
 
 // This is a Server Component
 const PropertyDetailPage = async ({ params }) => {
-  const { slug } = params;
+  const { slug } = await params;
   
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties/slug/${slug}`, {
@@ -48,7 +48,7 @@ const PropertyDetailPage = async ({ params }) => {
 };
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/properties/slug/${slug}`);

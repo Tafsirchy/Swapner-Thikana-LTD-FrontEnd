@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import SmartImage from './SmartImage';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight, Bookmark } from 'lucide-react';
 
@@ -25,7 +25,7 @@ const BlogCard = ({ post }) => {
       className="group bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brand-gold/20 transition-all duration-500"
     >
       <div className="relative h-64 overflow-hidden">
-        <Image
+        <SmartImage
           src={image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop'}
           alt={title}
           fill

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Star, MessageSquare, Send, Loader2, User, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
@@ -19,20 +19,26 @@ const ReviewSection = ({ propertyId }) => {
     comment: ''
   });
 
-  const fetchReviews = useCallback(async () => {
+  const lastFetchedId = React.useRef(null);
+
+  const fetchReviews = useCallback(async (force = false) => {
+    if (!propertyId || (loading && !force)) return;
+    if (!force && lastFetchedId.current === propertyId) return;
+
     try {
       setLoading(true);
       const res = await api.reviews.getPropertyReviews(propertyId);
       setReviews(res.data.reviews);
+      lastFetchedId.current = propertyId;
     } catch (err) {
       console.error('Error fetching reviews:', err);
     } finally {
       setLoading(false);
     }
-  }, [propertyId]);
+  }, [propertyId, loading]);
 
   useEffect(() => {
-    if (propertyId) fetchReviews();
+    fetchReviews();
   }, [propertyId, fetchReviews]);
 
   const handleSubmit = async (e) => {

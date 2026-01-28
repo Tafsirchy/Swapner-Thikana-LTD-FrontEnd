@@ -21,7 +21,9 @@ const LoginPage = () => {
     e.preventDefault();
     setIsLoading(true);
     
+    console.log('Login Form Submitted:', { email: formData.email, passwordLength: formData.password.length });
     const result = await login(formData);
+    console.log('Login API result:', result);
     
     if (result.success) {
       toast.success('Welcome back to shwapner Thikana!');

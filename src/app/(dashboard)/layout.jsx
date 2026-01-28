@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutDashboard, Heart, Search, Settings, 
   Menu, X, Building2, PlusCircle, Users, FileText, 
-  BarChart3, Bell
+  BarChart3, Bell, MessageSquare
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image';
@@ -41,7 +41,7 @@ const DashboardLayout = ({ children }) => {
         ];
       case 'admin':
         return [
-          { name: 'Overview', href: '/dashboard/admin', icon: LayoutDashboard },
+          { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
           { name: 'Users', href: '/dashboard/admin/users', icon: Users },
           { name: 'Properties', href: '/dashboard/admin/properties', icon: Building2 },
           { name: 'Projects', href: '/dashboard/admin/projects', icon: Building2 },
@@ -61,7 +61,7 @@ const DashboardLayout = ({ children }) => {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-zinc-950 flex font-sans text-zinc-100 pt-20">
+      <div className="min-h-screen max-container flex font-sans text-zinc-100 pt-20">
         
         {/* Mobile Sidebar Overlay */}
         <AnimatePresence>

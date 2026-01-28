@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { MapPin, Bed, Bath, Move, Heart, Plus, Check } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
 import WishlistModal from './WishlistModal';
 import { AnimatePresence } from 'framer-motion';
+import SmartImage from './SmartImage';
 
 import { addToCompare, removeFromCompare, subscribeToCompare } from '@/utils/compareStore';
 
@@ -67,7 +67,7 @@ const PropertyCard = ({ property }) => {
     >
       {/* Image Container */}
       <div className="relative h-64 w-full overflow-hidden">
-        <Image
+        <SmartImage
           src={images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop'}
           alt={title}
           fill
@@ -134,44 +134,53 @@ const PropertyCard = ({ property }) => {
 
       {/* Content */}
       <div className="p-6">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-[10px] font-bold text-brand-emerald uppercase tracking-[0.2em]">
-            {propertyType}
-          </span>
-        </div>
-        
         <Link href={`/properties/${slug}`}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[10px] font-bold text-brand-emerald uppercase tracking-[0.2em]">
+              {propertyType}
+            </span>
+          </div>
+          
           <h3 className="text-xl font-bold text-zinc-100 mb-2 truncate group-hover:text-brand-gold transition-colors">
             {title}
           </h3>
-        </Link>
-        
-        <div className="flex items-center gap-1.5 text-zinc-400 text-sm mb-6">
-          <MapPin size={14} className="text-brand-gold" />
-          <span className="truncate">{location.area}, {location.city}</span>
-        </div>
+          
+          <div className="flex items-center gap-1.5 text-zinc-400 text-sm mb-6">
+            <MapPin size={14} className="text-brand-gold" />
+            <span className="truncate">{location.area}, {location.city}</span>
+          </div>
 
-        {/* Features */}
-        <div className="flex items-center justify-between pt-6 border-t border-white/5">
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-white/5">
-              <Bed size={16} className="text-brand-gold" />
+          {/* Features */}
+          <div className="flex items-center justify-between pt-6 border-t border-white/5 mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-white/5">
+                <Bed size={16} className="text-brand-gold" />
+              </div>
+              <span className="text-sm font-medium text-zinc-300">{bedrooms}</span>
             </div>
-            <span className="text-sm font-medium text-zinc-300">{bedrooms}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-white/5">
-              <Bath size={16} className="text-brand-gold" />
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-white/5">
+                <Bath size={16} className="text-brand-gold" />
+              </div>
+              <span className="text-sm font-medium text-zinc-300">{bathrooms}</span>
             </div>
-            <span className="text-sm font-medium text-zinc-300">{bathrooms}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-white/5">
-              <Move size={16} className="text-brand-gold" />
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-white/5">
+                <Move size={16} className="text-brand-gold" />
+              </div>
+              <span className="text-sm font-medium text-zinc-300">{size} sqft</span>
             </div>
-            <span className="text-sm font-medium text-zinc-300">{size} sqft</span>
           </div>
-        </div>
+        </Link>
+
+        {/* Action Button */}
+        <Link 
+          href={`/properties/${slug}`}
+          className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-zinc-100 font-bold text-sm flex items-center justify-center gap-2 group-hover:bg-brand-gold group-hover:text-royal-deep transition-all duration-300"
+        >
+          View Details
+          <Plus size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+        </Link>
       </div>
 
       <AnimatePresence>

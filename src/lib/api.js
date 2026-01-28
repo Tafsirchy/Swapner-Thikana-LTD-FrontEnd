@@ -26,6 +26,10 @@ apiInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
+        // Prevent redirect loop if already on auth pages
+        if (!window.location.pathname.startsWith('/auth/')) {
+          window.location.href = '/auth/login';
+        }
       }
     }
     return Promise.reject(error);

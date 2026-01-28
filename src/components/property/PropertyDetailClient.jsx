@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import dynamic from 'next/dynamic';
 import { 
   MapPin, Bed, Bath, Move, Heart, Share2, 
@@ -73,8 +73,8 @@ const PropertyDetailClient = ({ initialProperty }) => {
     <div className="min-h-screen bg-royal-deep pt-24 pb-20">
       {/* Dynamic Header / Gallery Section */}
       <section className="relative h-[70vh] w-full overflow-hidden">
-        <Image 
-          src={property.images?.[activeImage] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop'} 
+        <SmartImage 
+          src={property.images?.[activeImage] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2075&auto=format&fit=crop'} 
           alt={property.title}
           fill
           className="object-cover"
@@ -109,7 +109,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
               className={`relative w-20 h-14 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${activeImage === idx ? 'border-brand-gold' : 'border-transparent opacity-60'}`}
               aria-label={`View image ${idx + 1}`}
             >
-              <Image src={img} alt="" fill className="object-cover" />
+              <SmartImage src={img} alt="" fill className="object-cover" />
             </button>
           ))}
         </div>
@@ -177,10 +177,45 @@ const PropertyDetailClient = ({ initialProperty }) => {
                   <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
                     <Calendar size={24} className="text-brand-gold" />
                   </div>
-                  <span className="text-lg font-bold text-zinc-100">2023 <span className="text-sm font-normal text-zinc-500">Built</span></span>
+                  <span className="text-lg font-bold text-zinc-100">{property.yearBuilt || '2023'} <span className="text-sm font-normal text-zinc-500">Built</span></span>
                 </div>
               </div>
             </div>
+
+            {/* Agent Profile */}
+            {property.agent && (
+              <div className="p-10 bg-white/5 rounded-[3rem] border border-white/10">
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-brand-gold p-1 flex items-center justify-center bg-brand-gold/10">
+                    {property.agent?.avatar ? (
+                      <SmartImage 
+                        src={property.agent.avatar} 
+                        alt={property.agent.name}
+                        fill
+                        className="object-cover rounded-full"
+                      />
+                    ) : (
+                      <span className="text-3xl font-bold text-brand-gold uppercase">
+                        {property.agent?.name?.charAt(0)}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-zinc-100">{property.agent.name}</h3>
+                    <p className="text-brand-gold font-medium">{property.agent.specialization || 'Luxury Property Specialist'}</p>
+                    <div className="flex items-center gap-4 mt-2 text-zinc-400 text-sm">
+                      <span className="flex items-center gap-1"><ShieldCheck size={14} className="text-brand-emerald" /> Verified Agent</span>
+                      {property.agent.experience && <span>• {property.agent.experience} Experience</span>}
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
+                  <p className="text-zinc-400 italic text-sm leading-relaxed">
+                    &quot;{property.agent.bio || `Specializing in ${property.location.area} luxury real estate, I am dedicated to helping you find your dream address with personalized concierge service.`}&quot;
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Description */}
             <div className="p-10 bg-white/5 rounded-[3rem] border border-white/10">
@@ -233,9 +268,28 @@ const PropertyDetailClient = ({ initialProperty }) => {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-8">
+          <div className="space-y-8 sticky top-28 h-fit">
+            {/* Mortgage Calculator Button */}
+            <button
+              onClick={() => setShowCalculator(true)}
+              className="w-full p-6 glass border-brand-gold/20 rounded-2xl hover:border-brand-gold/40 transition-all group"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center group-hover:bg-brand-gold/20 transition-colors">
+                    <Calculator className="text-brand-gold" size={22} />
+                  </div>
+                  <div className="text-left">
+                    <h4 className="font-bold text-zinc-100 mb-0.5">Calculate Mortgage</h4>
+                    <p className="text-xs text-zinc-400">Estimate monthly payments</p>
+                  </div>
+                </div>
+                <ChevronRight className="text-zinc-500 group-hover:text-brand-gold transition-colors" size={20} />
+              </div>
+            </button>
+
             {/* Inquiry Form */}
-            <div className="p-8 glass rounded-[2.5rem] border-brand-gold/20 shadow-xl shadow-brand-gold/5 sticky top-28">
+            <div className="p-8 glass rounded-[2.5rem] border-brand-gold/20 shadow-xl shadow-brand-gold/5">
               <h3 className="text-xl font-bold text-zinc-100 mb-6 flex items-center gap-2">
                 <ShieldCheck className="text-brand-gold" size={24} />
                 Exclusive Inquiry
@@ -269,6 +323,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
                 <textarea 
                   rows="4"
                   required
+                  placeholder="Additional message or preferences..."
                   className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100 resize-none"
                   value={inquiry.message}
                   onChange={(e) => setInquiry({...inquiry, message: e.target.value})}
@@ -285,27 +340,6 @@ const PropertyDetailClient = ({ initialProperty }) => {
                 By submitting, you agree to our concierge privacy protocols.
               </p>
             </div>
-
-            {/* Mortgage Calculator Button */}
-            {property.listingType === 'sale' && (
-              <button
-                onClick={() => setShowCalculator(true)}
-                className="w-full p-6 glass border-brand-gold/20 rounded-2xl hover:border-brand-gold/40 transition-all group"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center group-hover:bg-brand-gold/20 transition-colors">
-                      <Calculator className="text-brand-gold" size={22} />
-                    </div>
-                    <div className="text-left">
-                      <h4 className="font-bold text-zinc-100 mb-0.5">Calculate Mortgage</h4>
-                      <p className="text-xs text-zinc-400">Estimate monthly payments</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="text-zinc-500 group-hover:text-brand-gold transition-colors" size={20} />
-                </div>
-              </button>
-            )}
 
             {/* Social Share */}
             <div className="flex justify-center gap-4">

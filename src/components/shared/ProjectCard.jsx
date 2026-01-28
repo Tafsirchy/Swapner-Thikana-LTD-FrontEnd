@@ -2,9 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import SmartImage from './SmartImage';
 import { motion } from 'framer-motion';
-import { MapPin, Building2, Calendar, ArrowRight } from 'lucide-react';
+import { MapPin, Calendar, ArrowRight } from 'lucide-react';
 
 const ProjectCard = ({ project }) => {
   const {
@@ -31,7 +31,7 @@ const ProjectCard = ({ project }) => {
       className="group relative bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
     >
       <div className="relative h-80 w-full">
-        <Image
+        <SmartImage
           src={images?.[0] || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'}
           alt={title}
           fill

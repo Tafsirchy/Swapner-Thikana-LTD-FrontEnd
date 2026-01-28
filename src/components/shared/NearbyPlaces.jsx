@@ -52,6 +52,17 @@ const NearbyPlaces = ({ lat, lng }) => {
       const url = `https://overpass-api.de/api/interpreter?data=[out:json];(${combinedQuery});out body;`;
       
       const response = await fetch(url);
+      const contentType = response.headers.get('content-type');
+      
+      if (!response.ok || !contentType || !contentType.includes('application/json')) {
+        console.warn('NearbyPlaces: Received non-JSON response from Overpass API', { 
+          status: response.status, 
+          contentType 
+        });
+        setLoading(false);
+        return;
+      }
+
       const data = await response.json();
       
       CATEGORIES.forEach(cat => {

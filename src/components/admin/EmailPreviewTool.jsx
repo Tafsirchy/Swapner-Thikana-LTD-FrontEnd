@@ -15,14 +15,6 @@ const EmailPreviewTool = () => {
     url: 'https://example.com/verify-account'
   });
 
-  useEffect(() => {
-    fetchTemplates();
-  }, []);
-
-  useEffect(() => {
-    fetchPreview();
-  }, [fetchPreview]);
-
   const fetchTemplates = async () => {
     try {
       const res = await api.admin.getEmailTemplates();
@@ -53,6 +45,14 @@ const EmailPreviewTool = () => {
       setLoading(false);
     }
   }, [selectedTemplate, testParams]);
+
+  useEffect(() => {
+    fetchTemplates();
+  }, []);
+
+  useEffect(() => {
+    fetchPreview();
+  }, [fetchPreview]);
 
   return (
     <div className="bg-zinc-900 min-h-screen p-8">

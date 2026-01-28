@@ -47,9 +47,19 @@ const PropertyMap = ({ property, height = '400px' }) => {
     ? [property.coordinates.lat, property.coordinates.lng]
     : getCityCoordinates(property.location?.city);
 
+  // Safety check for coordinates
+  if (isNaN(lat) || isNaN(lng)) {
+    return (
+      <div className="flex items-center justify-center bg-white/5 rounded-2xl" style={{ height }}>
+        <p className="text-zinc-500 text-sm">Location data unavailable</p>
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-2xl overflow-hidden border border-white/10" style={{ height }}>
       <MapContainer
+        key={`${property._id}-${lat}-${lng}`}
         center={[lat, lng]}
         zoom={property.coordinates?.lat ? 15 : 12}
         style={{ height: '100%', width: '100%' }}
