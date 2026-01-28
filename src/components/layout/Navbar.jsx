@@ -157,7 +157,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 py-2 md:py-0 ${
         isScrolled || isDashboard
           ? 'bg-royal-deep/90 backdrop-blur-md shadow-lg'
           : 'bg-gradient-to-b from-black/50 to-transparent'
@@ -165,7 +165,7 @@ const Navbar = () => {
     >
       {/* Utility Bar - Absolute Top Right */}
       {!isDashboard && (
-        <div className="absolute mb-2 top-2 right-8 z-50 hidden md:flex items-center gap-6">
+        <div className="absolute top-5 right-4 z-50 hidden md:flex items-center gap-4">
            {/* Utility Icons */}
            <button className="text-zinc-100 hover:text-brand-gold transition-colors">
              <Search size={18} />
@@ -223,7 +223,7 @@ const Navbar = () => {
 
         {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
-          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] py-6 items-end w-full">
+          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] py-2 items-end w-full">
             
             {/* Left Nav - Aligned Left */}
             <div className="flex items-center gap-8 justify-start">
