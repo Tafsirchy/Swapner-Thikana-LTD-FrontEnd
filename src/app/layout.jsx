@@ -12,13 +12,13 @@ import { AuthProvider } from "@/context/AuthContext";
 
 const cinzel = Cinzel({
   subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--font-cinzel",
   display: "swap",
 });
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
   display: "swap",
 });
 
