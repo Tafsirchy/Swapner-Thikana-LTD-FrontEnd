@@ -65,7 +65,7 @@ const Footer = () => {
           {/* Contact Info */}
           <div className="flex flex-col gap-6">
             <h4 className="text-brand-gold font-semibold tracking-wide uppercase text-sm">Contact Us</h4>
-            <ul className="flex flex-col gap-6">
+            <ul className="flex flex-col gap-4">
               <li className="flex items-start gap-3 group">
                 <div className="p-2 rounded-lg bg-zinc-900 group-hover:bg-brand-emerald/10 transition-colors">
                   <MapPin size={18} className="text-brand-gold group-hover:text-brand-emerald transition-colors" />
@@ -90,7 +90,7 @@ const Footer = () => {
                 </div>
                 <div className="text-sm">
                   <span className="block text-zinc-100 font-medium">Email Address</span>
-                  <a href="mailto:info@shwapner-thikana.com" className="text-zinc-400 hover:text-brand-gold transition-colors">info@shwapner-thikana.com</a>
+                  <a href="mailto:info@shwapner-thikana.com" className="text-zinc-400 hover:text-brand-gold transition-colors">shwapnerthikanaltd@gmail.com</a>
                 </div>
               </li>
             </ul>
@@ -120,9 +120,9 @@ const Footer = () => {
         <div className="pt-8 border-t border-brand-gold/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-zinc-500">
           <p>© {currentYear} shwapner Thikana Ltd. All Rights Reserved.</p>
           <div className="flex items-center gap-8">
-            <Link href="#" className="hover:text-brand-gold transition-colors">Privacy Policy</Link>
-            <Link href="#" className="hover:text-brand-gold transition-colors">Terms of Service</Link>
-            <Link href="#" className="hover:text-brand-gold transition-colors">Sitemap</Link>
+            <Link href="/privacy-policy" className="hover:text-brand-gold transition-colors">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="hover:text-brand-gold transition-colors">Terms of Service</Link>
+            <Link href="/sitemap" className="hover:text-brand-gold transition-colors">Sitemap</Link>
           </div>
         </div>
       </div>
