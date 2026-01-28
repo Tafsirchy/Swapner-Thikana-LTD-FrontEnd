@@ -12,6 +12,7 @@ const BlogCard = ({ post }) => {
     slug,
     category,
     image,
+    thumbnail,
     excerpt,
     author,
     createdAt
@@ -26,7 +27,7 @@ const BlogCard = ({ post }) => {
     >
       <div className="relative h-64 overflow-hidden">
         <SmartImage
-          src={image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop'}
+          src={thumbnail || image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop'}
           alt={title}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
