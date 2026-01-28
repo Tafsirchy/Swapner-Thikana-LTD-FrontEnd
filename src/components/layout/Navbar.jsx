@@ -48,6 +48,7 @@ const Navbar = () => {
         ]
       }
     },
+    { name: 'Contact Us', href: '/contact' },
   ];
 
   if (isAuthenticated) {
