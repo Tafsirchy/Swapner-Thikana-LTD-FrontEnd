@@ -199,7 +199,7 @@ const Navbar = () => {
       )}
 
       {/* Main Navigation Container */}
-      <div className="max-container h-full flex justify-center items-center px-4 relative">
+      <div className="w-full h-full flex justify-center items-center  relative">
         
         {/* Mobile: Logo Centered, Menu Icon Left */}
         <div className="md:hidden w-full flex justify-between items-center">
@@ -223,22 +223,22 @@ const Navbar = () => {
 
         {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
-          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-center w-full">
+          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] items-end pb-6 w-full h-full">
             
             {/* Left Nav - Aligned Left */}
-            <div className="flex items-center gap-8 justify-start pl-4 xl:pl-12">
+            <div className="flex items-center gap-10 justify-start">
                {leftNav.map(renderNavLink)}
             </div>
 
             {/* Centered Logo */}
-            <div className="flex justify-center">
+            <div className="flex justify-center -mb-2">
               <Link href="/" className="hover:scale-105 transition-transform duration-300">
-                  <Image src="/logo.png" alt="shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain drop-shadow-2xl" />
+                  <Image src="/logo.png" alt="shwapner Thikana" width={160} height={96} className="h-24 w-auto object-contain drop-shadow-2xl" />
               </Link>
             </div>
 
             {/* Right Nav - Aligned Right */}
-            <div className="flex items-center gap-8 justify-end pr-4 xl:pr-12">
+            <div className="flex items-center gap-10 justify-end">
                {rightNav.map(renderNavLink)}
             </div>
 
