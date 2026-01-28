@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Bell, Check, Trash2, X } from 'lucide-react';
+import { Bell, Trash2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
@@ -16,11 +16,14 @@ const NotificationBell = () => {
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef(null);
 
+  const isFetching = useRef(false);
+
   // Fetch notifications
-  const fetchNotifications = async () => {
-    if (!user) return;
+  const fetchNotifications = React.useCallback(async () => {
+    if (!user || isFetching.current) return;
 
     try {
+      isFetching.current = true;
       setLoading(true);
       const response = await api.notifications.getAll({ limit: 10 });
       setNotifications(response.data.notifications);
@@ -29,8 +32,9 @@ const NotificationBell = () => {
       console.error('Error fetching notifications:', error);
     } finally {
       setLoading(false);
+      isFetching.current = false;
     }
-  };
+  }, [user]);
 
   // Initial fetch and polling
   useEffect(() => {
@@ -40,7 +44,7 @@ const NotificationBell = () => {
       const interval = setInterval(fetchNotifications, 30000);
       return () => clearInterval(interval);
     }
-  }, [user]);
+  }, [user, fetchNotifications]);
 
   // Close dropdown when clicking outside
   useEffect(() => {

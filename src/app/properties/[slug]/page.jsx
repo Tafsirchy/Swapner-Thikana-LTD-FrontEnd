@@ -7,12 +7,19 @@ const PropertyDetailPage = async ({ params }) => {
   const { slug } = await params;
   let property = null;
   
+  console.log(`[PropertyDetailPage] Fetching slug: ${slug}`);
+  
   try {
     // Using the same API library as the client for consistency and better error handling
     const res = await api.properties.getBySlug(slug);
+    console.log(`[PropertyDetailPage] API Success for ${slug}:`, !!res.data.property);
     property = res.data.property;
   } catch (error) {
-    console.error('Error fetching property by slug:', error);
+    console.error(`[PropertyDetailPage] API Error for ${slug}:`, error.message);
+    if (error.response) {
+      console.error(`[PropertyDetailPage] Error Response Status:`, error.response.status);
+      console.error(`[PropertyDetailPage] Error Response Data:`, error.response.data);
+    }
   }
 
   if (!property) {
