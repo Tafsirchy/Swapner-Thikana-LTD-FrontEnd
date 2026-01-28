@@ -13,6 +13,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'plus.unsplash.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'i.pravatar.cc',
         pathname: '/**',
       },
@@ -21,13 +26,8 @@ const nextConfig = {
         hostname: 'lh3.googleusercontent.com',
         pathname: '/**',
       },
-      {
-          protocol: 'https',
-          hostname: 'plus.unsplash.com',
-          pathname: '/**',
-      }
     ],
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

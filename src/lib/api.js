@@ -7,6 +7,15 @@ const apiInstance = axios.create({
   },
 });
 
+// Diagnostic check for production baseURL
+if (process.env.NODE_ENV === 'production' && typeof window === 'undefined') {
+  const currentBaseURL = apiInstance.defaults.baseURL;
+  if (!process.env.NEXT_PUBLIC_API_URL || currentBaseURL.includes('localhost')) {
+    console.warn('[API] WARNING: Missing or incorrect NEXT_PUBLIC_API_URL in production environment!');
+    console.warn('[API] Current BaseURL:', currentBaseURL);
+  }
+}
+
 // Request interceptor to add token
 apiInstance.interceptors.request.use(
   (config) => {
