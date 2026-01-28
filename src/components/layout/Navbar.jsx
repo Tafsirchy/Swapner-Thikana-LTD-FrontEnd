@@ -90,7 +90,7 @@ const Navbar = () => {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="absolute left-1/2 -translate-x-1/2 top-full pt-6"
+                className="absolute left-1/2 -translate-x-1/2 top-full pt-2"
               >
                 <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl min-w-[500px] flex gap-12 overflow-hidden relative">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl"></div>
