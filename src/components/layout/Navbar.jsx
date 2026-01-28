@@ -157,7 +157,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 py-2 md:py-0 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 py-3 md:py-0 ${
         isScrolled || isDashboard
           ? 'bg-royal-deep/90 backdrop-blur-md shadow-lg'
           : 'bg-gradient-to-b from-black/50 to-transparent'
@@ -261,7 +261,7 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 top-[90px] bg-royal-deep/98 z-40 md:hidden flex flex-col p-8 gap-6 backdrop-blur-xl overflow-y-auto border-t border-white/5"
+            className="absolute top-full left-0 w-full h-[calc(100vh-100%)] bg-royal-deep/98 z-40 md:hidden flex flex-col p-8 gap-6 backdrop-blur-xl overflow-y-auto border-t border-white/5"
           >
             {[...leftNav, ...rightNav].map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
