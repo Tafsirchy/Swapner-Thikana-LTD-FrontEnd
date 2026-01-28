@@ -24,13 +24,30 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Properties', href: '/properties' },
     { name: 'Projects', href: '/projects' },
-    { name: 'Agents', href: '/agents' },
     { name: 'Blog', href: '/blog' },
-    { name: 'About', href: '/about' },
+    { 
+      name: 'About', 
+      href: '/about',
+      hasDropdown: true,
+      dropdownItems: {
+        left: [
+          { name: 'Our Magazines', href: '/about/magazines' },
+          { name: 'Our Agencies', href: '/about/agencies' },
+          { name: 'Our History', href: '/about/history' }
+        ],
+        right: [
+          { name: 'Management', href: '/about/management' },
+          { name: 'Agents', href: '/agents' },
+          { name: 'Newsletter', href: '/about/newsletter' }
+        ]
+      }
+    },
   ];
 
   if (isAuthenticated) {
@@ -58,6 +75,84 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+              
+              if (link.hasDropdown) {
+                return (
+                  <div 
+                    key={link.name}
+                    className="relative"
+                    onMouseEnter={() => setIsAboutOpen(true)}
+                    onMouseLeave={() => setIsAboutOpen(false)}
+                  >
+                    <Link
+                      href={link.href}
+                      className={`text-sm font-medium transition-colors relative group py-2 flex items-center gap-1 ${
+                        isActive || isAboutOpen ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
+                      }`}
+                    >
+                      {link.name}
+                      <span className={`absolute -bottom-1 left-0 h-0.5 bg-brand-gold transition-all duration-300 ${
+                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                      }`}></span>
+                    </Link>
+
+                    {/* Mega Menu Dropdown */}
+                    <AnimatePresence>
+                      {isAboutOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute left-1/2 -translate-x-1/2 top-full pt-4"
+                        >
+                          <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl min-w-[500px] flex gap-12 overflow-hidden relative">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl"></div>
+                            
+                            {/* Left Column */}
+                            <div className="flex-1">
+                              <h4 className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em] mb-6 border-b border-white/5 pb-2">Experience</h4>
+                              <div className="flex flex-col gap-4">
+                                {link.dropdownItems.left.map((sub) => (
+                                  <Link 
+                                    key={sub.name} 
+                                    href={sub.href}
+                                    className="text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap flex items-center group/sub"
+                                  >
+                                    <span className="w-0 group-hover/sub:w-2 h-px bg-brand-gold mr-0 group-hover/sub:mr-2 transition-all"></span>
+                                    {sub.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Divider */}
+                            <div className="w-px bg-white/5 self-stretch"></div>
+
+                            {/* Right Column */}
+                            <div className="flex-1">
+                              <h4 className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em] mb-6 border-b border-white/5 pb-2">Network</h4>
+                              <div className="flex flex-col gap-4">
+                                {link.dropdownItems.right.map((sub) => (
+                                  <Link 
+                                    key={sub.name} 
+                                    href={sub.href}
+                                    className="text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap flex items-center group/sub"
+                                  >
+                                    <span className="w-0 group-hover/sub:w-2 h-px bg-brand-gold mr-0 group-hover/sub:mr-2 transition-all"></span>
+                                    {sub.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={link.name}
@@ -131,10 +226,31 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 top-[60px] bg-royal-deep/98 z-40 md:hidden flex flex-col p-8 gap-6 backdrop-blur-xl"
+            className="fixed inset-0 top-[60px] bg-royal-deep/98 z-40 md:hidden flex flex-col p-8 gap-6 backdrop-blur-xl overflow-y-auto"
           >
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
+              
+              if (link.hasDropdown) {
+                return (
+                  <div key={link.name} className="flex flex-col gap-4">
+                    <span className="text-2xl font-bold text-brand-gold italic">{link.name}</span>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-3 pl-4">
+                      {[...link.dropdownItems.left, ...link.dropdownItems.right].map((sub) => (
+                        <Link
+                          key={sub.name}
+                          href={sub.href}
+                          className="text-lg font-medium text-zinc-300 hover:text-brand-gold py-1"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={link.name}
