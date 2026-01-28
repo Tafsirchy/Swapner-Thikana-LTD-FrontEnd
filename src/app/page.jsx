@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Search, MapPin, Building, Users, Star } from 'lucide-react';
+import FeatureShowcase from '@/components/home/FeatureShowcase';
 
 export default function Home() {
   return (
@@ -120,6 +121,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Feature Showcase Section */}
+      <FeatureShowcase />
 
       {/* Luxury Promo Section */}
       <section className="py-24 bg-gradient-to-r from-royal-deep via-zinc-900 to-royal-deep">
