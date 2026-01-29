@@ -9,6 +9,7 @@ import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
 import imageCompression from 'browser-image-compression';
+import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 
 const EditProjectPage = () => {
   const router = useRouter();
@@ -136,12 +137,29 @@ const EditProjectPage = () => {
     e.preventDefault();
     try {
       setSaving(true);
-      await api.projects.update(id, formData);
+      
+      // Clean up data before sending
+      const payload = {
+        ...formData,
+        features: formData.features.filter(f => f.trim() !== '') // Remove empty features
+      };
+
+      await api.projects.update(id, payload);
       toast.success('Project updated successfully');
       router.push('/dashboard/admin/projects');
     } catch (error) {
       console.error('Error updating project:', error);
-      toast.error(error.response?.data?.message || 'Failed to update project');
+      const errorMsg = error.response?.data?.message || 'Failed to update project';
+      const validationErrors = error.response?.data?.data; // Expecting array of strings from validators
+      
+      if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+         // Show the first validation error or a generic one
+         toast.error(validationErrors[0]);
+         // Log all for debug
+         console.warn('Validation errors:', validationErrors);
+      } else {
+         toast.error(errorMsg);
+      }
     } finally {
       setSaving(false);
     }
@@ -201,6 +219,7 @@ const EditProjectPage = () => {
                   value={formData.description}
                   onChange={handleChange}
                   rows={4}
+                  minLength={20}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
                 />
               </div>
@@ -244,23 +263,30 @@ const EditProjectPage = () => {
               </h3>
               <div className="space-y-4">
                  <div>
+                    <label className="block text-sm font-medium text-zinc-400 mb-2">Search Address</label>
+                    <AddressAutocomplete 
+                       value={formData.location.address}
+                       onChange={(val) => setFormData(prev => ({ ...prev, location: { ...prev.location, address: val } }))}
+                       onSelect={(data) => {
+                          setFormData(prev => ({
+                             ...prev,
+                             location: {
+                                ...prev.location,
+                                address: data.address,
+                                city: data.city || prev.location.city
+                             }
+                          }));
+                       }}
+                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                    />
+                 </div>
+                 <div>
                     <label className="block text-sm font-medium text-zinc-400 mb-2">City</label>
                     <input
                       required
                       type="text"
                       name="location.city"
                       value={formData.location.city}
-                      onChange={handleChange}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
-                    />
-                 </div>
-                 <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-2">Address / Area</label>
-                    <input
-                      required
-                      type="text"
-                      name="location.address"
-                      value={formData.location.address}
                       onChange={handleChange}
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                     />

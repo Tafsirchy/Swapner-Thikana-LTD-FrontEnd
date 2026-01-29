@@ -23,7 +23,7 @@ const BlogCard = ({ post }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="group bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brand-gold/20 transition-all duration-500"
+      className="group bg-white/5 border border-white/10 rounded-none overflow-hidden hover:border-brand-gold/20 transition-all duration-500"
     >
       <div className="relative h-64 overflow-hidden">
         <SmartImage

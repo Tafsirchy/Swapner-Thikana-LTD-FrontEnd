@@ -71,7 +71,7 @@ const AgentsPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="group relative bg-zinc-900 border border-white/5 rounded-3xl overflow-hidden hover:border-brand-gold/30 transition-all duration-300"
+                className="group relative bg-zinc-900 border border-white/5 rounded-none overflow-hidden hover:border-brand-gold/30 transition-all duration-300"
               >
                 {/* Image */}
                 <div className="relative h-64 overflow-hidden">

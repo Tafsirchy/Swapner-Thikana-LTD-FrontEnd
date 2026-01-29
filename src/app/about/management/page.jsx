@@ -71,7 +71,7 @@ const ManagementPage = () => {
               viewport={{ once: true }}
               className="group"
             >
-              <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden border border-white/10 mb-6 group-hover:border-brand-gold/30 transition-all duration-500">
+              <div className="relative aspect-[4/5] rounded-none overflow-hidden border border-white/10 mb-6 group-hover:border-brand-gold/30 transition-all duration-500">
                 <Image
                   src={leader.image}
                   alt={leader.name}
@@ -101,7 +101,7 @@ const ManagementPage = () => {
         )}
 
         {/* Join the Team CTA */}
-        <div className="mt-40 bg-white/5 border border-white/10 rounded-[4rem] p-12 lg:p-20 flex flex-col items-center text-center">
+        <div className="mt-40 bg-white/5 border border-white/10 rounded-none p-12 lg:p-20 flex flex-col items-center text-center">
            <h2 className="text-3xl font-bold text-white mb-6 italic">Want to join our vision?</h2>
            <p className="text-zinc-400 max-w-xl mb-10 leading-relaxed">
               We are always looking for passionate architects, real estate consultants, and creative minds to join our elite team.

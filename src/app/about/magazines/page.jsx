@@ -66,7 +66,7 @@ const MagazinesPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="group bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brand-gold/20 transition-all duration-500"
+                className="group bg-white/5 border border-white/10 rounded-none overflow-hidden hover:border-brand-gold/20 transition-all duration-500"
               >
                 <div className="relative h-[450px] overflow-hidden">
                   <Image
@@ -117,7 +117,7 @@ const MagazinesPage = () => {
         </div>
 
         {/* Subscription Section */}
-        <div className="mt-32 p-12 lg:p-20 bg-brand-gold rounded-[4rem] text-royal-deep relative overflow-hidden text-center md:text-left">
+        <div className="mt-32 p-12 lg:p-20 bg-brand-gold rounded-none text-royal-deep relative overflow-hidden text-center md:text-left">
            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
               <div className="max-w-xl">
                  <h2 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">Get the latest issues delivered</h2>

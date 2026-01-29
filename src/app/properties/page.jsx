@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2 } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
@@ -8,6 +8,7 @@ import FilterPills from '@/components/search/FilterPills';
 import SaveSearchModal from '@/components/search/SaveSearchModal';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/api';
+import { toast } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 
 // Dynamic import for map view
@@ -22,14 +23,17 @@ const PropertiesMapView = dynamic(() => import('@/components/map/PropertiesMapVi
 
 const PropertiesPage = () => {
   const { user } = useAuth();
-  const [properties, setProperties] = useState([]);
+  
+  // Raw Data State
+  const [allProperties, setAllProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState(0);
+  
+  // UI State
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [viewMode, setViewMode] = useState('grid');
   const [saveSearchModal, setSaveSearchModal] = useState(false);
 
-  // Filter States
+  // Filter State
   const [filters, setFilters] = useState({
     search: '',
     listingType: '',
@@ -45,44 +49,155 @@ const PropertiesPage = () => {
     sort: 'featured',
     page: 1,
     limit: 6,
-
     bounds: '',
     polygon: ''
   });
 
-  const fetchProperties = useCallback(async () => {
-    try {
-      setLoading(true);
-      const data = await api.properties.getAll(filters);
-      setProperties(data.data.properties);
-      setTotal(data.data.pagination.total);
-    } catch (error) {
-      console.error('Error fetching properties:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [filters]);
-
+  // 1. Fetch ALL Properties on Mount
   useEffect(() => {
-    fetchProperties();
-  }, [filters.page, filters.listingType, filters.propertyType, filters.city, filters.bounds, filters.polygon, fetchProperties]);
+    const fetchAllProperties = async () => {
+      try {
+        setLoading(true);
+        // Request a high limit to get all published properties
+        // We only fetch 'published' properties for the public page
+        const response = await api.properties.getAll({ 
+          limit: 2000, 
+          status: 'published' 
+        });
+        
+        if (response.data && response.data.properties) {
+          setAllProperties(response.data.properties);
+        }
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+        toast.error('Failed to load properties. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchAllProperties();
+  }, []); // Empty dependency array = run once on mount
+
+  // 2. Client-Side Filtering & Sorting Logic
+  const filteredAndSortedProperties = useMemo(() => {
+    let result = [...allProperties];
+
+    // --- FILTERING ---
+
+    // Search (Title, Address, Description)
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      result = result.filter(p => 
+        p.title?.toLowerCase().includes(searchLower) ||
+        p.location?.address?.toLowerCase().includes(searchLower) ||
+        p.location?.area?.toLowerCase().includes(searchLower) ||
+        p.description?.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Listing Type (Exact)
+    if (filters.listingType) {
+      result = result.filter(p => p.listingType === filters.listingType);
+    }
+
+    // Property Type (Exact)
+    if (filters.propertyType) {
+      result = result.filter(p => p.propertyType === filters.propertyType);
+    }
+
+    // City (Exact/Includes)
+    if (filters.city) {
+      result = result.filter(p => p.location?.city === filters.city);
+    }
+
+    // Price Range
+    if (filters.minPrice) {
+      result = result.filter(p => p.price >= Number(filters.minPrice));
+    }
+    if (filters.maxPrice) {
+      result = result.filter(p => p.price <= Number(filters.maxPrice));
+    }
+
+    // Bedrooms (Min)
+    if (filters.bedrooms) {
+      result = result.filter(p => (p.bedrooms || 0) >= Number(filters.bedrooms));
+    }
+
+    // Bathrooms (Min)
+    if (filters.bathrooms) {
+      result = result.filter(p => (p.bathrooms || 0) >= Number(filters.bathrooms));
+    }
+
+    // Area/Size Range (Check 'size' first, then 'area')
+    if (filters.minArea) {
+      const min = Number(filters.minArea);
+      result = result.filter(p => (p.size || p.area || 0) >= min);
+    }
+    if (filters.maxArea) {
+      const max = Number(filters.maxArea);
+      result = result.filter(p => (p.size || p.area || 0) <= max);
+    }
+
+    // Amenities (Strict: Must have ALL selected)
+    if (filters.amenities.length > 0) {
+      result = result.filter(p => {
+        const pAmenities = p.amenities || [];
+        // Every selected amenity must be in property's amenities
+        return filters.amenities.every(selected => pAmenities.includes(selected));
+      });
+    }
+
+    // Map Bounds / Polygon (Client-side geospatial filtering is complex, 
+    // usually best left to backend or map library visually. 
+    // For now, we'll skip strict geospatial filtering here unless coordinates are available and simple bounds are needed.
+    // Assuming Map component handles visual filtering or we rely on backend for this specific case.
+    // If user asked to 'keep all data', we prioritize attribute filtering.)
+    
+    // --- SORTING ---
+    
+    switch (filters.sort) {
+      case 'price-asc':
+        result.sort((a, b) => (a.price || 0) - (b.price || 0));
+        break;
+      case 'price-desc':
+        result.sort((a, b) => (b.price || 0) - (a.price || 0));
+        break;
+      case 'area-desc': // Sort by size primarily
+        result.sort((a, b) => (b.size || b.area || 0) - (a.size || a.area || 0));
+        break;
+      case 'newest':
+        result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        break;
+      case 'popular':
+        result.sort((a, b) => (b.views || 0) - (a.views || 0));
+        break;
+      case 'featured':
+      default:
+        // Featured first, then newest
+        result.sort((a, b) => {
+          if (a.featured === b.featured) {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          }
+          return a.featured ? -1 : 1;
+        });
+        break;
+    }
+
+    return result;
+  }, [allProperties, filters]);
+
+  // 3. Pagination Slicing
+  const paginatedProperties = useMemo(() => {
+    const startIndex = (filters.page - 1) * filters.limit;
+    return filteredAndSortedProperties.slice(startIndex, startIndex + filters.limit);
+  }, [filteredAndSortedProperties, filters.page, filters.limit]);
+
+  // Handler Helpers
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchProperties();
+    setFilters({ ...filters, page: 1 });
   };
-
-  const AMENITIES = [
-    'Swimming Pool',
-    'Gym',
-    'Parking',
-    'Security',
-    'Garden',
-    'Balcony',
-    'Elevator',
-    'Power Backup',
-    'Wi-Fi'
-  ];
 
   const handleRemoveFilter = (key, value) => {
     if (key === 'amenity') {
@@ -111,8 +226,9 @@ const PropertiesPage = () => {
       amenities: [],
       sort: 'featured',
       page: 1,
-      limit: 6
-
+      limit: 6,
+      bounds: '',
+      polygon: ''
     });
   };
 
@@ -122,6 +238,11 @@ const PropertiesPage = () => {
       : [...filters.amenities, amenity];
     setFilters({ ...filters, amenities: newAmenities, page: 1 });
   };
+
+  const AMENITIES = [
+    'Swimming Pool', 'Gym', 'Parking', 'Security',
+    'Garden', 'Balcony', 'Elevator', 'Power Backup', 'Wi-Fi'
+  ];
 
   return (
     <div className="min-h-screen bg-royal-deep pt-32 pb-24">
@@ -178,14 +299,14 @@ const PropertiesPage = () => {
                   placeholder="Search by title, neighborhood or keyword..."
                   className="w-full bg-white/5 border border-white/5 rounded-2xl py-3.5 pl-12 pr-4 text-zinc-100 outline-none focus:border-brand-gold/30 transition-all placeholder:text-zinc-500"
                   value={filters.search}
-                  onChange={(e) => setFilters({...filters, search: e.target.value})}
+                  onChange={(e) => setFilters({...filters, search: e.target.value, page: 1})}
                 />
               </div>
               <div className="flex flex-wrap lg:flex-nowrap gap-4">
                 <select 
                   className="bg-zinc-900/80 text-zinc-300 border border-white/5 rounded-2xl py-3.5 px-6 outline-none focus:border-brand-gold/30 appearance-none min-w-[150px]"
                   value={filters.listingType}
-                  onChange={(e) => setFilters({...filters, listingType: e.target.value})}
+                  onChange={(e) => setFilters({...filters, listingType: e.target.value, page: 1})}
                 >
                   <option value="">All Types</option>
                   <option value="sale">For Sale</option>
@@ -194,7 +315,7 @@ const PropertiesPage = () => {
                 <select 
                   className="bg-zinc-900/80 text-zinc-300 border border-white/5 rounded-2xl py-3.5 px-6 outline-none focus:border-brand-gold/30 appearance-none min-w-[150px]"
                   value={filters.city}
-                  onChange={(e) => setFilters({...filters, city: e.target.value})}
+                  onChange={(e) => setFilters({...filters, city: e.target.value, page: 1})}
                 >
                   <option value="">All Cities</option>
                   <option value="Dhaka">Dhaka</option>
@@ -243,6 +364,10 @@ const PropertiesPage = () => {
                           <option value="duplex">Duplex</option>
                           <option value="penthouse">Penthouse</option>
                           <option value="commercial">Commercial Space</option>
+                          <option value="land">Land</option>
+                          <option value="office">Office</option>
+                          <option value="shop">Shop</option>
+                          <option value="warehouse">Warehouse</option>
                         </select>
                       </div>
                       <div className="space-y-2">
@@ -376,7 +501,8 @@ const PropertiesPage = () => {
           {/* Results Header with Sort */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <p className="text-zinc-400">
-              Showing <span className="text-zinc-100 font-bold">{properties.length}</span> of <span className="text-zinc-100 font-bold">{total}</span> premium properties
+              Showing <span className="text-zinc-100 font-bold">{filteredAndSortedProperties.length}</span> results 
+              {allProperties.length > 0 && <span className="text-xs text-zinc-600 ml-2">(from {allProperties.length} total)</span>}
             </p>
             <div className="flex items-center gap-3">
               <label className="text-sm text-zinc-400">Sort by:</label>
@@ -385,11 +511,12 @@ const PropertiesPage = () => {
                 onChange={(e) => setFilters({...filters, sort: e.target.value, page: 1})}
                 className="bg-white/5 border border-white/5 rounded-xl px-4 py-2.5 text-zinc-300 outline-none focus:border-brand-gold/50 cursor-pointer"
               >
-                <option value="featured">Featured</option>
+                <option value="featured">Featured First</option>
                 <option value="newest">Newest First</option>
+                <option value="popular">Most Popular</option>
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>
-                <option value="area">Area: Largest First</option>
+                <option value="area-desc">Area: Largest First</option>
               </select>
             </div>
           </div>
@@ -402,7 +529,7 @@ const PropertiesPage = () => {
                 <p className="text-zinc-400">Loading properties...</p>
               </div>
             </div>
-          ) : properties.length === 0 ? (
+          ) : filteredAndSortedProperties.length === 0 ? (
             <div className="text-center py-20 glass rounded-3xl border-white/5">
               <div className="mx-auto w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6">
                 <Search size={32} className="text-zinc-500" />
@@ -419,24 +546,24 @@ const PropertiesPage = () => {
           ) : viewMode === 'map' ? (
             <div className="mb-12">
               <div className="mb-4 text-zinc-300 text-sm">
-                Showing {properties.length} {properties.length === 1 ? 'property' : 'properties'} on map
+                Showing {filteredAndSortedProperties.length} {filteredAndSortedProperties.length === 1 ? 'property' : 'properties'} on map
               </div>
               <PropertiesMapView 
-                properties={properties} 
+                properties={filteredAndSortedProperties} 
                 onMapChange={(bounds) => setFilters(prev => ({ ...prev, bounds, polygon: '', page: 1 }))}
                 onPolygonChange={(polygon) => setFilters(prev => ({ ...prev, polygon, bounds: '', page: 1 }))}
               />
             </div>
           ) : (
             <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-              {properties.map((property) => (
+              {paginatedProperties.map((property) => (
                 <PropertyCard key={property._id} property={property} />
               ))}
             </div>
           )}
 
           {/* Pagination */}
-          {total > filters.limit && (
+          {filteredAndSortedProperties.length > filters.limit && (
             <div className="mt-16 flex justify-center gap-2">
               <button 
                 disabled={filters.page === 1}
@@ -445,17 +572,14 @@ const PropertiesPage = () => {
               >
                 Previous
               </button>
-              {[...Array(Math.ceil(total / filters.limit))].map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setFilters({...filters, page: i + 1})}
-                  className={`w-12 h-12 rounded-xl border transition-all ${filters.page === i + 1 ? 'bg-brand-gold text-royal-deep border-brand-gold font-bold shadow-lg shadow-brand-gold/20' : 'bg-white/5 border-white/10 text-zinc-400 hover:border-white/20'}`}
-                >
-                  {i + 1}
-                </button>
-              ))}
+              
+              {/* Simplified pagination for client-side to avoid massive arrays for pages */}
+              <span className="flex items-center px-4 text-zinc-400">
+                Page {filters.page} of {Math.ceil(filteredAndSortedProperties.length / filters.limit)}
+              </span>
+
               <button 
-                disabled={filters.page * filters.limit >= total}
+                disabled={filters.page * filters.limit >= filteredAndSortedProperties.length}
                 onClick={() => setFilters({...filters, page: filters.page + 1})}
                 className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:border-brand-gold transition-all disabled:opacity-30 disabled:pointer-events-none"
               >

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { Mail, ArrowRight, Check, Sparkles } from 'lucide-react';
+import { Mail, ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 
 const FloatingParticle = ({ delay, duration, size, initialX, initialY, mouseX, mouseY }) => {
@@ -155,97 +155,108 @@ const NewsletterSection = () => {
              </div>
         </motion.div>
 
-        {/* STATIC Content Card - Reduced Padding */}
+        {/* STATIC Content Card - Increased Width & Refined Padding */}
         <div className="max-container px-4 relative z-10 w-full">
-            <div className="max-w-4xl mx-auto">
+            <div className="w-full">
                 <div 
-                    className="bg-white/10 border border-white/20 backdrop-blur-3xl p-8 md:p-12 text-center relative overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.5)]"
+                    className="bg-zinc-950/40 border border-white/10 backdrop-blur-3xl p-10 md:p-20 lg:p-24 text-center relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] rounded-none"
                 >
-                    {/* Interior Lighting - Warmer & Brighter */}
+                    {/* Interior Lighting - Dynamic & Brighter */}
                     <motion.div 
-                        animate={isFocused ? { opacity: 0.3 } : { opacity: 0.15 }}
-                        className="absolute inset-0 bg-brand-gold blur-[100px] -z-10"
+                        animate={isFocused ? { opacity: 0.25, scale: 1.2 } : { opacity: 0.1, scale: 1 }}
+                        className="absolute inset-0 bg-brand-gold blur-[120px] -z-10"
                     />
                     
-                    {/* Design Elements */}
-                    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent" />
-                    <div className="absolute -right-20 -top-20 w-64 h-64 bg-brand-gold/10 blur-[80px] rounded-full" />
+                    {/* Decorative Corner Accents */}
+                    <div className="absolute top-0 left-0 w-32 h-32 border-t-2 border-l-2 border-brand-gold/30 rounded-none" />
+                    <div className="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-brand-gold/30 rounded-none" />
+                    
+                    <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-gold/40 to-transparent" />
+                    <div className="absolute -right-40 -top-40 w-96 h-96 bg-brand-gold/5 blur-[100px] rounded-full" />
 
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
                     >
-                        {/* More Compact Icon */}
-                        <div className="relative w-16 h-16 mx-auto mb-6">
-                             <div className="absolute inset-0 bg-brand-gold/20 rounded-2xl blur-lg" />
-                             <div className="relative w-full h-full bg-white/10 border border-white/20 flex items-center justify-center text-brand-gold">
-                                <Mail size={32} />
+                        {/* More Compact & Elegant Icon */}
+                        <div className="relative w-20 h-20 mx-auto mb-8">
+                             <div className="absolute inset-0 bg-brand-gold/30 rounded-3xl blur-2xl animate-pulse" />
+                             <div className="relative w-full h-full bg-black/40 border border-white/20 rounded-3xl flex items-center justify-center text-brand-gold shadow-2xl">
+                                <Mail size={36} strokeWidth={1.5} />
                              </div>
                         </div>
 
-                        <span className="text-brand-gold font-bold tracking-[0.4em] uppercase text-[9px] mb-3 block">
-                            Privileged Invitation
+                        <span className="text-brand-gold font-bold tracking-[0.6em] uppercase text-xs mb-4 block">
+                            The Portfolio Briefing
                         </span>
                         
-                        <h2 className="text-3xl md:text-5xl font-cinzel text-white mb-6 leading-tight tracking-tight">
-                            Join the <span className="text-brand-gold italic">Exclusive</span> Circle
+                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-cinzel text-white mb-8 leading-tight tracking-tight">
+                            Elevate Your <span className="text-brand-gold italic">Vision</span>
                         </h2>
                         
-                        <p className="text-zinc-300 text-base md:text-lg mb-8 max-w-xl mx-auto font-inter font-light leading-relaxed">
-                            A curated briefing on <span className="text-white">luxury listings</span> and architectural trends.
+                        <p className="text-zinc-400 text-lg md:text-xl mb-12 max-w-3xl mx-auto font-inter font-light leading-relaxed">
+                            Subscribe to receive first-look access to <span className="text-white font-medium">unlisted estates</span>, architectural forecasts, and the defining trends of Dhaka&apos;s luxury skyline.
                         </p>
 
-                        <form onSubmit={handleSubmit} className="max-w-md mx-auto relative h-16">
-                            <input 
-                                type="email" 
-                                placeholder="Email Address" 
-                                value={email}
-                                onFocus={() => setIsFocused(true)}
-                                onBlur={() => setIsFocused(false)}
-                                onChange={(e) => setEmail(e.target.value)}
-                                disabled={status === 'loading' || status === 'success'}
-                                className="w-full h-full pl-8 pr-38 bg-black/40 border border-white/10 text-white placeholder:text-zinc-600 focus:outline-none focus:border-brand-gold/50 transition-all"
-                            />
-                            
-                            <button 
-                                type="submit"
-                                disabled={status === 'loading' || status === 'success'}
-                                className={`absolute right-1.5 top-1.5 bottom-1.5 px-8 font-bold text-sm tracking-widest transition-all duration-500 flex items-center justify-center gap-2 ${
-                                    status === 'success' 
-                                    ? 'bg-green-600 text-white' 
-                                    : 'bg-brand-gold text-black hover:bg-white active:scale-95'
-                                }`}
-                            >
-                                <AnimatePresence mode="wait">
-                                    {status === 'loading' ? (
-                                        <motion.div 
-                                            key="loading"
-                                            className="w-5 h-5 border-3 border-black/30 border-t-black rounded-full animate-spin" 
-                                        />
-                                    ) : status === 'success' ? (
-                                        <motion.div key="success" className="flex items-center gap-2">
-                                            <Check size={18} />
-                                            <span>Subscribed</span>
-                                        </motion.div>
-                                    ) : (
-                                        <motion.div key="idle" className="flex items-center gap-2">
-                                            <span>Subscribe</span>
-                                            <ArrowRight size={18} />
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </button>
+                        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto relative group">
+                            <div className="absolute -inset-1 bg-gradient-to-r from-brand-gold/0 via-brand-gold/20 to-brand-gold/0 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="relative h-20">
+                                <input 
+                                    type="email" 
+                                    placeholder="your@prestige.email" 
+                                    value={email}
+                                    onFocus={() => setIsFocused(true)}
+                                    onBlur={() => setIsFocused(false)}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    disabled={status === 'loading' || status === 'success'}
+                                    className="w-full h-full pl-10 pr-48 bg-black/60 border border-white/10 text-white text-lg placeholder:text-zinc-700 focus:outline-none focus:border-brand-gold/50 rounded-2xl transition-all shadow-inner"
+                                />
+                                
+                                <button 
+                                    type="submit"
+                                    disabled={status === 'loading' || status === 'success'}
+                                    className={`absolute right-2 top-2 bottom-2 px-10 rounded-xl font-bold text-sm tracking-[0.2em] uppercase transition-all duration-500 flex items-center justify-center gap-3 ${
+                                        status === 'success' 
+                                        ? 'bg-emerald-600 text-white' 
+                                        : 'bg-brand-gold text-black hover:bg-white hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] active:scale-95 shadow-lg'
+                                    }`}
+                                >
+                                    <AnimatePresence mode="wait">
+                                        {status === 'loading' ? (
+                                            <motion.div 
+                                                key="loading"
+                                                className="w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" 
+                                            />
+                                        ) : status === 'success' ? (
+                                            <motion.div key="success" className="flex items-center gap-2">
+                                                <Check size={20} />
+                                                <span>Joined</span>
+                                            </motion.div>
+                                        ) : (
+                                            <motion.div key="idle" className="flex items-center gap-2">
+                                                <span>Request Access</span>
+                                                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </button>
+                            </div>
                         </form>
                         
-                        <div className="mt-12 flex items-center justify-center gap-10">
-                             <div className="flex items-center gap-2 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">
-                                <Sparkles size={12} className="text-brand-gold/40" />
-                                <span>Curated Insights</span>
+                        <div className="mt-16 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+                             <div className="flex items-center gap-3 text-xs text-zinc-500 uppercase tracking-widest font-semibold">
+                                <div className="w-1.5 h-1.5 rounded-full bg-brand-gold/60 shadow-[0_0_10px_#f59e0b]" />
+                                <span>Curated Weekly</span>
                              </div>
-                             <div className="flex items-center gap-2 text-[10px] text-zinc-500 uppercase tracking-widest font-medium">
-                                <Sparkles size={12} className="text-brand-gold/40" />
-                                <span>Privacy First</span>
+                             <div className="flex items-center gap-3 text-xs text-zinc-500 uppercase tracking-widest font-semibold">
+                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60 shadow-[0_0_10px_#10b981]" />
+                                <span>VIP Invitations</span>
+                             </div>
+                             <div className="flex items-center gap-3 text-xs text-zinc-500 uppercase tracking-widest font-semibold">
+                                <div className="w-1.5 h-1.5 rounded-full bg-brand-royal/60 shadow-[0_0_10px_#2563eb]" />
+                                <span>Unsubscribe Anytime</span>
                              </div>
                         </div>
                     </motion.div>

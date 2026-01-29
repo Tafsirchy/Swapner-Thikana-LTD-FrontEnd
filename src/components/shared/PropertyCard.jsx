@@ -28,6 +28,7 @@ const PropertyCard = ({ property }) => {
     bedrooms,
     bathrooms,
     size,
+    area, 
     images,
     propertyType,
     listingType,
@@ -63,7 +64,7 @@ const PropertyCard = ({ property }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="group relative bg-card border border-white/10 rounded-3xl overflow-hidden hover:border-brand-gold/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
+      className="group relative bg-card border border-white/10 rounded-none overflow-hidden hover:border-brand-gold/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
     >
       {/* Image Container */}
       <div className="relative h-64 w-full overflow-hidden">
@@ -168,7 +169,7 @@ const PropertyCard = ({ property }) => {
               <div className="p-2 rounded-lg bg-white/5">
                 <Move size={16} className="text-brand-gold" />
               </div>
-              <span className="text-sm font-medium text-zinc-300">{size} sqft</span>
+              <span className="text-sm font-medium text-zinc-300">{(size || area) || 'N/A'} sqft</span>
             </div>
           </div>
         </Link>
@@ -176,7 +177,7 @@ const PropertyCard = ({ property }) => {
         {/* Action Button */}
         <Link 
           href={`/properties/${slug || _id}`}
-          className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-zinc-100 font-bold text-sm flex items-center justify-center gap-2 group-hover:bg-brand-gold group-hover:text-royal-deep transition-all duration-300"
+          className="w-full py-3 bg-white/5 border border-white/10 text-zinc-100 font-bold text-sm flex items-center justify-center gap-2 group-hover:bg-brand-gold group-hover:text-royal-deep transition-all duration-300"
         >
           View Details
           <Plus size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { Building2, PlusCircle, Edit, Trash2, Eye, MoreVertical, Filter } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Building2, PlusCircle, Edit, Trash2, Eye, Filter } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/api';
@@ -11,29 +11,27 @@ const AgentPropertiesPage = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [sort, setSort] = useState('newest');
 
-  useEffect(() => {
-    fetchProperties();
-  }, []);
-
-  const fetchProperties = async () => {
+  const fetchProperties = React.useCallback(async () => {
     try {
       setLoading(true);
-      const data = await api.properties.getMyProperties();
+      const params = {
+        status: statusFilter !== 'all' ? statusFilter : undefined,
+        sort: sort
+      };
+      const data = await api.properties.getMyProperties(params);
       setProperties(data.data.properties || []);
-    } catch (error) {
-      console.error('Error fetching properties:', error);
+    } catch {
       toast.error('Failed to load properties');
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, sort]);
 
-	// Filter properties by status
-	const filteredProperties = useMemo(() => {
-		if (statusFilter === 'all') return properties;
-		return properties.filter(prop => prop.status === statusFilter);
-	}, [properties, statusFilter]);
+  useEffect(() => {
+    fetchProperties();
+  }, [fetchProperties]);
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
@@ -41,7 +39,7 @@ const AgentPropertiesPage = () => {
         await api.properties.delete(id);
         setProperties(properties.filter(p => p._id !== id));
         toast.success('Property deleted successfully');
-      } catch (error) {
+      } catch {
         toast.error('Failed to delete property');
       }
     }
@@ -85,6 +83,18 @@ const AgentPropertiesPage = () => {
                 <option value="pending">Pending</option>
                 <option value="sold">Sold</option>
               </select>
+
+              <select 
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="popular">Most Popular</option>
+              </select>
             </div>
           )}
           
@@ -98,7 +108,7 @@ const AgentPropertiesPage = () => {
         </div>
       </div>
 
-      {filteredProperties.length > 0 ? (
+      {properties.length > 0 ? (
         <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-zinc-400">
@@ -112,7 +122,7 @@ const AgentPropertiesPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {filteredProperties.map((property) => (
+                {properties.map((property) => (
                   <tr key={property._id} className="group hover:bg-white/5 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">

@@ -34,18 +34,23 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
       setProgress(0);
 
       // 1. Compression (The Performance Boost)
-      toast.loading('Optimizing image...', { id: 'img-upload' });
+      const toastId = toast.loading('Starting image optimization...');
+      
       const options = {
         maxSizeMB: 1,         // Compress to max 1MB
         maxWidthOrHeight: 1920, // Max 1920px
         useWebWorker: true,
-        onProgress: (p) => setProgress(Math.round(p / 2)) // First 50% for compression
+        onProgress: (p) => {
+          const progress = Math.round(p);
+          setProgress(Math.round(progress / 2)); // First 50% for compression
+          toast.loading(`Optimizing image... ${progress}%`, { id: toastId });
+        }
       };
 
       const compressedFile = await imageCompression(file, options);
       
       // 2. Upload
-      toast.loading('Uploading quality image...', { id: 'img-upload' });
+      toast.loading('Uploading quality image...', { id: toastId });
       const formData = new FormData();
       formData.append('image', compressedFile);
 
@@ -55,7 +60,8 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
         },
         onUploadProgress: (progressEvent) => {
           const uploadPercent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setProgress(50 + Math.round(uploadPercent / 2)); // Final 50% for network transfter
+          setProgress(50 + Math.round(uploadPercent / 2)); // Final 50% for network transfer
+          toast.loading(`Uploading quality image... ${uploadPercent}%`, { id: toastId });
         }
       });
 
@@ -65,17 +71,17 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
         const url = data.data.url;
         setPreview(url);
         onUpload(url);
-        toast.success('Professional upload complete', { id: 'img-upload' });
+        toast.success('Professional upload complete', { id: toastId });
       } else {
         throw new Error(data.error?.message || 'Upload failed');
       }
     } catch (error) {
       console.error('Upload Error:', error);
-      toast.error('Failed to upload image. Please try again.', { id: 'img-upload' });
+      toast.error('Failed to upload image. Please try again.');
     } finally {
       setUploading(false);
       setProgress(0);
-      e.target.value = ''; // FIX: Allow re-uploading same file
+      e.target.value = ''; // Allow re-uploading same file
     }
   };
 

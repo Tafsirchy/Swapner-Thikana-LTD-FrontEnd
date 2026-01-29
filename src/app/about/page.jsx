@@ -46,7 +46,7 @@ const AboutPage = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative aspect-[4/5] rounded-[4rem] overflow-hidden border border-white/10"
+              className="relative aspect-[4/5] rounded-none overflow-hidden border border-white/10"
             >
               <Image 
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" 
@@ -82,7 +82,7 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-10 glass rounded-[3rem] border-white/10 hover:border-brand-gold/30 transition-all text-center"
+                className="p-10 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all text-center"
               >
                 <div className="text-brand-gold mb-6 flex justify-center">{pill.icon}</div>
                 <h3 className="text-xl font-bold text-zinc-100 mb-4">{pill.title}</h3>
@@ -100,18 +100,18 @@ const AboutPage = () => {
             <div className="w-full lg:w-1/2 order-2 lg:order-1">
                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-4 pt-12">
-                     <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10">
+                     <div className="relative aspect-[4/5] rounded-none overflow-hidden border border-white/10">
                         <Image src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=2024&auto=format&fit=crop" alt="" fill className="object-cover" />
                      </div>
-                     <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/10">
+                     <div className="relative aspect-square rounded-none overflow-hidden border border-white/10">
                         <Image src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070&auto=format&fit=crop" alt="" fill className="object-cover" />
                      </div>
                   </div>
                   <div className="space-y-4">
-                     <div className="relative aspect-square rounded-3xl overflow-hidden border border-white/10">
+                     <div className="relative aspect-square rounded-none overflow-hidden border border-white/10">
                         <Image src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop" alt="" fill className="object-cover" />
                      </div>
-                     <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10">
+                     <div className="relative aspect-[4/5] rounded-none overflow-hidden border border-white/10">
                         <Image src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" alt="" fill className="object-cover" />
                      </div>
                   </div>

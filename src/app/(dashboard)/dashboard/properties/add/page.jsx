@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, MapPin, DollarSign, Image as ImageIcon, 
-  CheckCircle, ArrowRight, ArrowLeft, Upload, X, PlusCircle 
+  CheckCircle, ArrowRight, ArrowLeft, Upload, X, PlusCircle, Star 
 } from 'lucide-react';
 import Image from 'next/image';
 import axios from 'axios';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import imageCompression from 'browser-image-compression';
+import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 
 const AddPropertyPage = () => {
   const router = useRouter();
@@ -35,14 +36,22 @@ const AddPropertyPage = () => {
     bathrooms: '',
     area: '',
     amenities: [],
-    features: []
+    features: [],
+    featured: false
   });
 
   const steps = [
     { title: 'Basic Info', icon: Building2 },
     { title: 'Location', icon: MapPin },
     { title: 'Details', icon: DollarSign },
+    { title: 'Amenities', icon: CheckCircle },
     { title: 'Images', icon: ImageIcon },
+  ];
+
+  const AMENITIES_LIST = [
+    'Swimming Pool', 'Gym', 'Parking', 'Security', 
+    'Garden', 'Balcony', 'Elevator', 'Power Backup', 
+    'Wi-Fi', 'Fire Safety', 'CCTV', 'Community Hall'
   ];
 
   // Validation function
@@ -100,6 +109,16 @@ const AddPropertyPage = () => {
       ...prev,
       location: { ...prev.location, [field]: value }
     }));
+  };
+
+  const handleAmenityToggle = (amenity) => {
+    setFormData(prev => {
+      const currentAmenities = prev.amenities || [];
+      const newAmenities = currentAmenities.includes(amenity)
+        ? currentAmenities.filter(a => a !== amenity)
+        : [...currentAmenities, amenity];
+      return { ...prev, amenities: newAmenities };
+    });
   };
 
   const handleImageUpload = async (e) => {
@@ -272,8 +291,33 @@ const AddPropertyPage = () => {
                            <option value="apartment">Apartment</option>
                            <option value="villa">Luxury Villa</option>
                            <option value="duplex">Duplex</option>
-                           <option value="office">Office Space</option>
+                           <option value="penthouse">Penthouse</option>
+                           <option value="commercial">Commercial Space</option>
+                           <option value="office">Office</option>
+                           <option value="shop">Shop</option>
+                           <option value="warehouse">Warehouse</option>
+                           <option value="land">Land</option>
+                           <option value="house">House</option>
                         </select>
+                     </div>
+                     <div className="md:col-span-2 flex items-center gap-4 pt-4 border-t border-white/5 mt-4">
+                        <button
+                           type="button"
+                           onClick={() => handleInputChange('featured', !formData.featured)}
+                           className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all ${
+                              formData.featured 
+                                 ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-500' 
+                                 : 'bg-white/5 border-white/10 text-zinc-500 hover:border-white/20'
+                           }`}
+                        >
+                           <Star size={18} fill={formData.featured ? 'currentColor' : 'none'} />
+                           <span className="font-bold uppercase text-xs tracking-wider">
+                              {formData.featured ? 'Featured Property' : 'Promote to Featured'}
+                           </span>
+                        </button>
+                        <p className="text-xs text-zinc-500 italic">
+                           Featured properties appear on the homepage showcase.
+                        </p>
                      </div>
                   </div>
                </div>
@@ -290,13 +334,29 @@ const AddPropertyPage = () => {
                <div className="space-y-4">
                   <div>
                      <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">Full Address</label>
-                     <input 
-                        type="text" 
+                     <AddressAutocomplete 
                         value={formData.location.address}
-                        onChange={(e) => handleLocationChange('address', e.target.value)}
-                        placeholder="Ex. House 12, Road 4, Block B"
+                        onChange={(val) => handleLocationChange('address', val)}
+                        onSelect={(data) => {
+                           handleLocationChange('address', data.address);
+                           if (data.city) handleLocationChange('city', data.city);
+                           if (data.area) handleLocationChange('area', data.area);
+                           if (data.lat) handleLocationChange('latitude', data.lat);
+                           if (data.lon) handleLocationChange('longitude', data.lon);
+                        }}
                         className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
                      />
+                     {/* Hidden Coordinate Fields for Debug/Verify */}
+                     <div className="grid grid-cols-2 gap-4 mt-2">
+                        <div>
+                           <label className="block text-[10px] uppercase text-zinc-500 mb-1">Latitude</label>
+                           <input type="text" readOnly value={formData.location.latitude} className="w-full bg-black/20 text-zinc-500 text-xs px-2 py-1.5 rounded border border-white/5" />
+                        </div>
+                        <div>
+                           <label className="block text-[10px] uppercase text-zinc-500 mb-1">Longitude</label>
+                           <input type="text" readOnly value={formData.location.longitude} className="w-full bg-black/20 text-zinc-500 text-xs px-2 py-1.5 rounded border border-white/5" />
+                        </div>
+                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                      <div>
@@ -384,6 +444,41 @@ const AddPropertyPage = () => {
                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                className="space-y-6"
             >
+               <h2 className="text-xl font-bold text-zinc-100 mb-6">Amenities & Features</h2>
+               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {AMENITIES_LIST.map((amenity) => (
+                    <label
+                      key={amenity}
+                      className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer ${
+                        formData.amenities.includes(amenity)
+                          ? 'bg-brand-gold/10 border-brand-gold text-brand-gold'
+                          : 'bg-zinc-900 border-white/10 text-zinc-400 hover:border-white/20'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.amenities.includes(amenity)}
+                        onChange={() => handleAmenityToggle(amenity)}
+                        className="hidden"
+                      />
+                      {formData.amenities.includes(amenity) ? (
+                        <CheckCircle size={20} className="fill-brand-gold/20" />
+                      ) : (
+                        <div className="w-5 h-5 rounded-full border border-zinc-600" />
+                      )}
+                      <span className="font-medium">{amenity}</span>
+                    </label>
+                  ))}
+               </div>
+            </motion.div>
+          )}
+
+          {currentStep === 5 && (
+            <motion.div 
+               key="step4" 
+               initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+               className="space-y-6"
+            >
                <h2 className="text-xl font-bold text-zinc-100 mb-6">Upload Images</h2>
                
                <div className="border-2 border-dashed border-white/10 rounded-3xl p-8 text-center hover:border-brand-gold/50 transition-colors bg-white/5 cursor-pointer relative">
@@ -433,7 +528,7 @@ const AddPropertyPage = () => {
             <ArrowLeft size={18} /> Back
          </button>
 
-         {currentStep < 4 ? (
+         {currentStep < 5 ? (
             <button 
                onClick={() => {
                  if (validateStep(currentStep)) {

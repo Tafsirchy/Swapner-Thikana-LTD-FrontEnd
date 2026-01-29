@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Building2, CheckCircle, XCircle, Star, Search, Filter, Eye } from 'lucide-react';
 import { api } from '@/lib/api';
@@ -17,17 +17,20 @@ const AdminPropertiesPage = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [featuredFilter, setFeaturedFilter] = useState('all');
+  const [sort, setSort] = useState('newest');
   const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    fetchProperties();
-  }, []);
-
-  const fetchProperties = async () => {
+  const fetchProperties = useCallback(async () => {
     try {
       setLoading(true);
-      // For now use mock data until backend API exists
-      const data = await api.admin.getProperties();
+      const params = {
+        status: statusFilter !== 'all' ? statusFilter : undefined,
+        featured: featuredFilter !== 'all' ? featuredFilter : undefined,
+        sort: sort
+      };
+      
+      const data = await api.admin.getProperties(params);
       setProperties(data.data.properties || []);
       
       // Mock data
@@ -59,7 +62,11 @@ const AdminPropertiesPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, featuredFilter, sort]);
+
+  useEffect(() => {
+    fetchProperties();
+  }, [fetchProperties]);
 
   const handleApprove = async (propertyId) => {
     try {
@@ -100,9 +107,12 @@ const AdminPropertiesPage = () => {
 
   const filteredProperties = properties.filter(property => {
     const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         property.location.area.toLowerCase().includes(searchQuery.toLowerCase());
+                         property.location?.area?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'all' || property.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesFeatured = featuredFilter === 'all' || 
+                           (featuredFilter === 'true' && property.featured) || 
+                           (featuredFilter === 'false' && !property.featured);
+    return matchesSearch && matchesStatus && matchesFeatured;
   });
 
   if (loading) {
@@ -159,6 +169,28 @@ const AdminPropertiesPage = () => {
             <option value="published">Published</option>
             <option value="rejected">Rejected</option>
             <option value="sold">Sold</option>
+          </select>
+
+          <select
+            value={featuredFilter}
+            onChange={(e) => setFeaturedFilter(e.target.value)}
+            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
+          >
+            <option value="all">Featured: All</option>
+            <option value="true">Featured Only</option>
+            <option value="false">Non-Featured</option>
+          </select>
+
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
+          >
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="popular">Most Popular</option>
           </select>
         </div>
       </div>

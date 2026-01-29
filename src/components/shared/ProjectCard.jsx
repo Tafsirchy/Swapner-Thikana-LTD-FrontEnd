@@ -28,7 +28,7 @@ const ProjectCard = ({ project }) => {
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className="group relative bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
+      className="group relative bg-white/5 border border-white/10 rounded-none overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
     >
       <div className="relative h-80 w-full">
         <SmartImage
@@ -47,7 +47,7 @@ const ProjectCard = ({ project }) => {
       </div>
 
       <div className="p-8 relative -mt-20 z-10">
-        <div className="bg-royal-deep/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-2xl">
+        <div className="bg-royal-deep/80 backdrop-blur-xl border border-white/10 p-6 rounded-none shadow-2xl">
           <h3 className="text-2xl font-bold text-zinc-100 mb-3 group-hover:text-brand-gold transition-colors">{title}</h3>
           
           <div className="flex items-center gap-2 text-zinc-400 text-sm mb-4">

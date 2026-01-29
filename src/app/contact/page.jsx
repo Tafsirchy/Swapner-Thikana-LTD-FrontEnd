@@ -55,7 +55,7 @@ const ContactPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Details Cards */}
           <div className="space-y-6">
-            <div className="p-8 glass rounded-[2.5rem] border-white/10 hover:border-brand-gold/30 transition-all group">
+            <div className="p-8 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all group">
               <div className="w-14 h-14 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-6 group-hover:scale-110 transition-transform">
                 <MapPin size={28} />
               </div>
@@ -64,7 +64,7 @@ const ContactPage = () => {
               <a href="#" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">View on Map</a>
             </div>
 
-            <div className="p-8 glass rounded-[2.5rem] border-white/10 hover:border-brand-gold/30 transition-all group">
+            <div className="p-8 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all group">
               <div className="w-14 h-14 rounded-2xl bg-brand-emerald/10 flex items-center justify-center text-brand-emerald mb-6 group-hover:scale-110 transition-transform">
                 <Phone size={28} />
               </div>
@@ -74,7 +74,7 @@ const ContactPage = () => {
               <a href="tel:+8801234567890" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">Call Now</a>
             </div>
 
-            <div className="p-8 glass rounded-[2.5rem] border-white/10 hover:border-brand-gold/30 transition-all group">
+            <div className="p-8 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all group">
               <div className="w-14 h-14 rounded-2xl bg-brand-royal/10 flex items-center justify-center text-brand-royal mb-6 group-hover:scale-110 transition-transform">
                 <Mail size={28} />
               </div>
@@ -86,7 +86,7 @@ const ContactPage = () => {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <div className="p-10 md:p-14 bg-white/5 rounded-[4rem] border border-white/10 shadow-2xl relative overflow-hidden">
+            <div className="p-10 md:p-14 bg-white/5 rounded-none border border-white/10 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
               
               <div className="relative z-10">

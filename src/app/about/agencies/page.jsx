@@ -69,7 +69,7 @@ const AgenciesPage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className={`flex flex-col ${i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} bg-white/5 border border-white/10 rounded-[3rem] overflow-hidden hover:border-brand-gold/20 transition-all duration-500`}
+              className={`flex flex-col ${i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} bg-white/5 border border-white/10 rounded-none overflow-hidden hover:border-brand-gold/20 transition-all duration-500`}
             >
               <div className="lg:w-1/2 relative min-h-[400px]">
                 <Image
