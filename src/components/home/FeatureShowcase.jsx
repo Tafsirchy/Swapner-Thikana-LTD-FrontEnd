@@ -84,12 +84,31 @@ const FeatureShowcase = () => {
 
   return (
     <section 
-      className="py-12 bg-royal-deep text-white overflow-hidden relative" 
+      className="py-24 bg-royal-deep text-white overflow-hidden relative" 
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="max-container px-4 relative z-10 h-[600px] lg:h-[700px]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
+      <div className="max-container px-4 relative z-10">
+        
+        <div className="mb-16 text-center">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+            >
+                <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
+                    Exclusive Listings
+                </span>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel text-white mb-6">
+                    Featured <span className="text-brand-gold italic">Properties</span>
+                </h2>
+                <div className="w-24 h-1 bg-gradient-to-r from-transparent via-brand-gold to-transparent mx-auto" />
+            </motion.div>
+        </div>
+
+        <div className="h-[600px] lg:h-[700px]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
           
           {/* Main Feature Display (8 Cols) */}
           <div className="lg:col-span-8 relative h-full rounded-2xl overflow-hidden group border border-white/5">
@@ -127,7 +146,7 @@ const FeatureShowcase = () => {
                       transition={{ delay: 0.3, duration: 0.5 }}
                       className="text-5xl md:text-7xl lg:text-8xl font-cinzel text-white mb-8 uppercase tracking-tight drop-shadow-xl"
                   >
-                    {activeProperty.location?.city || 'Dhaka'}
+                    {activeProperty.title || 'Featured Property'}
                   </motion.h2>
                   
                   <motion.div
@@ -136,6 +155,8 @@ const FeatureShowcase = () => {
                     transition={{ delay: 0.5 }}
                     className="flex items-center gap-8 text-sm md:text-base font-inter tracking-[0.3em] font-medium uppercase text-white/90 pointer-events-auto"
                   >
+                    <span>{activeProperty.location?.city || 'Dhaka'}</span>
+                    <span className="w-px h-4 bg-white/60" />
                     <span>{activeProperty.listingType === 'sale' ? 'Buy' : 'Rent'}</span>
                     <span className="w-px h-4 bg-white/60" />
                     <Link href={`/properties/${activeProperty.slug}`} className="hover:text-brand-gold transition-colors font-bold underline decoration-brand-gold underline-offset-4">
@@ -182,13 +203,13 @@ const FeatureShowcase = () => {
                   
                   <div className="h-[auto] flex flex-col justify-center items-center py-2">
                     <h4 className="font-cinzel text-lg text-white mb-2 uppercase tracking-widest group-hover:text-brand-gold transition-colors line-clamp-1 px-2">
-                        {property.location?.city || 'Location'}
+                        {property.title || 'Property'}
                     </h4>
                     
                     <div className="flex items-center gap-3 text-[10px] font-inter tracking-[0.2em] text-zinc-400 uppercase group-hover:text-zinc-200 transition-colors">
-                       <span>{property.listingType === 'sale' ? 'Buy' : 'Rent'}</span>
+                       <span>{property.location?.city || 'Dhaka'}</span>
                        <span className="w-px h-3 bg-zinc-700" />
-                       <span>{property.propertyType}</span>
+                       <span>{property.listingType === 'sale' ? 'Buy' : 'Rent'}</span>
                     </div>
                   </div>
                 </button>
@@ -206,6 +227,7 @@ const FeatureShowcase = () => {
              </button>
            </div>
 
+        </div>
         </div>
       </div>
     </section>
