@@ -140,6 +140,7 @@ export const api = {
   },
   reviews: {
     create: (data) => apiInstance.post('/reviews', data),
+    update: (id, data) => apiInstance.put(`/reviews/${id}`, data),
     getPropertyReviews: (propertyId) => apiInstance.get(`/reviews/property/${propertyId}`),
     getAgentReviews: (agentId) => apiInstance.get(`/reviews/agent/${agentId}`),
     getAllAdmin: (params) => apiInstance.get('/reviews/admin/all', { params }),

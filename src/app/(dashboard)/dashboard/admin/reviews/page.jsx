@@ -1,47 +1,31 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { MessageSquare, Star, CheckCircle, XCircle, Trash2, User, Building2, UserCheck } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { MessageSquare, Star, Trash2, User, Building2, UserCheck } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
-
-const statusColors = {
-  pending: 'bg-yellow-500/10 text-yellow-500',
-  published: 'bg-emerald-500/10 text-emerald-500',
-  rejected: 'bg-red-500/10 text-red-500',
-};
+import Image from 'next/image';
 
 const AdminReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all');
 
-  useEffect(() => {
-    fetchReviews();
-  }, [filter]);
-
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await api.reviews.getAllAdmin(filter !== 'all' ? { status: filter } : {});
+      const response = await api.reviews.getAllAdmin();
       setReviews(response.data.reviews || []);
-    } catch (error) {
-      console.error('Error fetching reviews:', error);
+    } catch (err) {
+      console.error('Error fetching reviews:', err);
       toast.error('Failed to load reviews');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleUpdateStatus = async (id, status) => {
-    try {
-      await api.reviews.updateStatus(id, status);
-      setReviews(reviews.map(r => r._id === id ? { ...r, status } : r));
-      toast.success(`Review ${status}`);
-    } catch (error) {
-      toast.error('Failed to update status');
-    }
-  };
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this review permanently?')) return;
@@ -49,7 +33,7 @@ const AdminReviewsPage = () => {
       await api.reviews.delete(id);
       setReviews(reviews.filter(r => r._id !== id));
       toast.success('Review deleted');
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete review');
     }
   };
@@ -70,23 +54,9 @@ const AdminReviewsPage = () => {
         <div>
           <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
             <MessageSquare size={32} className="text-brand-gold" />
-            Review Moderation
+            Project & Property Reviews
           </h1>
-          <p className="text-zinc-400 mt-1">Manage feedback for properties and agents</p>
-        </div>
-        
-        <div className="flex bg-white/5 p-1 rounded-xl border border-white/10">
-          {['all', 'pending', 'published', 'rejected'].map((s) => (
-            <button
-              key={s}
-              onClick={() => setFilter(s)}
-              className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
-                filter === s ? 'bg-brand-gold text-royal-deep' : 'text-zinc-500 hover:text-zinc-300'
-              }`}
-            >
-              {s}
-            </button>
-          ))}
+          <p className="text-zinc-400 mt-1">Monitor and manage all user feedback in one place</p>
         </div>
       </div>
 
@@ -96,9 +66,9 @@ const AdminReviewsPage = () => {
             <div className="flex flex-col md:flex-row gap-6">
               {/* User Info */}
               <div className="flex items-start gap-4 md:w-64 flex-shrink-0">
-                <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center border border-white/5 overflow-hidden">
+                <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center border border-white/5 overflow-hidden relative">
                   {review.userPhoto ? (
-                    <img src={review.userPhoto} alt="" className="w-full h-full object-cover" />
+                    <Image src={review.userPhoto} alt="" fill className="object-cover" />
                   ) : (
                     <User size={24} className="text-zinc-600" />
                   )}
@@ -127,33 +97,12 @@ const AdminReviewsPage = () => {
                         <UserCheck size={12} /> Agent Review
                      </div>
                    )}
-                   <span className={`${statusColors[review.status]} px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider`}>
-                     {review.status}
-                   </span>
                 </div>
-                <p className="text-zinc-300 text-sm leading-relaxed italic">"{review.comment}"</p>
+                <p className="text-zinc-300 text-sm leading-relaxed italic">&ldquo;{review.comment}&rdquo;</p>
               </div>
 
               {/* Actions */}
               <div className="flex items-center gap-2 md:self-center">
-                {review.status !== 'published' && (
-                  <button
-                    onClick={() => handleUpdateStatus(review._id, 'published')}
-                    className="p-3 bg-emerald-500/10 text-emerald-500 rounded-xl hover:bg-emerald-500 hover:text-white transition-all"
-                    title="Publish"
-                  >
-                    <CheckCircle size={20} />
-                  </button>
-                )}
-                {review.status !== 'rejected' && (
-                  <button
-                    onClick={() => handleUpdateStatus(review._id, 'rejected')}
-                    className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all"
-                    title="Reject"
-                  >
-                    <XCircle size={20} />
-                  </button>
-                )}
                 <button
                   onClick={() => handleDelete(review._id)}
                   className="p-3 bg-white/5 text-zinc-500 rounded-xl hover:bg-red-500 hover:text-white transition-all"

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Star, MessageSquare, Send, Loader2, User, X } from 'lucide-react';
+import { Star, MessageSquare, Send, Loader2, User, X, Edit2, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { api } from '@/lib/api';
@@ -15,6 +15,11 @@ const ReviewSection = ({ propertyId }) => {
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [newReview, setNewReview] = useState({
+    rating: 5,
+    comment: ''
+  });
+  const [editingId, setEditingId] = useState(null);
+  const [editForm, setEditForm] = useState({
     rating: 5,
     comment: ''
   });
@@ -78,6 +83,37 @@ const ReviewSection = ({ propertyId }) => {
       toast.error(err.response?.data?.message || 'Failed to submit review');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleEdit = (review) => {
+    setEditingId(review._id);
+    setEditForm({ rating: review.rating, comment: review.comment });
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await api.reviews.update(editingId, editForm);
+      toast.success('Review updated successfully');
+      setEditingId(null);
+      fetchReviews(true);
+    } catch {
+      toast.error('Failed to update review');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Delete this review permanently?')) return;
+    try {
+      await api.reviews.delete(id);
+      toast.success('Review deleted');
+      fetchReviews(true);
+    } catch {
+      toast.error('Failed to delete review');
     }
   };
 
@@ -186,7 +222,7 @@ const ReviewSection = ({ propertyId }) => {
           </div>
         ) : (
           reviews.map((review) => (
-            <div key={review._id} className="p-8 bg-white/5 border border-white/10 rounded-[2.5rem] space-y-4">
+            <div key={review._id} className="p-8 bg-white/5 border border-white/10 rounded-[2.5rem] space-y-4 relative group/review">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center text-brand-gold overflow-hidden">
@@ -201,18 +237,84 @@ const ReviewSection = ({ propertyId }) => {
                     <p className="text-xs text-zinc-500">{new Date(review.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
-                <div className="flex gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      size={14} 
-                      fill={i < review.rating ? '#D4AF37' : 'none'} 
-                      className={i < review.rating ? 'text-brand-gold' : 'text-zinc-700'} 
-                    />
-                  ))}
+                
+                <div className="flex flex-col items-end gap-3">
+                  <div className="flex gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star 
+                        key={i} 
+                        size={14} 
+                        fill={i < review.rating ? '#D4AF37' : 'none'} 
+                        className={i < review.rating ? 'text-brand-gold' : 'text-zinc-700'} 
+                      />
+                    ))}
+                  </div>
+
+                  {/* Actions for owner */}
+                  {user && review.userId === user._id && (
+                    <div className="flex gap-2 opacity-0 group-hover/review:opacity-100 transition-opacity">
+                      <button 
+                        onClick={() => handleEdit(review)}
+                        className="p-2 bg-white/5 text-zinc-400 hover:text-brand-gold hover:bg-brand-gold/10 rounded-lg transition-all"
+                        title="Edit Review"
+                      >
+                        <Edit2 size={14} />
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(review._id)}
+                        className="p-2 bg-white/5 text-zinc-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
+                        title="Delete Review"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
-              <p className="text-zinc-300 leading-relaxed italic">&ldquo;{review.comment}&rdquo;</p>
+
+              {editingId === review._id ? (
+                <form onSubmit={handleUpdate} className="mt-4 space-y-4 bg-zinc-900/50 p-6 rounded-2xl border border-brand-gold/20">
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setEditForm({ ...editForm, rating: star })}
+                      >
+                        <Star 
+                          size={20} 
+                          fill={star <= editForm.rating ? '#D4AF37' : 'none'} 
+                          className={star <= editForm.rating ? 'text-brand-gold' : 'text-zinc-700'} 
+                        />
+                      </button>
+                    ))}
+                  </div>
+                  <textarea
+                    required
+                    className="w-full bg-royal-deep border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all min-h-[80px] text-sm resize-none"
+                    value={editForm.comment}
+                    onChange={(e) => setEditForm({ ...editForm, comment: e.target.value })}
+                  />
+                  <div className="flex gap-2 justify-end">
+                    <button
+                      type="button"
+                      onClick={() => setEditingId(null)}
+                      className="px-4 py-2 text-xs font-bold text-zinc-500 hover:text-zinc-300 transition-all uppercase tracking-widest"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="px-6 py-2 bg-brand-gold text-royal-deep text-xs font-bold rounded-lg hover:bg-brand-gold-light transition-all uppercase tracking-widest disabled:opacity-50"
+                    >
+                      {submitting ? 'Saving...' : 'Save Changes'}
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <p className="text-zinc-300 leading-relaxed italic">&ldquo;{review.comment}&rdquo;</p>
+              )}
             </div>
           ))
         )}
