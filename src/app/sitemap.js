@@ -11,7 +11,7 @@ export default async function sitemap() {
     '/about',
     '/properties',
     '/contact',
-    '/agents',
+    '/about/agents',
     '/blog'
   ].map((route) => ({
     url: `${baseUrl}${route}`,

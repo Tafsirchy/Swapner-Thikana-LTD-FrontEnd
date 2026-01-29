@@ -41,7 +41,7 @@ const SitemapPage = () => {
       title: 'Connect',
       icon: <Users size={24} />,
       links: [
-        { label: 'Our Agents', href: '/agents' },
+        { label: 'Our Agents', href: '/about/agents' },
         { label: 'Contact Us', href: '/contact' },
         { label: 'Blog / Insights', href: '/blog' },
       ]
