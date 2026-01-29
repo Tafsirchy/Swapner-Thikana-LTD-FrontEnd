@@ -5,10 +5,23 @@ import { motion } from 'framer-motion';
 import { Mail, Phone, Star, ArrowRight, User } from 'lucide-react';
 import { api } from '@/lib/api';
 import Image from 'next/image';
+import AgentDetailsModal from '@/components/agents/AgentDetailsModal';
 
 const AgentsPage = () => {
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedAgent, setSelectedAgent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewProfile = (agent) => {
+    setSelectedAgent(agent);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedAgent(null), 300); // Wait for exit animation
+  };
 
   useEffect(() => {
     const fetchAgents = async () => {
@@ -105,7 +118,10 @@ const AgentsPage = () => {
                     </a>
                   </div>
 
-                  <button className="w-full py-3 rounded-xl bg-white/5 border border-white/5 text-zinc-100 font-bold hover:bg-brand-gold hover:text-royal-deep hover:border-brand-gold transition-all flex items-center justify-center gap-2">
+                  <button 
+                    onClick={() => handleViewProfile(agent)}
+                    className="w-full py-3 rounded-xl bg-white/5 border border-white/5 text-zinc-100 font-bold hover:bg-brand-gold hover:text-royal-deep hover:border-brand-gold transition-all flex items-center justify-center gap-2"
+                  >
                     View Profile
                     <ArrowRight size={16} />
                   </button>
@@ -123,6 +139,12 @@ const AgentsPage = () => {
           </div>
         )}
       </div>
+
+      <AgentDetailsModal 
+        agent={selectedAgent}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
