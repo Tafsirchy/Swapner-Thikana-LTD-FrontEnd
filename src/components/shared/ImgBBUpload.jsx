@@ -5,6 +5,7 @@ import { Upload, X, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
+import imageCompression from 'browser-image-compression';
 
 const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required = false }) => {
   const [uploading, setUploading] = useState(false);
@@ -28,26 +29,33 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
       return;
     }
 
-    // Limit size (e.g. 5MB) - ImgBB handles up to 32MB but good to be safe
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image size should be less than 5MB');
-      return;
-    }
-
     try {
       setUploading(true);
       setProgress(0);
-      const formData = new FormData();
-      formData.append('image', file);
 
-      // Using the provided API key
+      // 1. Compression (The Performance Boost)
+      toast.loading('Optimizing image...', { id: 'img-upload' });
+      const options = {
+        maxSizeMB: 1,         // Compress to max 1MB
+        maxWidthOrHeight: 1920, // Max 1920px
+        useWebWorker: true,
+        onProgress: (p) => setProgress(Math.round(p / 2)) // First 50% for compression
+      };
+
+      const compressedFile = await imageCompression(file, options);
+      
+      // 2. Upload
+      toast.loading('Uploading quality image...', { id: 'img-upload' });
+      const formData = new FormData();
+      formData.append('image', compressedFile);
+
       const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
         params: {
           key: '615ab9305e7a47395335aa3d18655815'
         },
         onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setProgress(percentCompleted);
+          const uploadPercent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setProgress(50 + Math.round(uploadPercent / 2)); // Final 50% for network transfter
         }
       });
 
@@ -57,16 +65,17 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
         const url = data.data.url;
         setPreview(url);
         onUpload(url);
-        toast.success('Image uploaded successfully');
+        toast.success('Professional upload complete', { id: 'img-upload' });
       } else {
         throw new Error(data.error?.message || 'Upload failed');
       }
     } catch (error) {
       console.error('Upload Error:', error);
-      toast.error('Failed to upload image. Please try again.');
+      toast.error('Failed to upload image. Please try again.', { id: 'img-upload' });
     } finally {
       setUploading(false);
       setProgress(0);
+      e.target.value = ''; // FIX: Allow re-uploading same file
     }
   };
 

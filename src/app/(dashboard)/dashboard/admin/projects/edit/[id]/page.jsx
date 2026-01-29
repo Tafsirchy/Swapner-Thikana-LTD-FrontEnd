@@ -8,6 +8,7 @@ import axios from 'axios';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
+import imageCompression from 'browser-image-compression';
 
 const EditProjectPage = () => {
   const router = useRouter();
@@ -467,15 +468,25 @@ const EditProjectPage = () => {
                              if(!file) return;
                              try {
                                 setGalleryUploading(true);
-                                toast.loading('Uploading to gallery...', { id: 'gallery-upload' });
+                                toast.loading('Optimizing gallery image...', { id: 'gallery-upload' });
+                                
+                                // 1. Compression
+                                const compressedFile = await imageCompression(file, {
+                                   maxSizeMB: 1,
+                                   maxWidthOrHeight: 1920,
+                                   useWebWorker: true
+                                });
+
+                                toast.loading('Uploading quality image...', { id: 'gallery-upload' });
                                 const fData = new FormData();
-                                fData.append('image', file);
+                                fData.append('image', compressedFile);
+                                
                                 const res = await axios.post('https://api.imgbb.com/1/upload', fData, {
                                    params: { key: '615ab9305e7a47395335aa3d18655815' }
                                 });
                                 if(res.data.success) {
                                    setFormData(prev => ({ ...prev, images: [...prev.images, res.data.data.url] }));
-                                   toast.success('Added to gallery', { id: 'gallery-upload' });
+                                   toast.success('Gallery updated', { id: 'gallery-upload' });
                                 } else {
                                    throw new Error(res.data.error?.message || 'Upload failed');
                                 }
