@@ -156,9 +156,14 @@ const Navbar = () => {
     );
   };
 
+  // Hide Navbar on dashboard as per user request
+  if (pathname.startsWith('/dashboard')) return null;
+
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 py-3 md:py-0 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isDashboard ? 'py-2' : 'py-3 md:py-0'
+      } ${
         isScrolled || isDashboard || isDetailsPage
           ? 'bg-royal-deep/90 backdrop-blur-md shadow-lg'
           : 'bg-gradient-to-b from-black/50 to-transparent'

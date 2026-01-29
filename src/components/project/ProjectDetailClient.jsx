@@ -37,114 +37,162 @@ const ProjectDetailClient = ({ project }) => {
         </div>
       </section>
 
-      <div className="max-container px-4 mt-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+      <div className="max-container px-4 mt-16 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* Project Details */}
-          <div className="lg:col-span-2 space-y-12">
+          {/* Main Content Column */}
+          <div className="lg:col-span-8 space-y-12">
             
-            {/* Architectural Vision */}
-            <div className="space-y-6">
+            {/* 1. Project Overview & Address */}
+            <div className="space-y-6 border-b border-white/5 pb-10">
               <h2 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
                 <span className="w-10 h-1 bg-brand-gold rounded-full"></span>
-                The Vision
+                Project Overview
               </h2>
-              <div className="text-zinc-400 text-lg leading-relaxed space-y-4 italic">
+              <div className="text-zinc-400 text-lg leading-relaxed italic">
                 {project.description}
+              </div>
+              <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10 mt-4">
+                 <MapPin className="text-brand-gold shrink-0 mt-1" size={20} />
+                 <div>
+                    <span className="block text-xs text-zinc-500 uppercase tracking-widest font-bold mb-1">Project Address</span>
+                    <p className="text-zinc-200 font-medium">{project.address || project.location?.address || "Plot No# 02, Road# 04. Sector# 15/E"}</p>
+                 </div>
               </div>
             </div>
 
-            {/* Project Highlights Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* 2. Key Project Metrics (Grid) */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { icon: <MapPin />, label: 'Location', value: project.location?.city || 'Dhaka' },
-                { icon: <Calendar />, label: 'Status', value: project.status },
-                { icon: <Building2 />, label: 'Units', value: 'Exclusive Collection' },
+                { label: "Land Size", value: project.landSize || "6 Katha" },
+                { label: "Floor Config", value: project.floorConfiguration || "G+9" },
+                { label: "Total Units", value: project.totalUnits || "18 Nos." },
+                { label: "Units / Floor", value: project.unitsPerFloor || "2 Units" },
+                { label: "Parking", value: project.parking || "1 per Flat" },
+                { label: "Lift", value: project.lift || "1 Lift" },
+                { label: "Stair", value: project.stair || "Yes" },
+                { label: "Handover", value: project.handoverDate || "Dec 2027" },
               ].map((item, i) => (
-                <div key={i} className="p-6 glass rounded-3xl border-white/10 flex flex-col items-center text-center gap-2">
-                  <div className="text-brand-gold mb-2">{item.icon}</div>
-                  <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{item.label}</span>
-                  <span className="text-zinc-100 font-bold capitalize">{item.value}</span>
+                <div key={i} className="p-4 bg-zinc-900/50 border border-white/5 rounded-2xl flex flex-col gap-1 hover:border-brand-gold/20 transition-colors">
+                  <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">{item.label}</span>
+                  <span className="text-zinc-100 font-bold text-sm md:text-base">{item.value}</span>
                 </div>
               ))}
             </div>
 
-            {/* Features & Specifications */}
-            <div className="p-10 bg-white/5 rounded-[3rem] border border-white/10">
-              <h2 className="text-2xl font-bold text-zinc-100 mb-8 flex items-center gap-3">
-                <CheckCircle2 className="text-brand-gold" size={24} />
-                Project Specifications
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-12">
-                {(project.features || [
-                  'Bespoke interior design options',
-                  'World-class 24/7 concierge',
-                  'Smart home automated integration',
-                  'Platinum certified green architecture',
-                  'Private elevator access',
-                  'State-of-the-art wellness club'
-                ]).map((spec, i) => (
-                  <div key={i} className="flex items-center gap-3 py-3 border-b border-white/5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
-                    <span className="text-zinc-300 font-medium">{spec}</span>
+            {/* 3. Apartment Configuration & Size */}
+            <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 space-y-8">
+               <div>
+                  <h3 className="text-xl font-bold text-zinc-100 mb-2 flex items-center gap-2">
+                     <Building2 className="text-brand-gold" size={20} />
+                     Apartment Configuration
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                     <div className="p-5 rounded-2xl bg-zinc-900/80 border border-white/5">
+                        <span className="block text-brand-gold font-bold mb-1">Unit Sizes</span>
+                        <p className="text-zinc-300 text-sm">{project.flatSize || "A Unit: 1950 Sft, B Unit: 1750 Sft"}</p>
+                     </div>
+                     <div className="p-5 rounded-2xl bg-zinc-900/80 border border-white/5">
+                        <span className="block text-brand-gold font-bold mb-1">Common Facilities</span>
+                        <p className="text-zinc-300 text-sm">{project.commonFacilities || "Rooftop Community Area, Hall Room, BBQ Facility"}</p>
+                     </div>
                   </div>
-                ))}
-              </div>
+               </div>
+
+               <div className="space-y-4">
+                  <h4 className="text-sm font-bold text-zinc-400 uppercase tracking-widest border-b border-white/10 pb-2">Apartment Features</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-8">
+                     {[
+                        { label: "Bedroom", value: project.bedroomCount || "3/4" },
+                        { label: "Bathroom", value: project.bathroomCount || "3/4" },
+                        { label: "Drawing", value: "Included" },
+                        { label: "Living", value: "Included" },
+                        { label: "Family Living", value: "Included" },
+                        { label: "Dining", value: "Included" },
+                        { label: "Balcony", value: project.balconyCount || "2/3" },
+                        { label: "Kitchen", value: "Included" },
+                     ].map((feat, i) => (
+                        <div key={i} className="flex items-center gap-2 text-zinc-300">
+                           <CheckCircle2 size={14} className="text-brand-gold/60" />
+                           <span className="text-sm">
+                              <span className="text-zinc-500 text-xs mr-1">{feat.label}:</span> 
+                              {feat.value}
+                           </span>
+                        </div>
+                     ))}
+                  </div>
+               </div>
             </div>
 
-            {/* Project Gallery Grid */}
-            <div className="space-y-6">
+             {/* 4. Availability & Rate */}
+             <div className="space-y-6">
+               <h3 className="text-2xl font-bold text-zinc-100">Pricing & Availability</h3>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="p-6 rounded-3xl bg-brand-gold/10 border border-brand-gold/20 flex flex-col justify-center items-center text-center">
+                     <span className="text-xs font-bold text-brand-gold uppercase tracking-[0.2em] mb-2">Price Rate</span>
+                     <span className="text-3xl font-bold text-white">{project.pricePerSqFt || "9,500"}</span>
+                     <span className="text-sm text-zinc-400 mt-1">BDT per SFT</span>
+                  </div>
+                  <div className="p-6 rounded-3xl bg-zinc-900 border border-white/10">
+                     <span className="text-xs font-bold text-zinc-500 uppercase tracking-[0.2em] mb-4 block">Available Units</span>
+                     <p className="text-zinc-300 font-medium leading-relaxed">
+                        {project.availableFlats || "3A, 3B (2nd Floor), 5A (4th Floor), 8A (9th Floor)"}
+                     </p>
+                  </div>
+               </div>
+             </div>
+
+            {/* Gallery */}
+            <div className="space-y-6 pt-8 border-t border-white/5">
               <h2 className="text-2xl font-bold text-zinc-100">Visual Portfolio</h2>
               <div className="grid grid-cols-2 gap-4">
                 {project.images?.map((img, i) => (
-                  <div key={i} className="relative h-64 rounded-3xl overflow-hidden group">
+                  <div key={i} className="relative h-64 rounded-3xl overflow-hidden group border border-white/5">
                     <Image src={img} alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                   </div>
                 ))}
               </div>
             </div>
+
           </div>
 
-          {/* Sidebar - Project Contact */}
-          <div className="space-y-8">
+          {/* Sidebar Column */}
+          <div className="lg:col-span-4 space-y-8">
             <div className="p-8 glass rounded-[2.5rem] border-brand-gold/20 sticky top-28">
-              <h3 className="text-xl font-bold text-zinc-100 mb-6">Concierge Booking</h3>
-              <p className="text-zinc-400 text-sm mb-8">Schedule a private architectural tour or request a physical brochure.</p>
+              <h3 className="text-xl font-bold text-zinc-100 mb-2">Direct Contact</h3>
+              <p className="text-zinc-400 text-sm mb-6">Speak directly with our sales team.</p>
               
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-gold/20 transition-all cursor-pointer">
-                  <div className="p-3 rounded-xl bg-brand-gold/10 text-brand-gold">
-                    <Phone size={20} />
-                  </div>
-                  <div>
-                    <span className="block text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Speak with Concierge</span>
-                    <span className="text-zinc-100 font-bold">+880 1234 567 890</span>
-                  </div>
+              <div className="space-y-4">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-gold/20 transition-all">
+                   <div className="flex items-center gap-3 mb-2">
+                     <Phone size={16} className="text-brand-gold" />
+                     <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Hotline</span>
+                   </div>
+                   <p className="text-xl font-bold text-zinc-100">01731 227 755</p>
                 </div>
 
-                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-gold/20 transition-all cursor-pointer">
-                  <div className="p-3 rounded-xl bg-brand-gold/10 text-brand-gold">
-                    <Mail size={20} />
-                  </div>
-                  <div>
-                    <span className="block text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Email Relations</span>
-                    <span className="text-zinc-100 font-bold">concierge@stltd.com</span>
-                  </div>
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-brand-gold/20 transition-all">
+                   <div className="flex items-center gap-3 mb-2">
+                     <Building2 size={16} className="text-brand-gold" />
+                     <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Dhaka Office</span>
+                   </div>
+                   <p className="text-xl font-bold text-zinc-100">01822 335 566</p>
                 </div>
               </div>
 
               <div className="mt-8 pt-8 border-t border-white/10">
-                <h4 className="text-sm font-bold text-zinc-100 mb-4">Request Portfolio Access</h4>
+                <h4 className="text-sm font-bold text-zinc-100 mb-4">Request Callback</h4>
                 <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-                  <input type="text" placeholder="Full Name" className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm" />
-                  <input type="email" placeholder="Email Address" className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm" />
-                  <button className="w-full py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg">
-                    Request Dossier
+                  <input type="text" placeholder="Full Name" className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/50 transition-colors" />
+                  <input type="text" placeholder="Phone Number" className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/50 transition-colors" />
+                  <button className="w-full py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg mt-2">
+                    Request Info
                   </button>
                 </form>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
