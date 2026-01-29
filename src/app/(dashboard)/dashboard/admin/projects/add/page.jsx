@@ -395,41 +395,48 @@ const AddProjectPage = () => {
                           </button>
                        </div>
                     ))}
-                    <div className={`relative aspect-video rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center hover:border-brand-gold/30 hover:bg-white/5 transition-all text-zinc-600 hover:text-brand-gold ${galleryUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+                  <div className={`relative aspect-video rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center hover:border-brand-gold/30 hover:bg-white/5 transition-all text-zinc-600 hover:text-brand-gold ${galleryUploading ? 'opacity-50 pointer-events-none' : ''}`}>
                        <input 
                           type="file" 
+                          multiple
                           className="absolute inset-0 opacity-0 cursor-pointer" 
                           disabled={galleryUploading}
                           onChange={async (e) => {
-                             const file = e.target.files[0];
-                             if(!file) return;
+                             const files = Array.from(e.target.files);
+                             if(files.length === 0) return;
+                             
                              try {
                                 setGalleryUploading(true);
-                                toast.loading('Optimizing gallery image...', { id: 'gallery-upload' });
+                                const toastId = toast.loading('Starting optimization...');
                                 
-                                // 1. Compression
-                                const compressedFile = await imageCompression(file, {
-                                   maxSizeMB: 1,
-                                   maxWidthOrHeight: 1920,
-                                   useWebWorker: true
-                                });
-
-                                toast.loading('Uploading quality image...', { id: 'gallery-upload' });
-                                const fData = new FormData();
-                                fData.append('image', compressedFile);
-                                
-                                const res = await axios.post('https://api.imgbb.com/1/upload', fData, {
-                                   params: { key: '615ab9305e7a47395335aa3d18655815' }
-                                });
-                                if(res.data.success) {
-                                   setFormData(prev => ({ ...prev, images: [...prev.images, res.data.data.url] }));
-                                   toast.success('Gallery updated', { id: 'gallery-upload' });
-                                } else {
-                                   throw new Error(res.data.error?.message || 'Upload failed');
+                                for (let i = 0; i < files.length; i++) {
+                                   const file = files[i];
+                                   toast.loading(`Optimizing image ${i + 1}/${files.length}...`, { id: toastId });
+                                   
+                                   // 1. Compression
+                                   const compressedFile = await imageCompression(file, {
+                                      maxSizeMB: 1,
+                                      maxWidthOrHeight: 1920,
+                                      useWebWorker: true
+                                   });
+   
+                                   toast.loading(`Uploading image ${i + 1}/${files.length}...`, { id: toastId });
+                                   const fData = new FormData();
+                                   fData.append('image', compressedFile);
+                                   
+                                   const res = await axios.post('https://api.imgbb.com/1/upload', fData, {
+                                      params: { key: '615ab9305e7a47395335aa3d18655815' }
+                                   });
+                                   if(res.data.success) {
+                                      setFormData(prev => ({ ...prev, images: [...prev.images, res.data.data.url] }));
+                                   } else {
+                                      toast.error(`Failed to upload image ${i+1}`);
+                                   }
                                 }
+                                toast.success('Gallery updated successfully', { id: toastId });
                              } catch (err) {
                                 console.error('Gallery upload error:', err);
-                                toast.error(err.message || 'Gallery upload failed', { id: 'gallery-upload' });
+                                toast.error('Gallery upload failed');
                              } finally {
                                 setGalleryUploading(false);
                                 e.target.value = ''; // Reset input
@@ -438,7 +445,7 @@ const AddProjectPage = () => {
                        />
                        <div className="flex flex-col items-center gap-1">
                           {galleryUploading ? <Loader2 size={24} className="animate-spin" /> : <Plus size={24} />}
-                          <span className="text-[10px] uppercase font-bold tracking-widest">{galleryUploading ? 'Uploading...' : 'Add Image'}</span>
+                          <span className="text-[10px] uppercase font-bold tracking-widest">{galleryUploading ? 'Processing...' : 'Add Images'}</span>
                        </div>
                     </div>
                  </div>

@@ -11,6 +11,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import imageCompression from 'browser-image-compression';
 
 const AddPropertyPage = () => {
   const router = useRouter();
@@ -105,33 +106,48 @@ const AddPropertyPage = () => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
 
-    // Use a toast promise or internal loading state if desired. 
-    // For simplicity, we just upload and append.
-    const uploadPromise = Promise.all(files.map(async (file) => {
-      const formData = new FormData();
-      formData.append('image', file);
-      try {
+    setIsLoading(true);
+    const toastId = toast.loading('Starting image optimization...');
+    
+    const uploadedUrls = [];
+    
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        toast.loading(`Optimizing image ${i + 1}/${files.length}...`, { id: toastId });
+        
+        // 1. Compression
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true
+        });
+
+        // 2. Upload
+        toast.loading(`Uploading image ${i + 1}/${files.length}...`, { id: toastId });
+        const formData = new FormData();
+        formData.append('image', compressedFile);
+        
         const response = await axios.post(
           'https://api.imgbb.com/1/upload',
           formData,
           { params: { key: '615ab9305e7a47395335aa3d18655815' } }
         );
-        return response.data.data.url;
-      } catch (error) {
-        console.error('Failed to upload image:', error);
-        toast.error(`Failed to upload ${file.name}`);
-        return null;
+        
+        if (response.data.success) {
+          uploadedUrls.push(response.data.data.url);
+        }
       }
-    }));
-
-    toast.promise(uploadPromise, {
-      loading: 'Uploading images...',
-      success: 'Images uploaded!',
-      error: 'Some images failed to upload'
-    });
-
-    const uploadedUrls = (await uploadPromise).filter(url => url !== null);
-    setImages(prev => [...prev, ...uploadedUrls]);
+      
+      setImages(prev => [...prev, ...uploadedUrls]);
+      toast.success(`${uploadedUrls.length} images processed successfully`, { id: toastId });
+    } catch (error) {
+      console.error('Image processing failed:', error);
+      toast.error('Some images failed to upload', { id: toastId });
+    } finally {
+      setIsLoading(false);
+      e.target.value = ''; // Reset
+    }
   };
 
   const removeImage = (index) => {
