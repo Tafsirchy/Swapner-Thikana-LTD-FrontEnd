@@ -211,11 +211,11 @@ const EditProjectPage = () => {
                     name="type"
                     value={formData.type}
                     onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                    className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                   >
-                    <option value="residential">Residential</option>
-                    <option value="commercial">Commercial</option>
-                    <option value="mixed">Mixed Use</option>
+                    <option value="residential" className="bg-zinc-900 text-zinc-100">Residential</option>
+                    <option value="commercial" className="bg-zinc-900 text-zinc-100">Commercial</option>
+                    <option value="mixed" className="bg-zinc-900 text-zinc-100">Mixed Use</option>
                   </select>
                 </div>
                 <div>
@@ -224,11 +224,11 @@ const EditProjectPage = () => {
                     name="status"
                     value={formData.status}
                     onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                    className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                   >
-                    <option value="upcoming">Upcoming</option>
-                    <option value="ongoing">Ongoing</option>
-                    <option value="completed">Completed</option>
+                    <option value="upcoming" className="bg-zinc-900 text-zinc-100">Upcoming</option>
+                    <option value="ongoing" className="bg-zinc-900 text-zinc-100">Ongoing</option>
+                    <option value="completed" className="bg-zinc-900 text-zinc-100">Completed</option>
                   </select>
                 </div>
               </div>

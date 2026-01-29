@@ -19,23 +19,38 @@ const ReviewSection = ({ propertyId }) => {
     comment: ''
   });
 
+  const isFetching = React.useRef(false);
   const lastFetchedId = React.useRef(null);
 
   const fetchReviews = useCallback(async (force = false) => {
-    if (!propertyId || (loading && !force)) return;
-    if (!force && lastFetchedId.current === propertyId) return;
+    if (!propertyId) {
+      setLoading(false);
+      return;
+    }
+    
+    // Prevent duplicate fetches for the same property
+    if (!force && lastFetchedId.current === propertyId) {
+      setLoading(false);
+      return;
+    }
+
+    // Prevent concurrent fetches
+    if (isFetching.current) return;
 
     try {
+      isFetching.current = true;
       setLoading(true);
       const res = await api.reviews.getPropertyReviews(propertyId);
-      setReviews(res.data.reviews);
+      setReviews(res.data?.reviews || []);
       lastFetchedId.current = propertyId;
     } catch (err) {
       console.error('Error fetching reviews:', err);
+      setReviews([]);
     } finally {
       setLoading(false);
+      isFetching.current = false;
     }
-  }, [propertyId, loading]);
+  }, [propertyId]);
 
   useEffect(() => {
     fetchReviews();
@@ -55,9 +70,10 @@ const ReviewSection = ({ propertyId }) => {
         rating: newReview.rating,
         comment: newReview.comment
       });
-      toast.success('Review submitted for moderation');
+      toast.success('Review published successfully');
       setNewReview({ rating: 5, comment: '' });
       setShowForm(false);
+      fetchReviews(true); // Re-fetch reviews to show the new one immediately
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to submit review');
     } finally {
@@ -163,8 +179,10 @@ const ReviewSection = ({ propertyId }) => {
             <p className="text-sm">Fetching verified reviews...</p>
           </div>
         ) : reviews.length === 0 ? (
-          <div className="text-center py-12 bg-white/5 border border-white/5 rounded-[2rem] italic text-zinc-500">
-            No reviews yet. Be the first to share your experience!
+          <div className="text-center py-16 bg-white/5 border border-white/10 rounded-[2.5rem] border-dashed">
+            <p className="text-zinc-500 italic font-medium tracking-wide">
+              No reviews available for this property yet.
+            </p>
           </div>
         ) : (
           reviews.map((review) => (
