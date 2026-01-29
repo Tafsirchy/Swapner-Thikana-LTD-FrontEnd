@@ -97,9 +97,7 @@ const DashboardLayout = ({ children }) => {
           z-40 transform transition-transform duration-300 ease-in-out
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}>
-          <div className="lg:hidden p-8 flex items-center justify-between">
-             {/* Mobile Logo only */}
-             <Image src="/logo.png" alt="shwapner Thikana" width={160} height={40} className="h-10 w-auto" />
+          <div className="lg:hidden p-8 flex items-center justify-end">
             <button onClick={toggleSidebar} className="text-zinc-400">
               <X size={24} />
             </button>
