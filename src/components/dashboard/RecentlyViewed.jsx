@@ -53,7 +53,7 @@ const RecentlyViewed = () => {
         {properties.slice(0, 5).map((property) => (
           <Link 
             key={property._id} 
-            href={`/properties/slug/${property.slug}`}
+            href={`/properties/${property.slug || property._id}`}
             className="flex items-center gap-4 p-3 bg-white/5 rounded-2xl border border-white/5 hover:border-brand-gold/30 transition-all group"
           >
             <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">

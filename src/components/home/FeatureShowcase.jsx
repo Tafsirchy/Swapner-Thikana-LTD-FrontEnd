@@ -159,7 +159,7 @@ const FeatureShowcase = () => {
                     <span className="w-px h-4 bg-white/60" />
                     <span>{activeProperty.listingType === 'sale' ? 'Buy' : 'Rent'}</span>
                     <span className="w-px h-4 bg-white/60" />
-                    <Link href={`/properties/${activeProperty.slug}`} className="hover:text-brand-gold transition-colors font-bold underline decoration-brand-gold underline-offset-4">
+                    <Link href={`/properties/${activeProperty.slug || activeProperty._id}`} className="hover:text-brand-gold transition-colors font-bold underline decoration-brand-gold underline-offset-4">
                       View Details
                     </Link>
                   </motion.div>

@@ -8,6 +8,7 @@ import {
   CheckCircle, ArrowRight, ArrowLeft, Upload, X, Save, Loader2 
 } from 'lucide-react';
 import Image from 'next/image';
+import axios from 'axios';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 
@@ -75,7 +76,7 @@ const EditPropertyPage = () => {
         });
 
         if (property.images) {
-           setImages(property.images.map(img => ({ preview: img, existing: true })));
+           setImages(property.images);
         }
       } catch (error) {
         console.error('Error fetching property:', error);
@@ -124,14 +125,35 @@ const EditPropertyPage = () => {
     }));
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map(file => ({
-      file,
-      preview: URL.createObjectURL(file),
-      new: true
+    if (files.length === 0) return;
+
+    const uploadPromise = Promise.all(files.map(async (file) => {
+      const formData = new FormData();
+      formData.append('image', file);
+      try {
+        const response = await axios.post(
+          'https://api.imgbb.com/1/upload',
+          formData,
+          { params: { key: '615ab9305e7a47395335aa3d18655815' } }
+        );
+        return response.data.data.url;
+      } catch (error) {
+        console.error('Failed to upload image:', error);
+        toast.error(`Failed to upload ${file.name}`);
+        return null;
+      }
     }));
-    setImages(prev => [...prev, ...newImages]);
+
+    toast.promise(uploadPromise, {
+      loading: 'Uploading images...',
+      success: 'Images uploaded!',
+      error: 'Some images failed to upload'
+    });
+
+    const uploadedUrls = (await uploadPromise).filter(url => url !== null);
+    setImages(prev => [...prev, ...uploadedUrls]);
   };
 
   const removeImage = (index) => {
@@ -147,6 +169,7 @@ const EditPropertyPage = () => {
         bedrooms: Number(formData.bedrooms),
         bathrooms: Number(formData.bathrooms),
         area: Number(formData.area),
+        images: images // Send array of URLs
       };
 
       await api.properties.update(id, propertyData);
@@ -392,16 +415,13 @@ const EditPropertyPage = () => {
                   <div className="grid grid-cols-3 gap-4">
                      {images.map((img, i) => (
                         <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group border border-white/5">
-                           <Image src={img.preview} alt="" fill className="object-cover" />
+                           <Image src={img} alt="" fill className="object-cover" />
                            <button 
                               onClick={() => removeImage(i)}
-                              className="absolute top-2 right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                              className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all"
                            >
                               <X size={16} />
                            </button>
-                           {img.existing && (
-                             <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 text-[10px] text-white rounded">Existing</div>
-                           )}
                         </div>
                      ))}
                   </div>

@@ -205,8 +205,10 @@ const DashboardLayout = ({ children }) => {
             <button onClick={toggleSidebar} className="text-zinc-400">
               <Menu size={24} />
             </button>
-            <span className="font-bold text-lg">Dashboard</span>
-            <div className="w-8"></div> {/* Spacer */}
+            <Link href="/" className="flex items-center">
+              <Image src="/logo.png" alt="shwapner Thikana" width={120} height={40} className="h-8 w-auto object-contain" />
+            </Link>
+            <div className="w-6"></div> {/* Spacer for balance */}
           </header>
 
           {/* Scrollable Content Area */}

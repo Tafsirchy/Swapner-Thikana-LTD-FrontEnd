@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { FileText, Save, X, Image as ImageIcon, Tag, Layout, Loader2 } from 'lucide-react';
+import { FileText, Save, X, Tag, Layout, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import ImgBBUpload from '@/components/shared/ImgBBUpload';
 
 const EditBlogPage = () => {
   const router = useRouter();
@@ -147,18 +148,12 @@ const EditBlogPage = () => {
                 </div>
 
                 <div>
-                   <label className="block text-sm font-medium text-zinc-400 mb-2 text-xs uppercase tracking-wider">Thumbnail URL</label>
-                   <div className="relative">
-                     <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                     <input
-                        required
-                        type="url"
-                        name="thumbnail"
-                        value={formData.thumbnail}
-                        onChange={handleChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
-                      />
-                   </div>
+                   <ImgBBUpload 
+                     label="Thumbnail Image"
+                     defaultImage={formData.thumbnail}
+                     onUpload={(url) => setFormData(prev => ({ ...prev, thumbnail: url }))}
+                     required
+                   />
                 </div>
               </div>
 

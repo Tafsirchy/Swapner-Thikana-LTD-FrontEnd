@@ -165,7 +165,7 @@ const AdminBlogsPage = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                        <Link
-                        href={`/blogs/${blog.slug}`}
+                        href={`/blog/${blog.slug || blog._id}`}
                         className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
                         title="View Public Post"
                       >

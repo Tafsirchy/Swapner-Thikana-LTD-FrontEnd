@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { Users, Save, X, Mail, Phone, Briefcase, Award, Image as ImageIcon, ShieldCheck, Loader2 } from 'lucide-react';
+import { Users, Save, X, Mail, Phone, Briefcase, Award, ShieldCheck, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import ImgBBUpload from '@/components/shared/ImgBBUpload';
 
 const EditAgentPage = () => {
   const router = useRouter();
@@ -188,18 +189,12 @@ const EditAgentPage = () => {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2 font-sans italic">Portrait URL</label>
-                <div className="relative">
-                  <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                  <input
-                    required
-                    type="url"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
-                  />
-                </div>
+                <ImgBBUpload 
+                  label="Portrait Image"
+                  defaultImage={formData.image}
+                  onUpload={(url) => setFormData(prev => ({ ...prev, image: url }))}
+                  required
+                />
               </div>
 
               <div>

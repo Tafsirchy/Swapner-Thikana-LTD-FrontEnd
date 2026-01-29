@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { Briefcase, Save, X, Info, MapPin, Globe, Phone, Mail, Link as LinkIcon, Loader2 } from 'lucide-react';
+import { Briefcase, Save, X, Info, MapPin, Globe, Phone, Mail, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import ImgBBUpload from '@/components/shared/ImgBBUpload';
 
 const EditAgencyPage = () => {
   const router = useRouter();
@@ -128,17 +129,11 @@ const EditAgencyPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Logo URL</label>
-                <div className="relative">
-                  <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                  <input
-                    type="url"
-                    name="logo"
-                    value={formData.logo}
-                    onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
-                  />
-                </div>
+                <ImgBBUpload 
+                  label="Agency Logo"
+                  defaultImage={formData.logo}
+                  onUpload={(url) => setFormData(prev => ({ ...prev, logo: url }))}
+                />
               </div>
            </div>
         </div>

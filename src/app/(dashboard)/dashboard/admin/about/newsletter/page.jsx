@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Mail, Plus, Search, Send, UserCheck, Clock, ShieldCheck } from 'lucide-react';
+import { Plus, Send, UserCheck, Clock, ShieldCheck } from 'lucide-react';
 
 const AdminNewsletterPage = () => {
   const subscribers = [
@@ -45,7 +45,8 @@ const AdminNewsletterPage = () => {
       </div>
 
       <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden">
-        <table className="w-full text-left border-collapse">
+        {/* Desktop View */}
+        <table className="w-full text-left border-collapse hidden md:table">
           <thead>
             <tr className="bg-white/5 border-b border-white/10">
               <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Subscriber</th>
@@ -76,6 +77,28 @@ const AdminNewsletterPage = () => {
             ))}
           </tbody>
         </table>
+
+        {/* Mobile View */}
+        <div className="md:hidden divide-y divide-white/5">
+          {subscribers.map((sub) => (
+            <div key={sub.id} className="p-4 flex items-center justify-between">
+              <div>
+                <div className="font-bold text-zinc-100">{sub.name}</div>
+                <div className="text-xs text-zinc-500 mb-2">{sub.email}</div>
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] text-zinc-500 flex items-center gap-1">
+                    <Clock size={10} /> {sub.date}
+                  </span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                    sub.status === 'Active' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
+                  }`}>
+                    {sub.status}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

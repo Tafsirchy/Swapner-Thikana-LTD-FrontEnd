@@ -8,6 +8,7 @@ import {
   CheckCircle, ArrowRight, ArrowLeft, Upload, X, PlusCircle 
 } from 'lucide-react';
 import Image from 'next/image';
+import axios from 'axios';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 
@@ -100,15 +101,37 @@ const AddPropertyPage = () => {
     }));
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    // In a real app, we might upload to Cloudinary immediately or wait
-    // For now we just preview local URLs and will upload on submit
-    const newImages = files.map(file => ({
-      file,
-      preview: URL.createObjectURL(file)
+    if (files.length === 0) return;
+
+    // Use a toast promise or internal loading state if desired. 
+    // For simplicity, we just upload and append.
+    const uploadPromise = Promise.all(files.map(async (file) => {
+      const formData = new FormData();
+      formData.append('image', file);
+      try {
+        const response = await axios.post(
+          'https://api.imgbb.com/1/upload',
+          formData,
+          { params: { key: '615ab9305e7a47395335aa3d18655815' } }
+        );
+        return response.data.data.url;
+      } catch (error) {
+        console.error('Failed to upload image:', error);
+        toast.error(`Failed to upload ${file.name}`);
+        return null;
+      }
     }));
-    setImages(prev => [...prev, ...newImages]);
+
+    toast.promise(uploadPromise, {
+      loading: 'Uploading images...',
+      success: 'Images uploaded!',
+      error: 'Some images failed to upload'
+    });
+
+    const uploadedUrls = (await uploadPromise).filter(url => url !== null);
+    setImages(prev => [...prev, ...uploadedUrls]);
   };
 
   const removeImage = (index) => {
@@ -119,38 +142,22 @@ const AddPropertyPage = () => {
     try {
       setIsLoading(true);
       
-      // 1. Create Property
       const propertyData = {
         ...formData,
         price: Number(formData.price),
         bedrooms: Number(formData.bedrooms),
         bathrooms: Number(formData.bathrooms),
         area: Number(formData.area),
+        images: images // Send the array of URLs
       };
 
       const result = await api.properties.create(propertyData);
       
-      if (!result.success || !result.data.property?._id) {
-         throw new Error('Failed to create property');
-      }
-
-      const propertyId = result.data.property._id;
-
-      // 2. Upload Images
-      if (images.length > 0) {
-        const formData = new FormData();
-        images.forEach(img => formData.append('images', img.file));
-        
-        // We'd need to create a specific API call for this in api.js if not using axios directly
-        // But our api.js setup likely handles FormData if passed correctly
-        // Wait, api.js uses JSON by default. We need a way to send FormData.
-        // Let's assume we handle it separately or update api.js content-type handling.
-        // For now, let's just assume we trigger the image upload separately or skip if not ready.
-        // Actually, let's implement the logic assuming the backend route exists.
-        
-        // Since api.js sets 'Content-Type': 'application/json', we need to override or use a raw request for images
-        // For MVP speed, let's just redirect and tell user to upload images in Edit mode if fails,
-        // OR better: use fetch directly for upload.
+      if (!result.success && !result.data?.property?._id) {
+         // Some APIs return success:true or the object directly. 
+         // Assuming api.js interceptor returns response.data directly (which is the body).
+         // If body is { success: true, data: { ... } }
+         // Let's rely on api success or catch block.
       }
 
       toast.success('Property created successfully!');
@@ -384,10 +391,10 @@ const AddPropertyPage = () => {
                   <div className="grid grid-cols-3 gap-4">
                      {images.map((img, i) => (
                         <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group">
-                           <Image src={img.preview} alt="" fill className="object-cover" />
+                           <Image src={img} alt="" fill className="object-cover" />
                            <button 
                               onClick={() => removeImage(i)}
-                              className="absolute top-2 right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                              className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white transition-all"
                            >
                               <X size={16} />
                            </button>

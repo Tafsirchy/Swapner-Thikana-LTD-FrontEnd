@@ -203,16 +203,15 @@ const Navbar = () => {
       <div className="max-container h-full flex justify-center px-4 relative">
         
         {/* Mobile: Logo Centered, Menu Icon Left */}
-        <div className="md:hidden w-full flex justify-between items-center">
-             {!isDashboard && (
-              <button
-                className="text-brand-gold p-2"
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label={isOpen ? "Close Menu" : "Open Menu"}
-              >
-                {isOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
-            )}
+        {!isDashboard && (
+          <div className="md:hidden w-full flex justify-between items-center">
+             <button
+               className="text-brand-gold p-2"
+               onClick={() => setIsOpen(!isOpen)}
+               aria-label={isOpen ? "Close Menu" : "Open Menu"}
+             >
+               {isOpen ? <X size={28} /> : <Menu size={28} />}
+             </button>
             
             <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2">
                 <Image src="/logo.png" alt="shwapner Thikana" width={110} height={64} className="h-14 w-auto object-contain" />
@@ -220,7 +219,8 @@ const Navbar = () => {
 
             {/* Mobile Search/Cart Placeholder for balance */}
             <div className="w-10"></div>
-        </div>
+          </div>
+        )}
 
         {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
@@ -248,7 +248,7 @@ const Navbar = () => {
 
         {/* Dashboard Logo View (Keep simple) */}
         {isDashboard && (
-           <Link href="/" className="flex items-center mr-auto">
+           <Link href="/" className="hidden md:flex items-center mr-auto">
                <Image src="/logo.png" alt="shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
            </Link>
         )}

@@ -258,7 +258,7 @@ const AdminDashboard = () => {
 
         {/* Connectivity Test */}
         <div className="bg-brand-gold/5 border border-brand-gold/20 rounded-3xl p-8 lg:col-span-2">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <h2 className="text-xl font-bold text-zinc-100 mb-2 flex items-center gap-2">
                 <Bell size={20} className="text-brand-gold" />
@@ -266,10 +266,10 @@ const AdminDashboard = () => {
               </h2>
               <p className="text-zinc-500 text-sm">Manage notifications and email templates.</p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
               <Link 
                 href="/dashboard/admin/email-preview"
-                className="px-6 py-3 bg-white/5 text-zinc-300 font-bold rounded-xl hover:bg-white/10 transition-all flex items-center gap-2"
+                className="px-6 py-3 bg-white/5 text-zinc-300 font-bold rounded-xl hover:bg-white/10 transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 <Mail size={18} /> Email Templates
               </Link>
@@ -282,7 +282,7 @@ const AdminDashboard = () => {
                     toast.error('Failed to send test notification');
                   }
                 }}
-                className="px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all flex items-center gap-2"
+                className="px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all flex items-center justify-center gap-2 w-full sm:w-auto"
               >
                 <Send size={18} /> Send Test Alert
               </button>

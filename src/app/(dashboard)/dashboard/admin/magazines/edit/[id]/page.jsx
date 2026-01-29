@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { Book, Save, X, Info, Calendar, Link as LinkIcon, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import ImgBBUpload from '@/components/shared/ImgBBUpload';
 
 const EditMagazinePage = () => {
   const router = useRouter();
@@ -148,18 +149,12 @@ const EditMagazinePage = () => {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-zinc-400 mb-2">Cover Image URL</label>
-                <div className="relative">
-                  <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                  <input
-                    required
-                    type="url"
-                    name="coverImage"
-                    value={formData.coverImage}
-                    onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
-                  />
-                </div>
+                <ImgBBUpload 
+                  label="Cover Image"
+                  defaultImage={formData.coverImage}
+                  onUpload={(url) => setFormData(prev => ({ ...prev, coverImage: url }))}
+                  required
+                />
               </div>
 
               <div className="md:col-span-2">

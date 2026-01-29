@@ -10,6 +10,22 @@ const PropertyDetailPage = async ({ params }) => {
   let apiErrorType = null;
   
   console.log(`[PropertyDetailPage] Fetching slug: ${slug}`);
+
+  // Handle "undefined" slug string which can occur from broken links
+  if (!slug || slug === 'undefined') {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-royal-deep text-zinc-400 p-4">
+        <h1 className="text-2xl font-bold text-zinc-100 mb-4">Invalid Property Link</h1>
+        <p className="mb-6">The link you followed appears to be broken. Please return to the listings page.</p>
+        <Link 
+          href="/properties"
+          className="px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all"
+        >
+          View All Properties
+        </Link>
+      </div>
+    );
+  }
   
   try {
     // Using the same API library as the client for consistency and better error handling

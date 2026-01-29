@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { History, Plus, Edit2, Trash2, Calendar } from 'lucide-react';
+import { Plus, Edit2, Trash2 } from 'lucide-react';
 
 const AdminHistoryPage = () => {
   const milestones = [
@@ -47,52 +47,63 @@ const AdminHistoryPage = () => {
         </button>
       </div>
 
-      <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-white/5 border-b border-white/10">
-              <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Year</th>
-              <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Milestone Title</th>
-              <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Description</th>
-              <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Status</th>
-              <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5">
-            {milestones.map((ms) => (
-              <tr key={ms.id} className="hover:bg-white/5 transition-colors group">
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2 text-zinc-100 font-bold">
-                    <Calendar size={14} className="text-brand-gold" /> {ms.year}
+      <div className="relative max-w-5xl mx-auto pt-8">
+        {/* Timeline Center Line (Desktop) */}
+        <div className="absolute left-8 md:left-1/2 top-4 bottom-0 w-px bg-white/10 hidden md:block md:-translate-x-1/2"></div>
+         {/* Timeline Line (Mobile) */}
+        <div className="absolute left-6 top-4 bottom-0 w-px bg-white/10 md:hidden"></div>
+
+        <div className="space-y-12">
+          {milestones.map((ms, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <div key={ms.id} className={`relative flex flex-col md:flex-row gap-8 items-start ${isEven ? 'md:flex-row-reverse' : ''}`}>
+                
+                {/* Content Card */}
+                <div className="flex-1 w-full pl-16 md:pl-0">
+                  <div className={`
+                    bg-white/5 border border-white/5 rounded-3xl p-6 hover:border-brand-gold/30 transition-all group relative
+                    ${isEven ? 'md:text-left' : 'md:text-right'}
+                  `}>
+                    {/* Arrow for Desktop */}
+                    <div className={`hidden md:block absolute top-8 ${isEven ? '-right-3' : '-left-3'} w-6 h-6 bg-zinc-900 border-l border-b border-white/10 rotate-45 ${isEven ? 'border-l-0 border-b-0 border-r border-t bg-zinc-900' : ''}`}></div>
+
+                    <div className={`flex items-center gap-4 mb-4 ${isEven ? 'md:justify-start' : 'md:justify-end'}`}>
+                       <span className="text-4xl font-black text-white/10 group-hover:text-brand-gold/20 transition-colors">
+                          {ms.year}
+                       </span>
+                       <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        ms.status === 'Published' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-yellow-500/10 text-yellow-500'
+                      }`}>
+                        {ms.status}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-zinc-100 mb-2 truncate group-hover:text-brand-gold transition-colors">{ms.title}</h3>
+                    <p className="text-sm text-zinc-400 leading-relaxed mb-6">{ms.description}</p>
+                    
+                    {/* Action Buttons */}
+                    <div className={`flex items-center gap-2 ${isEven ? 'md:justify-start' : 'md:justify-end'}`}>
+                      <button className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl text-xs font-bold text-zinc-300 hover:bg-brand-gold hover:text-royal-deep transition-all">
+                         <Edit2 size={14} /> Edit
+                      </button>
+                      <button className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl text-xs font-bold text-zinc-300 hover:bg-red-500 hover:text-white transition-all">
+                         <Trash2 size={14} /> Delete
+                      </button>
+                    </div>
                   </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="font-bold text-zinc-200">{ms.title}</div>
-                </td>
-                <td className="px-6 py-4">
-                  <p className="text-sm text-zinc-500 line-clamp-1 max-w-xs">{ms.description}</p>
-                </td>
-                <td className="px-6 py-4">
-                   <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                    ms.status === 'Published' ? 'bg-green-500/10 text-green-500' : 'bg-yellow-500/10 text-yellow-500'
-                  }`}>
-                    {ms.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    <button className="p-2 rounded-lg bg-white/5 text-zinc-400 hover:text-brand-gold transition-colors">
-                      <Edit2 size={16} />
-                    </button>
-                    <button className="p-2 rounded-lg bg-white/5 text-zinc-400 hover:text-red-500 transition-colors">
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+
+                {/* Center Point */}
+                <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-royal-deep border-4 border-brand-gold shadow-[0_0_15px_rgba(197,164,126,0.5)] z-10 mt-8"></div>
+                
+                {/* Empty Flex Child for correct spacing on desktop */}
+                <div className="flex-1 hidden md:block"></div>
+
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

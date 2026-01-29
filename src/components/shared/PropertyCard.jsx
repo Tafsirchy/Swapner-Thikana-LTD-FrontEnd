@@ -134,7 +134,7 @@ const PropertyCard = ({ property }) => {
 
       {/* Content */}
       <div className="p-6">
-        <Link href={`/properties/${slug}`}>
+        <Link href={`/properties/${slug || _id}`}>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-[10px] font-bold text-brand-emerald uppercase tracking-[0.2em]">
               {propertyType}
@@ -175,7 +175,7 @@ const PropertyCard = ({ property }) => {
 
         {/* Action Button */}
         <Link 
-          href={`/properties/${slug}`}
+          href={`/properties/${slug || _id}`}
           className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-zinc-100 font-bold text-sm flex items-center justify-center gap-2 group-hover:bg-brand-gold group-hover:text-royal-deep transition-all duration-300"
         >
           View Details
