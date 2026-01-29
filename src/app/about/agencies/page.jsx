@@ -1,40 +1,30 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Globe, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, ExternalLink, Building2 } from 'lucide-react';
+import { api } from '@/lib/api';
 import Image from 'next/image';
 
 const AgenciesPage = () => {
-  const agencies = [
-    {
-      city: "Dhaka HQ",
-      location: "Gulshan 2, Dhaka",
-      address: "Shwapner Thikana Tower, Road 90, Gulshan 2, Dhaka 1212",
-      phone: "+880 2 1234567",
-      email: "dhaka.hq@stltd.com",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200",
-      description: "Our flagship headquarters serving the capital's premier diplomatic and residential zones."
-    },
-    {
-      city: "Chittagong Office",
-      location: "Khulshi, Chittagong",
-      address: "Aman Heritage, Khulshi R/A, Chittagong",
-      phone: "+880 31 7654321",
-      email: "ctg@stltd.com",
-      image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200",
-      description: "Specializing in premium port-city developments and luxury hills-side residences."
-    },
-    {
-      city: "Sylhet Branch",
-      location: "Shahjalal Uposhahar, Sylhet",
-      address: "Rose View Complex, Shahjalal Uposhahar, Sylhet",
-      phone: "+880 821 987654",
-      email: "sylhet@stltd.com",
-      image: "https://images.unsplash.com/photo-1464146072230-91cabc70e272?q=80&w=1200",
-      description: "Serving our expatriate clients and managing iconic luxury properties in the tea-capital."
-    }
-  ];
+  const [agencies, setAgencies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAgencies = async () => {
+      try {
+        setLoading(true);
+        const response = await api.agencies.getAll();
+        setAgencies(response.data.agencies || []);
+      } catch (error) {
+        console.error('Failed to fetch agencies:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAgencies();
+  }, []);
 
   return (
     <div className="min-h-screen bg-royal-deep pt-32 pb-24">
@@ -58,8 +48,21 @@ const AgenciesPage = () => {
         </div>
 
         {/* Agencies List */}
-        <div className="space-y-12">
-          {agencies.map((agency, i) => (
+        {loading ? (
+          <div className="space-y-12">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-[400px] bg-white/5 rounded-[3rem] animate-pulse border border-white/10"></div>
+            ))}
+          </div>
+        ) : agencies.length === 0 ? (
+          <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">
+            <Building2 size={48} className="mx-auto text-zinc-700 mb-4" />
+            <h3 className="text-xl font-bold text-zinc-300">No Agencies Found</h3>
+            <p className="text-zinc-500 mt-1">Our network information is currently being updated.</p>
+          </div>
+        ) : (
+          <div className="space-y-12">
+            {agencies.map((agency, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
@@ -70,19 +73,19 @@ const AgenciesPage = () => {
             >
               <div className="lg:w-1/2 relative min-h-[400px]">
                 <Image
-                  src={agency.image}
-                  alt={agency.city}
+                  src={agency.logo || agency.image || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1200"}
+                  alt={agency.name}
                   fill
                   className="object-cover"
                 />
                 <div className="absolute top-8 left-8">
                   <span className="px-6 py-2 bg-royal-deep/80 backdrop-blur-md text-brand-gold font-bold rounded-full border border-brand-gold/30">
-                    {agency.city}
+                    {agency.name}
                   </span>
                 </div>
               </div>
               <div className="lg:w-1/2 p-12 lg:p-16 flex flex-col justify-center">
-                <h3 className="text-3xl font-bold text-white mb-6 italic">{agency.location}</h3>
+                <h3 className="text-3xl font-bold text-white mb-6 italic">{agency.contactInfo?.address || agency.location}</h3>
                 <p className="text-zinc-400 text-lg mb-10 leading-relaxed">
                   {agency.description}
                 </p>
@@ -94,7 +97,7 @@ const AgenciesPage = () => {
                     </div>
                     <div>
                        <span className="block text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-1">Address</span>
-                       <span className="text-zinc-300 text-sm font-medium">{agency.address}</span>
+                       <span className="text-zinc-300 text-sm font-medium">{agency.contactInfo?.address || agency.address}</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -103,7 +106,7 @@ const AgenciesPage = () => {
                     </div>
                     <div>
                        <span className="block text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-1">Contact</span>
-                       <span className="text-zinc-300 text-sm font-medium">{agency.phone}</span>
+                       <span className="text-zinc-300 text-sm font-medium">{agency.contactInfo?.phone || agency.phone}</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -112,7 +115,7 @@ const AgenciesPage = () => {
                     </div>
                     <div>
                        <span className="block text-zinc-500 text-[10px] font-bold uppercase tracking-widest mb-1">Email</span>
-                       <span className="text-zinc-300 text-sm font-medium">{agency.email}</span>
+                       <span className="text-zinc-300 text-sm font-medium">{agency.contactInfo?.email || agency.email}</span>
                     </div>
                   </div>
                 </div>
@@ -128,7 +131,8 @@ const AgenciesPage = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

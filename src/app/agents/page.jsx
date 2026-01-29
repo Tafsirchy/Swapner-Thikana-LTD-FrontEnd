@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Award, Star, ArrowRight, User } from 'lucide-react';
+import { Mail, Phone, Star, ArrowRight, User } from 'lucide-react';
 import { api } from '@/lib/api';
-import Link from 'next/link';
 import Image from 'next/image';
 
 const AgentsPage = () => {
@@ -15,7 +14,7 @@ const AgentsPage = () => {
     const fetchAgents = async () => {
       try {
         setLoading(true);
-        const response = await api.user.getAgents();
+        const response = await api.agents.getAll();
         setAgents(response.data.agents || []);
       } catch (error) {
         console.error('Failed to fetch agents:', error);
@@ -65,14 +64,14 @@ const AgentsPage = () => {
                 <div className="relative h-64 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10"></div>
                   <Image 
-                    src={agent.avatar || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop'} 
+                    src={agent.image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop'} 
                     alt={agent.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute bottom-4 left-4 z-20">
                     <span className="bg-brand-gold text-royal-deep text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                      {agent.specialization || 'Real Estate Agent'}
+                      {agent.specialty || 'Real Estate Agent'}
                     </span>
                   </div>
                 </div>

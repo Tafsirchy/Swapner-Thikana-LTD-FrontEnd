@@ -1,41 +1,30 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Linkedin, Mail, ArrowRight } from 'lucide-react';
+import { Users, Linkedin, Mail, ArrowRight, User } from 'lucide-react';
+import { api } from '@/lib/api';
 import Image from 'next/image';
 
 const ManagementPage = () => {
-  const leaders = [
-    {
-      name: "Tafsir Chowdhury",
-      role: "Founder & CEO",
-      bio: "With over 15 years of experience in global real estate markets, Tafsir founded Shwapner Thikana to redefine luxury living in Bangladesh.",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1200",
-      linkedin: "#"
-    },
-    {
-      name: "Nusrat Jahan",
-      role: "Chief Operating Officer",
-      bio: "An expert in operational excellence and strategic growth, Nusrat ensures our global standards are met across all branches.",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200",
-      linkedin: "#"
-    },
-    {
-      name: "Arif Ahmed",
-      role: "Head of Architecture",
-      bio: "Arif leads our design vision, bridging the gap between traditional aesthetics and modern sustainable architecture.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=1200",
-      linkedin: "#"
-    },
-    {
-      name: "Selina Rahman",
-      role: "Director of Client Services",
-      bio: "Ensuring an unparalleled concierge experience for our elite clientele, Selina manages our primary investor relations.",
-      image: "https://images.unsplash.com/photo-1580894732230-28ec0527ac35?q=80&w=1200",
-      linkedin: "#"
-    }
-  ];
+  const [leaders, setLeaders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaders = async () => {
+      try {
+        setLoading(true);
+        const response = await api.management.getAll();
+        setLeaders(response.data.members || []);
+      } catch (error) {
+        console.error('Failed to fetch management:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaders();
+  }, []);
 
   return (
     <div className="min-h-screen bg-royal-deep pt-32 pb-24">
@@ -59,8 +48,21 @@ const ManagementPage = () => {
         </div>
 
         {/* Leaders Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {leaders.map((leader, i) => (
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-96 bg-white/5 rounded-[2.5rem] animate-pulse border border-white/10"></div>
+            ))}
+          </div>
+        ) : leaders.length === 0 ? (
+          <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">
+            <User size={48} className="mx-auto text-zinc-700 mb-4" />
+            <h3 className="text-xl font-bold text-zinc-300">No Leaders Found</h3>
+            <p className="text-zinc-500 mt-1">Management profiles are currently being updated.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {leaders.map((leader, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
@@ -95,7 +97,8 @@ const ManagementPage = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+          </div>
+        )}
 
         {/* Join the Team CTA */}
         <div className="mt-40 bg-white/5 border border-white/10 rounded-[4rem] p-12 lg:p-20 flex flex-col items-center text-center">
