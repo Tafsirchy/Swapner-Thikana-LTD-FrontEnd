@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Building2, Loader2 } from 'lucide-react';
+import { Building2, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProjectCard from '@/components/shared/ProjectCard';
 import { api } from '@/lib/api';
 
@@ -10,26 +10,50 @@ const ProjectsPage = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const PROJECTS_PER_PAGE = 6;
 
   const fetchProjects = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await api.projects.getAll();
-      setProjects(data.data.projects);
+      const params = {
+        page: currentPage,
+        limit: PROJECTS_PER_PAGE,
+        ...(filter !== 'all' && { status: filter })
+      };
+      
+      const res = await api.projects.getAll(params);
+      
+      // Handle response structure
+      if (res.data) {
+        setProjects(res.data.projects || []);
+        if (res.data.pagination) {
+          setTotalPages(res.data.pagination.pages);
+        }
+      }
     } catch (error) {
       console.error('Error fetching projects:', error);
+      setProjects([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [currentPage, filter]);
 
   useEffect(() => {
     fetchProjects();
   }, [fetchProjects]);
 
-  const filteredProjects = filter === 'all' 
-    ? projects 
-    : projects.filter(p => p.status === filter);
+  // Handle filter change - reset to page 1
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    setCurrentPage(1);
+  };
+
+  // Scroll to top when page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
 
   return (
     <div className="min-h-screen bg-royal-deep pt-32 pb-24">
@@ -56,7 +80,7 @@ const ProjectsPage = () => {
               {['all', 'ongoing', 'completed', 'upcoming'].map((status) => (
                 <button
                   key={status}
-                  onClick={() => setFilter(status)}
+                  onClick={() => handleFilterChange(status)}
                   className={`px-8 py-2.5 rounded-xl text-sm font-bold capitalize transition-all ${filter === status ? 'bg-brand-gold text-royal-deep shadow-lg shadow-brand-gold/20' : 'text-zinc-500 hover:text-zinc-300'}`}
                 >
                   {status}
@@ -74,12 +98,39 @@ const ProjectsPage = () => {
               <Loader2 size={48} className="text-brand-gold animate-spin" />
               <p className="mt-4 text-zinc-500 font-medium">Curating architectural masterpieces...</p>
             </div>
-          ) : filteredProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {filteredProjects.map((project) => (
-                <ProjectCard key={project._id} project={project} />
-              ))}
-            </div>
+          ) : projects.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+                {projects.map((project) => (
+                  <ProjectCard key={project._id} project={project} />
+                ))}
+              </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-4">
+                   <button 
+                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                   >
+                     <ChevronLeft size={20} />
+                   </button>
+                   
+                   <span className="text-sm font-bold text-zinc-500 tracking-widest">
+                      PAGE <span className="text-brand-gold">{currentPage}</span> / {totalPages}
+                   </span>
+
+                   <button 
+                      onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                   >
+                     <ChevronRight size={20} />
+                   </button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="text-center py-20 glass rounded-[3rem] border-white/5">
               <h3 className="text-2xl font-bold text-zinc-400 italic">No projects found in this category</h3>

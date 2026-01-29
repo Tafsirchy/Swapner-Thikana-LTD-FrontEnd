@@ -44,7 +44,8 @@ const PropertiesPage = () => {
     amenities: [],
     sort: 'featured',
     page: 1,
-    limit: 12,
+    limit: 6,
+
     bounds: '',
     polygon: ''
   });
@@ -110,7 +111,8 @@ const PropertiesPage = () => {
       amenities: [],
       sort: 'featured',
       page: 1,
-      limit: 12
+      limit: 6
+
     });
   };
 

@@ -39,17 +39,24 @@ const AboutSection = () => {
         const res = await api.projects.getAll();
         
         let displayProjects = [];
-        if (res.data && Array.isArray(res.data)) {
+        // Handle various potential API response structures
+        if (Array.isArray(res)) {
+            displayProjects = res;
+        } else if (res.projects && Array.isArray(res.projects)) {
+            displayProjects = res.projects;
+        } else if (res.data && Array.isArray(res.data)) {
             displayProjects = res.data;
+        } else if (res.data && res.data.projects && Array.isArray(res.data.projects)) {
+            displayProjects = res.data.projects;
         }
 
         const fallbackProjects = [
-            { _id: '1', title: 'The Grand Palace', location: { city: 'Gulshan' }, images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c'], type: 'Residential' },
-            { _id: '2', title: 'Skyline Heights', location: { city: 'Banani' }, images: ['https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea'], type: 'Commercial' },
-            { _id: '3', title: 'Riverview Estate', location: { city: 'Bashundhara' }, images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c'], type: 'Mixed Use' },
-            { _id: '4', title: 'Urban Oasis', location: { city: 'Dhanmondi' }, images: ['https://images.unsplash.com/photo-1600573472592-401b489a3cdc'], type: 'Residential' },
-            { _id: '5', title: 'Tech Hub Tower', location: { city: 'Uttara' }, images: ['https://images.unsplash.com/photo-1600585154526-990dced4db0d'], type: 'Commercial' },
-            { _id: '6', title: 'Lakeside Manor', location: { city: 'Baridhara' }, images: ['https://images.unsplash.com/photo-1600607687644-c7171b42498f'], type: 'Residential' },
+            { _id: 'fallback-1', slug: 'the-grand-palace', title: 'The Grand Palace', location: { city: 'Gulshan' }, images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c'], type: 'Residential' },
+            { _id: 'fallback-2', slug: 'skyline-heights', title: 'Skyline Heights', location: { city: 'Banani' }, images: ['https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea'], type: 'Commercial' },
+            { _id: 'fallback-3', slug: 'riverview-estate', title: 'Riverview Estate', location: { city: 'Bashundhara' }, images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c'], type: 'Mixed Use' },
+            { _id: 'fallback-4', slug: 'urban-oasis', title: 'Urban Oasis', location: { city: 'Dhanmondi' }, images: ['https://images.unsplash.com/photo-1600573472592-401b489a3cdc'], type: 'Residential' },
+            { _id: 'fallback-5', slug: 'tech-hub-tower', title: 'Tech Hub Tower', location: { city: 'Uttara' }, images: ['https://images.unsplash.com/photo-1600585154526-990dced4db0d'], type: 'Commercial' },
+            { _id: 'fallback-6', slug: 'lakeside-manor', title: 'Lakeside Manor', location: { city: 'Baridhara' }, images: ['https://images.unsplash.com/photo-1600607687644-c7171b42498f'], type: 'Residential' },
         ];
 
         // Fill with fallback if not enough API data to complete the 6-item grid
@@ -64,12 +71,12 @@ const AboutSection = () => {
       } catch (error) {
          console.error("Failed to fetch projects, using fallback", error);
          setProjects([
-            { _id: '1', title: 'The Grand Palace', location: { city: 'Gulshan' }, images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c'], type: 'Residential' },
-            { _id: '2', title: 'Skyline Heights', location: { city: 'Banani' }, images: ['https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea'], type: 'Commercial' },
-            { _id: '3', title: 'Riverview Estate', location: { city: 'Bashundhara' }, images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c'], type: 'Mixed Use' },
-            { _id: '4', title: 'Urban Oasis', location: { city: 'Dhanmondi' }, images: ['https://images.unsplash.com/photo-1600573472592-401b489a3cdc'], type: 'Residential' },
-            { _id: '5', title: 'Tech Hub Tower', location: { city: 'Uttara' }, images: ['https://images.unsplash.com/photo-1600585154526-990dced4db0d'], type: 'Commercial' },
-            { _id: '6', title: 'Lakeside Manor', location: { city: 'Baridhara' }, images: ['https://images.unsplash.com/photo-1600607687644-c7171b42498f'], type: 'Residential' },
+            { _id: 'fallback-1', slug: 'the-grand-palace', title: 'The Grand Palace', location: { city: 'Gulshan' }, images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c'], type: 'Residential' },
+            { _id: 'fallback-2', slug: 'skyline-heights', title: 'Skyline Heights', location: { city: 'Banani' }, images: ['https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea'], type: 'Commercial' },
+            { _id: 'fallback-3', slug: 'riverview-estate', title: 'Riverview Estate', location: { city: 'Bashundhara' }, images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c'], type: 'Mixed Use' },
+            { _id: 'fallback-4', slug: 'urban-oasis', title: 'Urban Oasis', location: { city: 'Dhanmondi' }, images: ['https://images.unsplash.com/photo-1600573472592-401b489a3cdc'], type: 'Residential' },
+            { _id: 'fallback-5', slug: 'tech-hub-tower', title: 'Tech Hub Tower', location: { city: 'Uttara' }, images: ['https://images.unsplash.com/photo-1600585154526-990dced4db0d'], type: 'Commercial' },
+            { _id: 'fallback-6', slug: 'lakeside-manor', title: 'Lakeside Manor', location: { city: 'Baridhara' }, images: ['https://images.unsplash.com/photo-1600607687644-c7171b42498f'], type: 'Residential' },
         ]);
       }
     };
@@ -126,7 +133,7 @@ const AboutSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.15, duration: 0.7 }}
-                    className="group relative h-[450px] rounded-[2rem] overflow-hidden cursor-pointer"
+                    className="group relative h-[450px] overflow-hidden cursor-pointer"
                 >
                     <Image 
                         src={leader.image}
@@ -185,7 +192,7 @@ const AboutSection = () => {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ duration: 0.5, delay: i * 0.1 }}
-                            className={`relative rounded-2xl overflow-hidden group ${colSpan}`}
+                            className={`relative overflow-hidden group ${colSpan}`}
                         >
                             <Image 
                                 src={project.images?.[0] || '/placeholder.jpg'}
@@ -205,7 +212,7 @@ const AboutSection = () => {
                                         <span>{project.type || 'Residence'}</span>
                                     </div>
                                 </div>
-                                <Link href={`/projects/${project._id}`} className="w-10 h-10 rounded-full bg-brand-gold text-black flex items-center justify-center hover:scale-110 transition-transform">
+                                <Link href={`/projects/${project.slug || project._id}`} className="w-10 h-10 rounded-full bg-brand-gold text-black flex items-center justify-center hover:scale-110 transition-transform">
                                     <ArrowUpRight size={20} />
                                 </Link>
                             </div>

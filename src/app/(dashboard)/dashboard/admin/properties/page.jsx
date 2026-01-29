@@ -127,6 +127,12 @@ const AdminPropertiesPage = () => {
             Review and approve property listings
           </p>
         </div>
+        <Link
+          href="/dashboard/properties/add"
+          className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10"
+        >
+          <Building2 size={18} /> Add New Property
+        </Link>
       </div>
 
       {/* Filters */}
@@ -212,6 +218,14 @@ const AdminPropertiesPage = () => {
                       >
                         <Eye size={18} />
                       </Link>
+                      <Link
+                        href={`/dashboard/admin/properties/edit/${property._id}`}
+                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
+                        title="Edit"
+                      >
+                        <Building2 size={18} />
+                      </Link>
+
                       {property.status === 'pending' && (
                         <>
                           <button

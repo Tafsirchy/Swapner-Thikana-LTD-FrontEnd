@@ -7,6 +7,8 @@ import { Search, MapPin, Building, Users, Star } from 'lucide-react';
 import FeatureShowcase from '@/components/home/FeatureShowcase';
 import AboutSection from '@/components/home/AboutSection';
 import InteractiveMasterPlan from '@/components/home/InteractiveMasterPlan';
+import VirtualRealitySection from '@/components/home/VirtualRealitySection';
+import NewsletterSection from '@/components/home/NewsletterSection';
 
 
 export default function Home() {
@@ -134,19 +136,20 @@ export default function Home() {
       {/* Interactive Master Plan */}
       <InteractiveMasterPlan />
 
-
+      {/* Virtual Reality Section */}
+      <VirtualRealitySection />
 
       {/* Luxury Promo Section */}
       <section className="py-24 bg-gradient-to-r from-royal-deep via-zinc-900 to-royal-deep">
         <div className="max-container px-4 flex flex-col lg:flex-row items-center gap-16">
           <div className="flex-1 relative">
-            <div className="absolute inset-0 border-2 border-brand-gold/20 -translate-x-4 translate-y-4 rounded-3xl"></div>
+            <div className="absolute inset-0 border-2 border-brand-gold/20 -translate-x-4 translate-y-4"></div>
             <div className="relative z-10 w-full h-[500px]">
               <Image 
                 src="https://images.unsplash.com/photo-1613545325278-f24b0cae1224?q=80&w=1920&auto=format&fit=crop" 
                 alt="Luxury Interior" 
                 fill
-                className="rounded-3xl object-cover"
+                className="object-cover"
               />
             </div>
           </div>
@@ -172,6 +175,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Newsletter Section */}
+      <NewsletterSection />
     </div>
   );
 }

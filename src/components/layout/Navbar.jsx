@@ -58,6 +58,7 @@ const Navbar = () => {
   }
 
   const isDashboard = pathname.startsWith('/dashboard');
+  const isDetailsPage = pathname.includes('/properties/') || pathname.includes('/projects/');
 
   const renderNavLink = (link) => {
     const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
@@ -158,7 +159,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 py-3 md:py-0 ${
-        isScrolled || isDashboard
+        isScrolled || isDashboard || isDetailsPage
           ? 'bg-royal-deep/90 backdrop-blur-md shadow-lg'
           : 'bg-gradient-to-b from-black/50 to-transparent'
       }`}

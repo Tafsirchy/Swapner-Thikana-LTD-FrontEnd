@@ -88,7 +88,7 @@ export const api = {
     toggleSave: (id) => apiInstance.post(`/properties/${id}/save`),
   },
   projects: {
-    getAll: () => apiInstance.get('/projects'),
+    getAll: (params) => apiInstance.get('/projects', { params }),
     getById: (id) => apiInstance.get(`/projects/id/${id}`),
     getBySlug: (slug) => apiInstance.get(`/projects/slug/${slug}`),
     create: (data) => apiInstance.post('/projects', data),
@@ -164,7 +164,38 @@ export const api = {
     getProperties: (id) => apiInstance.get(`/wishlists/${id}/properties`),
     addProperty: (wishlistId, propertyId) => apiInstance.post(`/wishlists/${wishlistId}/properties/${propertyId}`),
     removeProperty: (wishlistId, propertyId) => apiInstance.delete(`/wishlists/${wishlistId}/properties/${propertyId}`),
+  },
+  agencies: {
+    getAll: (params) => apiInstance.get('/agencies', { params }),
+    getById: (id) => apiInstance.get(`/agencies/id/${id}`),
+    getBySlug: (slug) => apiInstance.get(`/agencies/${slug}`),
+    create: (data) => apiInstance.post('/agencies', data),
+    update: (id, data) => apiInstance.put(`/agencies/${id}`, data),
+    delete: (id) => apiInstance.delete(`/agencies/${id}`),
+  },
+  management: {
+    getAll: () => apiInstance.get('/management'),
+    getById: (id) => apiInstance.get(`/management/${id}`),
+    create: (data) => apiInstance.post('/management', data),
+    update: (id, data) => apiInstance.put(`/management/${id}`, data),
+    delete: (id) => apiInstance.delete(`/management/${id}`),
+  },
+  agents: {
+    getAll: () => apiInstance.get('/agents'),
+    getById: (id) => apiInstance.get(`/agents/${id}`),
+    create: (data) => apiInstance.post('/agents', data),
+    update: (id, data) => apiInstance.put(`/agents/${id}`, data),
+    delete: (id) => apiInstance.delete(`/agents/${id}`),
+  },
+  magazines: {
+    getAll: (params) => apiInstance.get('/magazines', { params }),
+    getById: (id) => apiInstance.get(`/magazines/id/${id}`),
+    getBySlug: (slug) => apiInstance.get(`/magazines/${slug}`),
+    create: (data) => apiInstance.post('/magazines', data),
+    update: (id, data) => apiInstance.put(`/magazines/${id}`, data),
+    delete: (id) => apiInstance.delete(`/magazines/${id}`),
   }
 };
+
 
 export default api;

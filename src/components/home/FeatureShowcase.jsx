@@ -111,7 +111,7 @@ const FeatureShowcase = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
           
           {/* Main Feature Display (8 Cols) */}
-          <div className="lg:col-span-8 relative h-full rounded-2xl overflow-hidden group border border-white/5">
+          <div className="lg:col-span-8 relative h-full overflow-hidden group border border-white/5">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeProperty._id}

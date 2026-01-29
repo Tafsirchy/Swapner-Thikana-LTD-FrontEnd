@@ -2,27 +2,35 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Search } from 'lucide-react';
+import { BookOpen, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import BlogCard from '@/components/shared/BlogCard';
 import { api } from '@/lib/api';
 
 const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);
   const [filters, setFilters] = useState({
     search: '',
     category: '',
     page: 1,
-    limit: 12
+    limit: 6
+
   });
 
   const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
       const data = await api.blogs.getAll(filters);
-      setBlogs(data.data.blogs);
+      if (data.data) {
+        setBlogs(data.data.blogs || []);
+        if (data.data.pagination) {
+          setTotalPages(data.data.pagination.pages);
+        }
+      }
     } catch (error) {
       console.error('Error fetching blogs:', error);
+      setBlogs([]);
     } finally {
       setLoading(false);
     }
@@ -34,7 +42,12 @@ const BlogPage = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchBlogs();
+    setFilters(prev => ({ ...prev, page: 1 }));
+  };
+
+  const handlePageChange = (newPage) => {
+    setFilters(prev => ({ ...prev, page: newPage }));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -86,24 +99,44 @@ const BlogPage = () => {
                ))}
             </div>
           ) : blogs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {blogs.map((post) => (
-                <BlogCard key={post._id} post={post} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+                {blogs.map((post) => (
+                  <BlogCard key={post._id} post={post} />
+                ))}
+              </div>
+              
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-4">
+                   <button 
+                      onClick={() => handlePageChange(Math.max(1, filters.page - 1))}
+                      disabled={filters.page === 1}
+                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                   >
+                     <ChevronLeft size={20} />
+                   </button>
+                   
+                   <span className="text-sm font-bold text-zinc-500 tracking-widest">
+                      PAGE <span className="text-brand-gold">{filters.page}</span> / {totalPages}
+                   </span>
+
+                   <button 
+                      onClick={() => handlePageChange(Math.min(totalPages, filters.page + 1))}
+                      disabled={filters.page === totalPages}
+                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                   >
+                     <ChevronRight size={20} />
+                   </button>
+                </div>
+              )}
+            </>
           ) : (
              <div className="text-center py-20 glass rounded-3xl border-white/5">
                 <h3 className="text-2xl font-bold text-zinc-400 italic">No articles found</h3>
                 <p className="text-zinc-500 mt-2">Try adjusting your search or check back later for new insights.</p>
              </div>
           )}
-
-          {/* Load More */}
-          <div className="mt-20 text-center">
-            <button className="px-12 py-5 bg-white/5 border border-white/10 rounded-2xl text-zinc-300 font-bold hover:border-brand-gold hover:text-brand-gold transition-all">
-              Load Previous Insights
-            </button>
-          </div>
         </div>
       </section>
 
@@ -132,5 +165,4 @@ const BlogPage = () => {
     </div>
   );
 };
-
 export default BlogPage;

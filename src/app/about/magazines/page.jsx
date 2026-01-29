@@ -1,35 +1,39 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Download, ArrowRight } from 'lucide-react';
+import { BookOpen, Download, ArrowRight, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { api } from '@/lib/api';
 
 const MagazinesPage = () => {
-  const magazines = [
-    {
-      title: "The Architecture Annual 2025",
-      issue: "Issue #42",
-      description: "A comprehensive look at the most iconic architectural debuts in Dhaka and beyond.",
-      image: "https://images.unsplash.com/photo-1586717791821-3f44a563dc4c?q=80&w=1200",
-      category: "Architectural"
-    },
-    {
-      title: "Luxe Living Monthly",
-      issue: "Winter Edition",
-      description: "Exploring the intersections of luxury, lifestyle, and high-end residential real estate.",
-      image: "https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=1200",
-      category: "Lifestyle"
-    },
-    {
-      title: "Urban Development Report",
-      issue: "Q4 2024",
-      description: "Data-driven insights into the rapidly evolving urban landscape of Bangladesh.",
-      image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=1200",
-      category: "Market Analysis"
-    }
-  ];
+  const [magazines, setMagazines] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMagazines = async () => {
+      try {
+        setLoading(true);
+        const response = await api.magazines.getAll();
+        setMagazines(response.data.magazines || []);
+      } catch (error) {
+        console.error('Error fetching magazines:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMagazines();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-royal-deep pt-32 pb-24 flex items-center justify-center">
+        <Loader2 className="text-brand-gold animate-spin" size={48} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-royal-deep pt-32 pb-24">
@@ -54,46 +58,62 @@ const MagazinesPage = () => {
 
         {/* Magazines Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {magazines.map((mag, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              viewport={{ once: true }}
-              className="group bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brand-gold/20 transition-all duration-500"
-            >
-              <div className="relative h-[450px] overflow-hidden">
-                <Image
-                  src={mag.image}
-                  alt={mag.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-royal-deep to-transparent opacity-60"></div>
-                <div className="absolute bottom-8 left-8 right-8">
-                  <span className="text-brand-gold text-[10px] font-bold uppercase tracking-widest mb-2 block">
-                    {mag.category}
-                  </span>
-                  <h3 className="text-2xl font-bold text-white mb-2">{mag.title}</h3>
-                  <p className="text-zinc-300 text-sm italic">{mag.issue}</p>
+          {magazines.length > 0 ? (
+            magazines.map((mag, i) => (
+              <motion.div
+                key={mag._id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="group bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-brand-gold/20 transition-all duration-500"
+              >
+                <div className="relative h-[450px] overflow-hidden">
+                  <Image
+                    src={mag.coverImage || '/placeholder-magazine.jpg'}
+                    alt={mag.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-royal-deep to-transparent opacity-60"></div>
+                  <div className="absolute bottom-8 left-8 right-8">
+                    <span className="text-brand-gold text-[10px] font-bold uppercase tracking-widest mb-2 block">
+                      {mag.publisher || 'Swapner Thikana'}
+                    </span>
+                    <h3 className="text-2xl font-bold text-white mb-2">{mag.title}</h3>
+                    <p className="text-zinc-300 text-sm italic">
+                      {mag.publicationDate ? new Date(mag.publicationDate).toLocaleDateString() : 'Recent Issue'}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="p-8">
-                <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-                  {mag.description}
-                </p>
-                <div className="flex items-center justify-between">
-                  <button className="flex items-center gap-2 text-brand-gold font-bold text-sm hover:underline">
-                    <Download size={18} /> Download PDF
-                  </button>
-                  <Link href="#" className="p-3 rounded-full bg-white/5 text-zinc-400 hover:text-brand-gold transition-all">
-                    <ArrowRight size={20} />
-                  </Link>
+                <div className="p-8">
+                  <p className="text-zinc-400 text-sm leading-relaxed mb-8 line-clamp-3">
+                    {mag.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <a 
+                      href={mag.pdfUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-brand-gold font-bold text-sm hover:underline"
+                    >
+                      <Download size={18} /> Download PDF
+                    </a>
+                    <Link 
+                      href={`/about/magazines/${mag.slug}`} 
+                      className="p-3 rounded-full bg-white/5 text-zinc-400 hover:text-brand-gold transition-all"
+                    >
+                      <ArrowRight size={20} />
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-20">
+              <p className="text-zinc-500 text-xl font-medium">No magazines found.</p>
+            </div>
+          )}
         </div>
 
         {/* Subscription Section */}

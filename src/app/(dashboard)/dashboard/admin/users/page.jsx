@@ -9,6 +9,7 @@ import { exportUsersCSV } from '@/utils/exportUtils';
 const roleColors = {
   admin: 'bg-purple-500/10 text-purple-500',
   agent: 'bg-blue-500/10 text-blue-500',
+  management: 'bg-emerald-500/10 text-emerald-500',
   customer: 'bg-zinc-500/10 text-zinc-500',
 };
 
@@ -46,7 +47,7 @@ const AdminUsersPage = () => {
       await api.admin.updateUserRole(userId, newRole);
       setUsers(users.map(u => u._id === userId ? { ...u, role: newRole } : u));
       toast.success('User role updated successfully');
-    } catch (e) {
+    } catch {
       toast.error('Failed to update user role');
     }
   };
@@ -57,7 +58,7 @@ const AdminUsersPage = () => {
       await api.admin.updateUserStatus(userId, isActive);
       setUsers(users.map(u => u._id === userId ? { ...u, status: newStatus } : u));
       toast.success('User status updated successfully');
-    } catch (e) {
+    } catch {
       toast.error('Failed to update user status');
     }
   };
@@ -125,6 +126,7 @@ const AdminUsersPage = () => {
             <option value="all">All Roles</option>
             <option value="customer">Customers</option>
             <option value="agent">Agents</option>
+            <option value="management">Management</option>
             <option value="admin">Admins</option>
           </select>
         </div>
@@ -160,6 +162,7 @@ const AdminUsersPage = () => {
                     >
                       <option value="customer">Customer</option>
                       <option value="agent">Agent</option>
+                      <option value="management">Management</option>
                       <option value="admin">Admin</option>
                     </select>
                   </td>
