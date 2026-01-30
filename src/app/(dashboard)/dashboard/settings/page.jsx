@@ -156,7 +156,7 @@ const SettingsPage = () => {
             {/* Avatar & Info */}
             <div className="px-8 pb-8 -mt-12 relative text-center">
               <div 
-                className="w-24 h-24 rounded-full bg-zinc-900 border-4 border-zinc-900 mx-auto flex items-center justify-center text-3xl font-bold text-brand-gold shadow-xl relative overflow-hidden group mb-4"
+                className="w-24 h-24 rounded-3xl bg-zinc-900 border-4 border-zinc-900 mx-auto flex items-center justify-center text-3xl font-bold text-brand-gold shadow-xl relative overflow-hidden group mb-4"
               >
                  {previewImage ? (
                     <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
@@ -166,24 +166,33 @@ const SettingsPage = () => {
                     <User size={48} className="text-zinc-600" />
                  )}
                  
-                 {/* Upload Overlay */}
+                 {/* Upload & Actions Overlay */}
                  <div 
-                    onClick={() => fileInputRef.current?.click()}
-                    className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer transition-all z-10"
+                    className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center gap-3 transition-all z-10 backdrop-blur-sm"
                  >
-                    <Camera size={20} className="text-white" />
-                 </div>
+                    {/* Upload Button */}
+                    <button
+                       onClick={(e) => {
+                          e.stopPropagation();
+                          fileInputRef.current?.click();
+                       }}
+                       className="p-2 bg-brand-gold text-royal-deep rounded-full shadow-lg transition-all transform hover:scale-110"
+                       title="Upload Photo"
+                    >
+                       <Camera size={18} />
+                    </button>
 
-                 {/* Delete Button (Only if image exists) */}
-                 {(previewImage || user?.avatar || user?.image) && (
-                   <button
-                      onClick={handleDeleteImage}
-                      className="absolute bottom-0 right-0 bg-red-500/80 hover:bg-red-600 text-white p-1.5 rounded-full m-1 z-20 transition-all opacity-0 group-hover:opacity-100"
-                      title="Remove Photo"
-                   >
-                     <Trash2 size={12} />
-                   </button>
-                 )}
+                    {/* Delete Button (Only if image exists) */}
+                    {(previewImage || user?.avatar || user?.image) && (
+                      <button
+                         onClick={handleDeleteImage}
+                         className="p-2 bg-red-500 text-white rounded-full shadow-lg transition-all transform hover:scale-110"
+                         title="Remove Photo"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    )}
+                 </div>
               </div>
               <input 
                 type="file" 
