@@ -60,7 +60,7 @@ const ProjectCard = ({ project }) => {
           </p>
 
           <div className="flex items-center justify-between pt-6 border-t border-white/5">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <Calendar size={16} className="text-brand-gold" />
               <span className="text-xs font-medium text-zinc-300">Completion: {completionDate || 'TBA'}</span>
             </div>

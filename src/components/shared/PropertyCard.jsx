@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast';
 import WishlistModal from './WishlistModal';
 import { AnimatePresence } from 'framer-motion';
 import SmartImage from './SmartImage';
+import LiquidButton from './LiquidButton';
 
 import { addToCompare, removeFromCompare, subscribeToCompare } from '@/utils/compareStore';
 
@@ -78,51 +79,58 @@ const PropertyCard = ({ property }) => {
         {/* Overlays */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
         
-        {/* Badges */}
-        <div className="absolute top-4 left-4 flex gap-2">
-          {featured && (
-            <span className="px-3 py-1 bg-brand-gold text-royal-deep text-[10px] font-bold uppercase tracking-wider rounded-full">
-              Featured
+        {/* Top Overlay Actions */}
+        <div className="absolute top-4 inset-x-4 flex items-start justify-between gap-4 z-10">
+          {/* Badges */}
+          <div className="flex flex-wrap gap-2">
+            {featured && (
+              <span className="px-3 py-1 bg-brand-gold text-royal-deep text-[10px] font-bold uppercase tracking-wider rounded-full shadow-lg">
+                Featured
+              </span>
+            )}
+            <span className="px-3 py-1 bg-royal-deep/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider rounded-full border border-white/10 shadow-lg">
+              {listingType === 'sale' ? 'For Sale' : 'For Rent'}
             </span>
-          )}
-          <span className="px-3 py-1 bg-royal-deep/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider rounded-full border border-white/10">
-            {listingType === 'sale' ? 'For Sale' : 'For Rent'}
-          </span>
-        </div>
+          </div>
 
-        <div className="absolute top-4 right-4 flex gap-2">
-          <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (isInCompare) {
-                removeFromCompare(_id);
-              } else {
-                addToCompare(property);
-              }
-            }}
-            className={`p-2.5 rounded-full backdrop-blur-md border transition-all active:scale-95 shadow-lg ${
-              isInCompare
-                ? 'bg-brand-emerald border-brand-emerald text-white' 
-                : 'bg-white/10 border-white/20 text-white hover:bg-brand-emerald hover:text-white'
-            }`}
-            title={isInCompare ? "Remove from comparison" : "Add to comparison"}
-            aria-label={isInCompare ? "Remove from comparison" : "Add to comparison"}
-          >
-            {isInCompare ? <Check size={18} /> : <Plus size={18} />}
-          </button>
+          {/* Action Buttons */}
+          <div className="flex gap-2">
+            <LiquidButton 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (isInCompare) {
+                  removeFromCompare(_id);
+                } else {
+                  addToCompare(property);
+                }
+              }}
+              baseColor={isInCompare ? 'bg-brand-emerald' : 'bg-white/10'}
+              liquidColor={isInCompare ? 'fill-white/20' : 'fill-brand-emerald/40'}
+              rounded="rounded-full"
+              px="!p-2.5"
+              py="!p-2.5"
+              className={`backdrop-blur-md border shadow-lg ${
+                isInCompare ? 'border-brand-emerald text-white' : 'border-white/20 text-white'
+              }`}
+            >
+              {isInCompare ? <Check size={16} /> : <Plus size={16} />}
+            </LiquidButton>
 
-          <button 
-          onClick={handleToggleWishlist}
-          className={`p-2.5 rounded-full backdrop-blur-md border transition-all active:scale-95 shadow-lg ${
-            isSaved 
-              ? 'bg-brand-gold border-brand-gold text-royal-deep' 
-              : 'bg-white/10 border-white/20 text-white hover:bg-brand-gold hover:text-royal-deep'
-          }`}
-          aria-label={isSaved ? "Remove from Wishlist" : "Add to Wishlist"}
-        >
-          <Heart size={18} fill={isSaved ? 'currentColor' : 'none'} />
-        </button>
+            <LiquidButton 
+              onClick={handleToggleWishlist}
+              baseColor={isSaved ? 'bg-brand-gold' : 'bg-white/10'}
+              liquidColor={isSaved ? 'fill-white/30' : 'fill-brand-gold/40'}
+              rounded="rounded-full"
+              px="!p-2.5"
+              py="!p-2.5"
+              className={`backdrop-blur-md border shadow-lg ${
+                isSaved ? 'border-brand-gold text-royal-deep' : 'border-white/20 text-white'
+              }`}
+            >
+              <Heart size={16} fill={isSaved ? 'currentColor' : 'none'} className={isSaved ? 'text-royal-deep' : 'text-white'} />
+            </LiquidButton>
+          </div>
         </div>
 
         <div className="absolute bottom-4 left-4">
@@ -175,13 +183,17 @@ const PropertyCard = ({ property }) => {
         </Link>
 
         {/* Action Button */}
-        <Link 
+        <LiquidButton 
           href={`/properties/${slug || _id}`}
-          className="w-full py-3 bg-white/5 border border-white/10 text-zinc-100 font-bold text-sm flex items-center justify-center gap-2 group-hover:bg-brand-gold group-hover:text-royal-deep transition-all duration-300"
+          baseColor="bg-white/5"
+          liquidColor="fill-brand-gold"
+          className="w-full border border-white/10 !text-zinc-100 !text-sm"
+          rounded="rounded-none"
+          py="!py-3"
         >
           View Details
-          <Plus size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
-        </Link>
+          <Plus size={16} className="group-hover:rotate-90 transition-transform" />
+        </LiquidButton>
       </div>
 
       <AnimatePresence>

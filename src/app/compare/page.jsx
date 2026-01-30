@@ -93,35 +93,37 @@ function CompareContent() {
     <div className="min-h-screen bg-royal-deep pt-24 pb-20">
       <div className="max-container px-4">
         {/* Header */}
-        <div className="mb-8">
-          <Link href="/properties" className="inline-flex items-center gap-2 text-zinc-400 hover:text-brand-gold transition-colors mb-6">
-            <ArrowLeft size={18} />
+        <div className="mb-6 md:mb-8">
+          <Link href="/properties" className="inline-flex items-center gap-2 text-zinc-400 hover:text-brand-gold transition-colors my-4 md:my-6 text-sm md:text-base">
+            <ArrowLeft size={16} className="md:w-[18px] md:h-[18px]" />
             Back to Properties
           </Link>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0">
             <div>
-              <h1 className="text-4xl font-bold text-zinc-100 mb-2">Compare Properties</h1>
-              <p className="text-zinc-400">Compare up to 4 properties side-by-side</p>
+              <h1 className="text-2xl md:text-4xl font-bold text-zinc-100 mb-2">Compare Properties</h1>
+              <p className="text-zinc-400 text-sm md:text-base">Compare up to 4 properties side-by-side</p>
             </div>
             {properties.length >= 2 && (
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2 md:gap-3">
                 <SocialShare 
                   url={typeof window !== 'undefined' ? window.location.href : ''} 
                   title={`Compare: ${properties.map(p => p.title).join(' vs ')}`}
                 />
                 <button
                   onClick={() => exportPropertiesCSV(properties)}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-medium hover:bg-white/10 transition-all"
+                  className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-medium hover:bg-white/10 transition-all text-xs md:text-sm"
                 >
-                  <FileSpreadsheet size={18} className="text-brand-gold" />
-                  Export CSV
+                  <FileSpreadsheet size={16} className="text-brand-gold md:w-[18px] md:h-[18px]" />
+                  <span className="hidden sm:inline">Export CSV</span>
+                  <span className="sm:hidden">CSV</span>
                 </button>
                 <button
                   onClick={() => exportComparisonPDF(properties)}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-brand-gold/10 border border-brand-gold/30 text-brand-gold rounded-xl font-medium hover:bg-brand-gold/20 transition-all"
+                  className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-brand-gold/10 border border-brand-gold/30 text-brand-gold rounded-xl font-medium hover:bg-brand-gold/20 transition-all text-xs md:text-sm"
                 >
-                  <Download size={18} />
-                  Export PDF
+                  <Download size={16} className="md:w-[18px] md:h-[18px]" />
+                  <span className="hidden sm:inline">Export PDF</span>
+                  <span className="sm:hidden">PDF</span>
                 </button>
               </div>
             )}
@@ -129,26 +131,26 @@ function CompareContent() {
         </div>
 
         {/* Comparison Table */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto pb-4">
           <div className="inline-block min-w-full align-middle">
-            <div className="glass rounded-3xl border-white/10 overflow-hidden">
+            <div className="glass rounded-2xl md:rounded-3xl border border-white/10 overflow-hidden">
               <table className="min-w-full divide-y divide-white/10">
                 {/* Property Images & Titles */}
                 <thead>
                   <tr>
-                    <th className="sticky left-0 z-10 bg-royal-deep px-6 py-4 text-left">
-                      <span className="text-xs font-bold uppercase text-zinc-400 tracking-wider">Features</span>
+                    <th className="sticky left-0 z-20 bg-royal-deep px-3 py-3 md:px-6 md:py-4 text-left border-r border-white/5 min-w-[120px] md:min-w-[150px]">
+                      <span className="text-[10px] md:text-xs font-bold uppercase text-zinc-400 tracking-wider">Features</span>
                     </th>
                     {properties.map((property) => (
-                      <th key={property._id} className="px-6 py-4 min-w-[280px]">
+                      <th key={property._id} className="px-3 py-3 md:px-6 md:py-4 min-w-[200px] md:min-w-[280px]">
                         <div className="relative">
                           <button
                             onClick={() => removeProperty(property._id)}
                             className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-red-500 rounded-full transition-colors z-10"
                           >
-                            <X size={16} className="text-white" />
+                            <X size={14} className="text-white md:w-4 md:h-4" />
                           </button>
-                          <div className="relative h-40 rounded-xl overflow-hidden mb-4">
+                          <div className="relative h-28 md:h-40 rounded-xl overflow-hidden mb-3 md:mb-4">
                             <Image
                               src={property.images?.[0] || '/placeholder.jpg'}
                               alt={property.title}
@@ -156,10 +158,10 @@ function CompareContent() {
                               className="object-cover"
                             />
                           </div>
-                          <h3 className="font-bold text-zinc-100 text-sm mb-2 line-clamp-2">{property.title}</h3>
+                          <h3 className="font-bold text-zinc-100 text-xs md:text-sm mb-2 line-clamp-2 min-h-[32px] md:min-h-[40px]">{property.title}</h3>
                           <Link
                             href={`/properties/${property.slug}`}
-                            className="text-xs text-brand-gold hover:underline"
+                            className="text-[10px] md:text-xs text-brand-gold hover:underline"
                           >
                             View Details →
                           </Link>
@@ -173,7 +175,7 @@ function CompareContent() {
                 <tbody className="divide-y divide-white/5">
                   {comparisonRows.map((row, idx) => (
                     <tr key={idx} className={idx % 2 === 0 ? 'bg-white/[0.02]' : ''}>
-                      <td className="sticky left-0 z-10 bg-royal-deep px-6 py-4 text-sm font-medium text-zinc-400 border-r border-white/5">
+                      <td className="sticky left-0 z-10 bg-royal-deep px-3 py-3 md:px-6 md:py-4 text-xs md:text-sm font-medium text-zinc-400 border-r border-white/5">
                         {row.label}
                       </td>
                       {properties.map((property) => {
@@ -181,7 +183,7 @@ function CompareContent() {
                         const formattedValue = row.format ? row.format(value) : value;
                         
                         return (
-                          <td key={property._id} className="px-6 py-4 text-sm text-zinc-100 font-medium">
+                          <td key={property._id} className="px-3 py-3 md:px-6 md:py-4 text-xs md:text-sm text-zinc-100 font-medium whitespace-nowrap md:whitespace-normal">
                             {formattedValue || '-'}
                           </td>
                         );
@@ -191,23 +193,23 @@ function CompareContent() {
 
                   {/* Amenities Section */}
                   <tr className="bg-white/[0.02]">
-                    <td colSpan={properties.length + 1} className="px-6 py-3">
-                      <h4 className="text-xs font-bold uppercase text-zinc-400 tracking-wider">Amenities</h4>
+                    <td colSpan={properties.length + 1} className="px-3 py-3 md:px-6 md:py-3">
+                      <h4 className="text-[10px] md:text-xs font-bold uppercase text-zinc-400 tracking-wider">Amenities</h4>
                     </td>
                   </tr>
                   {allAmenities.map((amenity, idx) => (
                     <tr key={amenity} className={idx % 2 === 0 ? 'bg-white/[0.02]' : ''}>
-                      <td className="sticky left-0 z-10 bg-royal-deep px-6 py-3 text-sm text-zinc-400 border-r border-white/5">
+                      <td className="sticky left-0 z-10 bg-royal-deep px-3 py-3 md:px-6 md:py-3 text-xs md:text-sm text-zinc-400 border-r border-white/5">
                         {amenity}
                       </td>
                       {properties.map((property) => {
                         const hasAmenity = property.amenities?.includes(amenity);
                         return (
-                          <td key={property._id} className="px-6 py-3 text-center">
+                          <td key={property._id} className="px-3 py-3 md:px-6 md:py-3 text-center">
                             {hasAmenity ? (
-                              <CheckCircle2 size={20} className="text-green-500 mx-auto" />
+                              <CheckCircle2 size={16} className="text-green-500 mx-auto md:w-5 md:h-5" />
                             ) : (
-                              <XCircle size={20} className="text-zinc-600 mx-auto" />
+                              <XCircle size={16} className="text-zinc-600 mx-auto md:w-5 md:h-5" />
                             )}
                           </td>
                         );

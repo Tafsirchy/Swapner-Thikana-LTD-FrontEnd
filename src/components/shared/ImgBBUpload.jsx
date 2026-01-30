@@ -109,6 +109,7 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
               alt="Preview" 
               fill 
               className="object-cover"
+              unoptimized
             />
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 backdrop-blur-sm">
                <button

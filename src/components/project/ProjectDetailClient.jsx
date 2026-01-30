@@ -4,9 +4,10 @@ import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { 
-  Building2, MapPin, Calendar, CheckCircle2, 
-  Mail, Phone
+  Building2, MapPin, CheckCircle2, 
+  Phone
 } from 'lucide-react';
+import LiquidButton from '../shared/LiquidButton';
 
 const ProjectDetailClient = ({ project }) => {
   if (!project) return null;
@@ -185,9 +186,12 @@ const ProjectDetailClient = ({ project }) => {
                 <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
                   <input type="text" placeholder="Full Name" className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/50 transition-colors" />
                   <input type="text" placeholder="Phone Number" className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/50 transition-colors" />
-                  <button className="w-full py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg mt-2">
+                  <LiquidButton 
+                    type="submit"
+                    className="w-full mt-2 shadow-lg"
+                  >
                     Request Info
-                  </button>
+                  </LiquidButton>
                 </form>
               </div>
             </div>

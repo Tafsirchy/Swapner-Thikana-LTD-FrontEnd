@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import RecentlyViewed from '@/components/dashboard/RecentlyViewed';
 import UpcomingReminders from '@/components/dashboard/UpcomingReminders';
+import SmartImage from '@/components/shared/SmartImage';
 
 const StatCard = ({ title, value, icon: Icon, color, trend }) => (
   <div className="bg-white/5 border border-white/5 p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-all">
@@ -41,101 +42,183 @@ const ViewAllLink = ({ href }) => (
   </a>
 );
 
-const CustomerDashboard = () => (
-  <div className="space-y-8">
-     {/* Stats Grid */}
-     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <StatCard title="Saved Homes" value="12" icon={Heart} color="text-pink-500" />
-        <StatCard title="Active Inquiries" value="3" icon={MessageSquare} color="text-brand-gold" trend="+1 new" />
-        <StatCard title="Saved Searches" value="5" icon={Search} color="text-blue-500" />
-     </div>
+const CustomerDashboard = () => {
+  const [stats, setStats] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
 
-     {/* Recent Activity */}
-     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
-           <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-zinc-100">Recent Inquiries</h2>
-              <ViewAllLink href="/dashboard/inquiries" />
-           </div>
-           <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                 <div key={i} className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-brand-gold/30 transition-colors">
-                    <div className="w-12 h-12 rounded-xl bg-zinc-800 flex-shrink-0"></div>
-                    <div>
-                       <h4 className="font-bold text-sm text-zinc-100">Luxury Villa in Gulshan</h4>
-                       <p className="text-xs text-zinc-400 mt-1">Pending Response • 2h ago</p>
-                    </div>
-                    <div className="ml-auto text-xs font-bold text-yellow-500 bg-yellow-500/10 px-3 py-1 rounded-full">
-                       Pending
-                    </div>
-                 </div>
-              ))}
-           </div>
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await api.analytics.getCustomer();
+        setStats(response.data);
+      } catch (error) {
+         console.error('Error fetching customer analytics:', error);
+      } finally {
+         setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) return (
+     <div className="space-y-8 animate-pulse">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+           {[1,2,3].map(i => <div key={i} className="h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
         </div>
-        <div className="bg-brand-gold/10 border border-brand-gold/20 rounded-3xl p-8 flex flex-col justify-center text-center">
-           <h2 className="text-2xl font-bold text-brand-gold mb-2">Find Your Dream Home</h2>
-           <p className="text-zinc-400 mb-6 max-w-sm mx-auto">Explore our latest premium listings tailored to your preferences.</p>
-           <Link href="/properties" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
-              Browse Properties
-           </Link>
-        </div>
+        <div className="h-64 bg-white/5 rounded-3xl border border-white/5"></div>
      </div>
+  );
 
-     <RecentlyViewed />
-  </div>
-);
+  return (
+   <div className="space-y-8">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+         <StatCard title="Saved Homes" value={stats?.savedHomesCount || 0} icon={Heart} color="text-pink-500" />
+         <StatCard title="Active Inquiries" value={stats?.activeInquiriesCount || 0} icon={MessageSquare} color="text-brand-gold" trend={stats?.activeInquiriesCount > 0 ? "Active" : ""} />
+         <StatCard title="Saved Searches" value={stats?.savedSearchesCount || 0} icon={Search} color="text-blue-500" />
+      </div>
 
-const AgentDashboard = () => (
-  <div className="space-y-8">
-     {/* Stats Grid */}
-     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <StatCard title="My Listings" value="8" icon={Building2} color="text-brand-emerald" trend="+2 this month" />
-        <StatCard title="Total Leads" value="45" icon={Users} color="text-blue-500" trend="+12%" />
-        <StatCard title="Total Views" value="1.2k" icon={Search} color="text-purple-500" trend="+8%" />
-        <StatCard title="Pending" value="2" icon={Clock} color="text-yellow-500" />
-     </div>
-
-     <div className="flex items-center justify-end">
-        <a href="/dashboard/properties/add" className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
-           <PlusCircle size={18} /> Add New Property
-        </a>
-     </div>
-
-      {/* Ongoing Leads & Reminders */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-         <div className="lg:col-span-3 bg-white/5 border border-white/5 rounded-3xl p-8">
+      {/* Recent Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+         <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
             <div className="flex items-center justify-between mb-6">
-               <h2 className="text-xl font-bold text-zinc-100">Recent Leads</h2>
-               <ViewAllLink href="/dashboard/leads" />
+               <h2 className="text-xl font-bold text-zinc-100">Recent Inquiries</h2>
+               <ViewAllLink href="/dashboard/inquiries" />
             </div>
-            <div className="overflow-x-auto">
-               <table className="w-full text-left text-sm text-zinc-400">
-                  <thead>
-                     <tr className="border-b border-white/10">
-                        <th className="pb-4 font-bold uppercase tracking-wider text-xs">Client</th>
-                        <th className="pb-4 font-bold uppercase tracking-wider text-xs">Property</th>
-                        <th className="pb-4 font-bold uppercase tracking-wider text-xs">Status</th>
-                     </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white/5">
-                     {[1, 2, 3, 4, 5].map((i) => (
-                        <tr key={i} className="group hover:bg-white/5">
-                           <td className="py-4 font-bold text-zinc-200">Wasi Al-Shatib</td>
-                           <td className="py-4">Lake City Concord - Apt 4B</td>
-                           <td className="py-4"><span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase">New</span></td>
-                        </tr>
-                     ))}
-                  </tbody>
-               </table>
+            <div className="space-y-4">
+               {stats?.recentInquiries?.length > 0 ? (
+                  stats.recentInquiries.map((inquiry, i) => (
+                     <div key={i} className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-brand-gold/30 transition-colors">
+                        <div className="w-12 h-12 rounded-xl bg-zinc-800 flex-shrink-0 overflow-hidden relative">
+                           {inquiry.property?.image ? (
+                              <SmartImage src={inquiry.property.image} alt={inquiry.property.title} fill className="object-cover" />
+                           ) : (
+                              <div className="w-full h-full bg-zinc-700" />
+                           )}
+                        </div>
+                        <div>
+                           <h4 className="font-bold text-sm text-zinc-100 line-clamp-1">{inquiry.property?.title || 'Unknown Property'}</h4>
+                           <p className="text-xs text-zinc-400 mt-1">
+                              {new Date(inquiry.createdAt).toLocaleDateString()}
+                           </p>
+                        </div>
+                        <div className={`ml-auto text-xs font-bold px-3 py-1 rounded-full uppercase ${
+                           inquiry.status === 'new' ? 'bg-emerald-500/10 text-emerald-500' : 
+                           inquiry.status === 'contacted' ? 'bg-blue-500/10 text-blue-500' : 
+                           'bg-zinc-500/10 text-zinc-500'
+                        }`}>
+                           {inquiry.status}
+                        </div>
+                     </div>
+                  ))
+               ) : (
+                  <div className="text-center py-8 text-zinc-500 text-sm">No recent inquiries found</div>
+               )}
             </div>
          </div>
-
-         <div className="lg:col-span-2">
-            <UpcomingReminders />
+         <div className="bg-brand-gold/10 border border-brand-gold/20 rounded-3xl p-8 flex flex-col justify-center text-center">
+            <h2 className="text-2xl font-bold text-brand-gold mb-2">Find Your Dream Home</h2>
+            <p className="text-zinc-400 mb-6 max-w-sm mx-auto">Explore our latest premium listings tailored to your preferences.</p>
+            <Link href="/properties" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
+               Browse Properties
+            </Link>
          </div>
       </div>
-  </div>
-);
+
+      <RecentlyViewed />
+   </div>
+  );
+};
+
+const AgentDashboard = () => {
+  const [stats, setStats] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await api.analytics.getAgent();
+        setStats(response.data);
+      } catch (error) {
+         console.error('Error fetching agent analytics:', error);
+      } finally {
+         setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) return (
+     <div className="space-y-8 animate-pulse">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+           {[...Array(4)].map((_, i) => <div key={i} className="h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
+        </div>
+        <div className="h-64 bg-white/5 rounded-3xl border border-white/5"></div>
+     </div>
+  );
+
+  // Derived Stats
+  const totalListings = stats?.listingsPerformance?.length || 0;
+  const totalLeads = stats?.leadStats?.reduce((acc, curr) => acc + curr.count, 0) || 0;
+  const totalViews = stats?.listingsPerformance?.reduce((acc, curr) => acc + (curr.views || 0), 0) || 0;
+  const pendingListings = stats?.listingsPerformance?.filter(p => p.status === 'pending').length || 0;
+
+  return (
+   <div className="space-y-8">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+         <StatCard title="My Listings" value={totalListings} icon={Building2} color="text-brand-emerald" />
+         <StatCard title="Total Leads" value={totalLeads} icon={Users} color="text-blue-500" />
+         <StatCard title="Total Views" value={totalViews} icon={Search} color="text-purple-500" />
+         <StatCard title="Pending" value={pendingListings} icon={Clock} color="text-yellow-500" />
+      </div>
+
+      <div className="flex items-center justify-end">
+         <Link href="/dashboard/properties/add" className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
+            <PlusCircle size={18} /> Add New Property
+         </Link>
+      </div>
+
+       {/* Ongoing Leads & Reminders */}
+       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          <div className="lg:col-span-3 bg-white/5 border border-white/5 rounded-3xl p-8">
+             <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-zinc-100">Recent Leads</h2>
+                <ViewAllLink href="/dashboard/leads" />
+             </div>
+             <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm text-zinc-400">
+                   <thead>
+                      <tr className="border-b border-white/10">
+                         <th className="pb-4 font-bold uppercase tracking-wider text-xs">Date</th>
+                         <th className="pb-4 font-bold uppercase tracking-wider text-xs">Status</th>
+                      </tr>
+                   </thead>
+                   <tbody className="divide-y divide-white/5">
+                      {stats?.recentLeads?.length > 0 ? (
+                         stats.recentLeads.map((lead, i) => (
+                            <tr key={i} className="group hover:bg-white/5">
+                               <td className="py-4 font-bold text-zinc-200">{lead._id}</td>
+                               <td className="py-4"><span className="font-bold text-zinc-100">{lead.count}</span> leads</td>
+                            </tr>
+                         ))
+                      ) : (
+                         <tr><td colSpan="2" className="py-4 text-center text-zinc-500">No recent leads</td></tr>
+                      )}
+                   </tbody>
+                </table>
+             </div>
+          </div>
+
+          <div className="lg:col-span-2">
+             <UpcomingReminders />
+          </div>
+       </div>
+   </div>
+  );
+};
 
 const AdminDashboard = () => {
   const [stats, setStats] = React.useState(null);

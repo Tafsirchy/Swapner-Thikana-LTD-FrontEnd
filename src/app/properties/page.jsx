@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2, Building2 } from 'lucide-react';
+import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2, Building2, Trash2 } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
 import FilterPills from '@/components/search/FilterPills';
 import SaveSearchModal from '@/components/search/SaveSearchModal';
@@ -491,9 +491,9 @@ const PropertiesPage = () => {
                     <div className="flex justify-end pt-4 border-t border-white/5">
                       <button 
                         onClick={handleClearAllFilters}
-                        className="flex items-center justify-center gap-2 px-6 py-3 text-zinc-400 hover:text-brand-gold transition-colors text-sm font-medium rounded-xl hover:bg-white/5"
+                        className="flex items-center justify-center gap-2 px-6 py-3 text-red-400 border border-red-500/30 hover:bg-red-500/10 hover:text-red-300 transition-all text-sm font-medium rounded-xl shadow-lg shadow-red-500/5 w-full md:w-auto"
                       >
-                        <X size={16} />
+                        <Trash2 size={16} />
                         Clear All Filters
                       </button>
                     </div>
@@ -555,8 +555,9 @@ const PropertiesPage = () => {
               <p className="text-zinc-500 mb-6">Try adjusting your filters or search criteria</p>
               <button 
                 onClick={handleClearAllFilters}
-                className="px-6 py-3 bg-brand-gold text-royal-deep rounded-xl font-medium hover:bg-brand-gold-light transition-all"
+                className="px-6 py-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl font-medium hover:bg-red-500/20 hover:text-red-300 transition-all flex items-center gap-2 mx-auto"
               >
+                <Trash2 size={16} />
                 Clear all filters
               </button>
             </div>

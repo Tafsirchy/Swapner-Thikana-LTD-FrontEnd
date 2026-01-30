@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight, Building, Home, TrendingUp } from 'lucide-react';
 import Image from 'next/image';
+import LiquidButton from '@/components/shared/LiquidButton';
 
 const regions = [
   {
@@ -262,9 +263,9 @@ const InteractiveMasterPlan = () => {
                         ))}
                     </div>
 
-                    <button className="w-full mt-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-white transition-colors">
+                    <LiquidButton className="w-full mt-12 shadow-lg shadow-brand-gold/10">
                         View Full Master Plan
-                    </button>
+                    </LiquidButton>
 
                 </motion.div>
             </>

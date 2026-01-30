@@ -8,6 +8,7 @@ import '@photo-sphere-viewer/core/index.css';
 import '@photo-sphere-viewer/markers-plugin/index.css';
 import { Compass, Move, X, ChevronRight, Box } from 'lucide-react';
 import api from '@/lib/api';
+import LiquidButton from '@/components/shared/LiquidButton';
 
 const DEFAULT_PANO = 'https://photo-sphere-viewer-data.netlify.app/assets/sphere.jpg';
 
@@ -155,19 +156,21 @@ const VirtualRealitySection = () => {
                 {/* Category Toggles */}
                 <div className="flex flex-col gap-4 mb-8">
                     {Object.keys(categories).map((key) => (
-                        <button 
+                        <LiquidButton 
                             key={key}
                             onClick={() => setActiveCategory(key)}
-                            className={`p-4 rounded-xl border transition-all duration-500 relative overflow-hidden group text-left ${
+                            baseColor={activeCategory === key ? 'bg-brand-gold/20' : 'bg-white/5'}
+                            liquidColor="fill-brand-gold/10"
+                            className={`!p-4 !rounded-xl border !transition-all !duration-500 !flex !justify-start !text-left ${
                                 activeCategory === key 
-                                ? 'border-brand-gold bg-brand-gold/10 shadow-[0_0_30px_rgba(245,158,11,0.2)]' 
-                                : 'border-white/10 hover:border-white/30 hover:bg-white/5'
+                                ? 'border-brand-gold shadow-[0_0_30px_rgba(245,158,11,0.2)]' 
+                                : 'border-white/10 hover:border-white/30'
                             }`}
                         >
                             <span className={`relative z-10 font-bold uppercase tracking-wider text-sm ${activeCategory === key ? 'text-brand-gold' : 'text-zinc-400 group-hover:text-white'}`}>
                                 {categories[key].label}
                             </span>
-                        </button>
+                        </LiquidButton>
                     ))}
                 </div>
 

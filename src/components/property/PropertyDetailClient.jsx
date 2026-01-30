@@ -260,7 +260,11 @@ const PropertyDetailClient = ({ initialProperty }) => {
                 </p>
               </div>
               <div className="mb-10">
-                <NearbyPlaces lat={property.coordinates?.lat} lng={property.coordinates?.lng} />
+                <NearbyPlaces 
+                  lat={property.coordinates?.lat} 
+                  lng={property.coordinates?.lng}
+                  address={`${property.location.address}, ${property.location.city}`} 
+                />
               </div>
 
               <PropertyMap property={property} height="450px" />

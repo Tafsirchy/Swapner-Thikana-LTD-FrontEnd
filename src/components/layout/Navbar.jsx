@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import NotificationBell from './NotificationBell';
+import LiquidButton from '../shared/LiquidButton';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -16,6 +17,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -173,33 +175,79 @@ const Navbar = () => {
       {!isDashboard && (
         <div className="absolute top-5 right-4 z-50 hidden md:flex items-center gap-4">
            {/* Utility Icons */}
-           <button className="text-zinc-100 hover:text-brand-gold transition-colors">
-             <Search size={18} />
-           </button>
-           <button className="text-zinc-100 hover:text-brand-gold transition-colors">
+           {/* Utility Icons */}
+           <div className="relative">
+             <button 
+               onClick={() => setIsSearchOpen(!isSearchOpen)}
+               className={`transition-colors relative group ${isSearchOpen ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'}`}
+             >
+               <Search size={18} />
+               <span className="sr-only">Search</span>
+             </button>
+
+             <AnimatePresence>
+               {isSearchOpen && (
+                 <motion.div
+                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                   animate={{ opacity: 1, scale: 1, y: 0 }}
+                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                   transition={{ duration: 0.15 }}
+                   className="absolute right-0 mt-4 w-48 glass border border-white/10 rounded-2xl shadow-2xl overflow-hidden py-2"
+                 >
+                   <Link 
+                     href="/properties" 
+                     className="block px-4 py-3 text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors font-cinzel tracking-wider"
+                     onClick={() => setIsSearchOpen(false)}
+                   >
+                     PROPERTIES
+                   </Link>
+                   <Link 
+                     href="/projects" 
+                     className="block px-4 py-3 text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors font-cinzel tracking-wider border-t border-white/5"
+                     onClick={() => setIsSearchOpen(false)}
+                   >
+                     PROJECTS
+                   </Link>
+                 </motion.div>
+               )}
+             </AnimatePresence>
+           </div>
+
+           <Link href={user ? "/dashboard/saved" : "/auth/login"} className="text-zinc-100 hover:text-brand-gold transition-colors relative group">
              <Heart size={18} />
-           </button>
+             {user?.savedProperties?.length > 0 && (
+               <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-brand-gold text-royal-deep text-[9px] font-bold rounded-full flex items-center justify-center">
+                 {user.savedProperties.length}
+               </span>
+             )}
+           </Link>
            
            {/* Notification Bell */}
            {user && <NotificationBell />}
 
            {/* Auth Button */}
            {isAuthenticated ? (
-            <button
+            <LiquidButton
                onClick={logout}
-               className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-500/30 text-red-400 font-semibold text-xs hover:bg-red-500/10 hover:text-red-300 transition-all uppercase tracking-wider"
+               baseColor="bg-red-500/10"
+               liquidColor="fill-red-500/20"
+               className="!px-4 !py-1.5 border border-red-500/30 !text-red-400 !text-xs !font-semibold uppercase tracking-wider"
+               rounded="rounded-full"
             >
                <User size={14} />
                Logout
-            </button>
+            </LiquidButton>
           ) : (
-            <Link
+            <LiquidButton
               href="/auth/login"
-              className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold font-bold text-xs hover:bg-brand-gold hover:text-royal-deep transition-all uppercase tracking-wider"
+              baseColor="bg-brand-gold/10"
+              liquidColor="fill-brand-gold/30"
+              className="!px-4 !py-1.5 border border-brand-gold/30 !text-brand-gold !text-xs !font-bold uppercase tracking-wider"
+              rounded="rounded-full"
             >
               <User size={14} />
               Login
-            </Link>
+            </LiquidButton>
           )}
         </div>
       )}
@@ -310,23 +358,25 @@ const Navbar = () => {
             <div className="mt-8 pt-8 border-t border-white/10 flex flex-col gap-4">
                {/* Mobile Utilities */}
               {isAuthenticated ? (
-                <button
+                <LiquidButton
                   onClick={() => {
                     logout();
                     setIsOpen(false);
                   }}
-                  className="w-full py-4 rounded-xl bg-red-500/10 text-red-500 font-bold text-center text-lg active:scale-95 duration-150"
+                  baseColor="bg-red-500/10"
+                  liquidColor="fill-red-500/20"
+                  className="w-full !py-4 !text-red-500 !text-lg !font-bold"
                 >
                   Sign Out
-                </button>
+                </LiquidButton>
               ) : (
-                <Link
+                <LiquidButton
                   href="/auth/login"
-                  className="w-full py-4 rounded-xl bg-brand-gold text-royal-deep font-bold text-center text-lg active:scale-95 duration-150"
+                  className="w-full !py-4 !text-lg !font-bold"
                   onClick={() => setIsOpen(false)}
                 >
                   Login / Register
-                </Link>
+                </LiquidButton>
               )}
                <div className="flex justify-center gap-8 py-4 text-zinc-400">
                   <div className="flex flex-col items-center gap-2">

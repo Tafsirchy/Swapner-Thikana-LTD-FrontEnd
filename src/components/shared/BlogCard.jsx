@@ -5,6 +5,7 @@ import Link from 'next/link';
 import SmartImage from './SmartImage';
 import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight, Bookmark } from 'lucide-react';
+import LiquidButton from './LiquidButton';
 
 const BlogCard = ({ post }) => {
   const {
@@ -38,9 +39,17 @@ const BlogCard = ({ post }) => {
             {category || 'Real Estate'}
           </span>
         </div>
-        <button className="absolute top-6 right-6 p-2 rounded-full bg-black/20 backdrop-blur-md text-white hover:text-brand-gold transition-colors">
+        
+        <LiquidButton 
+          baseColor="bg-black/20"
+          liquidColor="fill-brand-gold/30"
+          rounded="rounded-full"
+          px="!p-2"
+          py="!p-2"
+          className="absolute top-6 right-6 backdrop-blur-md text-white border border-white/10"
+        >
           <Bookmark size={18} />
-        </button>
+        </LiquidButton>
       </div>
 
       <div className="p-8">

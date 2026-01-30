@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { Mail, ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
+import LiquidButton from '@/components/shared/LiquidButton';
 
 const FloatingParticle = ({ delay, duration, size, initialX, initialY, mouseX, mouseY }) => {
   // Parallax effect for particles based on their "depth"
@@ -155,11 +156,11 @@ const NewsletterSection = () => {
              </div>
         </motion.div>
 
-        {/* STATIC Content Card - Increased Width & Refined Padding */}
-        <div className="max-container px-4 relative z-10 w-full">
-            <div className="w-full">
+        {/* STATIC Content Card - Compact Version */}
+        <div className="max-container px-4 relative z-10 w-full flex justify-center">
+            <div className="w-full max-w-4xl">
                 <div 
-                    className="bg-zinc-950/40 border border-white/10 backdrop-blur-3xl p-10 md:p-20 lg:p-24 text-center relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] rounded-none"
+                    className="bg-zinc-950/40 border border-white/10 backdrop-blur-3xl p-8 md:p-12 lg:p-16 text-center relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] rounded-3xl"
                 >
                     {/* Interior Lighting - Dynamic & Brighter */}
                     <motion.div 
@@ -168,11 +169,10 @@ const NewsletterSection = () => {
                     />
                     
                     {/* Decorative Corner Accents */}
-                    <div className="absolute top-0 left-0 w-32 h-32 border-t-2 border-l-2 border-brand-gold/30 rounded-none" />
-                    <div className="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-brand-gold/30 rounded-none" />
+                    <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-brand-gold/30 rounded-tl-3xl rounded-none" />
+                    <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-brand-gold/30 rounded-br-3xl rounded-none" />
                     
                     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-gold/40 to-transparent" />
-                    <div className="absolute -right-40 -top-40 w-96 h-96 bg-brand-gold/5 blur-[100px] rounded-full" />
 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
@@ -180,29 +180,31 @@ const NewsletterSection = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        {/* More Compact & Elegant Icon */}
-                        <div className="relative w-20 h-20 mx-auto mb-8">
-                             <div className="absolute inset-0 bg-brand-gold/30 rounded-3xl blur-2xl animate-pulse" />
-                             <div className="relative w-full h-full bg-black/40 border border-white/20 rounded-3xl flex items-center justify-center text-brand-gold shadow-2xl">
-                                <Mail size={36} strokeWidth={1.5} />
+                        {/* More Compact Icon */}
+                        <div className="relative w-16 h-16 mx-auto mb-6">
+                             <div className="absolute inset-0 bg-brand-gold/30 rounded-2xl blur-xl animate-pulse" />
+                             <div className="relative w-full h-full bg-black/40 border border-white/20 rounded-2xl flex items-center justify-center text-brand-gold shadow-2xl">
+                                <Mail size={28} strokeWidth={1.5} />
                              </div>
                         </div>
 
-                        <span className="text-brand-gold font-bold tracking-[0.6em] uppercase text-xs mb-4 block">
+                        <span className="text-brand-gold font-bold tracking-[0.5em] uppercase text-[10px] mb-3 block">
                             The Portfolio Briefing
                         </span>
                         
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-semibold text-white mb-8 leading-tight tracking-tight">
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-cinzel font-semibold text-white mb-6 leading-tight tracking-tight">
                             Elevate Your <span className="text-brand-gold">Vision</span>
                         </h2>
                         
-                        <p className="text-zinc-400 text-lg md:text-xl mb-12 max-w-3xl mx-auto font-inter font-light leading-relaxed">
-                            Subscribe to receive first-look access to <span className="text-white font-medium">unlisted estates</span>, architectural forecasts, and the defining trends of Dhaka&apos;s luxury skyline.
+                        <p className="text-zinc-400 text-base md:text-lg mb-10 max-w-2xl mx-auto font-inter font-light leading-relaxed">
+                            Subscribe for first-look access to <span className="text-white font-medium">unlisted estates</span> and architectural forecasts.
                         </p>
 
-                        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto relative group">
+                        <form onSubmit={handleSubmit} className="max-w-xl mx-auto relative group">
+                            {/* Outer Glow */}
                             <div className="absolute -inset-1 bg-gradient-to-r from-brand-gold/0 via-brand-gold/20 to-brand-gold/0 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="relative h-20">
+                            
+                            <div className="relative flex items-center bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-1.5 focus-within:border-brand-gold/50 transition-all shadow-inner">
                                 <input 
                                     type="email" 
                                     placeholder="your@prestige.email" 
@@ -211,52 +213,46 @@ const NewsletterSection = () => {
                                     onBlur={() => setIsFocused(false)}
                                     onChange={(e) => setEmail(e.target.value)}
                                     disabled={status === 'loading' || status === 'success'}
-                                    className="w-full h-full pl-10 pr-48 bg-black/60 border border-white/10 text-white text-lg placeholder:text-zinc-700 focus:outline-none focus:border-brand-gold/50 rounded-2xl transition-all shadow-inner"
+                                    className="flex-1 bg-transparent pl-6 pr-4 py-3 text-white text-base placeholder:text-zinc-600 focus:outline-none disabled:opacity-50"
                                 />
                                 
-                                <button 
-                                    type="submit"
-                                    disabled={status === 'loading' || status === 'success'}
-                                    className={`absolute right-2 top-2 bottom-2 px-10 rounded-xl font-bold text-sm tracking-[0.2em] uppercase transition-all duration-500 flex items-center justify-center gap-3 ${
-                                        status === 'success' 
-                                        ? 'bg-emerald-600 text-white' 
-                                        : 'bg-brand-gold text-black hover:bg-white hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] active:scale-95 shadow-lg'
-                                    }`}
-                                >
-                                    <AnimatePresence mode="wait">
-                                        {status === 'loading' ? (
-                                            <motion.div 
-                                                key="loading"
-                                                className="w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" 
-                                            />
-                                        ) : status === 'success' ? (
-                                            <motion.div key="success" className="flex items-center gap-2">
-                                                <Check size={20} />
-                                                <span>Joined</span>
-                                            </motion.div>
-                                        ) : (
-                                            <motion.div key="idle" className="flex items-center gap-2">
-                                                <span>Request Access</span>
-                                                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </button>
+                                <LiquidButton 
+                                     type="submit"
+                                     disabled={status === 'loading' || status === 'success'}
+                                     baseColor={status === 'success' ? 'bg-emerald-600' : 'bg-brand-gold'}
+                                     liquidColor={status === 'success' ? 'fill-white/10' : 'fill-brand-gold'}
+                                     className="!px-6 !py-3 !rounded-xl shadow-lg shadow-brand-gold/20"
+                                 >
+                                     <AnimatePresence mode="wait">
+                                         {status === 'loading' ? (
+                                             <motion.div 
+                                                 key="loading"
+                                                 className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" 
+                                             />
+                                         ) : status === 'success' ? (
+                                             <motion.div key="success" className="flex items-center gap-2 text-white">
+                                                 <Check size={18} />
+                                                 <span className="text-[10px] font-bold tracking-wider uppercase">Member Joined</span>
+                                             </motion.div>
+                                         ) : (
+                                             <motion.div key="idle" className="flex items-center gap-2 text-royal-deep group-hover:text-white transition-colors">
+                                                 <span className="text-[10px] font-black tracking-[0.2em] uppercase">Request Access</span>
+                                                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                             </motion.div>
+                                         )}
+                                     </AnimatePresence>
+                                 </LiquidButton>
                             </div>
                         </form>
                         
-                        <div className="mt-16 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-                             <div className="flex items-center gap-3 text-xs text-zinc-500 uppercase tracking-widest font-semibold">
-                                <div className="w-1.5 h-1.5 rounded-full bg-brand-gold/60 shadow-[0_0_10px_#f59e0b]" />
+                        <div className="mt-14 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+                             <div className="flex items-center gap-3 text-[10px] text-zinc-500 uppercase tracking-[0.2em] font-bold">
+                                <div className="w-1 h-1 rounded-full bg-brand-gold/60 shadow-[0_0_8px_#f59e0b]" />
                                 <span>Curated Weekly</span>
                              </div>
-                             <div className="flex items-center gap-3 text-xs text-zinc-500 uppercase tracking-widest font-semibold">
-                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60 shadow-[0_0_10px_#10b981]" />
+                             <div className="flex items-center gap-3 text-[10px] text-zinc-500 uppercase tracking-[0.2em] font-bold">
+                                <div className="w-1 h-1 rounded-full bg-emerald-500/60 shadow-[0_0_8px_#10b981]" />
                                 <span>VIP Invitations</span>
-                             </div>
-                             <div className="flex items-center gap-3 text-xs text-zinc-500 uppercase tracking-widest font-semibold">
-                                <div className="w-1.5 h-1.5 rounded-full bg-brand-royal/60 shadow-[0_0_10px_#2563eb]" />
-                                <span>Unsubscribe Anytime</span>
                              </div>
                         </div>
                     </motion.div>

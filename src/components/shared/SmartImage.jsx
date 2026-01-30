@@ -46,10 +46,11 @@ const SmartImage = ({
         className={`transition-all duration-700 ${loading ? 'opacity-0 scale-105' : 'opacity-100 scale-100'} ${className}`}
         onLoad={() => setLoading(false)}
         onError={() => {
-          setError(true);
-          setLoading(false);
+           setError(true);
+           setLoading(false);
         }}
         priority={priority}
+        unoptimized={typeof src === 'string' && src.includes('ibb.co')} // Only skip optimization for ImgBB (high-res user uploads)
       />
 
       {error && (

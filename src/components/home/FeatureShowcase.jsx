@@ -6,6 +6,7 @@ import { ChevronRight, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { api } from '@/lib/api';
 import Link from 'next/link';
+import LiquidButton from '@/components/shared/LiquidButton';
 
 const FeatureShowcase = () => {
   const [properties, setProperties] = useState([]);
@@ -218,12 +219,29 @@ const FeatureShowcase = () => {
 
            {/* Mobile Controls (Only visible on small screens) */}
            <div className="col-span-1 lg:hidden flex justify-center items-center gap-8 mt-4 md:mt-0">
-             <button onClick={handlePrev} className="p-4 bg-zinc-900 rounded-full text-brand-gold border border-zinc-800 active:scale-95 transition-all">
-              <ChevronRight size={24} className="rotate-180" />
-             </button>
-             <button onClick={handleNext} className="p-4 bg-zinc-900 rounded-full text-brand-gold border border-zinc-800 active:scale-95 transition-all">
-              <ChevronRight size={24} />
-             </button>
+             <LiquidButton 
+               onClick={handlePrev} 
+               baseColor="bg-zinc-900"
+               liquidColor="fill-brand-gold/10"
+               rounded="rounded-full"
+               px="!p-4"
+               py="!p-4"
+               className="text-brand-gold border border-zinc-800"
+             >
+                <ChevronRight size={24} className="rotate-180" />
+             </LiquidButton>
+             
+             <LiquidButton 
+               onClick={handleNext} 
+               baseColor="bg-zinc-900"
+               liquidColor="fill-brand-gold/10"
+               rounded="rounded-full"
+               px="!p-4"
+               py="!p-4"
+               className="text-brand-gold border border-zinc-800"
+             >
+                <ChevronRight size={24} />
+             </LiquidButton>
            </div>
 
         </div>

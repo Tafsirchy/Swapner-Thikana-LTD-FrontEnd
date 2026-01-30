@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Linkedin, Mail, ArrowUpRight, Building } from 'lucide-react';
 import { api } from '@/lib/api';
+import LiquidButton from '@/components/shared/LiquidButton';
 
 const AboutSection = () => {
   const [projects, setProjects] = useState([]);
@@ -117,10 +118,15 @@ const AboutSection = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
             >
-                <Link href="/about" className="group flex items-center gap-4 px-8 py-4 rounded-full border border-white/10 hover:border-brand-gold/50 bg-white/5 hover:bg-white/10 transition-all text-white">
+                <LiquidButton 
+                    href="/about" 
+                    baseColor="bg-white/5"
+                    liquidColor="fill-brand-gold/20"
+                    className="border border-white/10 hover:border-brand-gold/50 !text-white"
+                >
                     <span className="font-bold tracking-wider uppercase text-xs">Learn More</span>
-                    <ArrowUpRight className="group-hover:text-brand-gold transition-colors" size={20} />
-                </Link>
+                    <ArrowUpRight size={20} />
+                </LiquidButton>
             </motion.div>
         </div>
 

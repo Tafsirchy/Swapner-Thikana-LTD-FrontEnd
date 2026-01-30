@@ -9,6 +9,7 @@ import AboutSection from '@/components/home/AboutSection';
 import InteractiveMasterPlan from '@/components/home/InteractiveMasterPlan';
 import VirtualRealitySection from '@/components/home/VirtualRealitySection';
 import NewsletterSection from '@/components/home/NewsletterSection';
+import LiquidButton from '@/components/shared/LiquidButton';
 
 
 export default function Home() {
@@ -78,11 +79,11 @@ export default function Home() {
                   <option className="bg-royal-deep">Uttara</option>
                 </select>
               </div>
-              <button 
-                className="w-full md:w-auto px-10 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95 shadow-lg shadow-brand-gold/20"
+              <LiquidButton 
+                className="w-full md:w-auto shadow-lg shadow-brand-gold/20"
               >
                 Search
-              </button>
+              </LiquidButton>
             </div>
           </motion.div>
         </div>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:5000/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -148,6 +148,12 @@ export const api = {
     registerFcmToken: (token) => apiInstance.post('/notifications/fcm-token', { token }),
     sendTest: () => apiInstance.post('/notifications/test'),
   },
+  seller: {
+    submitInquiry: (data) => apiInstance.post('/seller/submit', data),
+    getAllInquiries: (params) => apiInstance.get('/seller/admin/all', { params }),
+    updateStatus: (id, status) => apiInstance.put(`/seller/admin/${id}/status`, { status }),
+  },
+  // Duplicate brace removed
   reviews: {
     create: (data) => apiInstance.post('/reviews', data),
     update: (id, data) => apiInstance.put(`/reviews/${id}`, data),
@@ -160,6 +166,7 @@ export const api = {
   analytics: {
     getAdmin: () => apiInstance.get('/analytics/admin'),
     getAgent: () => apiInstance.get('/analytics/agent'),
+    getCustomer: () => apiInstance.get('/analytics/customer'),
   },
   reminders: {
     create: (data) => apiInstance.post('/reminders', data),
@@ -208,6 +215,7 @@ export const api = {
   },
   uploads: {
     upload: (data, config) => apiInstance.post('/upload', data, config),
+    uploadPublic: (data, config) => apiInstance.post('/upload/public', data, config),
   }
 };
 

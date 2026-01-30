@@ -72,7 +72,7 @@ const CompareBar = () => {
           <div className="flex items-center gap-3 w-full md:w-auto">
             <button
               onClick={clearCompare}
-              className="px-6 py-3.5 rounded-2xl border border-white/10 text-zinc-400 font-bold hover:bg-white/5 transition-all text-sm flex items-center gap-2 group-hover:text-zinc-100 whitespace-nowrap"
+              className="px-6 py-3.5 rounded-2xl border border-red-500/30 text-red-400 font-bold hover:bg-red-500/10 transition-all text-sm flex items-center gap-2 hover:text-red-300 whitespace-nowrap shadow-lg shadow-red-500/5"
             >
               <Trash2 size={16} />
               <span className="hidden sm:inline">Clear All</span>
