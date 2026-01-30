@@ -14,8 +14,8 @@ const AdminNewsletterPage = () => {
     <div className="space-y-8 pb-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-zinc-100 italic">Newsletter Management</h2>
-          <p className="text-zinc-400 mt-1 text-sm">Manage your distribution list and campaign analytics.</p>
+          <h2 className="text-4xl font-bold text-zinc-100">Newsletter Management</h2>
+          <p className="text-zinc-400 mt-2 text-lg font-sans">Manage your distribution list and campaign analytics.</p>
         </div>
         <div className="flex gap-4">
           <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-zinc-300 font-bold rounded-xl hover:border-brand-gold hover:text-brand-gold transition-all text-sm">

@@ -109,7 +109,7 @@ const DashboardLayout = ({ children }) => {
              <Link href="/" className="hover:opacity-80 transition-opacity">
                 <Image src="/logo.png" alt="shwapner Thikana" width={40} height={40} className="h-8 w-auto object-contain" />
              </Link>
-             <span className="font-bold text-xl text-zinc-100 tracking-wide font-cinzel">Dashboard</span>
+             <span className="font-bold text-2xl text-zinc-100 tracking-wide font-cinzel">Dashboard</span>
           </div>
 
           <div className="flex flex-col h-full">
@@ -238,8 +238,8 @@ const DashboardLayout = ({ children }) => {
             {pathname === '/dashboard' && (
               <header className="hidden lg:flex items-center justify-between mb-8 pb-6 border-b border-white/5">
                  <div>
-                    <h1 className="text-2xl font-bold text-zinc-100">Overview</h1>
-                    <p className="text-zinc-400 text-sm">Welcome back, {user?.name}</p>
+                    <h1 className="text-4xl font-bold text-zinc-100">Overview</h1>
+                    <p className="text-zinc-400 text-lg mt-2">Welcome back, {user?.name}</p>
                  </div>
                  <div className="flex items-center gap-4">
                     <button className="p-3 rounded-full bg-white/5 border border-white/5 text-zinc-400 hover:text-brand-gold transition-colors relative">

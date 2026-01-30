@@ -39,20 +39,20 @@ const HistoryPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-24">
+    <div className="min-h-screen bg-royal-deep pt-32 pb-20">
       <div className="max-container px-4">
         {/* Header */}
-        <div className="text-center mb-24">
+        <div className="text-center mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] my-6"
           >
             <History size={16} />
             Our Journey
           </motion.div>
-          <h1 className="text-5xl md:text-7xl font-bold text-zinc-100 mb-8 tracking-tight">
-            Our <span className="text-brand-gold italic">History</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-8 tracking-tight">
+            Our <span className="text-brand-gold">History</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
             A decade of architectural excellence, unwavering trust, and the pursuit of the perfect home.

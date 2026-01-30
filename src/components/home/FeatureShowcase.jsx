@@ -99,8 +99,8 @@ const FeatureShowcase = () => {
                 <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                     Exclusive Listings
                 </span>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel text-white mb-6">
-                    Featured <span className="text-brand-gold italic">Properties</span>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-semibold text-white mb-6">
+                    Featured <span className="text-brand-gold">Properties</span>
                 </h2>
                 <div className="w-24 h-1 bg-gradient-to-r from-transparent via-brand-gold to-transparent mx-auto" />
             </motion.div>

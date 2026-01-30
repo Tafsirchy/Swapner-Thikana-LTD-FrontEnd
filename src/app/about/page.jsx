@@ -21,8 +21,8 @@ const AboutPage = () => {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em]">
                 Founded in 2011
               </div>
-              <h1 className="text-5xl md:text-7xl font-bold text-zinc-100 tracking-tight leading-tight">
-                Redefining the Art of <span className="text-brand-gold italic">Luxury Living</span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 tracking-tight leading-tight">
+                Redefining the Art of <span className="text-brand-gold">Luxury Living</span>
               </h1>
               <p className="text-zinc-400 text-lg leading-relaxed italic">
                 &quot;shwapner Thikana Ltd was established with a singular vision: to bring world-class architectural standards and uncompromising service to Bangladesh&apos;s premium real estate landscape.&quot;
@@ -64,7 +64,7 @@ const AboutPage = () => {
       <section className="mb-40 py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-96 h-96 bg-brand-emerald/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2"></div>
         <div className="max-container px-4 text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-6">Our Platinum <span className="text-brand-gold">Philosophy</span></h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6">Our Platinum <span className="text-brand-gold">Philosophy</span></h2>
           <p className="text-zinc-400 max-w-2xl mx-auto italic">Every brick we lay and every home we list is governed by four core pillars of excellence.</p>
         </div>
 
@@ -119,7 +119,7 @@ const AboutPage = () => {
             </div>
             <div className="w-full lg:w-1/2 space-y-8 order-1 lg:order-2">
                <span className="text-brand-gold font-bold italic">The Concierge Team</span>
-               <h2 className="text-4xl md:text-5xl font-bold text-zinc-100">Experts in <span className="text-brand-gold">Excellence</span></h2>
+               <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100">Experts in <span className="text-brand-gold">Excellence</span></h2>
                <p className="text-zinc-400 text-lg leading-relaxed">
                   Our team consists of industry veterans, legal specialists, and world-class interior consultants. We work in unison to provide a seamless transition from your vision to your reality.
                </p>

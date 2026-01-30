@@ -62,8 +62,8 @@ const BlogPage = () => {
             <BookOpen size={16} />
             Luxury Insights
           </motion.div>
-          <h1 className="text-5xl md:text-7xl font-bold text-zinc-100 mb-8 tracking-tight">
-            The <span className="text-brand-gold italic">Luxe</span> Journal
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold text-zinc-100 mb-8 tracking-tight">
+            The <span className="text-brand-gold ">Luxe</span> Journal
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed mb-12">
             Stay ahead of the market with exclusive architectural insights, real estate investment strategies, and luxury lifestyle spotlights from our concierge team.

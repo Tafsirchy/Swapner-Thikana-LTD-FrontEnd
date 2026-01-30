@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, ScrollText } from 'lucide-react';
 
 const AdminHistoryPage = () => {
   const milestones = [
@@ -39,8 +39,11 @@ const AdminHistoryPage = () => {
     <div className="space-y-8 pb-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-zinc-100 italic">Manage History</h2>
-          <p className="text-zinc-400 mt-1 text-sm">Chronicle the Shwapner Thikana journey through milestones.</p>
+          <h2 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
+            <ScrollText size={32} className="text-brand-gold" />
+            Manage History
+          </h2>
+          <p className="text-zinc-400 mt-2 text-lg">Chronicle the Shwapner Thikana journey through milestones.</p>
         </div>
         <button className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg active:scale-95 text-sm">
           <Plus size={18} /> Add New Milestone

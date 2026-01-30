@@ -111,11 +111,11 @@ const LeadsPage = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
+          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
             <BarChart3 size={32} className="text-brand-gold" />
             Lead Pipeline
           </h1>
-          <p className="text-zinc-400 mt-1">Manage and track your property inquiries</p>
+          <p className="text-zinc-400 mt-2 text-lg font-sans">Manage and track your property inquiries</p>
         </div>
         
         <div className="flex items-center gap-4">

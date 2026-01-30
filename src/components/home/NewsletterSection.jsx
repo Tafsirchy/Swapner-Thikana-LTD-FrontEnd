@@ -192,8 +192,8 @@ const NewsletterSection = () => {
                             The Portfolio Briefing
                         </span>
                         
-                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-cinzel text-white mb-8 leading-tight tracking-tight">
-                            Elevate Your <span className="text-brand-gold italic">Vision</span>
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-semibold text-white mb-8 leading-tight tracking-tight">
+                            Elevate Your <span className="text-brand-gold">Vision</span>
                         </h2>
                         
                         <p className="text-zinc-400 text-lg md:text-xl mb-12 max-w-3xl mx-auto font-inter font-light leading-relaxed">

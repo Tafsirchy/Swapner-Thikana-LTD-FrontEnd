@@ -59,11 +59,11 @@ const AdminAgentsListPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3 italic font-sans italic">
+          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3 font-sans">
             <Users size={32} className="text-brand-gold" />
             Agent Management
           </h1>
-          <p className="text-zinc-400 mt-1 font-sans italic">
+          <p className="text-zinc-400 mt-2 text-lg font-sans">
             Manage real estate agents and their performance metrics.
           </p>
         </div>

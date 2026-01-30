@@ -34,13 +34,13 @@ const ManagementPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] my-6"
           >
             <Users size={16} />
             Leadership
           </motion.div>
-          <h1 className="text-5xl md:text-7xl font-bold text-zinc-100 mb-8 tracking-tight">
-            Our <span className="text-brand-gold italic">Management</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-8 tracking-tight">
+            Our <span className="text-brand-gold">Management</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
             Meet the visionaries leading Shwapner Thikana towards a new era of architectural innovation and client trust.

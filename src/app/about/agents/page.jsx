@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, Star, ArrowRight, User } from 'lucide-react';
+import { Mail, Phone, Star, ArrowRight, User, Handshake } from 'lucide-react';
 import { api } from '@/lib/api';
 import Image from 'next/image';
 import AgentDetailsModal from '@/components/agents/AgentDetailsModal';
@@ -40,15 +40,20 @@ const AgentsPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-950 pt-24 pb-12">
+    <div className="min-h-screen bg-zinc-950 pt-32 pb-12">
       <div className="max-container px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
-            Meet Our Team
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-6">
-            Elite Real Estate <span className="text-brand-gold italic">Consultants</span>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] my-6"
+          >
+            <Handshake size={16} />
+Meet Our Team
+          </motion.div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6">
+            Elite Real Estate <span className="text-brand-gold">Consultants</span>
           </h1>
           <p className="text-zinc-400 max-w-2xl mx-auto text-lg">
             Our experienced agents are dedicated to helping you find your perfect property. 

@@ -252,8 +252,8 @@ const PropertiesPage = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
             <div>
               <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block">Premium Listings</span>
-              <h1 className="text-4xl md:text-5xl font-bold text-zinc-100">
-                Discover Exclusive <span className="text-brand-gold italic">Properties</span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100">
+                Discover Exclusive <span className="text-brand-gold">Properties</span>
               </h1>
             </div>
             <div className="flex items-center gap-3">

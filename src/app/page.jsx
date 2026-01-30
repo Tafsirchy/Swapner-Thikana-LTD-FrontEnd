@@ -43,8 +43,8 @@ export default function Home() {
             <span className="inline-block px-4 py-1.5 rounded-full bg-brand-gold/20 border border-brand-gold/30 text-brand-gold text-xs font-semibold md:font-bold tracking-[0.2em] uppercase mb-5 backdrop-blur-sm">
               Premium Real Estate in Bangladesh
             </span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
-              Discover Your <span className="text-brand-gold italic">Dream</span> Address
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-cinzel mb-6 tracking-tight">
+              Discover Your <span className="text-brand-gold">Dream</span> Address
             </h1>
             <p className="text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
               Elevating the art of living. shwapner Thikana Ltd brings you the most exclusive 
@@ -155,8 +155,8 @@ export default function Home() {
           </div>
           <div className="flex-1">
             <span className="text-brand-emerald font-bold tracking-[0.2em] uppercase text-xs mb-4 block">Exclusive Membership</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-6 leading-tight">
-              Invest in the <span className="text-brand-gold italic">Future</span> of Dhaka
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold font-cinzel text-zinc-100 mb-6 leading-tight">
+              Invest in the <span className="text-brand-gold font-cinzel">Future</span> of Dhaka
             </h2>
             <p className="text-zinc-400 mb-8 leading-relaxed text-lg italic font-serif">
               &quot;We don&apos;t just sell property; we curate lifestyles. Every project under our portfolio 

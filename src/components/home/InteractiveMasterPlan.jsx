@@ -78,8 +78,8 @@ const InteractiveMasterPlan = () => {
             <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                 National Footprint
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel text-white mb-6">
-                Interactive <span className="text-brand-gold italic">Master Plan</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-semibold text-white mb-6">
+                Interactive <span className="text-brand-gold font-cinzel">Master </span>Plan
             </h2>
             <p className="text-zinc-400 max-w-2xl mx-auto">
                 Explore our strategic footprint across the nation. Select a region to discover our active developments and future vision.

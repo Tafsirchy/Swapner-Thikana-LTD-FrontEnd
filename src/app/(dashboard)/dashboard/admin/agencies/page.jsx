@@ -59,11 +59,11 @@ const AdminAgenciesPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
+          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
             <Briefcase size={32} className="text-brand-gold" />
             Agency Management
           </h1>
-          <p className="text-zinc-400 mt-1">
+          <p className="text-zinc-400 mt-2 text-lg">
             Manage partner real estate agencies
           </p>
         </div>

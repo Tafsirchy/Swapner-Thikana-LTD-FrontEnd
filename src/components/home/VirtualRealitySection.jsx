@@ -149,7 +149,7 @@ const VirtualRealitySection = () => {
             >
                 <div className="mb-12">
                     <span className="text-brand-gold text-[10px] tracking-[0.3em] uppercase font-bold">Immersive Experience</span>
-                    <h2 className="text-3xl font-cinzel text-white mt-2 leading-tight">Virtual <br/><span className="text-brand-gold italic">Reality</span></h2>
+                    <h2 className="text-3xl font-cinzel text-white mt-2 leading-tight">Virtual <br/><span className="text-brand-gold">Reality</span></h2>
                 </div>
 
                 {/* Category Toggles */}

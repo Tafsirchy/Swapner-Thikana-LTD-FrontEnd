@@ -44,8 +44,8 @@ const ContactPage = () => {
             <MessageSquare size={16} />
             Concierge Relations
           </motion.div>
-          <h1 className="text-5xl md:text-7xl font-bold text-zinc-100 mb-8 tracking-tight">
-            Connect with <span className="text-brand-gold italic">Excellence</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold font-cinzel text-zinc-100 mb-8 tracking-tight">
+            Connect with <span className="text-brand-gold">Excellence</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
             Whether you are looking for your next investment or need specialized real estate consultancy, our team is ready to assist you with absolute discretion and expertise.
@@ -54,9 +54,9 @@ const ContactPage = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Details Cards */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="p-8 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all group">
-              <div className="w-14 h-14 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-4 group-hover:scale-110 transition-transform">
                 <MapPin size={28} />
               </div>
               <h3 className="text-xl font-bold text-zinc-100 mb-2">Majestic Headquarters</h3>
@@ -65,7 +65,7 @@ const ContactPage = () => {
             </div>
 
             <div className="p-8 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all group">
-              <div className="w-14 h-14 rounded-2xl bg-brand-emerald/10 flex items-center justify-center text-brand-emerald mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 rounded-2xl bg-brand-emerald/10 flex items-center justify-center text-brand-emerald mb-4 group-hover:scale-110 transition-transform">
                 <Phone size={28} />
               </div>
               <h3 className="text-xl font-bold text-zinc-100 mb-2">Direct Concierge</h3>
@@ -75,7 +75,7 @@ const ContactPage = () => {
             </div>
 
             <div className="p-8 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all group">
-              <div className="w-14 h-14 rounded-2xl bg-brand-royal/10 flex items-center justify-center text-brand-royal mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 rounded-2xl bg-brand-royal/10 flex items-center justify-center text-brand-royal mb-4 group-hover:scale-110 transition-transform">
                 <Mail size={28} />
               </div>
               <h3 className="text-xl font-bold text-zinc-100 mb-2">Digital Inquiry</h3>
@@ -90,8 +90,8 @@ const ContactPage = () => {
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
               
               <div className="relative z-10">
-                <h2 className="text-3xl font-bold text-zinc-100 mb-2">Send a Secure Dossier</h2>
-                <p className="text-zinc-400 mb-10">Our consultants will analyze your requirements and reach out privately.</p>
+                <h2 className="text-4xl font-bold text-zinc-100 mb-4">Send a Secure Dossier</h2>
+                <p className="text-zinc-400 mb-12">Our consultants will analyze your requirements and reach out privately.</p>
 
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">

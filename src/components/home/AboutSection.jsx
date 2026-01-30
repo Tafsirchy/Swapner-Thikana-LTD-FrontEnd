@@ -102,8 +102,8 @@ const AboutSection = () => {
                 <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                     Who We Are
                 </span>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel text-white mb-6 leading-tight">
-                    Architects of <br/> <span className="text-brand-gold italic">Legacy</span>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-semibold text-white mb-6 leading-tight">
+                    Architects of <br/> <span className="text-brand-gold">Legacy</span>
                 </h2>
                 <p className="text-zinc-400 text-lg leading-relaxed border-l-2 border-brand-gold/30 pl-6">
                     We are more than developers; we are visionaries dedicated to crafting spaces that inspire. 
