@@ -16,7 +16,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-royal-deep border-t border-brand-gold/20 pt-16 pb-8 overflow-hidden">
+    <footer className="relative bg-royal-deep border-t border-brand-gold/20 pt-16 pb-8 overflow-hidden font-cinzel">
       {/* Decorative gradient blur */}
       <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-brand-royal/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-brand-gold/5 rounded-full blur-[100px] pointer-events-none"></div>
