@@ -40,7 +40,7 @@ const AgentsPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-950 pt-32 pb-12">
+    <div className="min-h-screen bg-royal-deep pt-32 pb-12">
       <div className="max-container px-4">
         {/* Header */}
         <div className="text-center mb-16">

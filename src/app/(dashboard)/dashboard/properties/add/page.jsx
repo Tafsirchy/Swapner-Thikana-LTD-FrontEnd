@@ -8,7 +8,6 @@ import {
   CheckCircle, ArrowRight, ArrowLeft, Upload, X, PlusCircle, Star 
 } from 'lucide-react';
 import Image from 'next/image';
-import axios from 'axios';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import imageCompression from 'browser-image-compression';
@@ -142,19 +141,18 @@ const AddPropertyPage = () => {
           useWebWorker: true
         });
 
-        // 2. Upload
+        // 2. Upload via Backend
         toast.loading(`Uploading image ${i + 1}/${files.length}...`, { id: toastId });
         const formData = new FormData();
         formData.append('image', compressedFile);
         
-        const response = await axios.post(
-          'https://api.imgbb.com/1/upload',
-          formData,
-          { params: { key: '615ab9305e7a47395335aa3d18655815' } }
-        );
+        // Use the centralized API helper which correctly points to backend
+        const response = await api.uploads.upload(formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
         
-        if (response.data.success) {
-          uploadedUrls.push(response.data.data.url);
+        if (response.success && response.data.url) {
+          uploadedUrls.push(response.data.url);
         }
       }
       

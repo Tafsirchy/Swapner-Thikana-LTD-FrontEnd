@@ -8,7 +8,7 @@ import {
   CheckCircle, ArrowRight, ArrowLeft, Upload, X, Save, Loader2, Star 
 } from 'lucide-react';
 import Image from 'next/image';
-import axios from 'axios';
+
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import imageCompression from 'browser-image-compression';
@@ -151,43 +151,41 @@ const EditPropertyPage = () => {
     if (files.length === 0) return;
 
     setSaving(true);
-    const toastId = toast.loading('Starting image optimization...');
-    
-    const uploadedUrls = [];
+    const toastId = toast.loading('Processing images...');
     
     try {
+      const formData = new FormData();
+      
+      // Compress and append all files
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         toast.loading(`Optimizing image ${i + 1}/${files.length}...`, { id: toastId });
         
-        // 1. Compression
         const compressedFile = await imageCompression(file, {
           maxSizeMB: 1,
           maxWidthOrHeight: 1920,
           useWebWorker: true
         });
-
-        // 2. Upload
-        toast.loading(`Uploading image ${i + 1}/${files.length}...`, { id: toastId });
-        const formData = new FormData();
-        formData.append('image', compressedFile);
         
-        const response = await axios.post(
-          'https://api.imgbb.com/1/upload',
-          formData,
-          { params: { key: '615ab9305e7a47395335aa3d18655815' } }
-        );
-        
-        if (response.data.success) {
-          uploadedUrls.push(response.data.data.url);
-        }
+        formData.append('images', compressedFile); // Note: field name must match backend middleware 'images'
       }
+
+      toast.loading('Uploading to server...', { id: toastId });
       
-      setImages(prev => [...prev, ...uploadedUrls]);
-      toast.success(`${uploadedUrls.length} images processed successfully`, { id: toastId });
+      // Send to backend
+      const response = await api.properties.uploadImages(id, formData);
+      
+      if (response.success && response.data.images) {
+        // Add new URLs to local state
+        setImages(prev => [...prev, ...response.data.images]);
+        toast.success(`${response.data.images.length} images uploaded successfully`, { id: toastId });
+      } else {
+        throw new Error('Upload failed');
+      }
+
     } catch (error) {
-      console.error('Image processing failed:', error);
-      toast.error('Some images failed to upload', { id: toastId });
+      console.error('Image upload failed:', error);
+      toast.error('Failed to upload images. check constraints.', { id: toastId });
     } finally {
       setSaving(false);
       e.target.value = ''; // Reset

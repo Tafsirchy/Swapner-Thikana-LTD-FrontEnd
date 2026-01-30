@@ -1,14 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { User, Mail, Phone, Save, Loader2, Lock, Eye, EyeOff, Shield, Calendar, Camera } from 'lucide-react';
+import { User, Mail, Phone, Save, Loader2, Lock, Eye, EyeOff, Shield, Calendar, Camera, Trash2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SettingsPage = () => {
-  const { user } = useAuth();
+  const { user, updateUser, checkAuth } = useAuth();
+  const fileInputRef = useRef(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [activeTab, setActiveTab] = useState('general');
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
@@ -30,12 +32,58 @@ const SettingsPage = () => {
     confirmPassword: ''
   });
 
+  // Corrected handleDeleteImage to use checkAuth instead of reload
+  const handleDeleteImage = async (e) => {
+    e.stopPropagation();
+    if (!window.confirm('Are you sure you want to remove your profile photo?')) return;
+    
+    setIsLoading(true);
+    try {
+      await api.user.deleteProfileImage();
+      setPreviewImage(null);
+      await checkAuth(); // Refresh user state from backend
+      toast.success('Profile image removed');
+    } catch (error) {
+      console.error('Delete image failed:', error);
+      toast.error('Failed to remove image');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size must be less than 5MB');
+        return;
+      }
+      setFormData({ ...formData, avatar: file });
+      setPreviewImage(URL.createObjectURL(file));
+      // Reset ref so same file can be selected again if needed
+      if(fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await api.user.updateProfile(formData);
-      toast.success('Profile updated successfully');
+      const data = new FormData();
+      data.append('name', formData.name);
+      data.append('phone', formData.phone);
+      if (formData.bio) data.append('bio', formData.bio);
+      if (formData.avatar) data.append('avatar', formData.avatar);
+
+      // Use context method to update state immediately
+      const result = await updateUser(data);
+      
+      if (result.success) {
+        toast.success('Profile updated successfully');
+        setPreviewImage(null); // Clear preview as main image will update
+      } else {
+        toast.error(result.error || 'Failed to update profile');
+      }
     } catch (error) {
       console.error('Update failed:', error);
       toast.error('Failed to update profile');
@@ -107,16 +155,43 @@ const SettingsPage = () => {
             
             {/* Avatar & Info */}
             <div className="px-8 pb-8 -mt-12 relative text-center">
-              <div className="w-24 h-24 rounded-full bg-zinc-900 border-4 border-zinc-900 mx-auto flex items-center justify-center text-3xl font-bold text-brand-gold shadow-xl relative overflow-hidden group mb-4">
-                 {user?.image ? (
-                    <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+              <div 
+                className="w-24 h-24 rounded-full bg-zinc-900 border-4 border-zinc-900 mx-auto flex items-center justify-center text-3xl font-bold text-brand-gold shadow-xl relative overflow-hidden group mb-4"
+              >
+                 {previewImage ? (
+                    <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
+                 ) : (user?.avatar || user?.image) ? (
+                    <img src={user.avatar || user.image} alt={user.name} className="w-full h-full object-cover" />
                  ) : (
-                    <span>{user?.name?.[0] || 'U'}</span>
+                    <User size={48} className="text-zinc-600" />
                  )}
-                 <div className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer transition-all">
+                 
+                 {/* Upload Overlay */}
+                 <div 
+                    onClick={() => fileInputRef.current?.click()}
+                    className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer transition-all z-10"
+                 >
                     <Camera size={20} className="text-white" />
                  </div>
+
+                 {/* Delete Button (Only if image exists) */}
+                 {(previewImage || user?.avatar || user?.image) && (
+                   <button
+                      onClick={handleDeleteImage}
+                      className="absolute bottom-0 right-0 bg-red-500/80 hover:bg-red-600 text-white p-1.5 rounded-full m-1 z-20 transition-all opacity-0 group-hover:opacity-100"
+                      title="Remove Photo"
+                   >
+                     <Trash2 size={12} />
+                   </button>
+                 )}
               </div>
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleImageChange} 
+                className="hidden" 
+                accept="image/*"
+              />
               
               <h2 className="text-2xl font-bold text-white mb-1">{user?.name}</h2>
               <span className="inline-block px-3 py-1 rounded-full bg-brand-gold/10 text-brand-gold text-xs font-bold uppercase tracking-wider mb-6">

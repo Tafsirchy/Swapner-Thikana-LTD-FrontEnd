@@ -73,7 +73,7 @@ const Navbar = () => {
         >
           <Link
             href={link.href}
-            className={`text-sm tracking-widest uppercase font-medium transition-colors relative group py-2 flex items-center gap-1 ${
+            className={`text-sm tracking-widest uppercase font-cinzel font-medium transition-colors relative group py-2 flex items-center gap-1 ${
               isActive || isAboutOpen ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
             }`}
           >
@@ -104,7 +104,7 @@ const Navbar = () => {
                         <Link 
                           key={sub.name} 
                           href={sub.href}
-                          className="text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap flex items-center group/sub"
+                          className="text-zinc-400 hover:text-white transition-colors text-sm font-cinzel font-medium whitespace-nowrap flex items-center group/sub"
                         >
                           <span className="w-0 group-hover/sub:w-2 h-px bg-brand-gold mr-0 group-hover/sub:mr-2 transition-all"></span>
                           {sub.name}
@@ -124,7 +124,7 @@ const Navbar = () => {
                         <Link 
                           key={sub.name} 
                           href={sub.href}
-                          className="text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap flex items-center group/sub"
+                          className="text-zinc-400 hover:text-white transition-colors text-sm font-cinzel font-medium whitespace-nowrap flex items-center group/sub"
                         >
                           <span className="w-0 group-hover/sub:w-2 h-px bg-brand-gold mr-0 group-hover/sub:mr-2 transition-all"></span>
                           {sub.name}
@@ -144,7 +144,7 @@ const Navbar = () => {
       <Link
         key={link.name}
         href={link.href}
-        className={`text-sm tracking-widest uppercase font-medium transition-colors relative group py-2 ${
+        className={`text-sm tracking-widest uppercase font-cinzel font-medium transition-colors relative group py-2 ${
           isActive ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
         }`}
       >

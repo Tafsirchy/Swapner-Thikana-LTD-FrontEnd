@@ -70,7 +70,13 @@ export const api = {
   },
   user: {
     getProfile: () => apiInstance.get('/users/profile'),
-    updateProfile: (data) => apiInstance.put('/users/profile', data),
+    updateProfile: (data) => {
+      const isFormData = data instanceof FormData;
+      return apiInstance.put('/users/profile', data, {
+        headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : undefined
+      });
+    },
+    deleteProfileImage: () => apiInstance.delete('/users/profile/image'),
     getSavedProperties: () => apiInstance.get('/users/saved-properties'),
     addToWishlist: (propertyId) => apiInstance.post(`/users/saved-properties/${propertyId}`),
     removeFromWishlist: (propertyId) => apiInstance.delete(`/users/saved-properties/${propertyId}`),
@@ -87,6 +93,9 @@ export const api = {
     update: (id, data) => apiInstance.put(`/properties/${id}`, data),
     delete: (id) => apiInstance.delete(`/properties/${id}`),
     toggleSave: (id) => apiInstance.post(`/properties/${id}/save`),
+    uploadImages: (id, data) => apiInstance.post(`/properties/${id}/images`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }),
   },
   projects: {
     getAll: (params) => apiInstance.get('/projects', { params }),
@@ -196,6 +205,9 @@ export const api = {
     create: (data) => apiInstance.post('/magazines', data),
     update: (id, data) => apiInstance.put(`/magazines/${id}`, data),
     delete: (id) => apiInstance.delete(`/magazines/${id}`),
+  },
+  uploads: {
+    upload: (data, config) => apiInstance.post('/upload', data, config),
   }
 };
 

@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Upload, X, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
+
+import { api } from '@/lib/api';
 import imageCompression from 'browser-image-compression';
 
 const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required = false }) => {
@@ -54,10 +55,8 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
       const formData = new FormData();
       formData.append('image', compressedFile);
 
-      const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
-        params: {
-          key: '615ab9305e7a47395335aa3d18655815'
-        },
+      const response = await api.uploads.upload(formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
         onUploadProgress: (progressEvent) => {
           const uploadPercent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
           setProgress(50 + Math.round(uploadPercent / 2)); // Final 50% for network transfer
@@ -65,15 +64,21 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
         }
       });
 
-      const data = response.data;
-
-      if (data.success) {
-        const url = data.data.url;
+      // Backend returns { success: true, message: '...', data: { url: '...' } }
+      // api interceptor returns response.data
+      
+      if (response && response.success) {
+        // response.data from backend contains { url: ... }
+        // Wait, my backend returns: { success: true, message: ..., data: { url: ... } }
+        // api.js interceptor returns `response.data`.
+        // So `response` here IS `response.data` from axios (which is the backend JSON body).
+        
+        const url = response.data.url;
         setPreview(url);
         onUpload(url);
         toast.success('Professional upload complete', { id: toastId });
       } else {
-        throw new Error(data.error?.message || 'Upload failed');
+        throw new Error(response?.message || 'Upload failed');
       }
     } catch (error) {
       console.error('Upload Error:', error);

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2 } from 'lucide-react';
+import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2, Building2 } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
 import FilterPills from '@/components/search/FilterPills';
 import SaveSearchModal from '@/components/search/SaveSearchModal';
@@ -249,14 +249,26 @@ const PropertiesPage = () => {
       {/* Search & Header Section */}
       <section className="mb-12">
         <div className="max-container px-4">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-            <div>
-              <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block">Premium Listings</span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100">
-                Discover Exclusive <span className="text-brand-gold">Properties</span>
-              </h1>
-            </div>
-            <div className="flex items-center gap-3">
+
+          {/* Centered Hero Section (Matching Projects Style) */}
+          <div className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] my-6"
+            >
+              <Building2 size={16} />
+              Premium Listings
+            </motion.div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold font-cinzel text-zinc-100 mb-6 tracking-tight">
+              Discover Exclusive <span className="text-brand-gold">Properties</span>
+            </h1>
+            <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed mb-10">
+              Browse our curated collection of luxury apartments, commercial spaces, and exclusive land opportunities designed for your lifestyle.
+            </p>
+
+            {/* View Controls Toolbar */}
+            <div className="flex justify-center md:justify-end items-center gap-3">
               {user && (filters.search || filters.listingType || filters.propertyType || filters.city || 
                         filters.bedrooms || filters.bathrooms || filters.minPrice || filters.maxPrice || 
                         filters.minArea || filters.maxArea || filters.amenities.length > 0) && (
@@ -268,24 +280,29 @@ const PropertiesPage = () => {
                   <span className="hidden sm:inline">Save Search</span>
                 </button>
               )}
-              <button 
-                onClick={() => setViewMode('grid')}
-                className={`p-2.5 rounded-xl border transition-all ${viewMode === 'grid' ? 'bg-brand-gold text-royal-deep border-brand-gold' : 'border-white/10 text-zinc-400 hover:border-white/20'}`}
-              >
-                <LayoutGrid size={20} />
-              </button>
-              <button 
-                onClick={() => setViewMode('list')}
-                className={`p-2.5 rounded-xl border transition-all ${viewMode === 'list' ? 'bg-brand-gold text-royal-deep border-brand-gold' : 'border-white/10 text-zinc-400 hover:border-white/20'}`}
-              >
-                <List size={20} />
-              </button>
-              <button 
-                onClick={() => setViewMode('map')}
-                className={`p-2.5 rounded-xl border transition-all ${viewMode === 'map' ? 'bg-brand-gold text-royal-deep border-brand-gold' : 'border-white/10 text-zinc-400 hover:border-white/20'}`}
-              >
-                <Map size={20} />
-              </button>
+              <div className="flex bg-white/5 border border-white/5 p-1 rounded-xl">
+                  <button 
+                    onClick={() => setViewMode('grid')}
+                    className={`p-2.5 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-brand-gold text-royal-deep shadow-lg' : 'text-zinc-400 hover:text-zinc-200'}`}
+                    title="Grid View"
+                  >
+                    <LayoutGrid size={20} />
+                  </button>
+                  <button 
+                    onClick={() => setViewMode('list')}
+                    className={`p-2.5 rounded-lg transition-all ${viewMode === 'list' ? 'bg-brand-gold text-royal-deep shadow-lg' : 'text-zinc-400 hover:text-zinc-200'}`}
+                    title="List View"
+                  >
+                    <List size={20} />
+                  </button>
+                  <button 
+                    onClick={() => setViewMode('map')}
+                    className={`p-2.5 rounded-lg transition-all ${viewMode === 'map' ? 'bg-brand-gold text-royal-deep shadow-lg' : 'text-zinc-400 hover:text-zinc-200'}`}
+                    title="Map View"
+                  >
+                    <Map size={20} />
+                  </button>
+              </div>
             </div>
           </div>
 

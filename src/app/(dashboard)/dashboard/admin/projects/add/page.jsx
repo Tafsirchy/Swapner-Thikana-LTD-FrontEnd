@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Building2, Save, X, Plus, Trash2, MapPin, Type, Calendar, Info, Upload, Loader2 } from 'lucide-react';
 import Image from 'next/image';
-import axios from 'axios';
+
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
@@ -449,11 +449,11 @@ const AddProjectPage = () => {
                                    const fData = new FormData();
                                    fData.append('image', compressedFile);
                                    
-                                   const res = await axios.post('https://api.imgbb.com/1/upload', fData, {
-                                      params: { key: '615ab9305e7a47395335aa3d18655815' }
+                                   const res = await api.uploads.upload(fData, {
+                                      headers: { 'Content-Type': 'multipart/form-data' }
                                    });
-                                   if(res.data.success) {
-                                      setFormData(prev => ({ ...prev, images: [...prev.images, res.data.data.url] }));
+                                   if(res.success) {
+                                      setFormData(prev => ({ ...prev, images: [...prev.images, res.data.url] }));
                                    } else {
                                       toast.error(`Failed to upload image ${i+1}`);
                                    }
