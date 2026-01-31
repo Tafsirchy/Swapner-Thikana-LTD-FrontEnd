@@ -233,7 +233,7 @@ const LeadsPage = () => {
 
               <div className="flex flex-col md:flex-row w-full h-full overflow-hidden">
                 {/* Sidebar Info (Left Column) */}
-                <div className="w-full md:w-2/5 border-b md:border-b-0 md:border-r border-white/5 p-6 md:p-8 bg-zinc-900/40 backdrop-blur-xl flex flex-col overflow-y-auto custom-scrollbar shrink-0 md:shrink">
+                <div className="w-full md:w-2/5 border-b md:border-b-0 md:border-r border-white/5 p-6 md:p-8 bg-zinc-900/40 backdrop-blur-xl flex flex-col overflow-y-auto custom-scrollbar shrink-0 md:shrink h-auto max-h-[50%] md:h-full md:max-h-none">
                   <div className="mb-6 md:mb-10">
                     <div className="w-16 h-16 md:w-20 md:h-20 bg-brand-gold/10 rounded-2xl md:rounded-[2rem] flex items-center justify-center text-brand-gold mb-4 md:mb-6 border border-brand-gold/20 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
                       <User size={32} className="md:hidden" />
@@ -318,7 +318,7 @@ const LeadsPage = () => {
                 </div>
 
                 {/* Main Content: Notes (Right Column) */}
-                <div className="w-full md:w-3/5 flex flex-col h-full overflow-hidden bg-zinc-950/20 min-h-[300px]">
+                <div className="w-full md:w-3/5 flex flex-col flex-1 overflow-hidden bg-zinc-950/20 md:min-h-[300px]">
                   <div className="p-6 md:p-8 border-b border-white/5 flex items-center justify-between bg-zinc-950/40 backdrop-blur-md sticky top-0 z-10">
                     <h3 className="text-base md:text-lg font-cinzel font-bold text-zinc-100 flex items-center gap-3 uppercase tracking-widest">
                       <Plus size={18} className="text-brand-gold p-0.5 border border-brand-gold rounded-full" />
