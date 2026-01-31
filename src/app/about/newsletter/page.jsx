@@ -40,7 +40,7 @@ const NewsletterPage = () => {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="flex-1 w-full bg-white/5 border border-white/10 rounded-[3rem] p-10 lg:p-16 relative overflow-hidden"
+              className="flex-1 w-full bg-white/5 border border-white/10 rounded-none p-10 lg:p-16 relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
               
@@ -51,7 +51,7 @@ const NewsletterPage = () => {
                    <input 
                     type="text" 
                     placeholder="e.g. Rahim Ahmed" 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder:text-zinc-600 focus:border-brand-gold/40 outline-none transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-none px-6 py-5 text-white placeholder:text-zinc-600 focus:border-brand-gold/40 outline-none transition-all"
                    />
                 </div>
                 <div className="space-y-2">
@@ -59,14 +59,14 @@ const NewsletterPage = () => {
                    <input 
                     type="email" 
                     placeholder="rahim@example.com" 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-white placeholder:text-zinc-600 focus:border-brand-gold/40 outline-none transition-all"
+                    className="w-full bg-white/5 border border-white/10 rounded-none px-6 py-5 text-white placeholder:text-zinc-600 focus:border-brand-gold/40 outline-none transition-all"
                    />
                 </div>
                 <div className="flex items-center gap-3 pt-4">
-                   <input type="checkbox" id="consent" className="w-5 h-5 rounded border-white/10 bg-white/5 text-brand-gold focus:ring-brand-gold/20" />
+                   <input type="checkbox" id="consent" className="w-5 h-5 rounded-none border-white/10 bg-white/5 text-brand-gold focus:ring-brand-gold/20" />
                    <label htmlFor="consent" className="text-zinc-500 text-sm">I agree to receive marketing communications and market reports.</label>
                 </div>
-                <button className="w-full bg-brand-gold text-royal-deep py-5 rounded-2xl font-bold text-lg hover:bg-brand-gold-light transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-gold/10 mt-8 active:scale-[0.98]">
+                <button className="w-full bg-brand-gold text-royal-deep py-5 rounded-none font-bold text-lg hover:bg-brand-gold-light transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-gold/10 mt-8 active:scale-[0.98]">
                    Join the List <Send size={20} />
                 </button>
               </form>
