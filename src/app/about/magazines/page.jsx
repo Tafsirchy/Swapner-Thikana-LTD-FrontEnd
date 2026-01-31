@@ -82,7 +82,7 @@ const MagazinesPage = () => {
                   }}
                 >
                   <Link href={`/about/magazines/${mag.slug}`} className="block relative">
-                    <div className="relative aspect-[3/4] preserve-3d group-hover:rotate-y-[-20deg] group-hover:translate-x-[-10%] transition-all duration-700 ease-[0.22,1,0.36,1]">
+                    <div className="relative aspect-square preserve-3d group-hover:rotate-y-[-20deg] group-hover:translate-x-[-10%] transition-all duration-700 ease-[0.22,1,0.36,1]">
                       
                       {/* Shadow Layer */}
                       <div className="absolute inset-0 translate-z-[-50px] bg-black/40 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>

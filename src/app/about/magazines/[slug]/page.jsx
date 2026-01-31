@@ -62,7 +62,7 @@ const MagazineDetailsPage = () => {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-5"
           >
-            <div className="relative aspect-[3/4] overflow-hidden shadow-2xl shadow-black/50 border border-white/5 group">
+            <div className="relative aspect-square overflow-hidden shadow-2xl shadow-black/50 border border-white/5 group">
               <Image 
                 src={magazine.coverImage || '/placeholder-magazine.jpg'}
                 alt={magazine.title}
