@@ -53,8 +53,8 @@ const MagazinesPage = () => {
             <BookOpen size={14} className="animate-pulse" />
             The Archive
           </motion.div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-cinzel font-bold text-zinc-100 mb-8 tracking-tighter transition-all duration-700">
-            Luxe <span className="text-brand-gold italic">Living</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-bold text-zinc-100 mb-8 tracking-tighter transition-all duration-700">
+            Luxe <span className="text-brand-gold">Living</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-500 text-lg leading-relaxed font-serif italic">
             A quarterly exploration into the heights of architectural innovation and the essence of refined urban existence.
@@ -73,83 +73,87 @@ const MagazinesPage = () => {
                 viewport={{ once: true }}
                 className="group relative perspective-1000"
               >
-                {/* 3D Magazine Container */}
-                <Link href={`/about/magazines/${mag.slug}`} className="block relative">
-                  <div className="relative aspect-[3/3] preserve-3d group-hover:rotate-y-[-20deg] group-hover:translate-x-[-10%] transition-all duration-700 ease-[0.22,1,0.36,1]">
-                    
-                    {/* Shadow Layer */}
-                    <div className="absolute inset-0 translate-z-[-50px] bg-black/40 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                {/* 3D Magazine Container - Lifts on Hover */}
+                <motion.div 
+                  className="z-20 relative"
+                  whileHover={{ y: -60 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Link href={`/about/magazines/${mag.slug}`} className="block relative">
+                    <div className="relative aspect-[3/4] preserve-3d group-hover:rotate-y-[-20deg] group-hover:translate-x-[-10%] transition-all duration-700 ease-[0.22,1,0.36,1]">
+                      
+                      {/* Shadow Layer */}
+                      <div className="absolute inset-0 translate-z-[-50px] bg-black/40 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
-                    {/* Spine */}
-                    <div className="absolute top-0 left-0 w-8 h-full bg-zinc-900 border-r border-white/10 origin-left rotate-y-90 -translate-x-full"></div>
+                      {/* Spine */}
+                      <div className="absolute top-0 left-0 w-8 h-full bg-zinc-900 border-r border-white/10 origin-left rotate-y-90 -translate-x-full"></div>
 
-                    {/* Back Cover / Inner Page Preview */}
-                    <div className="absolute inset-0 bg-zinc-950 border border-white/5 shadow-2xl">
-                        <div className="absolute inset-4 border border-brand-gold/10 flex items-center justify-center overflow-hidden italic text-brand-gold/5 text-[8px] font-serif leading-tight pointer-events-none">
-                           {mag.description}
-                        </div>
-                    </div>
+                      {/* Back Cover / Inner Page Preview */}
+                      <div className="absolute inset-0 bg-zinc-950 border border-white/5 shadow-2xl">
+                          <div className="absolute inset-4 border border-brand-gold/10 flex items-center justify-center overflow-hidden italic text-brand-gold/5 text-[8px] font-serif leading-tight pointer-events-none">
+                             {mag.description}
+                          </div>
+                      </div>
 
-                    {/* Front Cover */}
-                    <div className="absolute inset-0 z-10 origin-left transition-transform duration-700 group-hover:rotate-y-[-10deg]">
-                      <div className="relative h-full w-full overflow-hidden border border-white/5 shadow-2xl">
-                        <Image
-                          src={mag.coverImage || '/placeholder-magazine.jpg'}
-                          alt={mag.title}
-                          fill
-                          className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-transparent to-black/20"></div>
-                        
-                        {/* Interactive Badge */}
-                        <div className="absolute top-6 left-6 px-3 py-1 bg-brand-gold text-royal-deep text-[8px] font-black uppercase tracking-widest">
-                          Collectors Edition
-                        </div>
+                      {/* Front Cover */}
+                      <div className="absolute inset-0 z-10 origin-left transition-transform duration-700 group-hover:rotate-y-[-10deg]">
+                        <div className="relative h-full w-full overflow-hidden border border-white/5 shadow-2xl">
+                          <Image
+                            src={mag.coverImage || '/placeholder-magazine.jpg'}
+                            alt={mag.title}
+                            fill
+                            className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-transparent to-black/20"></div>
+                          
+                          {/* Interactive Badge */}
+                          <div className="absolute top-6 left-6 px-3 py-1 bg-brand-gold text-royal-deep text-[8px] font-black uppercase tracking-widest">
+                            Collectors Edition
+                          </div>
 
-                        <div className="absolute bottom-8 left-8 right-8 text-white">
-                          <span className="text-brand-gold text-[10px] font-black uppercase tracking-[0.4em] mb-4 block italic">
-                            {mag.publisher || 'STLTD Media'}
-                          </span>
-                          <h3 className="text-3xl font-cinzel font-bold leading-tight mb-2 group-hover:text-brand-gold transition-colors duration-500">
-                             {mag.title}
-                          </h3>
-                          <div className="w-12 h-0.5 bg-brand-gold mt-4 group-hover:w-full transition-all duration-700"></div>
+                          <div className="absolute bottom-8 left-8 right-8 text-white">
+                            <span className="text-brand-gold text-[10px] font-black uppercase tracking-[0.4em] mb-4 block italic">
+                              {mag.publisher || 'STLTD Media'}
+                            </span>
+                            <h3 className="text-3xl font-cinzel font-bold leading-tight mb-2 group-hover:text-brand-gold transition-colors duration-500">
+                               {mag.title}
+                            </h3>
+                            <div className="w-12 h-0.5 bg-brand-gold mt-4 group-hover:w-full transition-all duration-700"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </motion.div>
 
-                {/* Info & CTA Overlay - Glassmorphic */}
-                <div className="mt-8 space-y-6">
-                   <div className="flex items-center justify-between text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em]">
-                      <span>Issue {i + 1}</span>
-                      <span className="italic">{mag.publicationDate ? new Date(mag.publicationDate).getFullYear() : '2024'} Edition</span>
-                   </div>
-                   
-                   <p className="text-zinc-400 text-sm leading-relaxed font-serif italic line-clamp-2 pr-8 border-l border-brand-gold/20 pl-4">
-                      {mag.description}
-                   </p>
-
-                   <div className="flex items-center gap-6 pt-2">
-                     <a 
-                       href={mag.pdfUrl} 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       className="group/btn flex items-center gap-4 text-brand-gold font-black text-[9px] uppercase tracking-[0.4em] hover:text-white transition-all duration-500"
-                     >
-                       <div className="w-10 h-10 rounded-full border border-brand-gold/30 flex items-center justify-center group-hover/btn:bg-brand-gold group-hover/btn:text-royal-deep transition-all duration-500">
-                         <Download size={14} />
-                       </div>
-                       Access PDF
-                     </a>
-                     
-                     <Link 
-                       href={`/about/magazines/${mag.slug}`} 
-                       className="flex items-center gap-4 text-zinc-100 font-black text-[9px] uppercase tracking-[0.4em] hover:text-brand-gold transition-all duration-500 ml-auto"
-                     >
-                        Explore <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
-                     </Link>
+                {/* Info & CTA Overlay - Revealed as parent lifts */}
+                <div className="absolute inset-x-0 bottom-0 z-10 transition-all duration-700 opacity-0 group-hover:opacity-100 flex flex-col justify-end h-full pointer-events-none group-hover:pointer-events-auto">
+                   <div className="space-y-6 p-4 bg-zinc-950/50 backdrop-blur-sm border-t border-white/5 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
+                      <div className="flex items-center justify-between text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em]">
+                         <span>Issue {i + 1}</span>
+                         <span className="italic">{mag.publicationDate ? new Date(mag.publicationDate).getFullYear() : '2024'} Edition</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-6 pt-2">
+                        <a 
+                          href={mag.pdfUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="group/btn flex items-center gap-4 text-brand-gold font-black text-[9px] uppercase tracking-[0.4em] hover:text-white transition-all duration-500"
+                        >
+                          <div className="w-10 h-10 rounded-full border border-brand-gold/30 flex items-center justify-center group-hover/btn:bg-brand-gold group-hover/btn:text-royal-deep transition-all duration-500">
+                            <Download size={14} />
+                          </div>
+                          Access PDF
+                        </a>
+                        
+                        <Link 
+                          href={`/about/magazines/${mag.slug}`} 
+                          className="flex items-center gap-4 text-zinc-100 font-black text-[9px] uppercase tracking-[0.4em] hover:text-brand-gold transition-all duration-500 ml-auto"
+                        >
+                           Explore <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+                        </Link>
+                      </div>
                    </div>
                 </div>
               </motion.div>
