@@ -157,9 +157,9 @@ const VirtualRealitySection = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 className="w-full md:w-1/3 lg:w-1/4 h-full bg-zinc-900/50 backdrop-blur-xl border-r border-white/10 flex flex-col p-6 z-20"
             >
-                <div className="mb-12">
+                <div className="mb-6">
                     <span className="text-brand-gold text-[10px] tracking-[0.3em] uppercase font-bold">Immersive Experience</span>
-                    <h2 className="text-3xl font-cinzel text-white mt-2 leading-tight">Virtual <br/><span className="text-brand-gold">Reality</span></h2>
+                    <h2 className="text-4xl font-cinzel text-white mt-2 leading-tight">Virtual <br/><span className="text-brand-gold">Reality</span></h2>
                 </div>
 
                 {/* Category Toggles */}

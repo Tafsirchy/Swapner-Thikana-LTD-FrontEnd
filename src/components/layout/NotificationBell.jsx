@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import AllNotificationsModal from './AllNotificationsModal';
 
 const NotificationBell = () => {
   const { user } = useAuth();
@@ -14,6 +15,7 @@ const NotificationBell = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const isFetching = useRef(false);
@@ -235,7 +237,13 @@ const NotificationBell = () => {
             {/* Footer */}
             {notifications.length > 0 && (
               <div className="p-3 border-t border-white/5 text-center">
-                <button className="text-sm text-brand-gold hover:text-brand-gold-light transition-colors font-medium">
+                <button 
+                  onClick={() => {
+                    setIsOpen(false);
+                    setIsModalOpen(true);
+                  }}
+                  className="text-sm text-brand-gold hover:text-brand-gold-light transition-colors font-medium"
+                >
                   View All Notifications
                 </button>
               </div>
@@ -243,6 +251,11 @@ const NotificationBell = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <AllNotificationsModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onRefreshBell={fetchNotifications}
+      />
     </div>
   );
 };

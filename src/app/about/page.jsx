@@ -1,12 +1,30 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Award, Users, Gem, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Award, Users, Gem, ArrowRight, Linkedin, Mail, User as UserIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { api } from '@/lib/api';
 
 const AboutPage = () => {
+  const [leaders, setLeaders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaders = async () => {
+      try {
+        setLoading(true);
+        const response = await api.management.getAll();
+        setLeaders(response.data.members || []);
+      } catch (error) {
+        console.error('Failed to fetch management:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLeaders();
+  }, []);
   return (
     <div className="min-h-screen bg-royal-deep pt-32 pb-24">
       {/* Hero Section */}
@@ -133,52 +151,86 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Team Intro / Culture */}
-      <section className="mb-40">
+      {/* Experts in Excellence - Management Section */}
+      <section className="mb-40 py-24 relative overflow-hidden">
         <div className="max-container px-4">
-          <div className="flex flex-col lg:flex-row gap-20 items-center">
-            <div className="w-full lg:w-1/2 order-2 lg:order-1">
-               <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-4 pt-12">
-                     <div className="relative aspect-[4/5] rounded-none overflow-hidden border border-white/10">
-                        <Image src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=2024&auto=format&fit=crop" alt="" fill className="object-cover" />
-                     </div>
-                     <div className="relative aspect-square rounded-none overflow-hidden border border-white/10">
-                        <Image src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070&auto=format&fit=crop" alt="" fill className="object-cover" />
-                     </div>
+          <div className="text-center mb-24">
+            <motion.span 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="text-brand-gold font-cinzel text-sm tracking-[0.4em] uppercase font-bold block mb-4"
+            >
+              The Leadership
+            </motion.span>
+            <h2 className="text-5xl md:text-7xl font-cinzel text-white">Experts in <span className="text-brand-gold italic">Excellence</span></h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {loading ? (
+              // Loading Skeleton
+              [...Array(3)].map((_, i) => (
+                <div key={i} className="aspect-[3/4] bg-white/5 animate-pulse rounded-none border border-white/10"></div>
+              ))
+            ) : leaders.length === 0 ? (
+              // Empty State
+              <div className="col-span-full py-20 text-center border border-white/5 border-dashed rounded-3xl">
+                <UserIcon size={48} className="mx-auto text-zinc-700 mb-4" />
+                <p className="text-zinc-500 font-cinzel uppercase tracking-widest text-sm">Management profiles currently being curated.</p>
+              </div>
+            ) : (
+              leaders.map((leader, i) => (
+                <motion.div
+                  key={leader._id || i}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.8 }}
+                  viewport={{ once: true }}
+                  className="group relative"
+                >
+                  <div className="relative aspect-[3/4] overflow-hidden border border-white/5 bg-zinc-900 group-hover:border-brand-gold/30 transition-colors duration-500">
+                    <Image
+                      src={leader.image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1200'}
+                      alt={leader.name}
+                      fill
+                      className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
+                    />
+                    
+                    {/* Glass Overlay for Bio */}
+                    <div className="absolute inset-x-0 bottom-0 p-8 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out z-20">
+                      <div className="bg-royal-deep/60 backdrop-blur-xl border-t border-white/20 p-6 shadow-2xl relative">
+                        <div className="absolute -top-10 left-6 text-4xl text-brand-gold font-serif opacity-50">&quot;</div>
+                        <p className="text-zinc-200 text-sm leading-relaxed italic mb-6">
+                          {leader.bio || 'Dedicated to redefining luxury standards in the modern landscape.'}
+                        </p>
+                        <div className="flex gap-4">
+                           <button className="p-3 rounded-full bg-white/5 border border-white/10 hover:border-brand-gold hover:text-brand-gold transition-all duration-300">
+                              <Linkedin size={16} />
+                           </button>
+                           <button className="p-3 rounded-full bg-white/5 border border-white/10 hover:border-brand-gold hover:text-brand-gold transition-all duration-300">
+                              <Mail size={16} />
+                           </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
                   </div>
-                  <div className="space-y-4">
-                     <div className="relative aspect-square rounded-none overflow-hidden border border-white/10">
-                        <Image src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop" alt="" fill className="object-cover" />
-                     </div>
-                     <div className="relative aspect-[4/5] rounded-none overflow-hidden border border-white/10">
-                        <Image src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" alt="" fill className="object-cover" />
-                     </div>
+
+                  {/* Name & Role */}
+                  <div className="mt-8 space-y-2 relative px-2">
+                    <div className="w-12 h-px bg-brand-gold mb-4 group-hover:w-full transition-all duration-700"></div>
+                    <h3 className="text-2xl font-cinzel font-bold text-white tracking-widest">{leader.name}</h3>
+                    <p className="text-brand-gold/70 text-[10px] font-bold uppercase tracking-[0.4em] italic mb-4">{leader.role}</p>
+                    
+                    {/* Subtle Numbering */}
+                    <span className="absolute -top-2 right-2 text-6xl font-cinzel font-black text-white/[0.03] pointer-events-none group-hover:text-brand-gold/[0.05] transition-colors">
+                      0{i + 1}
+                    </span>
                   </div>
-               </div>
-            </div>
-            <div className="w-full lg:w-1/2 space-y-8 order-1 lg:order-2">
-               <span className="text-brand-gold font-bold italic">The Concierge Team</span>
-               <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100">Experts in <span className="text-brand-gold">Excellence</span></h2>
-               <p className="text-zinc-400 text-lg leading-relaxed">
-                  Our team consists of industry veterans, legal specialists, and world-class interior consultants. We work in unison to provide a seamless transition from your vision to your reality.
-               </p>
-               <div className="space-y-4 pt-4">
-                 {[
-                   "Vetted Network of Global Architects",
-                   "In-house Legal Compliance Squad",
-                   "Premier Property Valuation Specialists",
-                   "VIP Concierge Client Relations"
-                 ].map((item, i) => (
-                   <div key={i} className="flex items-center gap-3">
-                     <div className="w-6 h-6 rounded-full bg-brand-gold/10 flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-gold"></div>
-                     </div>
-                     <span className="text-zinc-300 font-medium">{item}</span>
-                   </div>
-                 ))}
-               </div>
-            </div>
+                </motion.div>
+              ))
+            )}
           </div>
         </div>
       </section>
