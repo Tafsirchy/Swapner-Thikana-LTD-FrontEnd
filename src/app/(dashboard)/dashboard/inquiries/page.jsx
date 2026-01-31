@@ -92,31 +92,39 @@ const InquiriesPage = () => {
       {filteredInquiries.length > 0 ? (
         <div className="space-y-4">
           {filteredInquiries.map((lead) => (
-            <div key={lead._id} className="bg-white/5 border border-white/5 rounded-2xl p-6 hover:border-brand-gold/20 transition-all group">
-              <div className="flex flex-col md:flex-row gap-6">
-                 <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-3 mb-2">
-                       <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md ${statusColors[lead.status] || 'bg-zinc-500/10 text-zinc-500'}`}>
-                          {lead.status}
-                       </span>
-                       <span className="text-xs text-zinc-500 flex items-center gap-1">
-                          <Clock size={12} />
-                          {new Date(lead.createdAt).toLocaleDateString()}
-                       </span>
-                    </div>
-                    <h3 className="text-lg font-bold text-zinc-100 group-hover:text-brand-gold transition-colors">
-                       {lead.subject || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
-                    </h3>
-                    {lead.propertyName && (
-                       <p className="text-sm text-brand-gold font-medium flex items-center gap-2">
-                          <Building2 size={14} />
-                          {lead.propertyName}
-                       </p>
-                    )}
-                    <p className="text-zinc-400 text-sm line-clamp-2">
-                       &quot;{lead.message}&quot;
-                    </p>
-                 </div>
+            <div key={lead._id} className="bg-zinc-900/40 backdrop-blur-md border border-white/5 rounded-3xl p-8 hover:border-brand-gold/30 transition-all group relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+               
+               <div className="flex flex-col md:flex-row gap-8 relative z-10">
+                  <div className="flex-1 space-y-4">
+                     <div className="flex items-center gap-4 mb-4">
+                        <span className={`text-[9px] font-extrabold uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-current shadow-inner ${statusColors[lead.status] || 'bg-zinc-500/10 text-zinc-500'}`}>
+                           {lead.status}
+                        </span>
+                        <div className="h-4 w-px bg-white/10" />
+                        <span className="text-xs text-zinc-500 font-medium flex items-center gap-2">
+                           <Clock size={14} className="text-zinc-600" />
+                           {new Date(lead.createdAt).toLocaleDateString()}
+                        </span>
+                     </div>
+                     
+                     <h3 className="text-xl font-cinzel font-bold text-zinc-100 group-hover:text-brand-gold transition-colors uppercase tracking-wide">
+                        {lead.subject || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
+                     </h3>
+                     
+                     {lead.propertyName && (
+                        <div className="bg-white/5 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10">
+                           <Building2 size={14} className="text-brand-gold" />
+                           <span className="text-sm text-zinc-300 font-medium">{lead.propertyName}</span>
+                        </div>
+                     )}
+                     
+                     <div className="bg-black/20 p-5 rounded-2xl border border-white/5 mt-4 group">
+                        <p className="text-zinc-400 text-sm leading-relaxed italic line-clamp-3">
+                           &quot;{lead.message}&quot;
+                        </p>
+                     </div>
+                  </div>
                  <div className="flex flex-col md:items-end justify-center gap-2 border-t md:border-t-0 md:border-l border-white/5 pt-4 md:pt-0 md:pl-6 min-w-[200px]">
                     <div className="text-sm text-zinc-400 flex items-center gap-2">
                        <Building2 size={14} className="text-brand-gold" />

@@ -137,15 +137,17 @@ const LeadsPage = () => {
         {STATUS_COLUMNS.map(column => (
           <div key={column.id} className="flex flex-col gap-4">
             <div className="flex items-center justify-between px-2">
-              <div className="flex items-center gap-2">
-                <span className={`${column.color} ${column.bg} p-1.5 rounded-lg`}>
+            <div className="flex items-center justify-between px-3 py-2 bg-white/[0.03] border border-white/5 rounded-2xl">
+              <div className="flex items-center gap-3">
+                <span className={`${column.color} ${column.bg} p-2 rounded-xl border border-white/5 shadow-inner`}>
                   {column.icon}
                 </span>
-                <h3 className="font-bold text-zinc-200">{column.title}</h3>
-                <span className="bg-white/5 text-zinc-500 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                  {getLeadsByStatus(column.id).length}
-                </span>
+                <h3 className="font-cinzel font-bold text-zinc-100 uppercase tracking-widest text-xs">{column.title}</h3>
               </div>
+              <span className="bg-brand-gold/10 text-brand-gold text-[10px] font-bold px-2 py-0.5 rounded-full border border-brand-gold/20">
+                {getLeadsByStatus(column.id).length}
+              </span>
+            </div>
             </div>
 
             <div 
@@ -163,29 +165,29 @@ const LeadsPage = () => {
                   draggable
                   onDragStart={(e) => e.dataTransfer.setData('leadId', lead._id)}
                   onClick={() => setSelectedLead(lead)}
-                  className="bg-zinc-900/50 border border-white/5 p-4 rounded-2xl hover:border-brand-gold/30 transition-all cursor-pointer group"
+                  className="bg-zinc-900/40 backdrop-blur-md border border-white/5 p-5 rounded-3xl hover:border-brand-gold/40 transition-all cursor-pointer group shadow-xl hover:shadow-brand-gold/5"
                 >
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold/70">
+                  <div className="flex justify-between items-start mb-3">
+                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-gold/60 px-2 py-0.5 bg-brand-gold/5 rounded-full border border-brand-gold/10">
                       {lead.interestType || 'Inquiry'}
                     </span>
                     <button className="text-zinc-600 hover:text-zinc-300 opacity-0 group-hover:opacity-100 transition-opacity">
                       <MoreVertical size={14} />
                     </button>
                   </div>
-                  <h4 className="font-bold text-zinc-100 mb-1 group-hover:text-brand-gold transition-colors">{lead.name}</h4>
-                  <p className="text-xs text-zinc-400 line-clamp-1 mb-3 font-medium">
+                  <h4 className="font-bold text-zinc-100 mb-1.5 group-hover:text-brand-gold transition-colors text-base">{lead.name}</h4>
+                  <p className="text-[11px] text-zinc-400 line-clamp-1 mb-4 font-medium italic">
                     {lead.subject || lead.propertyName || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
                   </p>
                   
-                  <div className="flex items-center justify-between text-[10px] text-zinc-500">
-                    <span className="flex items-center gap-1">
-                      <Calendar size={10} />
+                  <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-3 border-t border-white/5">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar size={12} className="text-zinc-600" />
                       {new Date(lead.createdAt).toLocaleDateString()}
                     </span>
                     {lead.notes?.length > 0 && (
-                      <span className="bg-brand-gold/10 text-brand-gold px-1.5 py-0.5 rounded">
-                        {lead.notes.length} notes
+                      <span className="bg-brand-gold/10 text-brand-gold px-2 py-0.5 rounded-lg border border-brand-gold/10 font-bold">
+                        {lead.notes.length} NOTES
                       </span>
                     )}
                   </div>
@@ -223,42 +225,46 @@ const LeadsPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-5 h-[80vh]">
                 {/* Sidebar Info */}
                 <div className="md:col-span-2 border-r border-white/5 p-8 bg-white/[0.02]">
-                  <div className="mb-8">
-                    <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center text-brand-gold mb-4">
-                      <User size={32} />
+                  <div className="mb-10">
+                    <div className="w-20 h-20 bg-brand-gold/10 rounded-[2rem] flex items-center justify-center text-brand-gold mb-6 border border-brand-gold/20 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                      <User size={40} />
                     </div>
-                    <h2 className="text-2xl font-bold text-zinc-100">{selectedLead.name}</h2>
-                    <p className="text-zinc-500 text-sm">Lead since {new Date(selectedLead.createdAt).toLocaleDateString()}</p>
+                    <h2 className="text-3xl font-cinzel font-bold text-zinc-100 leading-tight uppercase tracking-tight">{selectedLead.name}</h2>
+                    <p className="text-zinc-500 text-xs mt-2 font-medium tracking-widest">LEAD SINCE {new Date(selectedLead.createdAt).toLocaleDateString()}</p>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="p-4 bg-white/5 rounded-2xl">
-                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Contact Details</p>
-                      <div className="space-y-3">
-                        <a href={`mailto:${selectedLead.email}`} className="flex items-center gap-3 text-sm text-zinc-300 hover:text-brand-gold transition-colors">
-                          <Mail size={16} className="text-zinc-500" />
+                  <div className="space-y-6">
+                    <div className="p-5 bg-white/[0.03] border border-white/5 rounded-[2rem] backdrop-blur-md">
+                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-4">Contact Details</p>
+                      <div className="space-y-4">
+                        <a href={`mailto:${selectedLead.email}`} className="flex items-center gap-4 text-sm text-zinc-300 hover:text-brand-gold transition-all group">
+                          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-brand-gold/30 transition-colors">
+                            <Mail size={14} className="text-zinc-500 group-hover:text-brand-gold transition-colors" />
+                          </div>
                           {selectedLead.email}
                         </a>
-                        <a href={`tel:${selectedLead.phone}`} className="flex items-center gap-3 text-sm text-zinc-300 hover:text-brand-gold transition-colors">
-                          <Phone size={16} className="text-zinc-500" />
+                        <a href={`tel:${selectedLead.phone}`} className="flex items-center gap-4 text-sm text-zinc-300 hover:text-brand-gold transition-all group">
+                          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-brand-gold/30 transition-colors">
+                            <Phone size={14} className="text-zinc-500 group-hover:text-brand-gold transition-colors" />
+                          </div>
                           {selectedLead.phone}
                         </a>
                       </div>
                     </div>
 
-                    <div className="p-4 bg-white/5 rounded-2xl">
-                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Subject & Interest</p>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3 text-sm text-zinc-100 font-bold">
+                    <div className="p-5 bg-white/[0.03] border border-white/5 rounded-[2rem] backdrop-blur-md">
+                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-4">Subject & Interest</p>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3 text-base text-zinc-100 font-bold font-cinzel uppercase tracking-wide">
                            {selectedLead.subject || (selectedLead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${selectedLead.interestType}`)}
                         </div>
                         {selectedLead.propertyName && (
-                           <div className="flex items-center gap-3 text-sm text-zinc-300">
-                             <Building2 size={16} className="text-zinc-500" />
+                           <div className="flex items-center gap-3 text-sm text-brand-gold/80 font-medium">
+                             <Building2 size={16} className="text-brand-gold/60" />
                              {selectedLead.propertyName}
                            </div>
                         )}
-                        <div className="flex items-center gap-3 text-xs text-zinc-500 italic border-t border-white/5 pt-2">
+                        <div className="bg-black/20 p-4 rounded-xl border border-white/5 text-xs text-zinc-400 italic leading-relaxed">
                           &quot;{selectedLead.message}&quot;
                         </div>
                       </div>
@@ -302,10 +308,10 @@ const LeadsPage = () => {
                 </div>
 
                 {/* Main Content: Notes */}
-                <div className="md:col-span-3 flex flex-col h-full overflow-hidden">
-                  <div className="p-8 border-b border-white/5 flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-                      <Plus size={20} className="text-brand-gold" />
+                <div className="md:col-span-3 flex flex-col h-full overflow-hidden bg-zinc-950/20">
+                  <div className="p-8 border-b border-white/5 flex items-center justify-between bg-zinc-950/40 backdrop-blur-md">
+                    <h3 className="text-lg font-cinzel font-bold text-zinc-100 flex items-center gap-3 uppercase tracking-widest">
+                      <Plus size={20} className="text-brand-gold p-0.5 border border-brand-gold rounded-full" />
                       Notes & Timeline
                     </h3>
                   </div>
@@ -328,11 +334,15 @@ const LeadsPage = () => {
                     ))}
                     
                     {(!selectedLead.notes || selectedLead.notes.length === 0) && (
-                      <div className="text-center py-12">
-                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <Plus size={24} className="text-zinc-600" />
+                      <div className="h-full flex flex-col items-center justify-center py-20 opacity-40">
+                        <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-6 relative">
+                           <MessageSquare size={40} className="text-zinc-600" />
+                           <div className="absolute -right-1 -top-1 w-8 h-8 bg-brand-gold/10 rounded-full flex items-center justify-center border border-brand-gold/20">
+                             <Plus size={16} className="text-brand-gold" />
+                           </div>
                         </div>
-                        <p className="text-zinc-500 text-sm italic">No notes added yet. Keep track of follow-ups here.</p>
+                        <h4 className="text-lg font-cinzel text-zinc-400 mb-2 uppercase tracking-widest">No Activity Record</h4>
+                        <p className="text-zinc-500 text-sm italic max-w-xs text-center">Start the conversation by adding your first follow-up note below.</p>
                       </div>
                     )}
                   </div>
