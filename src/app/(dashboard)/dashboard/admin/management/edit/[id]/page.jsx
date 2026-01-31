@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { Save, X, Mail, Briefcase, Link as LinkIcon, Crown, Loader2 } from 'lucide-react';
+import { Save, X, Mail, Briefcase, MessageCircle, Crown, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
@@ -17,7 +17,7 @@ const EditLeaderPage = () => {
     role: '',
     email: '',
     image: '',
-    linkedin: '',
+    whatsapp: '',
     order: 0
   });
 
@@ -32,7 +32,7 @@ const EditLeaderPage = () => {
           role: member.role || '',
           email: member.email || '',
           image: member.image || '',
-          linkedin: member.linkedin || '',
+          whatsapp: member.whatsapp || member.linkedin || '', // Fallback to linkedin just in case
           order: member.order || 0
         });
       } catch (error) {
@@ -153,13 +153,13 @@ const EditLeaderPage = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2 font-sans italic">LinkedIn Profile URL</label>
+                <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2 font-sans italic">WhatsApp Number (with country code)</label>
                 <div className="relative">
-                  <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
+                  <MessageCircle className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
                   <input
-                    type="url"
-                    name="linkedin"
-                    value={formData.linkedin}
+                    type="text"
+                    name="whatsapp"
+                    value={formData.whatsapp}
                     onChange={handleChange}
                     className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
                   />

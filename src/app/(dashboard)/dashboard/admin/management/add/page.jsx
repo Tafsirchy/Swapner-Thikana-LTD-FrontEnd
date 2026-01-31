@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Save, X, Mail, Briefcase, Link as LinkIcon, Crown } from 'lucide-react';
+import { Save, X, Mail, Briefcase, MessageCircle, Crown } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
@@ -15,7 +15,7 @@ const AddLeaderPage = () => {
     role: '',
     email: '',
     image: '',
-    linkedin: '',
+    whatsapp: '',
     order: 0
   });
 
@@ -121,15 +121,15 @@ const AddLeaderPage = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2">LinkedIn Profile URL</label>
+                <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2">WhatsApp Number (with country code)</label>
                 <div className="relative">
-                  <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
+                  <MessageCircle className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
                   <input
-                    type="url"
-                    name="linkedin"
-                    value={formData.linkedin}
+                    type="text"
+                    name="whatsapp"
+                    value={formData.whatsapp}
                     onChange={handleChange}
-                    placeholder="https://linkedin.com/in/..."
+                    placeholder="e.g. 88017..."
                     className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                   />
                 </div>

@@ -219,8 +219,8 @@ const LeadsPage = () => {
                         </button>
                       </div>
                     </div>
-                    <h4 className="font-bold text-zinc-100 mb-1.5 group-hover:text-brand-gold transition-colors text-base">{lead.name}</h4>
-                    <p className="text-[11px] text-zinc-400 line-clamp-1 mb-4 font-medium italic">
+                    <h4 className="font-bold text-zinc-100 mb-1.5 group-hover:text-brand-gold transition-colors text-base truncate">{lead.name}</h4>
+                    <p className="text-[11px] text-zinc-400 truncate mb-4 font-medium italic">
                       {lead.subject || lead.propertyName || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
                     </p>
                     

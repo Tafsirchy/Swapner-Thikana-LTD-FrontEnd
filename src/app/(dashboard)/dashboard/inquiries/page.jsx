@@ -108,7 +108,7 @@ const InquiriesPage = () => {
                         </span>
                      </div>
                      
-                     <h3 className="text-xl font-cinzel font-bold text-zinc-100 group-hover:text-brand-gold transition-colors uppercase tracking-wide">
+                     <h3 className="text-xl font-cinzel font-bold text-zinc-100 group-hover:text-brand-gold transition-colors uppercase tracking-wide truncate">
                         {lead.subject || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
                      </h3>
                      
