@@ -16,7 +16,8 @@ import {
   Mail,
   Building2,
   Calendar,
-  Bell
+  Bell,
+  X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
@@ -220,11 +221,19 @@ const LeadsPage = () => {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="relative w-full max-w-3xl bg-zinc-900 border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl"
+              className="relative w-full max-w-5xl bg-zinc-950 border border-white/10 rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col md:flex-row h-[85vh] md:h-[80vh]"
             >
-              <div className="grid grid-cols-1 md:grid-cols-5 h-[80vh]">
-                {/* Sidebar Info */}
-                <div className="md:col-span-2 border-r border-white/5 p-8 bg-white/[0.02]">
+              {/* Close Button */}
+              <button 
+                onClick={() => setSelectedLead(null)}
+                className="absolute top-6 right-6 z-[120] p-2 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-brand-gold hover:border-brand-gold/50 transition-all group"
+              >
+                <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
+              </button>
+
+              <div className="flex flex-col md:flex-row w-full h-full overflow-hidden">
+                {/* Sidebar Info (Left Column) */}
+                <div className="w-full md:w-2/5 border-r border-white/5 p-8 bg-zinc-900/40 backdrop-blur-xl flex flex-col h-full overflow-y-auto custom-scrollbar">
                   <div className="mb-10">
                     <div className="w-20 h-20 bg-brand-gold/10 rounded-[2rem] flex items-center justify-center text-brand-gold mb-6 border border-brand-gold/20 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
                       <User size={40} />
@@ -307,12 +316,12 @@ const LeadsPage = () => {
                   </div>
                 </div>
 
-                {/* Main Content: Notes */}
-                <div className="md:col-span-3 flex flex-col h-full overflow-hidden bg-zinc-950/20">
-                  <div className="p-8 border-b border-white/5 flex items-center justify-between bg-zinc-950/40 backdrop-blur-md">
+                {/* Main Content: Notes (Right Column) */}
+                <div className="w-full md:w-3/5 flex flex-col h-full overflow-hidden bg-zinc-950/20">
+                  <div className="p-8 border-b border-white/5 flex items-center justify-between bg-zinc-950/40 backdrop-blur-md sticky top-0 z-10">
                     <h3 className="text-lg font-cinzel font-bold text-zinc-100 flex items-center gap-3 uppercase tracking-widest">
                       <Plus size={20} className="text-brand-gold p-0.5 border border-brand-gold rounded-full" />
-                      Notes & Timeline
+                      Activity Timeline
                     </h3>
                   </div>
 
