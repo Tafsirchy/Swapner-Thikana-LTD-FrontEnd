@@ -92,7 +92,7 @@ export default function Home() {
         <motion.div 
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40 hover:opacity-100 transition-opacity z-20"
+          className="absolute bottom-18 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40 hover:opacity-100 transition-opacity z-20"
         >
           <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-medium">Explore</span>
           <div className="w-px h-10 bg-gradient-to-b from-brand-gold/60 to-transparent"></div>

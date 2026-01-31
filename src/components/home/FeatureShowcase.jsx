@@ -139,12 +139,12 @@ const FeatureShowcase = () => {
                 </motion.div>
                 
                 {/* Centered Content Overlay (Editorial Style) */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-20 pointer-events-none">
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 md:p-8 z-20 pointer-events-none">
                   <motion.h2 
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3, duration: 0.5 }}
-                      className="text-5xl md:text-7xl lg:text-8xl font-cinzel text-white mb-8 uppercase tracking-tight drop-shadow-xl"
+                      className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-cinzel text-white mb-4 md:mb-8 uppercase tracking-tight drop-shadow-xl line-clamp-2 px-2"
                   >
                     {activeProperty.title || 'Featured Property'}
                   </motion.h2>
@@ -153,7 +153,7 @@ const FeatureShowcase = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="flex items-center gap-8 text-sm md:text-base font-inter tracking-[0.3em] font-medium uppercase text-white/90 pointer-events-auto"
+                    className="flex items-center gap-4 md:gap-8 text-xs md:text-base font-inter tracking-[0.2em] md:tracking-[0.3em] font-medium uppercase text-white/90 pointer-events-auto flex-wrap justify-center px-4"
                   >
                     <span>{activeProperty.location?.city || 'Dhaka'}</span>
                     <span className="w-px h-4 bg-white/60" />
