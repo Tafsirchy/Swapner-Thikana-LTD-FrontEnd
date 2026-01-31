@@ -24,13 +24,13 @@ const BlogCard = ({ post }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="group relative bg-[#0a0f1a] border border-white/5 overflow-hidden transition-all duration-700 hover:border-brand-gold/20"
+      className="group relative bg-[#0a0f1a] border border-white/5 overflow-hidden transition-all duration-700 hover:border-brand-gold/20 flex flex-col h-full"
     >
       {/* Decorative Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
       {/* Image Section */}
-      <div className="relative aspect-video overflow-hidden">
+      <div className="relative aspect-video overflow-hidden shrink-0">
         <SmartImage
           src={thumbnail || image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop'}
           alt={title}
@@ -48,9 +48,9 @@ const BlogCard = ({ post }) => {
       </div>
 
       {/* Metadata Panel - Floating & Overlapping */}
-      <div className="relative px-8 pb-10 pt-12">
+      <div className="relative px-8 pb-10 pt-12 flex-1 flex flex-col">
         {/* Date/Author Glass Panel */}
-        <div className="absolute -top-10 left-8 right-8 bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-4 flex items-center justify-between text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500 shadow-2xl transition-transform duration-700 group-hover:-translate-y-2">
+        <div className="absolute -top-5 left-8 right-8 bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-3 flex items-center justify-between text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500 shadow-2xl transition-transform duration-700 group-hover:-translate-y-2">
           <div className="flex items-center gap-3">
             <Calendar size={12} className="text-brand-gold" />
             <span className="opacity-80">{new Date(createdAt).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
@@ -62,31 +62,35 @@ const BlogCard = ({ post }) => {
           </div>
         </div>
 
-        {/* Content */}
-        <Link href={`/blog/${slug}`} className="block relative group/title">
-          <h3 className="text-2xl font-cinzel font-bold text-zinc-100 mb-6 leading-[1.2] transition-colors duration-500 group-hover:text-brand-gold">
-            {title}
-          </h3>
-          {/* Animated Accent Line */}
-          <div className="absolute -bottom-2 left-0 w-12 h-[1px] bg-brand-gold/30 transition-all duration-700 group-hover:w-full group-hover:bg-brand-gold"></div>
-        </Link>
+        {/* Content Container */}
+        <div className="flex flex-col flex-1">
+          <Link href={`/blog/${slug}`} className="block relative group/title mb-6">
+            <h3 className="text-2xl font-cinzel font-bold text-zinc-100 min-h-[4.5rem] flex items-center leading-[1.2] transition-colors duration-500 group-hover:text-brand-gold">
+              {title}
+            </h3>
+            {/* Animated Accent Line */}
+            <div className="absolute -bottom-2 left-0 w-12 h-[1px] bg-brand-gold/30 transition-all duration-700 group-hover:w-full group-hover:bg-brand-gold"></div>
+          </Link>
 
-        <p className="text-zinc-400 text-sm leading-relaxed font-serif italic mb-8 line-clamp-3 opacity-70 group-hover:opacity-100 transition-opacity duration-700">
-          {excerpt}
-        </p>
+          <p className="text-zinc-400 text-sm leading-relaxed font-serif italic mb-8 line-clamp-3 opacity-70 group-hover:opacity-100 transition-opacity duration-700">
+            {excerpt}
+          </p>
 
-        <Link 
-          href={`/blog/${slug}`}
-          className="inline-flex items-center gap-4 text-brand-gold font-black text-[10px] uppercase tracking-[0.4em] group/link"
-        >
-          <span className="relative overflow-hidden">
-            <span className="block transition-transform duration-500 group-hover:-translate-y-full">Read Full Insight</span>
-            <span className="absolute top-0 left-0 block transition-transform duration-500 translate-y-full group-hover:translate-y-0 text-white">Read Full Insight</span>
-          </span>
-          <div className="w-8 h-8 rounded-full border border-brand-gold/20 flex items-center justify-center transition-all duration-500 group-hover:bg-brand-gold group-hover:text-royal-deep">
-             <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+          <div className="mt-auto pt-4 border-t border-white/5">
+            <Link 
+              href={`/blog/${slug}`}
+              className="inline-flex items-center gap-4 text-brand-gold font-black text-[10px] uppercase tracking-[0.4em] group/link"
+            >
+              <span className="relative overflow-hidden">
+                <span className="block transition-transform duration-500 group-hover:-translate-y-full">Read Full Insight</span>
+                <span className="absolute top-0 left-0 block transition-transform duration-500 translate-y-full group-hover:translate-y-0 text-white">Read Full Insight</span>
+              </span>
+              <div className="w-8 h-8 rounded-full border border-brand-gold/20 flex items-center justify-center transition-all duration-500 group-hover:bg-brand-gold group-hover:text-royal-deep">
+                 <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+              </div>
+            </Link>
           </div>
-        </Link>
+        </div>
       </div>
     </motion.article>
   );
