@@ -32,7 +32,8 @@ apiInstance.interceptors.request.use(
 apiInstance.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    if (!error.config?.suppressErrorLogs) {
+    const isAuthMe401 = error.response?.status === 401 && error.config?.url?.includes('/auth/me');
+    if (!error.config?.suppressErrorLogs && !isAuthMe401) {
       console.error(`[API] Error in ${error.config?.method?.toUpperCase()} ${error.config?.url}:`, error.message);
     }
     if (error.response?.status === 401) {

@@ -87,43 +87,45 @@ const AboutPage = () => {
                 {/* Background Glow */}
                 <div className="absolute -inset-4 bg-brand-gold/0 group-hover:bg-brand-gold/5 rounded-[3rem] blur-3xl transition-all duration-700 opacity-0 group-hover:opacity-100"></div>
                 
-                <div className="relative h-full p-10 bg-zinc-900/40 backdrop-blur-2xl border border-white/5 group-hover:border-brand-gold/40 transition-all duration-500 overflow-hidden">
-                  {/* Decorative Number */}
-                  <span className="absolute -right-4 -top-8 text-9xl font-cinzel font-black text-white/[0.02] group-hover:text-brand-gold/[0.05] transition-colors duration-700 pointer-events-none">
-                    0{i + 1}
-                  </span>
+                <Link href={`/philosophy/${pill.title.toLowerCase()}`} className="relative h-full block">
+                  <div className="relative h-full p-10 bg-zinc-900/40 backdrop-blur-2xl border border-white/5 group-hover:border-brand-gold/40 transition-all duration-500 overflow-hidden">
+                    {/* Decorative Number */}
+                    <span className="absolute -right-4 -top-8 text-9xl font-cinzel font-black text-white/[0.02] group-hover:text-brand-gold/[0.05] transition-colors duration-700 pointer-events-none">
+                      0{i + 1}
+                    </span>
 
-                  <div className="relative z-10 space-y-8">
-                    {/* Icon Container with Floating Animation */}
-                    <motion.div 
-                      animate={{ y: [0, -5, 0] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
-                      className="inline-flex p-4 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 text-brand-gold group-hover:scale-110 transition-transform duration-500"
-                    >
-                      {pill.icon}
-                    </motion.div>
+                    <div className="relative z-10 space-y-8">
+                      {/* Icon Container with Floating Animation */}
+                      <motion.div 
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
+                        className="inline-flex p-4 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 text-brand-gold group-hover:scale-110 transition-transform duration-500"
+                      >
+                        {pill.icon}
+                      </motion.div>
 
-                    <div className="space-y-4">
-                      <h3 className="text-3xl font-cinzel font-bold text-zinc-100 tracking-wider group-hover:text-brand-gold transition-colors duration-500">
-                        {pill.title}
-                      </h3>
-                      <div className="w-12 h-0.5 bg-brand-gold/30 group-hover:w-full transition-all duration-700"></div>
-                      <p className="text-zinc-400 text-sm leading-relaxed font-medium group-hover:text-zinc-200 transition-colors duration-500 italic">
-                        {pill.desc}
-                      </p>
-                    </div>
+                      <div className="space-y-4">
+                        <h3 className="text-3xl font-cinzel font-bold text-zinc-100 tracking-wider group-hover:text-brand-gold transition-colors duration-500">
+                          {pill.title}
+                        </h3>
+                        <div className="w-12 h-0.5 bg-brand-gold/30 group-hover:w-full transition-all duration-700"></div>
+                        <p className="text-zinc-400 text-sm leading-relaxed font-medium group-hover:text-zinc-200 transition-colors duration-500 italic">
+                          {pill.desc}
+                        </p>
+                      </div>
 
-                    {/* Bottom Accent */}
-                    <div className="pt-8 flex justify-end">
-                      <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-brand-gold/50 transition-colors duration-500">
-                        <ArrowRight size={14} className="text-zinc-600 group-hover:text-brand-gold transition-colors" />
+                      {/* Bottom Accent */}
+                      <div className="pt-8 flex justify-end">
+                        <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-brand-gold/50 transition-colors duration-500">
+                          <ArrowRight size={14} className="text-zinc-600 group-hover:text-brand-gold transition-colors" />
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Corner Accent */}
-                  <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-brand-gold/0 group-hover:border-brand-gold/40 transition-all duration-500"></div>
-                </div>
+                    {/* Corner Accent */}
+                    <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-brand-gold/0 group-hover:border-brand-gold/40 transition-all duration-500"></div>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
