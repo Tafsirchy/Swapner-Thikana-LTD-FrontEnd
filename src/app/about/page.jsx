@@ -368,7 +368,7 @@ const AboutPage = () => {
                           <Image src={leaders[2].image || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200'} alt={leaders[2].name} fill className="object-cover scale-110 group-hover:scale-100 transition-all duration-[1.2s]" />
                           <div className="absolute inset-0 bg-brand-gold/10 mix-blend-overlay"></div>
                         </div>
-                        <div className="absolute -left-8 bottom-8 p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50">
+                        <div className="absolute -left-8 bottom-16 p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50">
                         <div className="flex-shrink-0 text-brand-gold/40 group-hover:text-brand-gold transition-colors duration-500">
                            {getRoleIcon(leaders[2].role)}
                         </div>
