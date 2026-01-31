@@ -98,13 +98,13 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="relative w-full max-w-4xl max-h-[85vh] bg-royal-deep border border-white/10 shadow-2xl overflow-hidden flex flex-col"
+          className="relative w-full max-w-4xl max-h-[90vh] md:max-h-[85vh] bg-royal-deep border border-white/10 shadow-2xl overflow-hidden flex flex-col"
         >
           {/* Header */}
-          <div className="p-8 border-b border-white/10 flex items-center justify-between bg-zinc-900/50 relative overflow-hidden">
+          <div className="p-6 md:p-8 border-b border-white/10 flex items-center justify-between bg-zinc-900/50 relative overflow-hidden">
             <div className="relative z-10">
-              <h2 className="text-2xl md:text-3xl font-cinzel text-white font-bold tracking-tight">Notification <span className="text-brand-gold">Archive</span></h2>
-              <p className="text-zinc-500 text-[10px] uppercase tracking-[0.3em] font-bold mt-2">Historical Records & System Alerts</p>
+              <h2 className="text-xl md:text-3xl font-cinzel text-white font-bold tracking-tight">Notification <span className="text-brand-gold">Archive</span></h2>
+              <p className="text-zinc-500 text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-bold mt-2">Historical Records & System Alerts</p>
             </div>
             <button 
               onClick={onClose}
@@ -116,7 +116,7 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
           </div>
 
           {/* Filters/Tabs */}
-          <div className="px-8 py-4 border-b border-white/5 flex items-center gap-10 bg-black/20">
+          <div className="px-6 md:px-8 py-4 border-b border-white/5 flex items-center gap-6 md:gap-10 bg-black/20">
             {['all', 'unread'].map(tab => (
               <button
                 key={tab}
@@ -138,7 +138,7 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
           </div>
 
           {/* Content Area */}
-          <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
             {loading && page === 1 ? (
               <div className="h-64 flex flex-col items-center justify-center gap-6">
                 <div className="w-16 h-16 border border-brand-gold/20 flex items-center justify-center relative">
@@ -163,46 +163,46 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className={`group relative p-8 transition-all duration-500 border ${
+                    className={`group relative p-5 md:p-8 transition-all duration-500 border ${
                       notif.isRead 
                         ? 'bg-white/[0.01] border-white/5' 
                         : 'bg-brand-gold/[0.02] border-brand-gold/20'
                     }`}
                   >
-                    <div className="flex gap-8 items-start">
-                      <div className="flex-shrink-0 w-16 h-16 bg-zinc-900 border border-white/10 flex items-center justify-center text-3xl group-hover:border-brand-gold/40 transition-colors duration-500 relative">
+                    <div className="flex flex-col sm:flex-row gap-4 md:gap-8 items-start">
+                      <div className="flex-shrink-0 w-12 h-12 md:w-16 md:h-16 bg-zinc-900 border border-white/10 flex items-center justify-center text-2xl md:text-3xl group-hover:border-brand-gold/40 transition-colors duration-500 relative">
                          {getNotificationIcon(notif.type)}
                          {!notif.isRead && (
-                             <div className="absolute -top-1 -right-1 w-3 h-3 bg-brand-gold rounded-full shadow-[0_0_10px_rgba(180,140,80,0.5)]"></div>
+                             <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-gold rounded-full shadow-[0_0_10px_rgba(180,140,80,0.5)]"></div>
                          )}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-4 mb-3">
-                          <h4 className="text-xl font-bold text-zinc-100 font-cinzel tracking-wider group-hover:text-brand-gold transition-colors duration-500">
+                      <div className="flex-1 min-w-0 w-full">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4 mb-3">
+                          <h4 className="text-lg md:text-xl font-bold text-zinc-100 font-cinzel tracking-wider group-hover:text-brand-gold transition-colors duration-500">
                             {notif.title}
                           </h4>
-                          <span className="flex-shrink-0 text-[9px] font-bold text-zinc-500 uppercase tracking-[0.2em] border border-white/10 px-3 py-1.5 flex items-center gap-2 bg-black/20">
-                             <Calendar size={12} className="text-brand-gold/50" />
+                          <span className="flex-shrink-0 text-[8px] md:text-[9px] font-bold text-zinc-500 uppercase tracking-[0.2em] border border-white/10 px-2 md:px-3 py-1 md:py-1.5 flex items-center gap-2 bg-black/20 w-fit">
+                             <Calendar size={10} className="text-brand-gold/50" />
                              {new Date(notif.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                           </span>
                         </div>
-                        <p className="text-zinc-400 text-sm leading-relaxed mb-6 italic font-medium">
+                        <p className="text-zinc-400 text-xs md:text-sm leading-relaxed mb-6 italic font-medium">
                           {notif.message}
                         </p>
-                        <div className="flex items-center gap-6 border-t border-white/5 pt-6 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
+                        <div className="flex items-center gap-4 md:gap-6 border-t border-white/5 pt-6 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
                           {!notif.isRead && (
                              <button 
                                onClick={() => handleMarkAsRead(notif._id)}
-                               className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em] flex items-center gap-2 hover:text-white transition-colors"
+                               className="text-[9px] md:text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em] flex items-center gap-2 hover:text-white transition-colors"
                              >
-                               <CheckCircle2 size={14} /> Resolve Record
+                               <CheckCircle2 size={12} /> Resolve
                              </button>
                           )}
                           <button 
                             onClick={() => handleDelete(notif._id)}
-                            className="text-[10px] font-bold text-red-400 uppercase tracking-[0.2em] flex items-center gap-2 hover:text-red-300 transition-colors ml-auto"
+                            className="text-[9px] md:text-[10px] font-bold text-red-400 uppercase tracking-[0.2em] flex items-center gap-2 hover:text-red-300 transition-colors ml-auto"
                           >
-                            <Trash2 size={14} /> Clear From History
+                            <Trash2 size={12} /> Clear
                           </button>
                         </div>
                       </div>
