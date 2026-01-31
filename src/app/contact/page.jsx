@@ -20,7 +20,10 @@ const ContactPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await api.leads.create(formData);
+      await api.leads.create({
+        ...formData,
+        interestType: 'general'
+      });
       toast.success('Your message has been received. Our concierge will contact you shortly.');
       setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' });
     } catch (error) {

@@ -1,15 +1,40 @@
-'use client';
-
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { 
   Building2, MapPin, CheckCircle2, 
-  Phone
+  Phone, Send, Loader2
 } from 'lucide-react';
 import LiquidButton from '../shared/LiquidButton';
+import { api } from '@/lib/api';
+import { toast } from 'react-hot-toast';
 
 const ProjectDetailClient = ({ project }) => {
+  const [inquiry, setInquiry] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: `I am interested in ${project?.title}. Please contact me with more information.`,
+    propertyId: project?._id,
+    interestType: 'project'
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleInquirySubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await api.leads.create(inquiry);
+      toast.success('Your inquiry has been received. Our team will contact you soon.');
+      setInquiry({ ...inquiry, name: '', phone: '', email: '', message: '' });
+    } catch (err) {
+      console.error('Inquiry error:', err);
+      toast.error('Failed to send inquiry. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   if (!project) return null;
 
   return (
@@ -183,14 +208,37 @@ const ProjectDetailClient = ({ project }) => {
 
               <div className="mt-8 pt-8 border-t border-white/10">
                 <h4 className="text-sm font-bold text-zinc-100 mb-4">Request Callback</h4>
-                <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-                  <input type="text" placeholder="Full Name" className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/50 transition-colors" />
-                  <input type="text" placeholder="Phone Number" className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/50 transition-colors" />
+                <form className="space-y-3" onSubmit={handleInquirySubmit}>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="Full Name" 
+                    className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/50 transition-colors text-zinc-100" 
+                    value={inquiry.name}
+                    onChange={(e) => setInquiry({...inquiry, name: e.target.value})}
+                  />
+                  <input 
+                    type="email" 
+                    required
+                    placeholder="Email Address" 
+                    className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/50 transition-colors text-zinc-100" 
+                    value={inquiry.email}
+                    onChange={(e) => setInquiry({...inquiry, email: e.target.value})}
+                  />
+                  <input 
+                    type="tel" 
+                    required
+                    placeholder="Phone Number" 
+                    className="w-full bg-zinc-900/80 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/50 transition-colors text-zinc-100" 
+                    value={inquiry.phone}
+                    onChange={(e) => setInquiry({...inquiry, phone: e.target.value})}
+                  />
                   <LiquidButton 
                     type="submit"
-                    className="w-full mt-2 shadow-lg"
+                    disabled={submitting}
+                    className="w-full mt-2 shadow-lg flex items-center justify-center gap-2"
                   >
-                    Request Info
+                    {submitting ? <Loader2 size={18} className="animate-spin" /> : <><Send size={18} /> Request Info</>}
                   </LiquidButton>
                 </form>
               </div>
