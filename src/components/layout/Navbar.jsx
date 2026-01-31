@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Search, Heart, User } from 'lucide-react';
+import { Menu, X, Heart, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { usePathname } from 'next/navigation';
@@ -17,7 +17,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -176,42 +175,6 @@ const Navbar = () => {
         <div className="absolute top-5 right-4 z-50 hidden md:flex items-center gap-4">
            {/* Utility Icons */}
            {/* Utility Icons */}
-           <div className="relative">
-             <button 
-               onClick={() => setIsSearchOpen(!isSearchOpen)}
-               className={`transition-colors relative group ${isSearchOpen ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'}`}
-             >
-               <Search size={18} />
-               <span className="sr-only">Search</span>
-             </button>
-
-             <AnimatePresence>
-               {isSearchOpen && (
-                 <motion.div
-                   initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                   exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                   transition={{ duration: 0.15 }}
-                   className="absolute right-0 mt-4 w-48 glass border border-white/10 rounded-none shadow-2xl overflow-hidden py-2"
-                 >
-                   <Link 
-                     href="/properties" 
-                     className="block px-4 py-3 text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors font-cinzel tracking-wider"
-                     onClick={() => setIsSearchOpen(false)}
-                   >
-                     PROPERTIES
-                   </Link>
-                   <Link 
-                     href="/projects" 
-                     className="block px-4 py-3 text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors font-cinzel tracking-wider border-t border-white/5"
-                     onClick={() => setIsSearchOpen(false)}
-                   >
-                     PROJECTS
-                   </Link>
-                 </motion.div>
-               )}
-             </AnimatePresence>
-           </div>
 
            <Link href={user ? "/dashboard/saved" : "/auth/login"} className="text-zinc-100 hover:text-brand-gold transition-colors relative group">
              <Heart size={18} />
@@ -381,16 +344,6 @@ const Navbar = () => {
                   Login / Register
                 </LiquidButton>
               )}
-               <div className="flex justify-center gap-8 py-4 text-zinc-400">
-                  <div className="flex flex-col items-center gap-2">
-                     <Search size={24} />
-                     <span className="text-xs uppercase tracking-widest">Search</span>
-                  </div>
-                  <div className="flex flex-col items-center gap-2">
-                     <Heart size={24} />
-                     <span className="text-xs uppercase tracking-widest">Wishlist</span>
-                  </div>
-               </div>
             </div>
           </motion.div>
         )}
