@@ -62,7 +62,7 @@ const MagazineDetailsPage = () => {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-5"
           >
-            <div className="relative aspect-[3/4] rounded-[3rem] overflow-hidden shadow-2xl shadow-black/50 border border-white/5 group">
+            <div className="relative aspect-[3/4] overflow-hidden shadow-2xl shadow-black/50 border border-white/5 group">
               <Image 
                 src={magazine.coverImage || '/placeholder-magazine.jpg'}
                 alt={magazine.title}
@@ -78,7 +78,7 @@ const MagazineDetailsPage = () => {
                 href={magazine.pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-3 bg-brand-gold text-royal-deep py-5 rounded-2xl font-bold hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 active:scale-95"
+                className="flex-1 flex items-center justify-center gap-3 bg-brand-gold text-royal-deep py-5 font-bold hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 active:scale-95"
               >
                 <Download size={20} />
                 Download PDF Issue
@@ -88,7 +88,7 @@ const MagazineDetailsPage = () => {
                    navigator.clipboard.writeText(window.location.href);
                    toast.success('Link copied to clipboard');
                 }}
-                className="p-5 bg-white/5 border border-white/10 text-zinc-300 rounded-2xl hover:bg-white/10 transition-all active:scale-95"
+                className="p-5 bg-white/5 border border-white/10 text-zinc-300 hover:bg-white/10 transition-all active:scale-95"
               >
                 <Share2 size={24} />
               </button>
@@ -115,7 +115,7 @@ const MagazineDetailsPage = () => {
               {magazine.title}
             </h1>
 
-            <div className="p-8 rounded-[2rem] bg-white/5 border border-white/10 mb-10">
+            <div className="p-8 bg-white/5 border border-white/10 mb-10">
               <h3 className="text-zinc-100 font-bold mb-4 flex items-center gap-2">
                 <BookOpen size={20} className="text-brand-gold" />
                 Issue Overview

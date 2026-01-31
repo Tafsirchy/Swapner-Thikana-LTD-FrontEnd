@@ -15,7 +15,7 @@ const FeatureShowcase = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const ROTATION_TIME = 6000; // 6 seconds
+  const ROTATION_TIME = 2500; // 6 seconds
 
   // Fetch Featured Properties
   useEffect(() => {

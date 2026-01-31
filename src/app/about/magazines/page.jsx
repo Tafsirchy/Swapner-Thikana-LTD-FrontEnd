@@ -76,7 +76,7 @@ const MagazinesPage = () => {
                 {/* 3D Magazine Container - Lifts on Hover */}
                 <motion.div 
                   className="z-20 relative"
-                  whileHover={{ y: -60 }}
+                  whileHover={{ y: -99 }}
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Link href={`/about/magazines/${mag.slug}`} className="block relative">
@@ -90,7 +90,7 @@ const MagazinesPage = () => {
 
                       {/* Back Cover / Inner Page Preview */}
                       <div className="absolute inset-0 bg-zinc-950 border border-white/5 shadow-2xl">
-                          <div className="absolute inset-4 border border-brand-gold/10 flex items-center justify-center overflow-hidden italic text-brand-gold/5 text-[8px] font-serif leading-tight pointer-events-none">
+                          <div className="absolute inset-4 border border-brand-gold/10 flex items-center justify-center overflow-hidden italic text-brand-gold/5 text-[8px] font-serif leading-tight pointer-events-none text-center">
                              {mag.description}
                           </div>
                       </div>
@@ -128,30 +128,30 @@ const MagazinesPage = () => {
 
                 {/* Info & CTA Overlay - Revealed as parent lifts */}
                 <div className="absolute inset-x-0 bottom-0 z-10 transition-all duration-700 opacity-0 group-hover:opacity-100 flex flex-col justify-end h-full pointer-events-none group-hover:pointer-events-auto">
-                   <div className="space-y-6 p-4 bg-zinc-950/50 backdrop-blur-sm border-t border-white/5 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
-                      <div className="flex items-center justify-between text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em]">
+                   <div className="space-y-4 p-6 bg-zinc-950 border-t border-white/5 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
+                      <div className="flex items-center justify-between text-zinc-500 text-[9px] font-black uppercase tracking-[0.5em] mb-2 opacity-60">
                          <span>Issue {i + 1}</span>
                          <span className="italic">{mag.publicationDate ? new Date(mag.publicationDate).getFullYear() : '2024'} Edition</span>
                       </div>
                       
-                      <div className="flex items-center gap-6 pt-2">
+                      <div className="flex items-center justify-between pt-2">
                         <a 
                           href={mag.pdfUrl} 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="group/btn flex items-center gap-4 text-brand-gold font-black text-[9px] uppercase tracking-[0.4em] hover:text-white transition-all duration-500"
+                          className="group/btn flex items-center gap-3 text-brand-gold font-black text-[9px] uppercase tracking-[0.4em] hover:text-white transition-all duration-500"
                         >
-                          <div className="w-10 h-10 rounded-full border border-brand-gold/30 flex items-center justify-center group-hover/btn:bg-brand-gold group-hover/btn:text-royal-deep transition-all duration-500">
-                            <Download size={14} />
+                          <div className="w-8 h-8 rounded-full border border-brand-gold/30 flex items-center justify-center group-hover/btn:bg-brand-gold group-hover/btn:text-royal-deep transition-all duration-500">
+                            <Download size={12} />
                           </div>
                           Access PDF
                         </a>
                         
                         <Link 
                           href={`/about/magazines/${mag.slug}`} 
-                          className="flex items-center gap-4 text-zinc-100 font-black text-[9px] uppercase tracking-[0.4em] hover:text-brand-gold transition-all duration-500 ml-auto"
+                          className="group/explore flex items-center gap-3 text-zinc-100 font-black text-[9px] uppercase tracking-[0.4em] hover:text-brand-gold transition-all duration-500"
                         >
-                           Explore <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+                           Explore <ArrowRight size={14} className="group-hover/explore:translate-x-2 transition-transform" />
                         </Link>
                       </div>
                    </div>
