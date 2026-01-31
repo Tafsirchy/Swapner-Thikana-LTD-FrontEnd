@@ -197,7 +197,15 @@ const AddPropertyPage = () => {
       router.push('/dashboard/properties');
     } catch (error) {
       console.error('Error creating property:', error);
-      toast.error('Failed to create property. Please try again.');
+      
+      // Handle validation errors from backend
+      if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
+        error.response.data.errors.forEach(err => toast.error(err));
+      } else if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error('Failed to create property. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
