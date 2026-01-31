@@ -270,8 +270,11 @@ const Navbar = () => {
                 <Image src="/logo.png" alt="shwapner Thikana" width={110} height={64} className="h-14 w-auto object-contain" />
             </Link>
 
-            {/* Mobile Search/Cart Placeholder for balance */}
-            <div className="w-10"></div>
+            {/* Mobile Utilities */}
+            <div className="flex items-center justify-end min-w-[40px]">
+              {user && <NotificationBell />}
+              {!user && <div className="w-10"></div>}
+            </div>
           </div>
         )}
 
