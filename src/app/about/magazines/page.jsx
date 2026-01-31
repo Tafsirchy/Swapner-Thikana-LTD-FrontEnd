@@ -69,15 +69,17 @@ const MagazinesPage = () => {
                 key={mag._id}
                 initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover="hover"
                 transition={{ duration: 1, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 viewport={{ once: true }}
                 className="group relative perspective-1000"
               >
-                {/* 3D Magazine Container - Lifts on Hover */}
+                {/* 3D Magazine Container - Lifts on Parent Hover */}
                 <motion.div 
-                  className="z-20 relative"
-                  whileHover={{ y: -99 }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="z-20 relative transition-transform duration-700"
+                  variants={{
+                    hover: { y: -99 }
+                  }}
                 >
                   <Link href={`/about/magazines/${mag.slug}`} className="block relative">
                     <div className="relative aspect-[3/4] preserve-3d group-hover:rotate-y-[-20deg] group-hover:translate-x-[-10%] transition-all duration-700 ease-[0.22,1,0.36,1]">
