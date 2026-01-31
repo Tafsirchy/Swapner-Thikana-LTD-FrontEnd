@@ -11,6 +11,69 @@ import VirtualRealitySection from '@/components/home/VirtualRealitySection';
 import NewsletterSection from '@/components/home/NewsletterSection';
 import LiquidButton from '@/components/shared/LiquidButton';
 
+// Creative Stat Item with Counting Animation
+const StatItem = ({ stat, index }) => {
+  const [count, setCount] = React.useState(0);
+  const ref = React.useRef(null);
+  const isInView = motion.useInView ? motion.useInView(ref, { once: true, margin: "-100px" }) : true;
+  
+  // Custom counting logic
+  React.useEffect(() => {
+    if (!isInView) return;
+
+    let start = 0;
+    const end = stat.value;
+    if (start === end) return;
+
+    let totalMilisecondDuraton = 2000;
+    let incrementTime = (totalMilisecondDuraton / end) * 5;
+
+    let timer = setInterval(() => {
+      start += 5;
+      setCount(Math.min(start, end));
+      if (start >= end) clearInterval(timer);
+    }, incrementTime);
+
+    return () => clearInterval(timer);
+  }, [stat.value, isInView]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay: index * 0.1 }}
+      className={`relative p-10 bg-white/[0.02] border border-white/5 group overflow-hidden ${
+        index % 2 === 0 ? 'lg:-translate-y-4' : 'lg:translate-y-4'
+      }`}
+    >
+      {/* Glow Effect */}
+      <div className="absolute -inset-24 bg-brand-gold/5 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+      
+      <div className="relative z-10 flex flex-col items-center text-center">
+        <div className="w-14 h-14 bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-8 transition-transform duration-700 group-hover:rotate-[360deg]">
+          {React.cloneElement(stat.icon, { size: 28, strokeWidth: 1.5 })}
+        </div>
+        
+        <div className="flex items-baseline gap-1 mb-2">
+          <span className="text-5xl font-cinzel font-bold text-zinc-100 tracking-tighter">
+            {count.toLocaleString()}
+          </span>
+          <span className="text-2xl font-cinzel font-bold text-brand-gold">{stat.suffix}</span>
+        </div>
+        
+        <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.4em] leading-tight">
+          {stat.label}
+        </p>
+        
+        {/* Animated Corner Brackets */}
+        <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-brand-gold/20 transition-all duration-500 group-hover:w-full group-hover:h-full group-hover:border-brand-gold/40"></div>
+        <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-brand-gold/20 transition-all duration-500 group-hover:w-full group-hover:h-full group-hover:border-brand-gold/40"></div>
+      </div>
+    </motion.div>
+  );
+};
 
 export default function Home() {
   return (
@@ -99,30 +162,21 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-24 bg-royal-deep relative">
-        <div className="max-container px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+      {/* Stats Section - "The Legacy Gallery" */}
+      <section className="py-32 bg-royal-deep relative overflow-hidden">
+        {/* Architectural Grid Background */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+             style={{ backgroundImage: `radial-gradient(circle at 2px 2px, #d4af37 1px, transparent 0)`, backgroundSize: '40px 40px' }}></div>
+        
+        <div className="max-container px-4 relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { label: 'Properties Listed', value: '1,250+', icon: <Building /> },
-              { label: 'Happy Families', value: '800+', icon: <Users /> },
-              { label: 'Success Rate', value: '99%', icon: <Star /> },
-              { label: 'Experience', value: '15 Years', icon: <Building /> },
+              { label: 'Properties Listed', value: 1250, suffix: '+', icon: <Building /> },
+              { label: 'Happy Families', value: 800, suffix: '+', icon: <Users /> },
+              { label: 'Success Rate', value: 99, suffix: '%', icon: <Star /> },
+              { label: 'Experience', value: 15, suffix: ' Years', icon: <Building /> },
             ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="flex flex-col items-center group"
-              >
-                <div className="w-16 h-16 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {React.cloneElement(stat.icon, { size: 32 })}
-                </div>
-                <h3 className="text-3xl font-bold text-zinc-100 mb-2">{stat.value}</h3>
-                <p className="text-zinc-500 text-sm font-medium uppercase tracking-widest">{stat.label}</p>
-              </motion.div>
+              <StatItem key={stat.label} stat={stat} index={index} />
             ))}
           </div>
         </div>
