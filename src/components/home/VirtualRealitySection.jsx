@@ -31,18 +31,27 @@ const VirtualRealitySection = () => {
     const fetchData = async () => {
       try {
         const [propertiesRes, projectsRes] = await Promise.all([
-          api.properties.getAll({ limit: 10 }), 
-          api.projects.getAll()
+          api.properties.getAll({ limit: 100 }), 
+          api.projects.getAll({ limit: 100 })
         ]);
         
         // Robust extraction finding the first array in the response
         const extractArray = (res, key) => {
             console.log(`Extracting ${key}:`, res);
             if (!res) return [];
+            
+            // Handle Axios response structure
+            const data = res.data || res;
+            
+            if (Array.isArray(data)) return data;
+            if (data[key] && Array.isArray(data[key])) return data[key];
+            if (data.data && Array.isArray(data.data)) return data.data;
+            if (data.data && data.data[key] && Array.isArray(data.data[key])) return data.data[key];
+            
+            // Fallback for direct array or nested objects
             if (Array.isArray(res)) return res;
-            if (res.data && Array.isArray(res.data)) return res.data;
-            if (res.data && res.data[key] && Array.isArray(res.data[key])) return res.data[key];
             if (res[key] && Array.isArray(res[key])) return res[key];
+            
             return [];
         };
 
