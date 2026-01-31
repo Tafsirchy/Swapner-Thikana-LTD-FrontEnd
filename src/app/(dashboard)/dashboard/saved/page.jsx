@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { Heart, Search, ArrowUpDown } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
+import ProjectCard from '@/components/shared/ProjectCard';
 import { api } from '@/lib/api';
 
 const SavedPropertiesPage = () => {
@@ -79,10 +80,10 @@ const SavedPropertiesPage = () => {
         <div>
           <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
             <Heart size={32} className="text-brand-gold fill-brand-gold" />
-            Saved Homes
+            Saved Items
           </h1>
           <p className="text-zinc-400 mt-1">
-            Manage your favorite properties and collections
+            Manage your favorite properties and projects
           </p>
         </div>
       </div>
@@ -144,8 +145,10 @@ const SavedPropertiesPage = () => {
 
             {sortedProperties.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {sortedProperties.map((property) => (
-                  <PropertyCard key={property._id} property={property} />
+                {sortedProperties.map((item) => (
+                  item.itemType === 'project' 
+                    ? <ProjectCard key={item._id} project={item} />
+                    : <PropertyCard key={item._id} property={item} />
                 ))}
               </div>
             ) : (
@@ -153,17 +156,26 @@ const SavedPropertiesPage = () => {
                 <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Heart size={40} className="text-zinc-500" />
                 </div>
-                <h3 className="text-2xl font-bold text-zinc-300 mb-2">No saved properties</h3>
+                <h3 className="text-2xl font-bold text-zinc-300 mb-2">No saved items</h3>
                 <p className="text-zinc-500 mb-8 max-w-md mx-auto">
-                  {selectedWishlist ? 'This collection is empty.' : 'Start browsing our exclusive listings and save your favorites.'}
+                  {selectedWishlist ? 'This collection is empty.' : 'Start browsing our properties and projects and save your favorites.'}
                 </p>
-                <Link 
-                  href="/properties" 
-                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/20"
-                >
-                  <Search size={18} />
-                  Browse Properties
-                </Link>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Link 
+                    href="/properties" 
+                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/20"
+                  >
+                    <Search size={18} />
+                    Browse Properties
+                  </Link>
+                  <Link 
+                    href="/projects" 
+                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-white/5 border border-white/10 text-white font-bold rounded-xl hover:bg-white/10 transition-all"
+                  >
+                    <Search size={18} />
+                    Browse Projects
+                  </Link>
+                </div>
               </div>
             )}
           </>
@@ -194,7 +206,7 @@ const SavedPropertiesPage = () => {
                   {wishlist.name}
                 </h3>
                 <p className="text-zinc-500 text-sm">
-                  {wishlist.properties?.length || 0} Properties
+                  {wishlist.properties?.length || 0} Items
                 </p>
 
                 <div className="mt-6 flex items-center gap-2 text-sm font-bold text-brand-gold opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">

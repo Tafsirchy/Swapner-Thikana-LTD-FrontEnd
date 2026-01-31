@@ -95,7 +95,7 @@ const Navbar = () => {
                 transition={{ duration: 0.2 }}
                 className="absolute left-1/2 -translate-x-1/2 top-full pt-2"
               >
-                <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl min-w-[500px] flex gap-12 overflow-hidden relative">
+                <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-none p-8 shadow-2xl min-w-[500px] flex gap-12 overflow-hidden relative">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl"></div>
                   
                   {/* Left Column */}
@@ -192,7 +192,7 @@ const Navbar = () => {
                    animate={{ opacity: 1, scale: 1, y: 0 }}
                    exit={{ opacity: 0, scale: 0.95, y: 10 }}
                    transition={{ duration: 0.15 }}
-                   className="absolute right-0 mt-4 w-48 glass border border-white/10 rounded-2xl shadow-2xl overflow-hidden py-2"
+                   className="absolute right-0 mt-4 w-48 glass border border-white/10 rounded-none shadow-2xl overflow-hidden py-2"
                  >
                    <Link 
                      href="/properties" 

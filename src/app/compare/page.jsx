@@ -18,22 +18,36 @@ function CompareContent() {
   useEffect(() => {
     const ids = searchParams.get('ids');
     if (ids) {
-      fetchProperties(ids.split(','));
+      fetchItems(ids.split(','));
     } else {
       setLoading(false);
     }
   }, [searchParams]);
 
-  const fetchProperties = async (ids) => {
+  const fetchItems = async (ids) => {
     try {
       setLoading(true);
       const results = await Promise.all(
-        ids.map(id => api.properties.getById(id).catch(() => null))
+        ids.map(async (id) => {
+          // Attempt properties first
+          try {
+            const res = await api.properties.getById(id);
+            if (res.data?.property) return { ...res.data.property, itemType: 'property' };
+          } catch { /* ignore */ }
+          
+          // Then projects
+          try {
+            const res = await api.projects.getById(id);
+            if (res.data?.project) return { ...res.data.project, itemType: 'project' };
+          } catch { /* ignore */ }
+          
+          return null;
+        })
       );
-      setProperties(results.filter(p => p?.data?.property).map(p => p.data.property));
+      setProperties(results.filter(Boolean));
     } catch (error) {
-      console.error('Error fetching properties:', error);
-      toast.error('Failed to load properties');
+      console.error('Error fetching items:', error);
+      toast.error('Failed to load comparison items');
     } finally {
       setLoading(false);
     }
@@ -52,16 +66,16 @@ function CompareContent() {
   };
 
   const comparisonRows = [
-    { label: 'Price', key: 'price', format: (val) => `৳${val?.toLocaleString('en-BD')}` },
-    { label: 'Listing Type', key: 'listingType', format: (val) => val === 'sale' ? 'For Sale' : 'For Rent' },
-    { label: 'Property Type', key: 'propertyType' },
-    { label: 'Bedrooms', key: 'bedrooms', format: (val) => `${val} Beds` },
-    { label: 'Bathrooms', key: 'bathrooms', format: (val) => `${val} Baths` },
-    { label: 'Area', key: 'size', format: (val) => `${val?.toLocaleString('en-BD')} sqft` },
-    { label: 'Location', key: 'location', format: (val) => `${val?.area}, ${val?.city}` },
-    { label: 'Address', key: 'location', format: (val) => val?.address },
-    { label: 'Featured', key: 'featured', format: (val) => val ? '✓' : '✗' },
-    { label: 'Status', key: 'status', format: (val) => val || 'Available' },
+    { label: 'Type', key: 'itemType', format: (val) => val === 'property' ? 'Property' : 'Project' },
+    { label: 'Price', key: 'price', format: (val) => val ? `৳${val?.toLocaleString('en-BD')}` : 'N/A' },
+    { label: 'Listing/Status', key: 'status', format: (val, item) => item.listingType ? (item.listingType === 'sale' ? 'For Sale' : 'For Rent') : (val || 'N/A') },
+    { label: 'Property Type', key: 'propertyType', format: (val) => val || 'N/A' },
+    { label: 'Bedrooms', key: 'bedrooms', format: (val) => val ? `${val} Beds` : 'N/A' },
+    { label: 'Bathrooms', key: 'bathrooms', format: (val) => val ? `${val} Baths` : 'N/A' },
+    { label: 'Area', key: 'size', format: (val, item) => (val || item.area) ? `${(val || item.area)?.toLocaleString('en-BD')} sqft` : 'N/A' },
+    { label: 'Location', key: 'location', format: (val) => val ? `${val.area || val.city}, ${val.city || ''}` : 'N/A' },
+    { label: 'Completion', key: 'completionDate', format: (val) => val || 'N/A' },
+    { label: 'Featured', key: 'featured', format: (val) => val ? '✓' : '-' },
   ];
 
   // Amenities comparison
@@ -160,7 +174,7 @@ function CompareContent() {
                           </div>
                           <h3 className="font-bold text-zinc-100 text-xs md:text-sm mb-2 line-clamp-2 min-h-[32px] md:min-h-[40px]">{property.title}</h3>
                           <Link
-                            href={`/properties/${property.slug}`}
+                            href={property.itemType === 'property' ? `/properties/${property.slug}` : `/projects/${property.slug}`}
                             className="text-[10px] md:text-xs text-brand-gold hover:underline"
                           >
                             View Details →
@@ -180,7 +194,7 @@ function CompareContent() {
                       </td>
                       {properties.map((property) => {
                         const value = row.key.split('.').reduce((obj, key) => obj?.[key], property);
-                        const formattedValue = row.format ? row.format(value) : value;
+                        const formattedValue = row.format ? row.format(value, property) : value;
                         
                         return (
                           <td key={property._id} className="px-3 py-3 md:px-6 md:py-4 text-xs md:text-sm text-zinc-100 font-medium whitespace-nowrap md:whitespace-normal">

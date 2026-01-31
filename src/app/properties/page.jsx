@@ -308,20 +308,20 @@ const PropertiesPage = () => {
 
           {/* Search Bar */}
           <div className="relative z-20">
-            <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-4 p-4 glass rounded-[2.5rem] border-white/10">
+            <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-4 p-4 glass rounded-none border-white/10">
               <div className="flex-1 relative group">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-gold" size={18} />
                 <input 
                   type="text" 
                   placeholder="Search by title, neighborhood or keyword..."
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl py-3.5 pl-12 pr-4 text-zinc-100 outline-none focus:border-brand-gold/30 transition-all placeholder:text-zinc-500"
+                  className="w-full bg-white/5 border border-white/5 rounded-none py-3.5 pl-12 pr-4 text-zinc-100 outline-none focus:border-brand-gold/30 transition-all placeholder:text-zinc-500"
                   value={filters.search}
                   onChange={(e) => setFilters({...filters, search: e.target.value, page: 1})}
                 />
               </div>
               <div className="flex flex-wrap lg:flex-nowrap gap-4">
                 <select 
-                  className="bg-zinc-900/80 text-zinc-300 border border-white/5 rounded-2xl py-3.5 px-6 outline-none focus:border-brand-gold/30 appearance-none min-w-[150px]"
+                  className="bg-zinc-900/80 text-zinc-300 border border-white/5 rounded-none py-3.5 px-6 outline-none focus:border-brand-gold/30 appearance-none min-w-[150px]"
                   value={filters.listingType}
                   onChange={(e) => setFilters({...filters, listingType: e.target.value, page: 1})}
                 >
@@ -330,7 +330,7 @@ const PropertiesPage = () => {
                   <option value="rent">For Rent</option>
                 </select>
                 <select 
-                  className="bg-zinc-900/80 text-zinc-300 border border-white/5 rounded-2xl py-3.5 px-6 outline-none focus:border-brand-gold/30 appearance-none min-w-[150px]"
+                  className="bg-zinc-900/80 text-zinc-300 border border-white/5 rounded-none py-3.5 px-6 outline-none focus:border-brand-gold/30 appearance-none min-w-[150px]"
                   value={filters.city}
                   onChange={(e) => setFilters({...filters, city: e.target.value, page: 1})}
                 >
@@ -342,14 +342,14 @@ const PropertiesPage = () => {
                 <button 
                   type="button"
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center gap-2 px-6 py-3.5 rounded-2xl border transition-all ${showFilters ? 'bg-brand-gold text-royal-deep border-brand-gold' : 'border-white/10 text-zinc-100 hover:border-brand-gold/30'}`}
+                  className={`flex items-center gap-2 px-6 py-3.5 rounded-none border transition-all ${showFilters ? 'bg-brand-gold text-royal-deep border-brand-gold' : 'border-white/10 text-zinc-100 hover:border-brand-gold/30'}`}
                 >
                   <SlidersHorizontal size={18} />
                   Filters
                 </button>
                 <button 
                   type="submit"
-                  className="bg-brand-emerald text-white px-8 py-3.5 rounded-2xl font-bold hover:bg-brand-emerald-light transition-all shadow-lg shadow-brand-emerald/10"
+                  className="bg-brand-emerald text-white px-8 py-3.5 rounded-none font-bold hover:bg-brand-emerald-light transition-all shadow-lg shadow-brand-emerald/10"
                 >
                   Search
                 </button>
@@ -365,7 +365,7 @@ const PropertiesPage = () => {
                   exit={{ opacity: 0, height: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="p-8 mt-4 glass rounded-3xl border-white/10 space-y-6">
+                  <div className="p-8 mt-4 glass rounded-none border-white/10 space-y-6">
                     {/* Row 1: Property Type, Bedrooms, Bathrooms */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="space-y-2">

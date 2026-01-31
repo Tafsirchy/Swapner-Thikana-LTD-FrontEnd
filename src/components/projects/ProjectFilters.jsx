@@ -44,19 +44,19 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
         placeholder="Area / Sector (e.g. Sector 15)"
         value={filters.area || ''}
         onChange={(e) => handleInputChange('area', e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+        className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
       />
       <input
         type="text"
         placeholder="Road No"
         value={filters.road || ''}
         onChange={(e) => handleInputChange('road', e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+        className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
       />
       <select
         value={filters.city || ''}
         onChange={(e) => handleInputChange('city', e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+        className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
       >
         <option value="">Any City</option>
         <option value="Dhaka">Dhaka</option>
@@ -91,7 +91,7 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
           placeholder="Target Year (e.g. 2027)"
           value={filters.completionYear || ''}
           onChange={(e) => handleInputChange('completionYear', e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+          className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
         />
     </div>
   );
@@ -106,14 +106,14 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
             placeholder="Min"
             value={filters.minSize || ''}
             onChange={(e) => handleInputChange('minSize', e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+            className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
           />
           <input
             type="number"
             placeholder="Max"
             value={filters.maxSize || ''}
             onChange={(e) => handleInputChange('maxSize', e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+            className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
           />
         </div>
       </div>
@@ -124,7 +124,7 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
           <select
             value={filters.beds || ''}
             onChange={(e) => handleInputChange('beds', e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+            className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
           >
             <option value="">Any</option>
             {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}+</option>)}
@@ -135,7 +135,7 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
           <select
             value={filters.baths || ''}
             onChange={(e) => handleInputChange('baths', e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+            className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
           >
             <option value="">Any</option>
             {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}+</option>)}
@@ -168,14 +168,14 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
             placeholder="Min"
             value={filters.minPrice || ''}
             onChange={(e) => handleInputChange('minPrice', e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+            className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
           />
           <input
             type="number"
             placeholder="Max"
             value={filters.maxPrice || ''}
             onChange={(e) => handleInputChange('maxPrice', e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+            className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
           />
         </div>
       </div>
@@ -221,13 +221,13 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
         placeholder="Min Total Floors"
         value={filters.minFloors || ''}
         onChange={(e) => handleInputChange('minFloors', e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+        className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
       />
       
       <select
         value={filters.facing || ''}
         onChange={(e) => handleInputChange('facing', e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+        className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
       >
         <option value="">Any Facing</option>
         <option value="South">South</option>
@@ -243,7 +243,7 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
       <select
         value={filters.handoverTime || ''}
         onChange={(e) => handleInputChange('handoverTime', e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+        className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
       >
         <option value="">Any Handover Time</option>
         <option value="1">Within 1 year</option>
@@ -334,7 +334,7 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
 
       {/* Desktop Horizontal Bar */}
       <div className="hidden lg:block w-full mb-8 relative z-30" ref={desktopMenuRef}>
-        <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-2xl p-2 flex flex-wrap gap-2 items-center shadow-lg">
+        <div className="bg-zinc-900/80 backdrop-blur-md border border-white/10 rounded-none p-2 flex flex-wrap gap-2 items-center shadow-lg">
            <div className="px-4 py-2 border-r border-white/10 text-zinc-400 font-bold text-sm tracking-wider flex items-center gap-2">
               <Filter size={16} /> FILTERS
            </div>
@@ -344,7 +344,7 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
                <button
                  onClick={() => setActiveDesktopSection(activeDesktopSection === key ? null : key)}
                  className={`
-                    flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all
+                    flex items-center gap-2 px-4 py-2 rounded-none text-sm font-medium transition-all
                     ${activeDesktopSection === key || (filters[key] || filters['min' + key]) ? 'bg-white/10 text-brand-gold' : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'}
                  `}
                >
@@ -361,7 +361,7 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
                      animate={{ opacity: 1, y: 0, scale: 1 }}
                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
                      transition={{ duration: 0.15 }}
-                     className="absolute top-full left-0 mt-3 w-72 bg-zinc-900 border border-white/10 p-5 rounded-2xl shadow-xl shadow-black/50 overflow-y-auto max-h-[60vh] z-50"
+                     className="absolute top-full left-0 mt-3 w-72 bg-zinc-900 border border-white/10 p-5 rounded-none shadow-xl shadow-black/50 overflow-y-auto max-h-[60vh] z-50"
                    >
                       <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
                         <h4 className="font-bold text-zinc-100 text-sm flex items-center gap-2"><Icon size={14} className="text-brand-gold"/> {title}</h4>
@@ -376,7 +376,7 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
            <div className="ml-auto border-l border-white/10 pl-2">
              <button 
                 onClick={onClear}
-                className="px-4 py-2 text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-xl transition-colors"
+                className="px-4 py-2 text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-none transition-colors"
              >
                 Reset
              </button>

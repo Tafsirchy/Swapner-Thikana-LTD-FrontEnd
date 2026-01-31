@@ -4,10 +4,21 @@ import React from 'react';
 import Link from 'next/link';
 import SmartImage from './SmartImage';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, ArrowRight } from 'lucide-react';
+import { MapPin, Calendar, ArrowRight, Heart, Plus, Check } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'react-hot-toast';
+import WishlistModal from './WishlistModal';
+import { AnimatePresence } from 'framer-motion';
+import LiquidButton from './LiquidButton';
+import { addToCompare, removeFromCompare, subscribeToCompare } from '@/utils/compareStore';
 
 const ProjectCard = ({ project }) => {
+  const { user } = useAuth();
+  const [isInCompare, setIsInCompare] = useState(false);
+  const [showWishlistModal, setShowWishlistModal] = useState(false);
+
   const {
+    _id,
     title,
     slug,
     location,
@@ -17,6 +28,30 @@ const ProjectCard = ({ project }) => {
     completionDate
   } = project;
 
+  const isSaved = React.useMemo(() => {
+    return user?.savedProperties?.some(id => id === _id) || false;
+  }, [user?.savedProperties, _id]);
+
+  // Subscribe to comparison changes
+  React.useEffect(() => {
+    const unsubscribe = subscribeToCompare((list) => {
+      setIsInCompare(list.some(p => p._id === _id));
+    });
+    return unsubscribe;
+  }, [_id]);
+
+  const handleToggleWishlist = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      toast.error('Please login to save projects');
+      return;
+    }
+
+    setShowWishlistModal(true);
+  };
+
   const statusColors = {
     ongoing: 'bg-brand-gold text-royal-deep',
     completed: 'bg-brand-emerald text-white',
@@ -24,6 +59,7 @@ const ProjectCard = ({ project }) => {
   };
 
   return (
+    <>
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
@@ -39,10 +75,49 @@ const ProjectCard = ({ project }) => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-royal-deep/40 to-transparent"></div>
         
-        <div className="absolute top-6 left-6">
+        <div className="absolute top-6 inset-x-6 flex items-start justify-between gap-4 z-10">
           <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg ${statusColors[status] || 'bg-zinc-800 text-white'}`}>
             {status}
           </span>
+
+          {/* Action Buttons */}
+          <div className="flex gap-2">
+            <LiquidButton 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (isInCompare) {
+                  removeFromCompare(_id);
+                } else {
+                  addToCompare(project);
+                }
+              }}
+              baseColor={isInCompare ? 'bg-brand-emerald' : 'bg-white/10'}
+              liquidColor={isInCompare ? 'fill-white/20' : 'fill-brand-emerald/40'}
+              rounded="rounded-full"
+              px="!p-2.5"
+              py="!p-2.5"
+              className={`backdrop-blur-md border shadow-lg ${
+                isInCompare ? 'border-brand-emerald text-white' : 'border-white/20 text-white'
+              }`}
+            >
+              {isInCompare ? <Check size={16} /> : <Plus size={16} />}
+            </LiquidButton>
+
+            <LiquidButton 
+              onClick={handleToggleWishlist}
+              baseColor={isSaved ? 'bg-brand-gold' : 'bg-white/10'}
+              liquidColor={isSaved ? 'fill-white/30' : 'fill-brand-gold/40'}
+              rounded="rounded-full"
+              px="!p-2.5"
+              py="!p-2.5"
+              className={`backdrop-blur-md border shadow-lg ${
+                isSaved ? 'border-brand-gold text-royal-deep' : 'border-white/20 text-white'
+              }`}
+            >
+              <Heart size={16} fill={isSaved ? 'currentColor' : 'none'} className={isSaved ? 'text-royal-deep' : 'text-white'} />
+            </LiquidButton>
+          </div>
         </div>
       </div>
 
@@ -75,6 +150,17 @@ const ProjectCard = ({ project }) => {
         </div>
       </div>
     </motion.div>
+
+    <AnimatePresence>
+      {showWishlistModal && (
+        <WishlistModal 
+          propertyId={_id}
+          propertyTitle={title}
+          onClose={() => setShowWishlistModal(false)}
+        />
+      )}
+    </AnimatePresence>
+  </>
   );
 };
 

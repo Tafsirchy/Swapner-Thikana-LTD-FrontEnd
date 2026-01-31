@@ -53,7 +53,7 @@ const RecentlyViewed = () => {
         {properties.slice(0, 5).map((property) => (
           <Link 
             key={property._id} 
-            href={`/properties/${property.slug || property._id}`}
+            href={property.itemType === 'project' ? `/projects/${property.slug}` : `/properties/${property.slug}`}
             className="flex items-center gap-4 p-3 bg-white/5 rounded-2xl border border-white/5 hover:border-brand-gold/30 transition-all group"
           >
             <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
@@ -66,8 +66,8 @@ const RecentlyViewed = () => {
             </div>
             <div className="flex-1 min-w-0">
               <h4 className="font-bold text-sm text-zinc-100 truncate">{property.title}</h4>
-              <p className="text-xs text-zinc-400 mt-1 truncate">{property.location?.area}, {property.location?.city}</p>
-              <p className="text-xs font-bold text-brand-gold mt-1">BDT {property.price?.toLocaleString()}</p>
+              <p className="text-xs text-zinc-400 mt-1 truncate">{property.location?.area || property.location?.city}, {property.location?.city || ''}</p>
+              {property.price && <p className="text-xs font-bold text-brand-gold mt-1">BDT {property.price?.toLocaleString()}</p>}
             </div>
             <ArrowRight size={16} className="text-zinc-600 group-hover:text-brand-gold transition-colors mr-2" />
           </Link>

@@ -62,7 +62,7 @@ const CompareBar = () => {
             
             <div className="hidden sm:block">
               <h4 className="text-zinc-100 font-bold mb-0.5">
-                {selectedItems.length} {selectedItems.length === 1 ? 'Property' : 'Properties'} Selected
+                {selectedItems.length} {selectedItems.length === 1 ? 'Item' : 'Items'} Selected
               </h4>
               <p className="text-zinc-400 text-xs tracking-wider uppercase font-medium">Ready for comparison</p>
             </div>

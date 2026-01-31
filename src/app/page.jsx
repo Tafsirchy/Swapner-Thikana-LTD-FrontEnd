@@ -58,10 +58,10 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-2xl shadow-2xl"
+            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-none shadow-2xl"
           >
             <div className="flex flex-col md:flex-row items-center gap-2">
-              <div className="flex-1 w-full flex items-center px-4 gap-3 bg-white/5 rounded-xl border border-white/5 focus-within:border-brand-gold/30 transition-all">
+              <div className="flex-1 w-full flex items-center px-4 gap-3 bg-white/5 rounded-none border border-white/5 focus-within:border-brand-gold/30 transition-all">
                 <Search size={20} className="text-brand-gold" />
                 <input 
                   type="text" 
@@ -69,7 +69,7 @@ export default function Home() {
                   className="w-full py-4 bg-transparent outline-none text-zinc-100 placeholder:text-zinc-500"
                 />
               </div>
-              <div className="flex-1 w-full flex items-center px-4 gap-3 bg-white/5 rounded-xl border border-white/5">
+              <div className="flex-1 w-full flex items-center px-4 gap-3 bg-white/5 rounded-none border border-white/5">
                 <MapPin size={20} className="text-brand-gold" />
                 <select className="w-full py-4 bg-transparent outline-none text-zinc-100 appearance-none">
                   <option className="bg-royal-deep">All Locations</option>
