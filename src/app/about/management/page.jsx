@@ -202,7 +202,7 @@ const ManagementPage = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                         
                         {/* Social Icons on Hover */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-6 pb-8">
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-6 pb-4">
                            {leaders[0].email && (
                              <a href={`mailto:${leaders[0].email}`} className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform">
                                <Mail size={22} />
@@ -251,7 +251,7 @@ const ManagementPage = () => {
                         <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
                         
                         {/* Social Icons on Hover */}
-                        <div className="absolute inset-0 bg-royal-deep/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-8">
+                        <div className="absolute inset-0 bg-royal-deep/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4">
                            {leaders[3].email && (
                              <a href={`mailto:${leaders[3].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform">
                                <Mail size={18} />
@@ -300,7 +300,7 @@ const ManagementPage = () => {
                         <div className="absolute inset-0 bg-brand-gold/5 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-1000"></div>
                         
                         {/* Social Icons on Hover */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-8">
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4">
                            {leaders[2].email && (
                              <a href={`mailto:${leaders[2].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform">
                                <Mail size={18} />
@@ -313,7 +313,7 @@ const ManagementPage = () => {
                            )}
                         </div>
                       </div>
-                      <div className="absolute -left-8 bottom-8 p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50">
+                      <div className="absolute -left-8 bottom-16 p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50">
                       <div className="flex-shrink-0 text-brand-gold/40 group-hover:text-brand-gold transition-colors duration-500">
                          {getRoleIcon(leaders[2].role)}
                       </div>
