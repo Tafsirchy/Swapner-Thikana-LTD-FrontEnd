@@ -318,7 +318,6 @@ const AboutPage = () => {
                             <div className="text-brand-gold/30 group-hover:text-brand-gold/80 transition-colors duration-700">
                               {getRoleIcon(leaders[0].role)}
                             </div>
-                            <span className="text-5xl font-cinzel font-black text-white/[0.03] select-none leading-none">01</span>
                           </div>
                         </div>
                       </div>

@@ -221,15 +221,14 @@ const ManagementPage = () => {
                           <p className="text-brand-gold font-cinzel text-[10px] uppercase tracking-[0.3em] font-black italic mb-2">{leaders[0].role}</p>
                           <h3 className="text-4xl font-cinzel font-bold text-white tracking-widest leading-none">{leaders[0].name}</h3>
                         </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <div className="text-brand-gold/30 group-hover:text-brand-gold/80 transition-colors duration-700">
-                            {getRoleIcon(leaders[0].role)}
+                          <div className="flex flex-col items-end gap-2">
+                            <div className="text-brand-gold/30 group-hover:text-brand-gold/80 transition-colors duration-700">
+                              {getRoleIcon(leaders[0].role)}
+                            </div>
                           </div>
-                          <span className="text-5xl font-cinzel font-black text-white/[0.03] select-none leading-none">01</span>
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
+                    </motion.div>
                 )}
 
                 {/* Leader 4 - Bottom Cinematic Card */}
