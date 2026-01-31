@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { Search, MapPin, Building, Users, Star } from 'lucide-react';
 import FeatureShowcase from '@/components/home/FeatureShowcase';
@@ -11,67 +11,73 @@ import VirtualRealitySection from '@/components/home/VirtualRealitySection';
 import NewsletterSection from '@/components/home/NewsletterSection';
 import LiquidButton from '@/components/shared/LiquidButton';
 
-// Creative Stat Item with Counting Animation
+// Creative Stat Item with Architectural Timeline Positioning
 const StatItem = ({ stat, index }) => {
   const [count, setCount] = React.useState(0);
   const ref = React.useRef(null);
-  const isInView = motion.useInView ? motion.useInView(ref, { once: true, margin: "-100px" }) : true;
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
   
-  // Custom counting logic
   React.useEffect(() => {
     if (!isInView) return;
-
     let start = 0;
     const end = stat.value;
     if (start === end) return;
-
     let totalMilisecondDuraton = 2000;
     let incrementTime = (totalMilisecondDuraton / end) * 5;
-
     let timer = setInterval(() => {
       start += 5;
       setCount(Math.min(start, end));
       if (start >= end) clearInterval(timer);
     }, incrementTime);
-
     return () => clearInterval(timer);
   }, [stat.value, isInView]);
 
+  const isEven = index % 2 === 0;
+
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: index * 0.1 }}
-      className={`relative p-10 bg-white/[0.02] border border-white/5 group overflow-hidden ${
-        index % 2 === 0 ? 'lg:-translate-y-4' : 'lg:translate-y-4'
-      }`}
-    >
-      {/* Glow Effect */}
-      <div className="absolute -inset-24 bg-brand-gold/5 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-      
-      <div className="relative z-10 flex flex-col items-center text-center">
-        <div className="w-14 h-14 bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-8 transition-transform duration-700 group-hover:rotate-[360deg]">
-          {React.cloneElement(stat.icon, { size: 28, strokeWidth: 1.5 })}
-        </div>
-        
-        <div className="flex items-baseline gap-1 mb-2">
-          <span className="text-5xl font-cinzel font-bold text-zinc-100 tracking-tighter">
-            {count.toLocaleString()}
-          </span>
-          <span className="text-2xl font-cinzel font-bold text-brand-gold">{stat.suffix}</span>
-        </div>
-        
-        <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.4em] leading-tight">
-          {stat.label}
-        </p>
-        
-        {/* Animated Corner Brackets */}
-        <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-brand-gold/20 transition-all duration-500 group-hover:w-full group-hover:h-full group-hover:border-brand-gold/40"></div>
-        <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-brand-gold/20 transition-all duration-500 group-hover:w-full group-hover:h-full group-hover:border-brand-gold/40"></div>
+    <div className={`relative flex flex-col items-center flex-1 ${!isEven ? 'pt-24' : 'pb-24'}`}>
+      {/* Connecting Stem (Vertical Line) */}
+      <div className={`absolute left-1/2 -translate-x-1/2 w-px bg-brand-gold/30 h-24 ${
+        isEven ? 'bottom-0' : 'top-0'
+      }`}>
+        {/* Decorative Anchor Dot */}
+        <div className={`absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full border border-brand-gold bg-royal-deep ${
+           isEven ? 'bottom-0 translate-y-1/2' : 'top-0 -translate-y-1/2'
+        }`}></div>
       </div>
-    </motion.div>
+
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: isEven ? -20 : 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: index * 0.1 }}
+        className="relative p-8 bg-white/[0.03] border border-white/10 group overflow-hidden w-full max-w-[240px] shadow-2xl"
+      >
+        {/* Glow Effect */}
+        <div className="absolute -inset-24 bg-brand-gold/5 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+        
+        <div className="relative z-10 flex flex-col items-center">
+          <div className="w-12 h-12 bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-6 transition-transform duration-700 group-hover:rotate-[360deg]">
+            {React.cloneElement(stat.icon, { size: 24, strokeWidth: 1 })}
+          </div>
+          
+          <div className="flex items-baseline gap-1 mb-2">
+            <span className="text-4xl font-cinzel font-bold text-zinc-100 tracking-tighter">
+               {count.toLocaleString()}
+            </span>
+            <span className="text-xl font-cinzel font-bold text-brand-gold">{stat.suffix}</span>
+          </div>
+          
+          <p className="text-zinc-500 text-[9px] font-black uppercase tracking-[0.4em] text-center leading-relaxed">
+            {stat.label}
+          </p>
+          
+          {/* Animated Border Reveal on Hover */}
+          <div className="absolute inset-0 border border-brand-gold opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 pointer-events-none"></div>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
@@ -169,7 +175,10 @@ export default function Home() {
              style={{ backgroundImage: `radial-gradient(circle at 2px 2px, #d4af37 1px, transparent 0)`, backgroundSize: '40px 40px' }}></div>
         
         <div className="max-container px-4 relative">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Horizontal Axis Line (Desktop Only) */}
+          <div className="absolute top-1/2 left-0 w-full h-px bg-brand-gold/20 hidden lg:block -translate-y-1/2"></div>
+          
+          <div className="flex flex-col lg:flex-row items-stretch justify-between gap-12 lg:gap-0 relative z-10">
             {[
               { label: 'Properties Listed', value: 1250, suffix: '+', icon: <Building /> },
               { label: 'Happy Families', value: 800, suffix: '+', icon: <Users /> },
