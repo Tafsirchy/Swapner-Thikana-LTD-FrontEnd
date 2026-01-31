@@ -221,25 +221,26 @@ const LeadsPage = () => {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="relative w-full max-w-5xl bg-zinc-950 border border-white/10 rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col md:flex-row h-[85vh] md:h-[80vh]"
+              className="relative w-full max-w-5xl bg-zinc-950 border border-white/10 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col h-[90vh] md:h-[80vh] my-4"
             >
-              {/* Close Button */}
+              {/* Close Button - More prominent on mobile */}
               <button 
                 onClick={() => setSelectedLead(null)}
-                className="absolute top-6 right-6 z-[120] p-2 rounded-full bg-white/5 border border-white/10 text-zinc-400 hover:text-brand-gold hover:border-brand-gold/50 transition-all group"
+                className="absolute top-4 right-4 md:top-6 md:right-6 z-[120] p-2.5 md:p-2 rounded-full bg-black/40 md:bg-white/5 border border-white/10 text-zinc-400 hover:text-brand-gold hover:border-brand-gold/50 transition-all group backdrop-blur-md"
               >
                 <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
               </button>
 
               <div className="flex flex-col md:flex-row w-full h-full overflow-hidden">
                 {/* Sidebar Info (Left Column) */}
-                <div className="w-full md:w-2/5 border-r border-white/5 p-8 bg-zinc-900/40 backdrop-blur-xl flex flex-col h-full overflow-y-auto custom-scrollbar">
-                  <div className="mb-10">
-                    <div className="w-20 h-20 bg-brand-gold/10 rounded-[2rem] flex items-center justify-center text-brand-gold mb-6 border border-brand-gold/20 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-                      <User size={40} />
+                <div className="w-full md:w-2/5 border-b md:border-b-0 md:border-r border-white/5 p-6 md:p-8 bg-zinc-900/40 backdrop-blur-xl flex flex-col overflow-y-auto custom-scrollbar shrink-0 md:shrink">
+                  <div className="mb-6 md:mb-10">
+                    <div className="w-16 h-16 md:w-20 md:h-20 bg-brand-gold/10 rounded-2xl md:rounded-[2rem] flex items-center justify-center text-brand-gold mb-4 md:mb-6 border border-brand-gold/20 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+                      <User size={32} className="md:hidden" />
+                      <User size={40} className="hidden md:block" />
                     </div>
-                    <h2 className="text-3xl font-cinzel font-bold text-zinc-100 leading-tight uppercase tracking-tight">{selectedLead.name}</h2>
-                    <p className="text-zinc-500 text-xs mt-2 font-medium tracking-widest">LEAD SINCE {new Date(selectedLead.createdAt).toLocaleDateString()}</p>
+                    <h2 className="text-2xl md:text-3xl font-cinzel font-bold text-zinc-100 leading-tight uppercase tracking-tight">{selectedLead.name}</h2>
+                    <p className="text-zinc-500 text-[10px] md:text-xs mt-2 font-medium tracking-widest uppercase">LEAD SINCE {new Date(selectedLead.createdAt).toLocaleDateString()}</p>
                   </div>
 
                   <div className="space-y-6">
@@ -317,15 +318,15 @@ const LeadsPage = () => {
                 </div>
 
                 {/* Main Content: Notes (Right Column) */}
-                <div className="w-full md:w-3/5 flex flex-col h-full overflow-hidden bg-zinc-950/20">
-                  <div className="p-8 border-b border-white/5 flex items-center justify-between bg-zinc-950/40 backdrop-blur-md sticky top-0 z-10">
-                    <h3 className="text-lg font-cinzel font-bold text-zinc-100 flex items-center gap-3 uppercase tracking-widest">
-                      <Plus size={20} className="text-brand-gold p-0.5 border border-brand-gold rounded-full" />
+                <div className="w-full md:w-3/5 flex flex-col h-full overflow-hidden bg-zinc-950/20 min-h-[300px]">
+                  <div className="p-6 md:p-8 border-b border-white/5 flex items-center justify-between bg-zinc-950/40 backdrop-blur-md sticky top-0 z-10">
+                    <h3 className="text-base md:text-lg font-cinzel font-bold text-zinc-100 flex items-center gap-3 uppercase tracking-widest">
+                      <Plus size={18} className="text-brand-gold p-0.5 border border-brand-gold rounded-full" />
                       Activity Timeline
                     </h3>
                   </div>
 
-                  <div className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
+                  <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 custom-scrollbar">
                     {selectedLead.notes?.map((note, idx) => (
                       <div key={idx} className="relative pl-6 border-l-2 border-white/5">
                         <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-zinc-900 border-2 border-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.3)]"></div>
@@ -356,21 +357,22 @@ const LeadsPage = () => {
                     )}
                   </div>
 
-                  <div className="p-6 bg-white/[0.02] border-t border-white/5">
+                  <div className="p-4 md:p-6 bg-white/[0.02] border-t border-white/5 sticky bottom-0">
                     <form onSubmit={handleAddNote} className="relative">
                       <input 
                         type="text"
                         placeholder="Add a follow-up note..."
                         value={newNote}
                         onChange={(e) => setNewNote(e.target.value)}
-                        className="w-full bg-zinc-950 border border-white/10 rounded-2xl pl-6 pr-14 py-4 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+                        className="w-full bg-zinc-950 border border-white/10 rounded-xl md:rounded-2xl pl-5 md:pl-6 pr-12 md:pr-14 py-3 md:py-4 text-xs md:text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
                       />
                       <button 
                         type="submit"
                         disabled={!newNote.trim()}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 bg-brand-gold text-royal-deep rounded-xl hover:bg-brand-gold-light transition-all disabled:opacity-50"
+                        className="absolute right-1.5 md:right-2 top-1/2 -translate-y-1/2 p-2 md:p-2.5 bg-brand-gold text-royal-deep rounded-lg md:rounded-xl hover:bg-brand-gold-light transition-all disabled:opacity-50"
                       >
-                        <Send size={18} />
+                        <Send size={16} className="md:hidden" />
+                        <Send size={18} className="hidden md:block" />
                       </button>
                     </form>
                   </div>

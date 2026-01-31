@@ -92,13 +92,13 @@ const InquiriesPage = () => {
       {filteredInquiries.length > 0 ? (
         <div className="space-y-4">
           {filteredInquiries.map((lead) => (
-            <div key={lead._id} className="bg-zinc-900/40 backdrop-blur-md border border-white/5 rounded-3xl p-8 hover:border-brand-gold/30 transition-all group relative overflow-hidden">
+            <div key={lead._id} className="bg-zinc-900/40 backdrop-blur-md border border-white/5 rounded-2xl md:rounded-3xl p-5 md:p-8 hover:border-brand-gold/30 transition-all group relative overflow-hidden">
                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
                
-               <div className="flex flex-col md:flex-row gap-8 relative z-10">
+               <div className="flex flex-col md:flex-row gap-6 md:gap-8 relative z-10">
                   <div className="flex-1 space-y-4">
-                     <div className="flex items-center gap-4 mb-4">
-                        <span className={`text-[9px] font-extrabold uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-current shadow-inner ${statusColors[lead.status] || 'bg-zinc-500/10 text-zinc-500'}`}>
+                     <div className="flex items-center gap-3 md:gap-4 mb-4">
+                        <span className={`text-[9px] font-extrabold uppercase tracking-[0.2em] px-2.5 py-1 rounded-full border border-current shadow-inner ${statusColors[lead.status] || 'bg-zinc-500/10 text-zinc-500'}`}>
                            {lead.status}
                         </span>
                         <div className="h-4 w-px bg-white/10" />
