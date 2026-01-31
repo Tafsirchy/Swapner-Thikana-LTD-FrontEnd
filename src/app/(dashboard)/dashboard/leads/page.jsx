@@ -17,7 +17,8 @@ import {
   Building2,
   Calendar,
   Bell,
-  X
+  X,
+  Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
@@ -73,6 +74,22 @@ const LeadsPage = () => {
       toast.success(`Moved to ${newStatus}`);
     } catch {
       toast.error('Failed to update status');
+    }
+  };
+
+  const handleDeleteLead = async (leadId, e) => {
+    if (e) e.stopPropagation();
+    if (!window.confirm('Are you sure you want to delete this lead? This action cannot be undone.')) return;
+
+    try {
+      await api.leads.delete(leadId);
+      setLeads(leads.filter(l => l._id !== leadId));
+      if (selectedLead?._id === leadId) {
+        setSelectedLead(null);
+      }
+      toast.success('Lead deleted successfully');
+    } catch {
+      toast.error('Failed to delete lead');
     }
   };
 
@@ -187,9 +204,20 @@ const LeadsPage = () => {
                       <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-gold/60 px-2 py-0.5 bg-brand-gold/5 rounded-full border border-brand-gold/10">
                         {lead.interestType || 'Inquiry'}
                       </span>
-                      <button className="text-zinc-600 hover:text-zinc-300 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <MoreVertical size={14} />
-                      </button>
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {column.id === 'closed' && (
+                          <button 
+                            onClick={(e) => handleDeleteLead(lead._id, e)}
+                            className="p-1.5 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                            title="Delete Lead"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        )}
+                        <button className="p-1.5 text-zinc-600 hover:text-zinc-300 transition-all">
+                          <MoreVertical size={14} />
+                        </button>
+                      </div>
                     </div>
                     <h4 className="font-bold text-zinc-100 mb-1.5 group-hover:text-brand-gold transition-colors text-base">{lead.name}</h4>
                     <p className="text-[11px] text-zinc-400 line-clamp-1 mb-4 font-medium italic">
@@ -321,7 +349,10 @@ const LeadsPage = () => {
                             onSuccess={() => setShowReminderForm(false)}
                           />
                         )}
+                      </div>
+                    </div>
 
+                    <div className="pt-4 space-y-4">
                       <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Quick Move Status</p>
                       <div className="grid grid-cols-2 gap-2">
                         {STATUS_COLUMNS.map(col => (
@@ -338,11 +369,21 @@ const LeadsPage = () => {
                           </button>
                         ))}
                       </div>
+
+                      {selectedLead.status === 'closed' && (
+                        <div className="pt-2">
+                          <button 
+                            onClick={() => handleDeleteLead(selectedLead._id)}
+                            className="w-full py-3 bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
+                          >
+                            <Trash2 size={14} /> Delete Lead Permanent
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
 
-                {/* Main Content: Notes (Right Column) */}
+                  {/* Main Content: Notes (Right Column) */}
                 <div className="w-full md:w-3/5 flex flex-col flex-1 min-h-0 overflow-hidden bg-zinc-950/20">
                   <div className="p-6 md:p-8 border-b border-white/5 flex items-center justify-between bg-zinc-950/40 backdrop-blur-md sticky top-0 z-10">
                     <h3 className="text-base md:text-lg font-cinzel font-bold text-zinc-100 flex items-center gap-3 uppercase tracking-widest">

@@ -116,6 +116,7 @@ export const api = {
     getMyInquiries: () => apiInstance.get('/leads/my-inquiries'),
     updateStatus: (id, status) => apiInstance.patch(`/leads/${id}/status`, { status }),
     addNote: (id, text) => apiInstance.post(`/leads/${id}/notes`, { text }),
+    delete: (id) => apiInstance.delete(`/leads/${id}`),
   },
   blogs: {
     getAll: (params) => apiInstance.get('/blogs', { params }),
