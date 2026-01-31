@@ -33,11 +33,11 @@ const AgenciesPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-6 py-2 bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] font-black uppercase tracking-[0.4em] mb-8"
+          className="inline-flex items-center gap-2 rounded-full px-6 py-2 bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] font-black uppercase tracking-[0.4em] mb-8"
         >
           <Globe size={14} /> Our Network
         </motion.div>
-        <h1 className="text-5xl md:text-7xl font-cinzel font-bold text-white mb-8 leading-none">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-bold text-white mb-8 leading-none">
           Strategic <span className="text-brand-gold">Outposts</span>
         </h1>
         <p className="max-w-2xl text-zinc-400 text-lg leading-relaxed font-serif italic">
@@ -134,9 +134,14 @@ const AgenciesPage = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <button className="flex-1 border-b border-brand-gold py-4 text-brand-gold font-black text-xs uppercase tracking-[0.4em] flex items-center justify-between group/btn hover:text-white transition-colors">
+                      <a 
+                        href={agency.website || agency.contactInfo?.website || "#"} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex-1 border-b border-brand-gold py-4 text-brand-gold font-black text-xs uppercase tracking-[0.4em] flex items-center justify-between group/btn hover:text-white transition-colors"
+                      >
                         Connect with Station <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-2" />
-                      </button>
+                      </a>
                     </div>
                   </motion.div>
 
