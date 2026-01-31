@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   Gem, 
   ShieldCheck, 
@@ -11,9 +11,7 @@ import {
   ArrowLeft, 
   ChevronRight,
   Sparkles,
-  Building2,
-  CheckCircle2,
-  MapPin
+  CheckCircle2
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -136,11 +134,11 @@ const PhilosophyDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-royal-deep text-zinc-100 selection:bg-brand-gold/30">
-      {/* Navigation Header */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-royal-deep/80 backdrop-blur-xl border-b border-white/5 py-6">
-        <div className="max-container px-4 flex items-center justify-between">
-          <Link href="/about" className="flex items-center gap-2 text-zinc-400 hover:text-brand-gold transition-colors font-bold uppercase tracking-widest text-xs">
-            <ArrowLeft size={16} /> Back to Philosophy
+      {/* Navigation Sub-Header - Moved from Fixed to Relative to avoid conflict with Global Navbar */}
+      <nav className="bg-zinc-950/20 border-b border-white/5 py-8 mt-24">
+        <div className="max-container px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+          <Link href="/about" className="flex items-center gap-2 text-zinc-400 hover:text-brand-gold transition-colors font-bold uppercase tracking-widest text-[10px]">
+            <ArrowLeft size={14} /> Back to Philosophy
           </Link>
           <div className="flex items-center gap-2 text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">
             <span>Our Philosophy</span>
@@ -150,7 +148,7 @@ const PhilosophyDetailPage = () => {
         </div>
       </nav>
 
-      <main className="pt-32 pb-24">
+      <main className="pt-16 pb-24">
         {/* Hero Section */}
         <section className="max-container px-4 mb-32">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
@@ -228,7 +226,7 @@ const PhilosophyDetailPage = () => {
             >
                 <div className="w-px h-24 bg-gradient-to-b from-transparent via-brand-gold to-transparent mx-auto"></div>
                 <h2 className="text-3xl md:text-5xl font-cinzel italic text-white leading-tight">
-                    &quot;We don't just sell property; we curate lifestyles. Every project under our portfolio is a testament to architectural brilliance and luxury.&quot;
+                    &quot;We don&apos;t just sell property; we curate lifestyles. Every project under our portfolio is a testament to architectural brilliance and luxury.&quot;
                 </h2>
                 <div className="flex items-center justify-center gap-4 pt-4">
                     <div className="w-12 h-12 rounded-full overflow-hidden relative border-2 border-brand-gold">
