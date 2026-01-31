@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import SmartImage from './SmartImage';
 import { motion } from 'framer-motion';
@@ -28,12 +28,12 @@ const ProjectCard = ({ project }) => {
     completionDate
   } = project;
 
-  const isSaved = React.useMemo(() => {
+  const isSaved = useMemo(() => {
     return user?.savedProperties?.some(id => id === _id) || false;
   }, [user?.savedProperties, _id]);
 
   // Subscribe to comparison changes
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = subscribeToCompare((list) => {
       setIsInCompare(list.some(p => p._id === _id));
     });
