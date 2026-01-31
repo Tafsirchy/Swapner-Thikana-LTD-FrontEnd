@@ -39,6 +39,13 @@ const LeadsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showReminderForm, setShowReminderForm] = useState(false);
 
+  const [visibleCounts, setVisibleCounts] = useState({
+    new: 5,
+    contacted: 5,
+    converted: 5,
+    closed: 5
+  });
+
   useEffect(() => {
     fetchLeads();
   }, []);
@@ -99,6 +106,13 @@ const LeadsPage = () => {
 
   const getLeadsByStatus = (status) => filteredLeads.filter(l => l.status === status);
 
+  const handleLoadMore = (status) => {
+    setVisibleCounts(prev => ({
+      ...prev,
+      [status]: prev[status] + 5
+    }));
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -152,49 +166,60 @@ const LeadsPage = () => {
             </div>
 
             <div 
-              className="flex-1 min-h-[500px] bg-white/[0.02] border border-white/5 rounded-3xl p-3 space-y-3"
+              className="flex-1 flex flex-col gap-4 min-h-[200px] bg-white/[0.02] border border-white/5 rounded-3xl p-3"
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
                 const leadId = e.dataTransfer.getData('leadId');
-                if (leadId) handleStatusChange(leadId, column.id);
+                handleStatusChange(leadId, column.id);
               }}
             >
-              {getLeadsByStatus(column.id).map(lead => (
-                <motion.div
-                  key={lead._id}
-                  layoutId={lead._id}
-                  draggable
-                  onDragStart={(e) => e.dataTransfer.setData('leadId', lead._id)}
-                  onClick={() => setSelectedLead(lead)}
-                  className="bg-zinc-900/40 backdrop-blur-md border border-white/5 p-5 rounded-3xl hover:border-brand-gold/40 transition-all cursor-pointer group shadow-xl hover:shadow-brand-gold/5"
-                >
-                  <div className="flex justify-between items-start mb-3">
-                    <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-gold/60 px-2 py-0.5 bg-brand-gold/5 rounded-full border border-brand-gold/10">
-                      {lead.interestType || 'Inquiry'}
-                    </span>
-                    <button className="text-zinc-600 hover:text-zinc-300 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <MoreVertical size={14} />
-                    </button>
-                  </div>
-                  <h4 className="font-bold text-zinc-100 mb-1.5 group-hover:text-brand-gold transition-colors text-base">{lead.name}</h4>
-                  <p className="text-[11px] text-zinc-400 line-clamp-1 mb-4 font-medium italic">
-                    {lead.subject || lead.propertyName || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
-                  </p>
-                  
-                  <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-3 border-t border-white/5">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar size={12} className="text-zinc-600" />
-                      {new Date(lead.createdAt).toLocaleDateString()}
-                    </span>
-                    {lead.notes?.length > 0 && (
-                      <span className="bg-brand-gold/10 text-brand-gold px-2 py-0.5 rounded-lg border border-brand-gold/10 font-bold">
-                        {lead.notes.length} NOTES
+              <AnimatePresence>
+                {getLeadsByStatus(column.id).slice(0, visibleCounts[column.id]).map((lead) => (
+                  <motion.div
+                    key={lead._id}
+                    layoutId={lead._id}
+                    draggable
+                    onDragStart={(e) => e.dataTransfer.setData('leadId', lead._id)}
+                    onClick={() => setSelectedLead(lead)}
+                    className="bg-zinc-900/40 backdrop-blur-md border border-white/5 p-5 rounded-3xl hover:border-brand-gold/40 transition-all cursor-pointer group shadow-xl hover:shadow-brand-gold/5"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-gold/60 px-2 py-0.5 bg-brand-gold/5 rounded-full border border-brand-gold/10">
+                        {lead.interestType || 'Inquiry'}
                       </span>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-              
+                      <button className="text-zinc-600 hover:text-zinc-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <MoreVertical size={14} />
+                      </button>
+                    </div>
+                    <h4 className="font-bold text-zinc-100 mb-1.5 group-hover:text-brand-gold transition-colors text-base">{lead.name}</h4>
+                    <p className="text-[11px] text-zinc-400 line-clamp-1 mb-4 font-medium italic">
+                      {lead.subject || lead.propertyName || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
+                    </p>
+                    
+                    <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-3 border-t border-white/5">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar size={12} className="text-zinc-600" />
+                        {new Date(lead.createdAt).toLocaleDateString()}
+                      </span>
+                      {lead.notes?.length > 0 && (
+                        <span className="bg-brand-gold/10 text-brand-gold px-2 py-0.5 rounded-lg border border-brand-gold/10 font-bold">
+                          {lead.notes.length} NOTES
+                        </span>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+
+              {getLeadsByStatus(column.id).length > visibleCounts[column.id] && (
+                <button 
+                  onClick={() => handleLoadMore(column.id)}
+                  className="w-full py-3 bg-white/5 border border-white/5 rounded-2xl text-[10px] font-bold text-zinc-500 uppercase tracking-widest hover:bg-white/10 hover:text-brand-gold transition-all"
+                >
+                  See More ({getLeadsByStatus(column.id).length - visibleCounts[column.id]} left)
+                </button>
+              )}
+            
               {getLeadsByStatus(column.id).length === 0 && (
                 <div className="h-full flex flex-col items-center justify-center opacity-30 py-8">
                   <div className="w-10 h-10 border-2 border-dashed border-zinc-600 rounded-full mb-2"></div>
