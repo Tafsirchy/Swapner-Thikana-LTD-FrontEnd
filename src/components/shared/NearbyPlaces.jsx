@@ -78,34 +78,38 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
     const fetchFromOverpass = async (query) => {
       const servers = [
         'https://overpass-api.de/api/interpreter',
+        'https://lz4.overpass-api.de/api/interpreter',
         'https://overpass.kumi.systems/api/interpreter',
-        'https://maps.mail.ru/osm/tools/overpass/api/interpreter'
+        'https://overpass.osm.ch/api/interpreter',
+        'https://overpass.hotosm.org/api/interpreter'
       ];
 
       for (const server of servers) {
         try {
-          const url = `${server}?data=[out:json];(${query});out body;`;
-          // Add timeout signal
+          const url = `${server}?data=[out:json][timeout:25];(${query});out body;`;
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+          const timeoutId = setTimeout(() => controller.abort(), 15000); // Increased to 15s
 
           const response = await fetch(url, { signal: controller.signal });
           clearTimeout(timeoutId);
 
-          const contentType = response.headers.get('content-type');
-          if (response.ok && contentType && contentType.includes('application/json')) {
-            return await response.json();
+          if (response.ok) {
+            const data = await response.json();
+            if (data && data.elements) return data;
           }
+          
+          // Small delay before trying next server if we got a non-200 response
+          await new Promise(resolve => setTimeout(resolve, 500));
         } catch (err) {
           console.warn(`Failed to fetch from ${server}:`, err.message);
-          continue; // Try next server
+          continue; 
         }
       }
       throw new Error('All Overpass servers failed');
     };
 
-    const fetchAllNearby = async () => {
-      if (!coords) return;
+    const performNearbySearch = async () => {
+      if (!coords.lat || !coords.lng) return;
 
       try {
         setLoading(true);
@@ -141,13 +145,13 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
         setPlaces(newPlaces);
       } catch (error) {
         console.error('Error fetching nearby places:', error);
-        setError('Unable to load nearby places');
+        setError('Overpass services are currently under heavy load. Please try again in a moment.');
       } finally {
         setLoading(false);
       }
     };
     
-    fetchAllNearby();
+    performNearbySearch();
   }, [coords]);
 
   useEffect(() => {
