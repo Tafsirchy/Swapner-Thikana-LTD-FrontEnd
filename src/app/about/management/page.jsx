@@ -216,12 +216,12 @@ const ManagementPage = () => {
                         </div>
                       </div>
 
-                        <div className="mt-8 flex justify-between items-end pb-4 px-4">
-                        <div className="space-y-1">
-                          <p className="text-brand-gold font-cinzel text-[10px] uppercase tracking-[0.3em] font-black italic mb-2">{leaders[0].role}</p>
-                          <h3 className="text-4xl font-cinzel font-bold text-white tracking-widest leading-none">{leaders[0].name}</h3>
-                        </div>
-                          <div className="flex flex-col items-end gap-2">
+                        <div className="mt-8 flex justify-between items-start pb-4 px-4">
+                          <div className="space-y-1">
+                            <p className="text-brand-gold font-cinzel text-[10px] uppercase tracking-[0.3em] font-black italic mb-2">{leaders[0].role}</p>
+                            <h3 className="text-4xl font-cinzel font-bold text-white tracking-widest leading-none">{leaders[0].name}</h3>
+                          </div>
+                          <div className="flex flex-col items-end gap-2 pt-1">
                             <div className="text-brand-gold/30 group-hover:text-brand-gold/80 transition-colors duration-700">
                               {getRoleIcon(leaders[0].role)}
                             </div>
@@ -251,14 +251,14 @@ const ManagementPage = () => {
                         <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
                         
                         {/* Social Icons on Hover */}
-                        <div className="absolute inset-0 bg-royal-deep/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4">
+                        <div className="absolute inset-0 bg-royal-deep/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-8">
                            {leaders[3].email && (
-                             <a href={`mailto:${leaders[3].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300">
+                             <a href={`mailto:${leaders[3].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform">
                                <Mail size={18} />
                              </a>
                            )}
                            {leaders[3].whatsapp && (
-                             <a href={`https://wa.me/${leaders[3].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300">
+                             <a href={`https://wa.me/${leaders[3].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform delay-75">
                                <MessageCircle size={18} />
                              </a>
                            )}
@@ -313,8 +313,8 @@ const ManagementPage = () => {
                            )}
                         </div>
                       </div>
-                      <div className="absolute -left-8 bottom-8 p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-6 items-center transition-all duration-500 group-hover:ring-brand-gold/30">
-                      <div className="text-brand-gold/40 group-hover:text-brand-gold transition-colors duration-500">
+                      <div className="absolute -left-8 bottom-8 p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50">
+                      <div className="flex-shrink-0 text-brand-gold/40 group-hover:text-brand-gold transition-colors duration-500">
                          {getRoleIcon(leaders[2].role)}
                       </div>
                       <div>
