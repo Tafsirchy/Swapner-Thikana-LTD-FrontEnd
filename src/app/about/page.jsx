@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Award, Users, Gem } from 'lucide-react';
+import { ShieldCheck, Award, Users, Gem, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 
 const AboutPage = () => {
@@ -69,24 +69,61 @@ const AboutPage = () => {
         </div>
 
         <div className="max-container px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0">
             {[
-              { icon: <Gem size={32} />, title: "Exclusivity", desc: "Curated selections that define the pinnacle of urban sophistication." },
-              { icon: <ShieldCheck size={32} />, title: "Integrity", desc: "Transparent legal protocols ensuring your investment is secure and verified." },
-              { icon: <Award size={32} />, title: "Precision", desc: "Attention to detail from architectural blueprints to interior finishes." },
-              { icon: <Users size={32} />, title: "Concierge", desc: "Bespose service tailored to the unique lifestyle of elite investors." }
+              { icon: <Gem size={40} />, title: "Exclusivity", desc: "Curated selections that define the pinnacle of urban sophistication.", offset: "lg:-translate-y-8" },
+              { icon: <ShieldCheck size={40} />, title: "Integrity", desc: "Transparent legal protocols ensuring your investment is secure and verified.", offset: "lg:translate-y-12" },
+              { icon: <Award size={40} />, title: "Precision", desc: "Attention to detail from architectural blueprints to interior finishes.", offset: "lg:-translate-y-16" },
+              { icon: <Users size={40} />, title: "Concierge", desc: "Bespoke service tailored to the unique lifestyle of elite investors.", offset: "lg:translate-y-4" }
             ].map((pill, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ duration: 0.8, delay: i * 0.1, ease: [0.21, 0.45, 0.32, 0.9] }}
                 viewport={{ once: true }}
-                className="p-10 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all text-center"
+                className={`relative group ${pill.offset}`}
               >
-                <div className="text-brand-gold mb-6 flex justify-center">{pill.icon}</div>
-                <h3 className="text-xl font-bold text-zinc-100 mb-4">{pill.title}</h3>
-                <p className="text-zinc-500 text-sm leading-relaxed">{pill.desc}</p>
+                {/* Background Glow */}
+                <div className="absolute -inset-4 bg-brand-gold/0 group-hover:bg-brand-gold/5 rounded-[3rem] blur-3xl transition-all duration-700 opacity-0 group-hover:opacity-100"></div>
+                
+                <div className="relative h-full p-10 bg-zinc-900/40 backdrop-blur-2xl border border-white/5 group-hover:border-brand-gold/40 transition-all duration-500 overflow-hidden">
+                  {/* Decorative Number */}
+                  <span className="absolute -right-4 -top-8 text-9xl font-cinzel font-black text-white/[0.02] group-hover:text-brand-gold/[0.05] transition-colors duration-700 pointer-events-none">
+                    0{i + 1}
+                  </span>
+
+                  <div className="relative z-10 space-y-8">
+                    {/* Icon Container with Floating Animation */}
+                    <motion.div 
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
+                      className="inline-flex p-4 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 text-brand-gold group-hover:scale-110 transition-transform duration-500"
+                    >
+                      {pill.icon}
+                    </motion.div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-3xl font-cinzel font-bold text-zinc-100 tracking-wider group-hover:text-brand-gold transition-colors duration-500">
+                        {pill.title}
+                      </h3>
+                      <div className="w-12 h-0.5 bg-brand-gold/30 group-hover:w-full transition-all duration-700"></div>
+                      <p className="text-zinc-400 text-sm leading-relaxed font-medium group-hover:text-zinc-200 transition-colors duration-500 italic">
+                        {pill.desc}
+                      </p>
+                    </div>
+
+                    {/* Bottom Accent */}
+                    <div className="pt-8 flex justify-end">
+                      <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-brand-gold/50 transition-colors duration-500">
+                        <ArrowRight size={14} className="text-zinc-600 group-hover:text-brand-gold transition-colors" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Corner Accent */}
+                  <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-brand-gold/0 group-hover:border-brand-gold/40 transition-all duration-500"></div>
+                </div>
               </motion.div>
             ))}
           </div>
