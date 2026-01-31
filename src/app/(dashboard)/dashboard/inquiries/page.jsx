@@ -105,8 +105,14 @@ const InquiriesPage = () => {
                        </span>
                     </div>
                     <h3 className="text-lg font-bold text-zinc-100 group-hover:text-brand-gold transition-colors">
-                       Inquiry for: <span className="text-zinc-300">{lead.propertyName || 'General Inquiry'}</span>
+                       {lead.subject || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
                     </h3>
+                    {lead.propertyName && (
+                       <p className="text-sm text-brand-gold font-medium flex items-center gap-2">
+                          <Building2 size={14} />
+                          {lead.propertyName}
+                       </p>
+                    )}
                     <p className="text-zinc-400 text-sm line-clamp-2">
                        &quot;{lead.message}&quot;
                     </p>

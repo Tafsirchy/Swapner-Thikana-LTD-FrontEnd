@@ -174,7 +174,9 @@ const LeadsPage = () => {
                     </button>
                   </div>
                   <h4 className="font-bold text-zinc-100 mb-1 group-hover:text-brand-gold transition-colors">{lead.name}</h4>
-                  <p className="text-xs text-zinc-400 line-clamp-1 mb-3">{lead.propertyName || 'General Inquiry'}</p>
+                  <p className="text-xs text-zinc-400 line-clamp-1 mb-3 font-medium">
+                    {lead.subject || lead.propertyName || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
+                  </p>
                   
                   <div className="flex items-center justify-between text-[10px] text-zinc-500">
                     <span className="flex items-center gap-1">
@@ -245,13 +247,18 @@ const LeadsPage = () => {
                     </div>
 
                     <div className="p-4 bg-white/5 rounded-2xl">
-                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Interest</p>
+                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2">Subject & Interest</p>
                       <div className="space-y-3">
-                        <div className="flex items-center gap-3 text-sm text-zinc-300">
-                          <Building2 size={16} className="text-zinc-500" />
-                          {selectedLead.propertyName || 'General Inquiry'}
+                        <div className="flex items-center gap-3 text-sm text-zinc-100 font-bold">
+                           {selectedLead.subject || (selectedLead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${selectedLead.interestType}`)}
                         </div>
-                        <div className="flex items-center gap-3 text-xs text-zinc-500 italic">
+                        {selectedLead.propertyName && (
+                           <div className="flex items-center gap-3 text-sm text-zinc-300">
+                             <Building2 size={16} className="text-zinc-500" />
+                             {selectedLead.propertyName}
+                           </div>
+                        )}
+                        <div className="flex items-center gap-3 text-xs text-zinc-500 italic border-t border-white/5 pt-2">
                           &quot;{selectedLead.message}&quot;
                         </div>
                       </div>
