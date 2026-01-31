@@ -84,13 +84,13 @@ const FeatureShowcase = () => {
 
   return (
     <section 
-      className="py-24 bg-royal-deep text-white overflow-hidden relative" 
+      className="py-12 md:py-24 bg-royal-deep text-white overflow-hidden relative" 
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="max-container px-4 relative z-10">
         
-        <div className="mb-16 text-center">
+        <div className="mb-10 md:mb-16 text-center">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -100,14 +100,14 @@ const FeatureShowcase = () => {
                 <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                     Exclusive Listings
                 </span>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-semibold text-white mb-6">
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-cinzel font-semibold text-white mb-6">
                     Featured <span className="text-brand-gold">Properties</span>
                 </h2>
                 <div className="w-24 h-1 bg-gradient-to-r from-transparent via-brand-gold to-transparent mx-auto" />
             </motion.div>
         </div>
 
-        <div className="h-[600px] lg:h-[700px]">
+        <div className="h-[500px] md:h-[600px] lg:h-[700px]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
           
           {/* Main Feature Display (8 Cols) */}
@@ -174,6 +174,33 @@ const FeatureShowcase = () => {
                 style={{ width: `${progress}%` }}
               />
             </div>
+
+            {/* In-Image Navigation Arrows (Mobile Only) */}
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 lg:hidden z-30 pointer-events-none">
+              <LiquidButton 
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); handlePrev(); }} 
+                baseColor="bg-black/20"
+                liquidColor="fill-brand-gold/20"
+                rounded="rounded-full"
+                px="!p-3"
+                py="!p-3"
+                className="text-white backdrop-blur-md border border-white/10 pointer-events-auto"
+              >
+                <ChevronRight size={20} className="rotate-180" />
+              </LiquidButton>
+              
+              <LiquidButton 
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleNext(); }} 
+                baseColor="bg-black/20"
+                liquidColor="fill-brand-gold/20"
+                rounded="rounded-full"
+                px="!p-3"
+                py="!p-3"
+                className="text-white backdrop-blur-md border border-white/10 pointer-events-auto"
+              >
+                <ChevronRight size={20} />
+              </LiquidButton>
+            </div>
           </div>
 
           {/* Side Column: Vertical Strips (4 Cols) */}
@@ -217,32 +244,6 @@ const FeatureShowcase = () => {
             })}
           </div>
 
-           {/* Mobile Controls (Only visible on small screens) */}
-           <div className="col-span-1 lg:hidden flex justify-center items-center gap-8 mt-4 md:mt-0">
-             <LiquidButton 
-               onClick={handlePrev} 
-               baseColor="bg-zinc-900"
-               liquidColor="fill-brand-gold/10"
-               rounded="rounded-full"
-               px="!p-4"
-               py="!p-4"
-               className="text-brand-gold border border-zinc-800"
-             >
-                <ChevronRight size={24} className="rotate-180" />
-             </LiquidButton>
-             
-             <LiquidButton 
-               onClick={handleNext} 
-               baseColor="bg-zinc-900"
-               liquidColor="fill-brand-gold/10"
-               rounded="rounded-full"
-               px="!p-4"
-               py="!p-4"
-               className="text-brand-gold border border-zinc-800"
-             >
-                <ChevronRight size={24} />
-             </LiquidButton>
-           </div>
 
         </div>
         </div>
