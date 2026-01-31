@@ -27,24 +27,10 @@ function CompareContent() {
   const fetchItems = async (ids) => {
     try {
       setLoading(true);
-      const results = await Promise.all(
-        ids.map(async (id) => {
-          // Attempt properties first
-          try {
-            const res = await api.properties.getById(id);
-            if (res.data?.property) return { ...res.data.property, itemType: 'property' };
-          } catch { /* ignore */ }
-          
-          // Then projects
-          try {
-            const res = await api.projects.getById(id);
-            if (res.data?.project) return { ...res.data.project, itemType: 'project' };
-          } catch { /* ignore */ }
-          
-          return null;
-        })
-      );
-      setProperties(results.filter(Boolean));
+      const res = await api.public.getItemsByIds(ids);
+      if (res.data?.items) {
+        setProperties(res.data.items);
+      }
     } catch (error) {
       console.error('Error fetching items:', error);
       toast.error('Failed to load comparison items');

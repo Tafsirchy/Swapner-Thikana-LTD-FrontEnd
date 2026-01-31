@@ -32,7 +32,9 @@ apiInstance.interceptors.request.use(
 apiInstance.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    console.error(`[API] Error in ${error.config?.method?.toUpperCase()} ${error.config?.url}:`, error.message);
+    if (!error.config?.suppressErrorLogs) {
+      console.error(`[API] Error in ${error.config?.method?.toUpperCase()} ${error.config?.url}:`, error.message);
+    }
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
@@ -96,6 +98,9 @@ export const api = {
     uploadImages: (id, data) => apiInstance.post(`/properties/${id}/images`, data, {
       headers: { 'Content-Type': 'multipart/form-data' }
     }),
+  },
+  public: {
+    getItemsByIds: (ids) => apiInstance.get('/public/items', { params: { ids: ids.join(',') } }),
   },
   projects: {
     getAll: (params) => apiInstance.get('/projects', { params }),
