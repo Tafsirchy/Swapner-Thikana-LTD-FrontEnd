@@ -223,6 +223,14 @@ export const api = {
   uploads: {
     upload: (data, config) => apiInstance.post('/upload', data, config),
     uploadPublic: (data, config) => apiInstance.post('/upload/public', data, config),
+  },
+  history: {
+    getPublic: () => apiInstance.get('/history'),
+    getAllAdmin: () => apiInstance.get('/history/admin'),
+    getById: (id) => apiInstance.get(`/history/${id}`),
+    create: (data) => apiInstance.post('/history', data),
+    update: (id, data) => apiInstance.put(`/history/${id}`, data),
+    delete: (id) => apiInstance.delete(`/history/${id}`),
   }
 };
 
