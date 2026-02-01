@@ -67,6 +67,22 @@ const DashboardLayout = ({ children }) => {
           { name: 'Blogs', href: '/dashboard/admin/blogs', icon: FileText },
           { name: 'Settings', href: '/dashboard/settings', icon: Settings },
         ];
+      case 'management':
+        return [
+          { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
+          { name: 'About CMS', id: 'about', icon: Info, isCollapsible: true, subLinks: [
+            { name: 'Magazines', href: '/dashboard/admin/magazines' },
+            { name: 'Agencies', href: '/dashboard/admin/agencies' },
+            { name: 'History', href: '/dashboard/admin/about/history' },
+            { name: 'Management', href: '/dashboard/admin/management' },
+            { name: 'Agents', href: '/dashboard/admin/agents' },
+          ]},
+          { name: 'Properties', href: '/dashboard/admin/properties', icon: Building2 },
+          { name: 'Projects', href: '/dashboard/admin/projects', icon: Building2 },
+          { name: 'Leads Pipeline', href: '/dashboard/leads', icon: BarChart3 },
+          { name: 'Analytics', href: '/dashboard/admin/analytics', icon: BarChart3 },
+          { name: 'Settings', href: '/dashboard/settings', icon: Settings },
+        ];
       case 'customer':
       default:
         return commonCustomerLinks;
