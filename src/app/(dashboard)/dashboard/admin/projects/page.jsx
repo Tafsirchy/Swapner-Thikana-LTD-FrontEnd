@@ -42,7 +42,7 @@ const AdminProjectsPage = () => {
       await api.projects.delete(id);
       setProjects(projects.filter(p => p._id !== id));
       toast.success('Project deleted successfully');
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete project');
     }
   };
@@ -85,7 +85,7 @@ const AdminProjectsPage = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="grid grid-cols-1 md:flex md:items-center gap-4">
         <div className="flex-1 relative">
           <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
           <input
@@ -96,18 +96,24 @@ const AdminProjectsPage = () => {
             className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
           />
         </div>
-        <div className="flex items-center gap-2">
-          <Filter size={18} className="text-zinc-400" />
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
-          >
-            <option value="all">All Status</option>
-            <option value="upcoming">Upcoming</option>
-            <option value="ongoing">Ongoing</option>
-            <option value="completed">Completed</option>
-          </select>
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <div className="flex items-center gap-2 text-zinc-400 md:hidden mb-1">
+            <Filter size={18} />
+            <span className="text-xs font-bold uppercase tracking-wider">Status</span>
+          </div>
+          <div className="relative flex-1 md:flex-none">
+            <Filter size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 hidden md:block" />
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full md:w-auto bg-white/5 border border-white/10 rounded-xl px-4 md:pl-12 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
+            >
+              <option value="all">All Status</option>
+              <option value="upcoming">Upcoming</option>
+              <option value="ongoing">Ongoing</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -199,7 +205,7 @@ const AdminProjectsPage = () => {
         <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">
           <Building2 size={48} className="mx-auto text-zinc-700 mb-4" />
           <h3 className="text-lg font-bold text-zinc-300">No Projects Found</h3>
-          <p className="text-zinc-500 max-w-xs mx-auto mt-1">Try adjusting your search or filters to find what you're looking for.</p>
+          <p className="text-zinc-500 max-w-xs mx-auto mt-1">Try adjusting your search or filters to find what you&apos;re looking for.</p>
         </div>
       )}
     </div>
