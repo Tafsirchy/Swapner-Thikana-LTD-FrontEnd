@@ -131,6 +131,8 @@ const CustomerDashboard = () => {
   );
 };
 
+import ProfileStrengthMeter from '@/components/dashboard/ProfileStrengthMeter';
+
 const AgentDashboard = () => {
   const [stats, setStats] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
@@ -155,7 +157,10 @@ const AgentDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
            {[...Array(4)].map((_, i) => <div key={i} className="h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
         </div>
-        <div className="h-64 bg-white/5 rounded-3xl border border-white/5"></div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+           <div className="lg:col-span-2 h-64 bg-white/5 rounded-3xl"></div>
+           <div className="h-64 bg-white/5 rounded-3xl"></div>
+        </div>
      </div>
   );
 
@@ -164,48 +169,101 @@ const AgentDashboard = () => {
   const totalLeads = stats?.leadStats?.reduce((acc, curr) => acc + curr.count, 0) || 0;
   const totalViews = stats?.listingsPerformance?.reduce((acc, curr) => acc + (curr.views || 0), 0) || 0;
   const pendingListings = stats?.listingsPerformance?.filter(p => p.status === 'pending').length || 0;
+  
+  // Sort properties by views for "Top Property"
+  const topProperty = [...(stats?.listingsPerformance || [])].sort((a, b) => b.views - a.views)[0];
 
   return (
-   <div className="space-y-8">
+   <div className="space-y-8 font-sans">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
          <StatCard title="My Listings" value={totalListings} icon={Building2} color="text-brand-emerald" />
-         <StatCard title="Total Leads" value={totalLeads} icon={Users} color="text-blue-500" />
+         <StatCard title="Total Leads" value={totalLeads} icon={Users} color="text-brand-gold" />
          <StatCard title="Total Views" value={totalViews} icon={Search} color="text-purple-500" />
-         <StatCard title="Pending" value={pendingListings} icon={Clock} color="text-yellow-500" />
+         <StatCard title="Pending" value={pendingListings} icon={Clock} color="text-zinc-500" />
       </div>
 
-      <div className="flex items-center justify-end">
-         <Link href="/dashboard/properties/add" className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
-            <PlusCircle size={18} /> Add New Property
-         </Link>
-      </div>
+       {/* Top Actions & Profile Strength */}
+       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+             <ProfileStrengthMeter strength={stats?.profileStrength} />
+          </div>
+          <div className="bg-white/5 border border-white/5 rounded-3xl p-8 flex flex-col justify-between">
+             <div>
+                <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-2 mb-2">
+                   <TrendingUp size={20} className="text-emerald-500" />
+                   Top Property
+                </h3>
+                {topProperty ? (
+                   <div className="mt-4">
+                      <p className="text-zinc-100 font-bold line-clamp-1">{topProperty.title}</p>
+                      <p className="text-zinc-500 text-xs mt-1">{topProperty.views} total impressions</p>
+                      <div className="mt-4 flex items-center gap-3">
+                         <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                            topProperty.status === 'published' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-zinc-500/10 text-zinc-500'
+                         }`}>
+                            {topProperty.status}
+                         </span>
+                         <Link href={`/dashboard/properties`} className="text-brand-gold text-xs font-bold hover:underline">
+                            Details
+                         </Link>
+                      </div>
+                   </div>
+                ) : (
+                   <p className="text-zinc-500 text-sm italic mt-4">No listings active yet</p>
+                )}
+             </div>
+             <Link href="/dashboard/properties/add" className="mt-8 flex items-center justify-center gap-2 px-6 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95 shadow-xl shadow-brand-gold/20">
+                <PlusCircle size={18} /> Add New Listing
+             </Link>
+          </div>
+       </div>
 
-       {/* Ongoing Leads & Reminders */}
+       {/* Recent Leads & Reminders */}
        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-3 bg-white/5 border border-white/5 rounded-3xl p-8">
-             <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-zinc-100">Recent Leads</h2>
+             <div className="flex items-center justify-between mb-8">
+                <div>
+                   <h2 className="text-xl font-bold text-zinc-100">Recent Prospects</h2>
+                   <p className="text-zinc-500 text-xs mt-1">Your 5 most recent property inquiries</p>
+                </div>
                 <ViewAllLink href="/dashboard/leads" />
              </div>
              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-zinc-400">
+                <table className="w-full text-left">
                    <thead>
                       <tr className="border-b border-white/10">
-                         <th className="pb-4 font-bold uppercase tracking-wider text-xs">Date</th>
-                         <th className="pb-4 font-bold uppercase tracking-wider text-xs">Status</th>
+                         <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Client</th>
+                         <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Interest</th>
+                         <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Status</th>
                       </tr>
                    </thead>
                    <tbody className="divide-y divide-white/5">
                       {stats?.recentLeads?.length > 0 ? (
                          stats.recentLeads.map((lead, i) => (
-                            <tr key={i} className="group hover:bg-white/5">
-                               <td className="py-4 font-bold text-zinc-200">{lead._id}</td>
-                               <td className="py-4"><span className="font-bold text-zinc-100">{lead.count}</span> leads</td>
+                            <tr key={i} className="group hover:bg-white/[0.02] transition-colors">
+                               <td className="py-4 px-2">
+                                  <div className="font-bold text-zinc-200 text-sm">{lead.name}</div>
+                                  <div className="text-[10px] text-zinc-500">{new Date(lead.createdAt).toLocaleDateString()}</div>
+                               </td>
+                               <td className="py-4 px-2">
+                                  <div className="text-zinc-300 text-xs truncate max-w-[150px]">
+                                     {lead.property?.title || lead.interestType}
+                                  </div>
+                               </td>
+                               <td className="py-4 px-2">
+                                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                                     lead.status === 'new' ? 'bg-blue-500/10 text-blue-500' :
+                                     lead.status === 'contacted' ? 'bg-yellow-500/10 text-yellow-500' :
+                                     'bg-emerald-500/10 text-emerald-500'
+                                  }`}>
+                                     {lead.status}
+                                  </span>
+                               </td>
                             </tr>
                          ))
                       ) : (
-                         <tr><td colSpan="2" className="py-4 text-center text-zinc-500">No recent leads</td></tr>
+                         <tr><td colSpan="3" className="py-10 text-center text-zinc-500 italic text-sm">No recent inquiries to display</td></tr>
                       )}
                    </tbody>
                 </table>

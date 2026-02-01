@@ -30,7 +30,7 @@ const DashboardLayout = ({ children }) => {
   const commonCustomerLinks = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Saved Searches', href: '/dashboard/saved-searches', icon: Search },
-    { name: 'Wishlist', href: '/dashboard/wishlist', icon: Heart },
+    { name: 'Wishlist', href: '/dashboard/saved', icon: Heart },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ];
 

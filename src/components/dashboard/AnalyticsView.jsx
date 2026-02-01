@@ -1,16 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  LineChart, Line, PieChart, Pie, Cell, AreaChart, Area 
+  PieChart, Pie, Cell, AreaChart, Area 
 } from 'recharts';
 import { 
   TrendingUp, Users, Building2, MousePointer2, 
   ArrowUpRight, ArrowDownRight, Activity, Calendar
 } from 'lucide-react';
 import { api } from '@/lib/api';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 
 const COLORS = ['#D4AF37', '#8B7355', '#1E293B', '#334155', '#475569'];
 
@@ -79,7 +78,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
             <StatCard title="Listing Views" value={data.listingsPerformance?.reduce((acc, curr) => acc + curr.views, 0) || 0} change="15" icon={MousePointer2} trend="up" />
             <StatCard title="Lead Count" value={data.leadStats?.reduce((acc, curr) => acc + curr.count, 0) || 0} icon={Users} />
             <StatCard title="Active Properties" value={data.listingsPerformance?.filter(p => p.status === 'published').length || 0} icon={Building2} />
-            <StatCard title="Recent Interest" value={data.recentLeads?.reduce((acc, curr) => acc + curr.count, 0) || 0} change="20" icon={TrendingUp} trend="up" />
+            <StatCard title="Recent Interest" value={data.recentLeadsStats?.reduce((acc, curr) => acc + curr.count, 0) || 0} change="20" icon={TrendingUp} trend="up" />
           </>
         )}
       </div>
@@ -113,7 +112,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
                   <Area type="monotone" dataKey="count" stroke="#D4AF37" fillOpacity={1} fill="url(#colorCount)" strokeWidth={3} />
                 </AreaChart>
               ) : (
-                <BarChart data={data.recentLeads}>
+                <BarChart data={data.recentLeadsStats}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#27272a" vertical={false} />
                   <XAxis dataKey="_id" stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="#71717a" fontSize={12} tickLine={false} axisLine={false} />
@@ -156,12 +155,12 @@ const AnalyticsView = ({ isAdmin = false }) => {
                 />
               </PieChart>
             </ResponsiveContainer>
-            <div className="flex flex-col gap-3 ml-4">
+            <div className="flex flex-wrap lg:flex-col gap-3 ml-0 lg:ml-4 mt-6 lg:mt-0">
               {(isAdmin ? data.typeDistribution : data.leadStats).map((entry, index) => (
-                <div key={entry._id} className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
-                  <span className="text-xs text-zinc-400 capitalize">{entry._id}</span>
-                  <span className="text-xs font-bold text-zinc-200">{entry.count}</span>
+                <div key={entry._id} className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
+                  <span className="text-[10px] text-zinc-400 capitalize whitespace-nowrap">{entry._id}</span>
+                  <span className="text-[10px] font-bold text-zinc-200">{entry.count}</span>
                 </div>
               ))}
             </div>

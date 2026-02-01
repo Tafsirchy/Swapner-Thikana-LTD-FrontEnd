@@ -59,7 +59,7 @@ const AgentPropertiesPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
+          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
             <Building2 size={32} className="text-brand-emerald" />
             My Listings
           </h1>
@@ -68,26 +68,28 @@ const AgentPropertiesPage = () => {
           </p>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
           {/* Status Filter */}
           {properties.length > 0 && (
-            <div className="flex items-center gap-2">
-              <Filter size={18} className="text-zinc-400" />
-              <select 
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
-              >
-                <option value="all">All Status</option>
-                <option value="published">Published</option>
-                <option value="pending">Pending</option>
-                <option value="sold">Sold</option>
-              </select>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 flex-1 sm:flex-none">
+                <Filter size={18} className="text-zinc-400 shrink-0" />
+                <select 
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="w-full sm:w-auto bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
+                >
+                  <option value="all">All Status</option>
+                  <option value="published">Published</option>
+                  <option value="pending">Pending</option>
+                  <option value="sold">Sold</option>
+                </select>
+              </div>
 
               <select 
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
+                className="flex-1 sm:flex-none bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -100,10 +102,10 @@ const AgentPropertiesPage = () => {
           
           <Link 
             href="/dashboard/properties/add" 
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/20"
+            className="flex items-center justify-center gap-2 px-6 py-3.5 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/20 whitespace-nowrap text-sm"
           >
             <PlusCircle size={18} />
-            Add New Property
+            Add Property
           </Link>
         </div>
       </div>

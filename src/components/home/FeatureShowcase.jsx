@@ -84,7 +84,7 @@ const FeatureShowcase = () => {
 
   return (
     <section 
-      className="py-12 md:py-24 bg-royal-deep text-white overflow-hidden relative" 
+      className="py-12 md:pt-20 md:pb-24 bg-royal-deep text-white overflow-hidden relative" 
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
