@@ -157,12 +157,15 @@ const AdminPropertiesPage = () => {
             className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 outline-none focus:border-brand-gold/50"
           />
         </div>
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-          <Filter size={18} className="text-zinc-400" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:items-center gap-3 w-full lg:w-auto">
+          <div className="flex items-center gap-2 text-zinc-400 sm:col-span-2 lg:col-auto mb-1 lg:mb-0">
+            <Filter size={18} />
+            <span className="text-xs font-bold uppercase tracking-wider lg:hidden">Filters</span>
+          </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
@@ -174,7 +177,7 @@ const AdminPropertiesPage = () => {
           <select
             value={featuredFilter}
             onChange={(e) => setFeaturedFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
           >
             <option value="all">Featured: All</option>
             <option value="true">Featured Only</option>
@@ -184,7 +187,7 @@ const AdminPropertiesPage = () => {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm sm:col-span-2 lg:col-auto"
           >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
