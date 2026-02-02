@@ -168,7 +168,14 @@ const InteractiveMasterPlan = () => {
                             }}
                         >
                             <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-white/10 shadow-lg">
-                                <Image src={hoveredRegion.image} alt={hoveredRegion.name} fill className="object-cover" />
+                                <Image 
+                                    src={hoveredRegion.image} 
+                                    alt={hoveredRegion.name} 
+                                    fill 
+                                    className="object-cover" 
+                                    loading="lazy"
+                                    unoptimized
+                                />
                             </div>
                             <div className="flex flex-col">
                                 <h4 className="text-brand-gold font-cinzel font-bold text-base tracking-wider leading-tight">{hoveredRegion.name}</h4>
@@ -211,8 +218,9 @@ const InteractiveMasterPlan = () => {
                     animate={{ x: 0 }}
                     exit={{ x: '100%' }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="fixed top-0 right-0 h-full w-full max-w-md bg-zinc-900 border-l border-white/10 z-50 p-8 overflow-y-auto"
+                    className="fixed top-0 right-0 h-screen w-full max-w-md bg-zinc-900 border-l border-white/10 z-50 overflow-y-auto scrollbar-thin scrollbar-thumb-brand-gold/20 scrollbar-track-transparent"
                 >
+                    <div className="p-8">
                     <div className="flex justify-between items-center mb-8">
                         <h3 className="text-3xl font-cinzel text-white">{activeRegion.name}</h3>
                         <button onClick={() => setActiveRegion(null)} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
@@ -221,7 +229,14 @@ const InteractiveMasterPlan = () => {
                     </div>
 
                     <div className="relative w-full h-64 rounded-2xl overflow-hidden mb-8">
-                        <Image src={activeRegion.image} alt={activeRegion.name} fill className="object-cover" />
+                        <Image 
+                            src={activeRegion.image} 
+                            alt={activeRegion.name} 
+                            fill 
+                            className="object-cover" 
+                            loading="lazy"
+                            unoptimized
+                        />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
                             <span className="bg-brand-gold text-black px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                                 {activeRegion.stats.type}
@@ -266,7 +281,7 @@ const InteractiveMasterPlan = () => {
                     <LiquidButton className="w-full mt-12 shadow-lg shadow-brand-gold/10">
                         View Full Master Plan
                     </LiquidButton>
-
+                    </div>
                 </motion.div>
             </>
         )}
