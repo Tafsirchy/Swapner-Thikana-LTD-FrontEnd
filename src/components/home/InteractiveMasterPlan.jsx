@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight, Building, Home, TrendingUp } from 'lucide-react';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import LiquidButton from '@/components/shared/LiquidButton';
 
 const regions = [
@@ -60,6 +60,17 @@ const regions = [
 const InteractiveMasterPlan = () => {
   const [activeRegion, setActiveRegion] = useState(null);
   const [hoveredRegion, setHoveredRegion] = useState(null);
+
+  // Body scroll lock effect
+  useEffect(() => {
+    if (activeRegion) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [activeRegion]);
 
   return (
     <section className="py-24 bg-royal-deep relative overflow-hidden text-white">
@@ -168,13 +179,11 @@ const InteractiveMasterPlan = () => {
                             }}
                         >
                             <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-white/10 shadow-lg">
-                                <Image 
+                                <SmartImage 
                                     src={hoveredRegion.image} 
                                     alt={hoveredRegion.name} 
                                     fill 
-                                    className="object-cover" 
-                                    loading="lazy"
-                                    unoptimized
+                                    className="object-cover"
                                 />
                             </div>
                             <div className="flex flex-col">
@@ -218,9 +227,29 @@ const InteractiveMasterPlan = () => {
                     animate={{ x: 0 }}
                     exit={{ x: '100%' }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="fixed top-0 right-0 h-screen w-full max-w-md bg-zinc-900 border-l border-white/10 z-50 overflow-y-auto scrollbar-thin scrollbar-thumb-brand-gold/20 scrollbar-track-transparent"
+                    className="fixed top-0 right-0 h-screen w-full max-w-md bg-zinc-900 border-l border-white/10 z-50 overflow-y-auto custom-scrollbar pointer-events-auto"
+                    style={{
+                        touchAction: 'pan-y',
+                        WebkitOverflowScrolling: 'touch',
+                    }}
+                    data-lenis-prevent
                 >
-                    <div className="p-8">
+                    <style jsx>{`
+                        .custom-scrollbar::-webkit-scrollbar {
+                            width: 4px;
+                        }
+                        .custom-scrollbar::-webkit-scrollbar-track {
+                            background: transparent;
+                        }
+                        .custom-scrollbar::-webkit-scrollbar-thumb {
+                            background: rgba(255, 255, 255, 0.05);
+                            border-radius: 10px;
+                        }
+                        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                            background: rgba(255, 255, 255, 0.1);
+                        }
+                    `}</style>
+                    <div className="p-8 pb-24">
                     <div className="flex justify-between items-center mb-8">
                         <h3 className="text-3xl font-cinzel text-white">{activeRegion.name}</h3>
                         <button onClick={() => setActiveRegion(null)} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
@@ -229,13 +258,11 @@ const InteractiveMasterPlan = () => {
                     </div>
 
                     <div className="relative w-full h-64 rounded-2xl overflow-hidden mb-8">
-                        <Image 
+                        <SmartImage 
                             src={activeRegion.image} 
                             alt={activeRegion.name} 
                             fill 
-                            className="object-cover" 
-                            loading="lazy"
-                            unoptimized
+                            className="object-cover"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
                             <span className="bg-brand-gold text-black px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
@@ -262,9 +289,9 @@ const InteractiveMasterPlan = () => {
                          </div>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-4 mb-8">
                         <h4 className="font-bold text-white uppercase tracking-wider text-sm border-b border-white/10 pb-2">Recent Developments</h4>
-                        {[1, 2, 3].map((item) => (
+                        {[1, 2, 3, 4, 5, 6].map((item) => (
                             <div key={item} className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
                                 <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center text-zinc-500 group-hover:text-brand-gold">
                                     <Home size={18} />
@@ -278,7 +305,7 @@ const InteractiveMasterPlan = () => {
                         ))}
                     </div>
 
-                    <LiquidButton className="w-full mt-12 shadow-lg shadow-brand-gold/10">
+                    <LiquidButton className="w-full shadow-lg shadow-brand-gold/10">
                         View Full Master Plan
                     </LiquidButton>
                     </div>
