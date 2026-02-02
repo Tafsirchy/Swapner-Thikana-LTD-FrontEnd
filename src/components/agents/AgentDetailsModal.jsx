@@ -27,6 +27,7 @@ const AgentDetailsModal = ({ agent, isOpen, onClose }) => {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             className="relative w-full max-w-2xl bg-zinc-900 border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl overflow-y-auto max-h-[90vh] custom-scrollbar"
+            data-lenis-prevent
           >
             {/* Close Button */}
             <button 

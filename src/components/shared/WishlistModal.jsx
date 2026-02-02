@@ -132,7 +132,7 @@ const WishlistModal = ({ propertyId, propertyTitle, onClose, onUpdate }) => {
           </button>
         </div>
 
-        <div className="p-8 max-h-[400px] overflow-y-auto custom-scrollbar">
+        <div className="p-8 max-h-[400px] overflow-y-auto custom-scrollbar" data-lenis-prevent>
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="animate-spin text-brand-gold" size={24} />

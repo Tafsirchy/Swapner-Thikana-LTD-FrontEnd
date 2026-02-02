@@ -1,33 +1,68 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, User, Phone, ArrowRight, UserCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, Phone, ArrowRight, CheckCircle2, XCircle, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     password: '',
+    confirmPassword: '',
     role: 'customer'
   });
   
   const { register } = useAuth();
   const router = useRouter();
 
+  const passwordStrength = useMemo(() => {
+    const pass = formData.password;
+    if (!pass) return { score: 0, label: '', color: '' };
+    
+    let score = 0;
+    if (pass.length > 8) score++;
+    if (/[A-Z]/.test(pass)) score++;
+    if (/[0-9]/.test(pass)) score++;
+    if (/[^A-Za-z0-9]/.test(pass)) score++;
+    
+    if (score <= 1) return { score, label: 'Weak', color: 'text-red-500', bg: 'bg-red-500' };
+    if (score <= 3) return { score, label: 'Good', color: 'text-yellow-500', bg: 'bg-yellow-500' };
+    return { score, label: 'Strong', color: 'text-brand-emerald', bg: 'bg-brand-emerald' };
+  }, [formData.password]);
+
+  const passwordsMatch = formData.password && formData.confirmPassword 
+    ? formData.password === formData.confirmPassword 
+    : null;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (passwordStrength.score <= 1) {
+      toast.error('Please use a stronger password');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
     setIsLoading(true);
     
-    const result = await register(formData);
+    // Create payload without confirmPassword
+    const registerData = { ...formData };
+    delete registerData.confirmPassword;
+    const result = await register(registerData);
     
     if (result.success) {
       toast.success('Registration successful! Please check your email for verification.');
@@ -40,7 +75,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-royal-deep px-4 py-24 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-royal-deep px-4 pt-40 pb-24 relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-brand-gold/5 rounded-full blur-[100px]"></div>
@@ -117,62 +152,83 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Password</label>
-              <div className="relative group">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
-                  <Lock size={18} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Password</label>
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
+                    <Lock size={18} />
+                  </div>
+                  <input 
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    placeholder="••••••••"
+                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 pl-12 pr-12 outline-none focus:border-brand-gold/50 focus:bg-zinc-900 transition-all text-zinc-100 placeholder:text-zinc-600"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
-                <input 
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  placeholder="••••••••"
-                  className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 pl-12 pr-12 outline-none focus:border-brand-gold/50 focus:bg-zinc-900 transition-all text-zinc-100 placeholder:text-zinc-600"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                />
-                <button 
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
+                {/* Strength Indicator */}
+                {formData.password && (
+                  <div className="mt-1 flex items-center gap-2 px-1">
+                    <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(passwordStrength.score + 1) * 20}%` }}
+                        className={`h-full ${passwordStrength.bg}`}
+                      />
+                    </div>
+                    <span className={`text-[10px] font-bold uppercase ${passwordStrength.color}`}>
+                      {passwordStrength.label}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Confirm Password</label>
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
+                    <ShieldCheck size={18} />
+                  </div>
+                  <input 
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    required
+                    placeholder="••••••••"
+                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl py-3 pl-12 pr-12 outline-none focus:border-brand-gold/50 focus:bg-zinc-900 transition-all text-zinc-100 placeholder:text-zinc-600"
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+                {/* Match Indicator */}
+                {formData.confirmPassword && (
+                  <div className="mt-1 flex items-center gap-1.5 px-1">
+                    {passwordsMatch ? (
+                      <><CheckCircle2 size={12} className="text-brand-emerald" /> <span className="text-[10px] text-brand-emerald font-semibold uppercase">Matched</span></>
+                    ) : (
+                      <><XCircle size={12} className="text-red-500" /> <span className="text-[10px] text-red-500 font-semibold uppercase">No Match</span></>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Am a...</label>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, role: 'customer' })}
-                  className={`flex items-center justify-center gap-2 py-3 rounded-xl border transition-all ${
-                    formData.role === 'customer' 
-                    ? 'border-brand-gold bg-brand-gold/10 text-brand-gold' 
-                    : 'border-white/10 bg-white/5 text-zinc-500 hover:bg-white/10'
-                  }`}
-                >
-                  <UserCircle size={18} />
-                  <span className="text-sm font-semibold">Customer</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, role: 'agent' })}
-                  className={`flex items-center justify-center gap-2 py-3 rounded-xl border transition-all ${
-                    formData.role === 'agent' 
-                    ? 'border-brand-gold bg-brand-gold/10 text-brand-gold' 
-                    : 'border-white/10 bg-white/5 text-zinc-500 hover:bg-white/10'
-                  }`}
-                >
-                  <Building size={18} />
-                  <span className="text-sm font-semibold">Agent</span>
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 ml-1 pb-2">
-              <input type="checkbox" required className="w-4 h-4 rounded border-brand-gold/20 bg-zinc-900 text-brand-gold focus:ring-brand-gold" />
+            <div className="flex items-center gap-2 ml-1 pb-2 pt-2">
+              <input type="checkbox" required className="w-4 h-4 rounded border-brand-gold/20 bg-zinc-900 text-brand-gold focus:ring-brand-gold cursor-pointer" />
               <p className="text-[11px] text-zinc-500">
                 I agree to the <Link href="#" className="text-brand-gold">Terms of Service</Link> and <Link href="#" className="text-brand-gold">Privacy Policy</Link>.
               </p>
@@ -194,6 +250,30 @@ const RegisterPage = () => {
             </button>
           </form>
 
+          <div className="relative my-8">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/10"></div>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-transparent px-2 text-zinc-500">Or join with</span>
+            </div>
+          </div>
+
+          <div className="w-full">
+            <a 
+              href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/google`}
+              className="w-full flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl transition-all text-sm font-medium text-zinc-100"
+            >
+              <svg size={18} viewBox="0 0 24 24" className="w-5 h-5">
+                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.28.81-.56z" />
+                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+              </svg>
+              Continue with Google
+            </a>
+          </div>
+
           <p className="text-center text-zinc-500 text-sm mt-8">
             Already have an account?{' '}
             <Link href="/auth/login" className="text-brand-gold font-bold hover:underline">
@@ -205,29 +285,5 @@ const RegisterPage = () => {
     </div>
   );
 };
-
-// Simple Building icon fallback since it wasn't imported
-const Building = ({ size, className }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
-    <path d="M9 22v-4h6v4" />
-    <path d="M8 6h.01" />
-    <path d="M16 6h.01" />
-    <path d="M8 10h.01" />
-    <path d="M16 10h.01" />
-    <path d="M8 14h.01" />
-    <path d="M16 14h.01" />
-  </svg>
-);
 
 export default RegisterPage;

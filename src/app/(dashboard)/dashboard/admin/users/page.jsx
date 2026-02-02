@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Users, Search, MoreVertical, Filter, Download } from 'lucide-react';
+import { Users, Search, MoreVertical, Filter, Download, Lock, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { AnimatePresence, motion } from 'framer-motion';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { exportUsersCSV } from '@/utils/exportUtils';
@@ -16,30 +18,46 @@ const roleColors = {
 const statusColors = {
   active: 'bg-emerald-500/10 text-emerald-500',
   inactive: 'bg-red-500/10 text-red-500',
- suspended: 'bg-yellow-500/10 text-yellow-500',
 };
 
 const AdminUsersPage = () => {
+  const { user: currentUser } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
+  const fetchUsers = React.useCallback(async (page = 1) => {
     try {
       setLoading(true);
-      const data = await api.admin.getUsers();
-      setUsers(data.data.users || []);
+      const response = await api.admin.getUsers({ 
+        role: roleFilter === 'all' ? undefined : roleFilter,
+        search: searchQuery || undefined,
+        page,
+        limit: 10
+      });
+      setUsers(response.data.users);
+      setTotalPages(response.data.pagination.pages);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching users:', error);
       toast.error('Failed to load users');
-    } finally {
       setLoading(false);
     }
+  }, [roleFilter, searchQuery]);
+
+  useEffect(() => {
+    fetchUsers(currentPage);
+  }, [currentPage, fetchUsers]);
+
+  // Use a separate handler or effect that doesn't trigger sync warnings
+  const handleFilterChange = (type, value) => {
+    if (type === 'role') setRoleFilter(value);
+    if (type === 'search') setSearchQuery(value);
+    setCurrentPage(1); // Reset to first page on filter change
   };
 
   const handleRoleChange = async (userId, newRole) => {
@@ -54,21 +72,28 @@ const AdminUsersPage = () => {
 
   const handleStatusChange = async (userId, newStatus) => {
     try {
-      const isActive = newStatus === 'active';
-      await api.admin.updateUserStatus(userId, isActive);
+      await api.admin.updateUserStatus(userId, newStatus);
       setUsers(users.map(u => u._id === userId ? { ...u, status: newStatus } : u));
       toast.success('User status updated successfully');
+      setActiveMenu(null);
     } catch {
       toast.error('Failed to update user status');
     }
   };
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesRole = roleFilter === 'all' || user.role === roleFilter;
-    return matchesSearch && matchesRole;
-  });
+  const handleDeleteUser = async (userId) => {
+    if (!window.confirm('Are you sure you want to delete this user? This will deactivate their account.')) return;
+    
+    try {
+      await api.admin.deleteUser(userId);
+      setUsers(users.filter(u => u._id !== userId));
+      toast.success('User deleted successfully');
+      setActiveMenu(null);
+    } catch {
+      toast.error('Failed to delete user');
+    }
+  };
+
 
   if (loading) {
     return (
@@ -111,7 +136,7 @@ const AdminUsersPage = () => {
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleFilterChange('search', e.target.value)}
             placeholder="Search by name or email..."
             className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 outline-none focus:border-brand-gold/50"
           />
@@ -120,7 +145,7 @@ const AdminUsersPage = () => {
           <Filter size={18} className="text-zinc-400" />
           <select
             value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value)}
+            onChange={(e) => handleFilterChange('role', e.target.value)}
             className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
           >
             <option value="all">All Roles</option>
@@ -133,8 +158,8 @@ const AdminUsersPage = () => {
       </div>
 
       {/* Users Table */}
-      <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden">
-        <div className="overflow-x-auto">
+      <div className="bg-white/5 border border-white/5 rounded-3xl min-h-[400px]">
+        <div className="overflow-x-auto min-h-[400px]">
           <table className="w-full text-left text-sm text-zinc-400">
             <thead>
               <tr className="border-b border-white/10">
@@ -146,8 +171,11 @@ const AdminUsersPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {filteredUsers.map((user) => (
-                <tr key={user._id} className="group hover:bg-white/5 transition-colors">
+              {users.map((user) => {
+                const isSelf = currentUser?.id === user._id || currentUser?._id === user._id;
+                
+                return (
+                  <tr key={user._id} className="group hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4">
                     <div>
                       <div className="font-bold text-zinc-100">{user.name}</div>
@@ -155,48 +183,116 @@ const AdminUsersPage = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <select
-                      value={user.role}
-                      onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                      className={`${roleColors[user.role]} px-3 py-1 rounded-full font-bold text-xs uppercase bg-transparent border-0 cursor-pointer`}
-                    >
-                      <option value="customer">Customer</option>
-                      <option value="agent">Agent</option>
-                      <option value="management">Management</option>
-                      <option value="admin">Admin</option>
-                    </select>
+                    <div className="flex items-center gap-2">
+                      <select
+                        value={user.role}
+                        onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                        disabled={isSelf}
+                        className={`${roleColors[user.role]} px-3 py-1 rounded-full font-bold text-xs uppercase bg-transparent border-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
+                      >
+                        <option value="customer">Customer</option>
+                        <option value="agent">Agent</option>
+                        <option value="management">Management</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                      {isSelf && <Lock size={12} className="text-zinc-600" title="Cannot change your own role" />}
+                    </div>
                   </td>
                   <td className="px-6 py-4">
-                    <select
-                      value={user.status}
-                      onChange={(e) => handleStatusChange(user._id, e.target.value)}
-                      className={`${statusColors[user.status]} px-3 py-1 rounded-full font-bold text-xs uppercase bg-transparent border-0 cursor-pointer`}
-                    >
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
-                      <option value="suspended">Suspended</option>
-                    </select>
+                    <div className="flex items-center gap-2">
+                      <select
+                        value={user.status}
+                        onChange={(e) => handleStatusChange(user._id, e.target.value)}
+                        disabled={isSelf}
+                        className={`${statusColors[user.status]} px-3 py-1 rounded-full font-bold text-xs uppercase bg-transparent border-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
+                      >
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                      </select>
+                      {isSelf && <Lock size={12} className="text-zinc-600" title="Cannot change your own status" />}
+                    </div>
                   </td>
                   <td className="px-6 py-4">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4">
-                    <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-                      <MoreVertical size={18} />
-                    </button>
+                    {!isSelf && (
+                      <div className="relative">
+                        <button 
+                          onClick={() => setActiveMenu(activeMenu === user._id ? null : user._id)}
+                          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        >
+                          <MoreVertical size={18} />
+                        </button>
+
+                        <AnimatePresence>
+                          {activeMenu === user._id && (
+                            <>
+                              <div 
+                                className="fixed inset-0 z-10" 
+                                onClick={() => setActiveMenu(null)}
+                              />
+                              <motion.div
+                                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                                className="absolute right-0 mt-2 w-48 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl z-20 overflow-hidden"
+                              >
+                                <div className="p-2">
+                                  <button
+                                    onClick={() => handleDeleteUser(user._id)}
+                                    className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                                  >
+                                    <Trash2 size={16} />
+                                    Delete User
+                                  </button>
+                                </div>
+                              </motion.div>
+                            </>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    )}
                   </td>
                 </tr>
-              ))}
+              );
+            })}
             </tbody>
           </table>
         </div>
+        {!loading && users.length === 0 && (
+          <div className="p-12 text-center">
+            <Users size={48} className="mx-auto text-zinc-700 mb-4" />
+            <div className="text-zinc-400">No users found</div>
+          </div>
+        )}
       </div>
 
-      {filteredUsers.length === 0 && (
-        <div className="text-center py-12 text-zinc-500">
-          No users found matching your criteria
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-6">
+          <div className="text-xs text-zinc-500">
+            Showing Page {currentPage} of {totalPages}
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="p-2 bg-white/5 border border-white/10 rounded-lg text-zinc-400 disabled:opacity-50 hover:bg-white/10 transition-colors"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              className="p-2 bg-white/5 border border-white/10 rounded-lg text-zinc-400 disabled:opacity-50 hover:bg-white/10 transition-colors"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
       )}
+
     </div>
   );
 };

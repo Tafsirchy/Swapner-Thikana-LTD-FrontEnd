@@ -130,7 +130,7 @@ const DashboardLayout = ({ children }) => {
           </div>
 
           <div className="flex flex-col h-full">
-            <div className="px-4 pt-6 pb-2 flex-1 overflow-y-auto min-h-0 custom-scrollbar">
+            <div className="px-4 pt-6 pb-2 flex-1 overflow-y-auto min-h-0 custom-scrollbar" data-lenis-prevent>
               <div className="flex items-center gap-3 px-4 py-4 mb-8 bg-white/5 rounded-2xl border border-white/5 mt-2">
                 <div className="w-10 h-10 rounded-full bg-brand-gold flex items-center justify-center text-royal-deep font-bold text-lg">
                   {user?.name?.[0] || 'U'}

@@ -34,10 +34,21 @@ apiInstance.interceptors.response.use(
     if (!error.config?.suppressErrorLogs && !isAuthMe401) {
       console.error(`[API] Error in ${error.config?.method?.toUpperCase()} ${error.config?.url}:`, error.message);
     }
-    if (error.response?.status === 401) {
+    
+    // Only redirect to login if:
+    // 1. It's a 401 error
+    // 2. NOT from /auth/me (checking auth status)
+    // 3. NOT already on auth pages
+    // 4. User is on a protected route (dashboard, etc.)
+    if (error.response?.status === 401 && !isAuthMe401) {
       if (typeof window !== 'undefined') {
-        // Prevent redirect loop if already on auth pages
-        if (!window.location.pathname.startsWith('/auth/')) {
+        const currentPath = window.location.pathname;
+        const isProtectedRoute = currentPath.startsWith('/dashboard') || 
+                                 currentPath.startsWith('/profile') ||
+                                 currentPath.startsWith('/saved');
+        
+        // Only redirect if on a protected route and not already on auth page
+        if (isProtectedRoute && !currentPath.startsWith('/auth/')) {
           window.location.href = '/auth/login';
         }
       }
@@ -123,7 +134,7 @@ export const api = {
     getDashboard: () => apiInstance.get('/admin/dashboard'),
     getUsers: (params) => apiInstance.get('/admin/users', { params }),
     updateUserRole: (userId, role) => apiInstance.put(`/admin/users/${userId}/role`, { role }),
-    updateUserStatus: (userId, isActive) => apiInstance.put(`/admin/users/${userId}/status`, { isActive }),
+    updateUserStatus: (userId, status) => apiInstance.put(`/admin/users/${userId}/status`, { status }),
     deleteUser: (userId) => apiInstance.delete(`/admin/users/${userId}`),
     getProperties: (params) => apiInstance.get('/admin/properties', { params }),
     approveProperty: (propertyId) => apiInstance.put(`/admin/properties/${propertyId}/approve`),
