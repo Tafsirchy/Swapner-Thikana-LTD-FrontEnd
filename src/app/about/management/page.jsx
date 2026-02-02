@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, User, Crown, Cpu, Megaphone, Briefcase, Settings, Gem, Award, Mail, MessageCircle } from 'lucide-react';
 import { api } from '@/lib/api';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import Link from 'next/link';
 
 const ManagementPage = () => {
@@ -128,10 +128,11 @@ const ManagementPage = () => {
                   >
                     <div className="relative group overflow-hidden bg-zinc-950/40 backdrop-blur-3xl p-4 ring-1 ring-white/5">
                       <div className="relative aspect-square overflow-hidden mb-6">
-                        <Image 
+                        <SmartImage 
                           src={leaders[1].image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200'} 
                           alt={leaders[1].name} 
                           fill 
+                          sizes="(max-width: 768px) 100vw, 400px"
                           className="object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" 
                         />
                         {/* Social Icons on Hover */}
@@ -193,10 +194,11 @@ const ManagementPage = () => {
                   >
                     <div className="relative group overflow-hidden bg-zinc-950 p-3 ring-1 ring-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] transition-all duration-500 hover:ring-brand-gold/30">
                       <div className="relative aspect-[4/5] overflow-hidden">
-                        <Image 
+                        <SmartImage 
                           src={leaders[0].image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1200'} 
                           alt={leaders[0].name} 
                           fill 
+                          sizes="(max-width: 768px) 100vw, 600px"
                           className="object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-[2s] group-hover:scale-105" 
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
@@ -242,10 +244,11 @@ const ManagementPage = () => {
                   >
                     <div className="relative group overflow-hidden bg-zinc-950 p-6 shadow-2xl border border-white/5 transition-all duration-500 hover:border-brand-gold/20">
                       <div className="relative aspect-[16/9] overflow-hidden rounded-sm">
-                        <Image 
+                        <SmartImage 
                           src={leaders[3].image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1200'} 
                           alt={leaders[3].name} 
                           fill 
+                          sizes="(max-width: 768px) 100vw, 800px"
                           className="object-cover grayscale contrast-125 group-hover:grayscale-0 transition-transform duration-[2s] group-hover:scale-110" 
                         />
                         <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
@@ -291,10 +294,11 @@ const ManagementPage = () => {
                   >
                     <div className="relative group">
                       <div className="aspect-[3/4] overflow-hidden relative shadow-2xl ring-1 ring-white/10">
-                        <Image 
+                        <SmartImage 
                           src={leaders[2].image || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200'} 
                           alt={leaders[2].name} 
                           fill 
+                          sizes="(max-width: 768px) 100vw, 400px"
                           className="object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-[1.2s] scale-110 group-hover:scale-100" 
                         />
                         <div className="absolute inset-0 bg-brand-gold/5 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-1000"></div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, useInView } from 'framer-motion';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import { Search, MapPin, Building, Users, Star } from 'lucide-react';
 import FeatureShowcase from '@/components/home/FeatureShowcase';
 import AboutSection from '@/components/home/AboutSection';
@@ -209,10 +209,11 @@ export default function Home() {
           <div className="flex-1 relative">
             <div className="absolute inset-0 border-2 border-brand-gold/20 -translate-x-4 translate-y-4"></div>
             <div className="relative z-10 w-full h-[500px]">
-              <Image 
+              <SmartImage 
                 src="https://images.unsplash.com/photo-1613545325278-f24b0cae1224?q=80&w=1920&auto=format&fit=crop" 
                 alt="Luxury Interior" 
                 fill
+                sizes="(max-width: 1024px) 100vw, 800px"
                 className="object-cover"
               />
             </div>

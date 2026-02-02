@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+import SmartImage from '../shared/SmartImage';
 import Link from 'next/link';
 import { Linkedin, Mail, ArrowUpRight, Building, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
 import { api } from '@/lib/api';
@@ -249,7 +249,7 @@ const AboutSection = () => {
                         relative aspect-[3/4] overflow-hidden rounded-none bg-zinc-900 border transition-all duration-700
                         ${position === 'center' ? 'border-brand-gold/40 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)]' : 'border-white/5 shadow-2xl'}
                       `}>
-                        <Image 
+                        <SmartImage 
                           src={leader.image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a'}
                           alt={leader.name}
                           fill
@@ -395,7 +395,7 @@ const AboutSection = () => {
                             transition={{ duration: 0.5, delay: i * 0.1 }}
                             className={`relative overflow-hidden group ${colSpan}`}
                         >
-                            <Image 
+                            <SmartImage 
                                 src={project.images?.[0] || '/placeholder.jpg'}
                                 alt={project.title}
                                 fill

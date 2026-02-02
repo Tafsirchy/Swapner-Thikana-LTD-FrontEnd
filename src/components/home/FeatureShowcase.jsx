@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Loader2 } from 'lucide-react';
-import Image from 'next/image';
+import SmartImage from '../shared/SmartImage';
 import { api } from '@/lib/api';
 import Link from 'next/link';
 import LiquidButton from '@/components/shared/LiquidButton';
@@ -127,7 +127,7 @@ const FeatureShowcase = () => {
                   transition={{ duration: ROTATION_TIME / 1000, ease: "linear" }}
                   className="absolute inset-0 w-full h-full"
                 >
-                  <Image 
+                  <SmartImage 
                     src={activeProperty.images[0] || '/placeholder.jpg'} 
                     alt={activeProperty.title}
                     fill
@@ -220,7 +220,7 @@ const FeatureShowcase = () => {
                   className="relative h-full flex flex-col group text-center overflow-hidden"
                 >
                   <div className="relative flex-1 w-full overflow-hidden mb-4">
-                    <Image 
+                    <SmartImage 
                         src={property.images[0] || '/placeholder.jpg'} 
                         alt={property.title}
                         fill
