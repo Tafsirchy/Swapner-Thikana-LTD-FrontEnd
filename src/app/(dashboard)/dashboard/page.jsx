@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast';
 import { 
   Building2, Users, Heart, Search, MessageSquare, 
   TrendingUp, PlusCircle, ArrowRight,
-  CheckCircle, XCircle, Clock, Bell, Send, Mail
+  CheckCircle, XCircle, Clock, Bell, Send, Mail, Crown
 } from 'lucide-react';
 import RecentlyViewed from '@/components/dashboard/RecentlyViewed';
 import UpcomingReminders from '@/components/dashboard/UpcomingReminders';
@@ -303,8 +303,8 @@ const AdminDashboard = () => {
   }, []);
 
   if (loading) return <div className="animate-pulse space-y-8">
-     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-       {[...Array(4)].map((_, i) => <div key={i} className="h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
+     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+       {[...Array(6)].map((_, i) => <div key={i} className="h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
      </div>
      <div className="h-64 bg-white/5 rounded-3xl border border-white/5"></div>
   </div>;
@@ -312,11 +312,13 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <StatCard title="Total Users" value={stats?.totalUsers || 0} icon={Users} color="text-blue-500" />
         <StatCard title="Active Listings" value={stats?.activeListings || 0} icon={Building2} color="text-brand-gold" />
         <StatCard title="Pending Approvals" value={stats?.pendingApprovals || 0} icon={Clock} color="text-yellow-500" />
         <StatCard title="Total Properties" value={stats?.totalProperties || 0} icon={TrendingUp} color="text-emerald-500" />
+        <StatCard title="Leadership Team" value={stats?.leadershipProfiles || 0} icon={Crown} color="text-brand-gold" />
+        <StatCard title="Management Users" value={stats?.managementUsers || 0} icon={Users} color="text-purple-500" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -441,7 +443,7 @@ const DashboardPage = () => {
   return (
     <>
       {user?.role === 'agent' && <AgentDashboard />}
-      {user?.role === 'admin' && <AdminDashboard />}
+      {(user?.role === 'admin' || user?.role === 'management') && <AdminDashboard />}
       {user?.role === 'customer' && <CustomerDashboard />}
     </>
   );

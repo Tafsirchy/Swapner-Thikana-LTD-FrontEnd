@@ -9,6 +9,7 @@ import PushNotificationManager from "@/components/shared/PushNotificationManager
 import StructuredData from "@/components/seo/StructuredData";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { AuthProvider } from "@/context/AuthContext";
+import SmoothScroll from "@/components/shared/SmoothScroll";
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -58,14 +59,16 @@ export default function RootLayout({ children }) {
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
         <AuthProvider>
           <PushNotificationManager>
-            <StructuredData type="Organization" />
-            <StructuredData type="WebSite" />
-            <Navbar />
-            <main className="min-h-screen">
-              {children}
-            </main>
-            <Footer />
-            <CompareBar />
+            <SmoothScroll>
+              <StructuredData type="Organization" />
+              <StructuredData type="WebSite" />
+              <Navbar />
+              <main className="min-h-screen">
+                {children}
+              </main>
+              <Footer />
+              <CompareBar />
+            </SmoothScroll>
           </PushNotificationManager>
           <Toaster 
             position="top-right"
