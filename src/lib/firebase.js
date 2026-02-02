@@ -23,7 +23,9 @@ try {
       messaging = getMessaging(app);
     }
   } else {
-    console.warn('Firebase configuration missing or invalid. Notifications will be disabled.');
+    if (process.env.NODE_ENV === 'production') {
+      console.warn('Firebase configuration missing or invalid. Notifications will be disabled.');
+    }
   }
 } catch (error) {
   console.error('Firebase initialization error:', error);
@@ -37,7 +39,9 @@ export const requestForToken = async () => {
     
     // Validate VAPID key before use
     if (!vapidKey || vapidKey === 'your_vapid_key' || vapidKey.length < 50) {
-      console.warn('Invalid or missing VAPID key. Notifications disabled.');
+      if (process.env.NODE_ENV === 'production') {
+        console.warn('Invalid or missing VAPID key. Notifications disabled.');
+      }
       return null;
     }
 

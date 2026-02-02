@@ -33,6 +33,11 @@ const nextConfig = {
       },
     ],
   },
+  transpilePackages: [
+    '@photo-sphere-viewer/core',
+    '@photo-sphere-viewer/markers-plugin',
+    'three',
+  ],
   turbopack: {
     root: '.',
   },

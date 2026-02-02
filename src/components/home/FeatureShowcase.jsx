@@ -131,6 +131,7 @@ const FeatureShowcase = () => {
                     src={activeProperty.images[0] || '/placeholder.jpg'} 
                     alt={activeProperty.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1000px"
                     className="object-cover"
                     priority
                   />
@@ -223,6 +224,7 @@ const FeatureShowcase = () => {
                         src={property.images[0] || '/placeholder.jpg'} 
                         alt={property.title}
                         fill
+                        sizes="(max-width: 1024px) 100vw, 400px"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />

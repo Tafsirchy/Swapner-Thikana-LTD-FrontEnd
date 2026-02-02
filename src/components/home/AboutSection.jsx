@@ -254,7 +254,7 @@ const AboutSection = () => {
                           alt={leader.name}
                           fill
                           priority={i === activeIndex}
-                          sizes="(max-width: 768px) 280px, 400px"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
                           className="object-cover"
                         />
                         
@@ -399,6 +399,7 @@ const AboutSection = () => {
                                 src={project.images?.[0] || '/placeholder.jpg'}
                                 alt={project.title}
                                 fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             
