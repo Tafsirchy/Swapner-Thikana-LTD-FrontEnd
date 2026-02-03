@@ -43,9 +43,16 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       setError(null);
+      console.log('Calling registration API with:', userData);
       const response = await api.auth.register(userData);
-      return { success: true, message: response.data.message };
+      console.log('Registration API response:', response);
+      return { 
+        success: true, 
+        message: response.data.message,
+        emailSent: response.data.emailSent !== false // Default to true if not specified
+      };
     } catch (error) {
+      console.error('Registration error:', error.response?.data);
       const errorMessage = error.response?.data?.message || 'Registration failed';
       setError(errorMessage);
       return { success: false, error: errorMessage };

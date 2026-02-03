@@ -9,6 +9,7 @@ import AboutSection from '@/components/home/AboutSection';
 import InteractiveMasterPlan from '@/components/home/InteractiveMasterPlan';
 import VirtualRealitySection from '@/components/home/VirtualRealitySection';
 import NewsletterSection from '@/components/home/NewsletterSection';
+import InvestmentSection from '@/components/home/InvestmentSection';
 import LiquidButton from '@/components/shared/LiquidButton';
 
 // Creative Stat Item with Architectural Timeline Positioning
@@ -204,42 +205,8 @@ export default function Home() {
       <VirtualRealitySection />
 
       {/* Luxury Promo Section */}
-      <section className="py-24 bg-gradient-to-r from-royal-deep via-zinc-900 to-royal-deep">
-        <div className="max-container px-4 flex flex-col lg:flex-row items-center gap-16">
-          <div className="flex-1 relative">
-            <div className="absolute inset-0 border-2 border-brand-gold/20 -translate-x-4 translate-y-4"></div>
-            <div className="relative z-10 w-full h-[500px]">
-              <SmartImage 
-                src="https://images.unsplash.com/photo-1613545325278-f24b0cae1224?q=80&w=1920&auto=format&fit=crop" 
-                alt="Luxury Interior" 
-                fill
-                sizes="(max-width: 1024px) 100vw, 800px"
-                className="object-cover"
-              />
-            </div>
-          </div>
-          <div className="flex-1">
-            <span className="text-brand-emerald font-bold tracking-[0.2em] uppercase text-xs mb-4 block">Exclusive Membership</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold font-cinzel text-zinc-100 mb-6 leading-tight">
-              Invest in the <span className="text-brand-gold font-cinzel">Future</span> of Dhaka
-            </h2>
-            <p className="text-zinc-400 mb-8 leading-relaxed text-lg italic font-serif">
-              &quot;We don&apos;t just sell property; we curate lifestyles. Every project under our portfolio 
-              is a testament to architectural brilliance and luxury.&quot;
-            </p>
-            <div className="flex flex-col gap-4 mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-brand-gold"></div>
-                <span className="text-zinc-300 text-sm">Verified Premium Listings</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-1.5 h-1.5 rounded-full bg-brand-gold"></div>
-                <span className="text-zinc-300 text-sm">Legal & Financial Consultancy</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Luxury Promo Section - Investment Highlight */}
+      <InvestmentSection />
 
       {/* Newsletter Section */}
       <NewsletterSection />

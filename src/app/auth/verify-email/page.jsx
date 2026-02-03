@@ -1,21 +1,25 @@
 'use client';
 
-import React, { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { CheckCircle2, XCircle, Loader2, ArrowRight } from 'lucide-react';
 import { api } from '@/lib/api';
 import Link from 'next/link';
 import Image from 'next/image';
+import { toast } from 'react-hot-toast';
 
 const VerifyEmailContent = () => {
   const searchParams = useSearchParams();
+  const router = useRouter(); // Add useRouter hook
   const token = searchParams.get('token');
   const [status, setStatus] = useState('verifying'); // 'verifying', 'success', 'error'
   const [message, setMessage] = useState('Verifying your dream address...');
 
   useEffect(() => {
     const runVerification = async () => {
+      console.log('Verification token from URL:', token);
+      
       if (!token) {
         setStatus('error');
         setMessage('Invalid verification link.');
@@ -23,12 +27,45 @@ const VerifyEmailContent = () => {
       }
 
       try {
+        console.log('Calling verifyEmail API with token:', token);
         const response = await api.auth.verifyEmail(token);
+        console.log('Verification successful:', response);
         setStatus('success');
-        setMessage(response.data.message || 'Email verified successfully!');
+        setMessage('Registration Successful! Redirecting to login...');
+        
+        // Show success toast
+        toast.success('Email Verified & Registration Complete!');
+        
+        // Redirect to login after short delay
+        setTimeout(() => {
+          router.push('/auth/login?verified=true');
+        }, 3000);
+        
       } catch (error) {
+        // Log complete error for debugging
+        console.error('Verification error - Full error:', error);
+        console.error('Error response:', error.response);
+        console.error('Error message:', error.message);
+        
+        // Determine error type and message
+        let errorMessage = 'Verification failed. The link may be expired.';
+        
+        if (error.response) {
+          // Server responded with error status
+          console.error('Server error data:', error.response.data);
+          errorMessage = error.response.data?.message || errorMessage;
+        } else if (error.request) {
+          // Request made but no response received
+          console.error('No response received from server');
+          errorMessage = 'Unable to connect to server. Please check your internet connection.';
+        } else {
+          // Error in request setup
+          console.error('Request setup error');
+          errorMessage = 'An unexpected error occurred. Please try again.';
+        }
+        
         setStatus('error');
-        setMessage(error.response?.data?.message || 'Verification failed. The link may be expired.');
+        setMessage(errorMessage);
       }
     };
 

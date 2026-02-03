@@ -8,11 +8,14 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [showResend, setShowResend] = useState(false);
   
   const { login } = useAuth();
   const router = useRouter();
@@ -28,9 +31,30 @@ const LoginPage = () => {
       router.push('/');
     } else {
       toast.error(result.error || 'Login failed');
+      if (result.error?.toLowerCase().includes('verify')) {
+        setShowResend(true);
+      }
     }
     
     setIsLoading(false);
+  };
+
+  const handleResendVerification = async () => {
+    if (!formData.email) {
+      toast.error('Please enter your email address');
+      return;
+    }
+
+    setIsResending(true);
+    try {
+      const response = await api.auth.resendVerificationEmail(formData.email);
+      toast.success(response.message || 'Verification link sent to your email');
+      setShowResend(false);
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to resend verification link');
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -102,6 +126,28 @@ const LoginPage = () => {
                 </button>
               </div>
             </div>
+
+            {showResend && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-brand-gold/10 border border-brand-gold/20 rounded-xl p-4 flex flex-col items-center gap-3"
+              >
+                <p className="text-sm text-zinc-300 text-center">
+                  Your email is not verified yet. Please check your inbox for the link.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleResendVerification}
+                  disabled={isResending}
+                  className="text-xs font-bold text-brand-gold hover:text-brand-gold-light uppercase tracking-widest flex items-center gap-2 transition-colors disabled:opacity-50"
+                >
+                  {isResending ? (
+                    <div className="w-3 h-3 border border-brand-gold/30 border-t-brand-gold rounded-full animate-spin"></div>
+                  ) : 'Resend Link'}
+                </button>
+              </motion.div>
+            )}
 
             <button 
               type="submit"

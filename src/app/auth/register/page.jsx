@@ -8,11 +8,14 @@ import { Mail, Lock, Eye, EyeOff, User, Phone, ArrowRight, CheckCircle2, XCircle
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import EmailVerificationModal from '@/components/auth/EmailVerificationModal';
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -62,16 +65,35 @@ const RegisterPage = () => {
     // Create payload without confirmPassword
     const registerData = { ...formData };
     delete registerData.confirmPassword;
+    
+    console.log('Attempting registration with data:', registerData);
     const result = await register(registerData);
     
+    console.log('Registration result:', result);
+    
     if (result.success) {
-      toast.success('Registration successful! Please check your email for verification.');
-      router.push('/auth/login');
+      // Store email and show verification modal instead of redirecting
+      setRegisteredEmail(formData.email);
+      setShowVerificationModal(true);
+      toast.success('Registration successful!');
+      
+      // Show warning if email wasn't sent
+      if (result.emailSent === false) {
+        toast.error('Verification email could not be sent. Please use the resend button.', {
+          duration: 6000,
+        });
+      }
     } else {
       toast.error(result.error || 'Registration failed');
     }
     
     setIsLoading(false);
+  };
+
+  const handleCloseModal = () => {
+    setShowVerificationModal(false);
+    // Navigate to login when modal is closed
+    router.push('/auth/login');
   };
 
   return (
@@ -282,6 +304,13 @@ const RegisterPage = () => {
           </p>
         </div>
       </motion.div>
+
+      {/* Email Verification Modal */}
+      <EmailVerificationModal 
+        isOpen={showVerificationModal}
+        onClose={handleCloseModal}
+        userEmail={registeredEmail}
+      />
     </div>
   );
 };

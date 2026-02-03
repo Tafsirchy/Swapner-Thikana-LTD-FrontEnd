@@ -31,7 +31,9 @@ apiInstance.interceptors.response.use(
   (response) => response.data,
   (error) => {
     const isAuthMe401 = error.response?.status === 401 && error.config?.url?.includes('/auth/me');
-    if (!error.config?.suppressErrorLogs && !isAuthMe401) {
+    const isVerification403 = error.response?.status === 403 && error.response?.data?.message?.toLowerCase().includes('verify');
+    
+    if (!error.config?.suppressErrorLogs && !isAuthMe401 && !isVerification403) {
       console.error(`[API] Error in ${error.config?.method?.toUpperCase()} ${error.config?.url}:`, error.message);
     }
     
@@ -65,6 +67,7 @@ export const api = {
     me: () => apiInstance.get('/auth/me'),
     changePassword: (data) => apiInstance.post('/auth/change-password', data),
     verifyEmail: (token) => apiInstance.post('/auth/verify-email', { token }),
+    resendVerification: (data) => apiInstance.post('/auth/resend-verification', data),
     forgotPassword: (email) => apiInstance.post('/auth/forgot-password', { email }),
     resetPassword: (token, password) => apiInstance.post('/auth/reset-password', { token, password }),
     logout: async () => {

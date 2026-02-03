@@ -84,31 +84,6 @@ p, div, button, input, textarea {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* POTENTIALLY UNUSED - Reserved for Luxury Branding */
-@utility glass-gold {
-  background-color: rgba(245, 158, 11, 0.1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-}
-
-/* POTENTIALLY UNUSED - Reserved for Luxury Branding */
-@utility card-luxury {
-  background-color: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
-}
-
-/* POTENTIALLY UNUSED - Reserved for Luxury Branding */
-@utility text-gradient-gold {
-  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 /* Custom Scrollbar Styles for Dashboard */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
