@@ -70,7 +70,7 @@ const SitemapPage = () => {
             Site Overview
           </motion.div>
           <h1 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-6">
-            Site<span className="text-brand-gold italic">map</span>
+            Site<span className="text-brand-gold"> map</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
             Navigate through our entire digital estate with ease.

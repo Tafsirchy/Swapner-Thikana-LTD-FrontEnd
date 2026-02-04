@@ -19,7 +19,7 @@ const PrivacyPolicyPage = () => {
             Data Protection
           </motion.div>
           <h1 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-6">
-            Privacy <span className="text-brand-gold italic">Policy</span>
+            Privacy <span className="text-brand-gold">Policy</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
             Your privacy is our utmost priority. We are committed to protecting your personal information with the highest standards of security.

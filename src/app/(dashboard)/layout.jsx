@@ -272,7 +272,7 @@ const DashboardLayout = ({ children }) => {
 
           {/* Dashboard Copyright Footer */}
           <div className="py-6 text-center text-xs text-zinc-600 border-t border-white/5">
-              &copy; 2024 shwapner Thikana Ltd.
+              &copy; 2026 shwapner Thikana Ltd.
           </div>
         </main>
       </div>

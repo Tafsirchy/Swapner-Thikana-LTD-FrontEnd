@@ -19,7 +19,7 @@ const TermsOfServicePage = () => {
             Legal Agreement
           </motion.div>
           <h1 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-6">
-            Terms of <span className="text-brand-gold italic">Service</span>
+            Terms of <span className="text-brand-gold">Service</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
             Please read these terms carefully before using our services. By accessing or using our platform, you agree to be bound by these terms.
