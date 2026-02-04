@@ -8,6 +8,8 @@ import {
   Phone, Send, Loader2
 } from 'lucide-react';
 import LiquidButton from '../shared/LiquidButton';
+import ShareButton from '../shared/ShareButton';
+import DownloadBrochure from '../shared/DownloadBrochure';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 
@@ -51,6 +53,15 @@ const ProjectDetailClient = ({ project }) => {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-transparent to-transparent"></div>
+        
+        {/* Share & Download Buttons */}
+        <div className="absolute top-28 right-4 md:right-8 z-50 flex flex-col md:flex-row gap-3 items-end">
+           <DownloadBrochure project={project} />
+           <ShareButton 
+             title={project.title} 
+             text={`Check out ${project.title} by Shwapner Thikana.`}
+           />
+        </div>
         
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center w-full max-w-4xl px-4">
           <motion.div
@@ -176,7 +187,13 @@ const ProjectDetailClient = ({ project }) => {
               <div className="grid grid-cols-2 gap-4">
                 {project.images?.map((img, i) => (
                   <div key={i} className="relative h-64 rounded-3xl overflow-hidden group border border-white/5">
-                    <Image src={img} alt="" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <Image 
+                      src={img} 
+                      alt="" 
+                      fill 
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                    />
                   </div>
                 ))}
               </div>

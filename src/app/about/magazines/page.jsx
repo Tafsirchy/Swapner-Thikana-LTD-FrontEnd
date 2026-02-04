@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 
+
 const MagazinesPage = () => {
   const [magazines, setMagazines] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -137,17 +138,7 @@ const MagazinesPage = () => {
                       </div>
                       
                       <div className="flex items-center justify-between pt-2">
-                        <a 
-                          href={mag.pdfUrl} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="group/btn flex items-center gap-3 text-brand-gold font-black text-[9px] uppercase tracking-[0.4em] hover:text-white transition-all duration-500"
-                        >
-                          <div className="w-8 h-8 rounded-full border border-brand-gold/30 flex items-center justify-center group-hover/btn:bg-brand-gold group-hover/btn:text-royal-deep transition-all duration-500">
-                            <Download size={12} />
-                          </div>
-                          Access PDF
-                        </a>
+
                         
                         <Link 
                           href={`/about/magazines/${mag.slug}`} 

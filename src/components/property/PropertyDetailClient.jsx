@@ -6,8 +6,9 @@ import dynamic from 'next/dynamic';
 import { 
   MapPin, Bed, Bath, Move, Heart, Share2, 
   Calendar, CheckCircle2, ShieldCheck,
-  ChevronLeft, ChevronRight, Loader2, Send, Calculator, X
+  ChevronLeft, ChevronRight, Loader2, Send, Calculator, X, FileText
 } from 'lucide-react';
+import DownloadBrochure from '@/components/shared/DownloadBrochure';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
@@ -145,6 +146,9 @@ const PropertyDetailClient = ({ initialProperty }) => {
                   </div>
                 </div>
                 <div className="text-right">
+                  <div className="flex justify-end mb-2">
+                     <DownloadBrochure project={property} />
+                  </div>
                   <span className="block text-zinc-500 text-sm font-bold uppercase tracking-widest mb-1">Asking Price</span>
                   <div className="text-4xl font-bold text-brand-gold">
                     ৳ {property.price?.toLocaleString('en-BD')}

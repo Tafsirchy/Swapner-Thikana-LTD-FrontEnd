@@ -40,7 +40,9 @@ const EditPropertyPage = () => {
     area: '',
     amenities: [],
     features: [],
-    featured: false
+    features: [],
+    featured: false,
+    brochureUrl: ''
   });
 
   const steps = [
@@ -83,7 +85,9 @@ const EditPropertyPage = () => {
           area: property.area || '',
           amenities: property.amenities || [],
           features: property.features || [],
-          featured: property.featured || false
+          features: property.features || [],
+          featured: property.featured || false,
+          brochureUrl: property.brochureUrl || ''
         });
 
         if (property.images) {
@@ -466,7 +470,18 @@ const EditPropertyPage = () => {
                         />
                      </div>
                   </div>
-               </div>
+                   </div>
+                   
+                   <div>
+                     <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">Brochure PDF URL</label>
+                     <input 
+                        type="url" 
+                        value={formData.brochureUrl}
+                        onChange={(e) => handleInputChange('brochureUrl', e.target.value)}
+                        placeholder="https://..."
+                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                     />
+                   </div>
             </motion.div>
           )}
 

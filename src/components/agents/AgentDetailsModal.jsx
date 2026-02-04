@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Phone, Briefcase, Star, ShieldCheck, MapPin } from 'lucide-react';
-import Image from 'next/image';
+import SmartImage from '../shared/SmartImage';
 
 const AgentDetailsModal = ({ agent, isOpen, onClose }) => {
   if (!agent) return null;
@@ -40,7 +40,7 @@ const AgentDetailsModal = ({ agent, isOpen, onClose }) => {
             <div className="flex flex-col md:flex-row h-full">
               {/* Left Side: Portrait */}
               <div className="relative w-full md:w-[40%] h-72 md:h-auto overflow-hidden">
-                <Image 
+                <SmartImage 
                   src={agent.image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop'} 
                   alt={agent.name}
                   fill

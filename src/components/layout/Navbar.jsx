@@ -230,7 +230,7 @@ const Navbar = () => {
              </button>
             
             <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2">
-                <Image src="/logo.png" alt="shwapner Thikana" width={110} height={64} className="h-14 w-auto object-contain" />
+                <Image src="/logo.png" alt="shwapner Thikana" width={110} height={64} className="h-14 w-auto object-contain" priority />
             </Link>
 
             {/* Mobile Utilities */}
@@ -253,7 +253,7 @@ const Navbar = () => {
             {/* Centered Logo */}
             <div className="flex justify-center">
               <Link href="/" className="hover:scale-105 transition-transform duration-300">
-                  <Image src="/logo.png" alt="shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain drop-shadow-2xl" />
+                  <Image src="/logo.png" alt="shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain drop-shadow-2xl" priority />
               </Link>
             </div>
 

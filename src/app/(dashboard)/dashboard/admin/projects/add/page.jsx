@@ -51,7 +51,10 @@ const AddProjectPage = () => {
 
     // Images
     thumbnail: '',
-    images: []
+    images: [],
+    
+    // Files
+    brochureUrl: ''
   });
 
   const handleChange = (e) => {
@@ -157,6 +160,17 @@ const AddProjectPage = () => {
                   placeholder="Describe the project vision, uniqueness, and target audience..."
                   minLength={20}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Brochure/PDF URL</label>
+                <input
+                  type="url"
+                  name="brochureUrl"
+                  value={formData.brochureUrl}
+                  onChange={handleChange}
+                  placeholder="e.g. https://example.com/brochure.pdf"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

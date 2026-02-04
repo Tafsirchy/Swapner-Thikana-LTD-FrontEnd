@@ -6,10 +6,11 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { 
   Calendar, Clock, ChevronLeft, 
-  Share2, Loader2, ArrowRight
+  Loader2, ArrowRight
 } from 'lucide-react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
+import ShareButton from '@/components/shared/ShareButton';
 
 const BlogDetailPage = () => {
   const { slug } = useParams();
@@ -94,9 +95,10 @@ const BlogDetailPage = () => {
                 </div>
              </div>
              <div className="ml-auto flex gap-4">
-                <button className="p-4 rounded-2xl bg-white/5 border border-white/10 text-zinc-400 hover:text-brand-gold hover:border-brand-gold/50 transition-all">
-                   <Share2 size={20} />
-                </button>
+                <ShareButton 
+                   title={post.title}
+                   text={`Read "${post.title}" on Shwapner Thikana`}
+                />
              </div>
           </div>
 
