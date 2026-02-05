@@ -9,6 +9,7 @@ import {
   ChevronLeft, ChevronRight, Loader2, Send, Calculator, X, FileText
 } from 'lucide-react';
 import DownloadBrochure from '@/components/shared/DownloadBrochure';
+import ShareButton from '@/components/shared/ShareButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
@@ -97,9 +98,16 @@ const PropertyDetailClient = ({ initialProperty }) => {
         
         <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-transparent to-transparent opacity-60 md:opacity-100"></div>
         
-        {/* Floating Action Buttons (Top Right) */}
-        <div className="absolute top-28 right-4 md:right-8 z-50 flex flex-col gap-3 items-end">
-           <DownloadBrochure project={property} />
+        {/* Featured Actions (Top Right) */}
+        <div className="absolute top-8 right-4 md:right-8 z-50 flex items-center gap-3 md:gap-4">
+          <ShareButton 
+            title={property.title}
+            text={`Check out this property: ${property.title}`}
+            image={property.images?.[0]}
+            price={`৳ ${property.price?.toLocaleString('en-BD')}`}
+            location={`${property.location?.area}, ${property.location?.city}`}
+          />
+          <DownloadBrochure project={property} />
         </div>
 
         {/* Navigation Overlays (Hidden on smallest mobile, use swipe/dots) */}

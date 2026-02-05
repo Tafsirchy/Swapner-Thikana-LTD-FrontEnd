@@ -66,7 +66,7 @@ const ProjectCard = ({ project }) => {
       viewport={{ once: true }}
       className="group relative bg-white/5 border border-white/10 rounded-none overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
     >
-      <div className="relative h-80 w-full">
+      <div className="relative aspect-[4/3] sm:h-80 w-full">
         <SmartImage
           src={images?.[0] || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'}
           alt={title}
@@ -77,7 +77,7 @@ const ProjectCard = ({ project }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-royal-deep/40 to-transparent"></div>
         
         <div className="absolute top-6 inset-x-6 flex items-start justify-between gap-4 z-10">
-          <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg ${statusColors[status] || 'bg-zinc-800 text-white'}`}>
+          <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg ${statusColors[status] || 'bg-zinc-800 text-white'}`}>
             {status}
           </span>
 
@@ -96,9 +96,7 @@ const ProjectCard = ({ project }) => {
               baseColor={isInCompare ? 'bg-brand-emerald' : 'bg-white/10'}
               liquidColor={isInCompare ? 'fill-white/20' : 'fill-brand-emerald/40'}
               rounded="rounded-full"
-              px="!p-2.5"
-              py="!p-2.5"
-              className={`backdrop-blur-md border shadow-lg ${
+              className={`backdrop-blur-md border shadow-lg w-11 h-11 !p-0 ${
                 isInCompare ? 'border-brand-emerald text-white' : 'border-white/20 text-white'
               }`}
             >
@@ -110,9 +108,7 @@ const ProjectCard = ({ project }) => {
               baseColor={isSaved ? 'bg-brand-gold' : 'bg-white/10'}
               liquidColor={isSaved ? 'fill-white/30' : 'fill-brand-gold/40'}
               rounded="rounded-full"
-              px="!p-2.5"
-              py="!p-2.5"
-              className={`backdrop-blur-md border shadow-lg ${
+              className={`backdrop-blur-md border shadow-lg w-11 h-11 !p-0 ${
                 isSaved ? 'border-brand-gold text-royal-deep' : 'border-white/20 text-white'
               }`}
             >
@@ -122,9 +118,9 @@ const ProjectCard = ({ project }) => {
         </div>
       </div>
 
-      <div className="p-8 relative -mt-20 z-10">
-        <div className="bg-royal-deep/80 backdrop-blur-xl border border-white/10 p-6 rounded-none shadow-2xl">
-          <h3 className="text-2xl font-bold text-zinc-100 mb-3 group-hover:text-brand-gold transition-colors">{title}</h3>
+      <div className="p-6 sm:p-8 relative -mt-20 z-10">
+        <div className="bg-royal-deep/80 backdrop-blur-xl border border-white/10 p-4 sm:p-6 rounded-none shadow-2xl">
+          <h3 className="text-xl sm:text-2xl font-bold text-zinc-100 mb-3 leading-snug group-hover:text-brand-gold transition-colors">{title}</h3>
           
           <div className="flex items-center gap-2 text-zinc-400 text-sm mb-4">
             <MapPin size={16} className="text-brand-gold" />

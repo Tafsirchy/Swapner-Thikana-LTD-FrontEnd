@@ -24,11 +24,17 @@ const goldIcon = new L.Icon({
 });
 
 const PropertyMap = ({ property, height = '400px' }) => {
-  // Default coordinates for Dhaka if no coordinates provided
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
+  // Default coordinates for Dhaka
   const defaultLat = 23.8103;
   const defaultLng = 90.4125;
 
-  // Use property coordinates or estimate based on city (simplified)
   const getCityCoordinates = (city) => {
     const cityCoords = {
       'Dhaka': [23.8103, 90.4125],
@@ -43,23 +49,37 @@ const PropertyMap = ({ property, height = '400px' }) => {
     return cityCoords[city] || [defaultLat, defaultLng];
   };
 
-  const [lat, lng] = property.coordinates?.lat && property.coordinates?.lng
-    ? [property.coordinates.lat, property.coordinates.lng]
-    : getCityCoordinates(property.location?.city);
+  const coords = React.useMemo(() => {
+    if (property.coordinates?.lat && property.coordinates?.lng) {
+      return [property.coordinates.lat, property.coordinates.lng];
+    }
+    return getCityCoordinates(property.location?.city);
+  }, [property]);
 
-  // Safety check for coordinates
+  const [lat, lng] = coords;
+
+  if (!isMounted) {
+    return (
+      <div className="rounded-2xl bg-white/5 animate-pulse border border-white/10" style={{ height }}>
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
   if (isNaN(lat) || isNaN(lng)) {
     return (
-      <div className="flex items-center justify-center bg-white/5 rounded-2xl" style={{ height }}>
-        <p className="text-zinc-500 text-sm">Location data unavailable</p>
+      <div className="flex items-center justify-center bg-white/5 rounded-2xl border border-white/10" style={{ height }}>
+        <p className="text-zinc-500 text-sm">Location coordinates unavailable</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl overflow-hidden border border-white/10" style={{ height }}>
+    <div className="rounded-2xl overflow-hidden border border-white/10 isolation-auto" style={{ height }}>
       <MapContainer
-        key={`${property._id}-${lat}-${lng}`}
+        key={`map-${property._id}-${lat}-${lng}`}
         center={[lat, lng]}
         zoom={property.coordinates?.lat ? 15 : 12}
         style={{ height: '100%', width: '100%' }}
@@ -71,12 +91,12 @@ const PropertyMap = ({ property, height = '400px' }) => {
         />
         <Marker position={[lat, lng]} icon={goldIcon}>
           <Popup>
-            <div className="p-2">
-              <h3 className="font-bold text-sm mb-1">{property.title}</h3>
-              <p className="text-xs text-gray-600">{property.location?.area}, {property.location?.city}</p>
-              <p className="text-xs font-bold text-amber-600 mt-1">
+            <div className="p-2 min-w-[150px]">
+              <h3 className="font-bold text-sm mb-1 text-zinc-900">{property.title}</h3>
+              <p className="text-xs text-zinc-600 italic mb-2">{property.location?.area}, {property.location?.city}</p>
+              <div className="text-xs font-bold text-brand-gold bg-zinc-900 px-2 py-1 rounded inline-block">
                 ৳{property.price?.toLocaleString('en-BD')}
-              </p>
+              </div>
             </div>
           </Popup>
         </Marker>
