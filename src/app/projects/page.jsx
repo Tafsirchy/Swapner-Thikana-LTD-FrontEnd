@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Building2, Loader2, ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
 import ProjectCard from '@/components/shared/ProjectCard';
@@ -17,7 +17,7 @@ const SORT_OPTIONS = [
   { label: "Size (Small to Large)", value: "size-asc" }
 ];
 
-const ProjectsPage = () => {
+const ProjectsContent = () => {
   const searchParams = useSearchParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -237,6 +237,18 @@ const ProjectsPage = () => {
         </div>
       </section>
     </div>
+  );
+};
+
+const ProjectsPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-royal-deep pt-32 pb-24 flex items-center justify-center">
+        <Loader2 size={48} className="text-brand-gold animate-spin" />
+      </div>
+    }>
+      <ProjectsContent />
+    </Suspense>
   );
 };
 
