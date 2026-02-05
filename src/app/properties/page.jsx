@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2, Building2, Trash2 } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
@@ -23,7 +23,7 @@ const PropertiesMapView = dynamic(() => import('@/components/map/PropertiesMapVi
   )
 });
 
-const PropertiesPage = () => {
+const PropertiesContent = () => {
   const { user } = useAuth();
   const searchParams = useSearchParams();
   
@@ -637,6 +637,18 @@ const PropertiesPage = () => {
         filters={filters}
       />
     </div>
+  );
+};
+
+const PropertiesPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-royal-deep pt-32 pb-24 flex items-center justify-center">
+        <Loader2 size={48} className="text-brand-gold animate-spin" />
+      </div>
+    }>
+      <PropertiesContent />
+    </Suspense>
   );
 };
 
