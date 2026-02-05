@@ -51,7 +51,8 @@ const EditProjectPage = () => {
     pricePerSqFt: '',
     availableFlats: '',
 
-    // Images
+    // Files
+    brochureUrl: '',
     thumbnail: '',
     images: []
   });
@@ -98,7 +99,8 @@ const EditProjectPage = () => {
           thumbnail: project.thumbnail || '',
           images: project.images || [],
 
-          features: project.features?.length > 0 ? project.features : ['']
+          features: project.features?.length > 0 ? project.features : [''],
+          brochureUrl: project.brochureUrl || ''
         });
       } catch (error) {
         console.error('Error fetching project:', error);
@@ -221,6 +223,17 @@ const EditProjectPage = () => {
                   rows={4}
                   minLength={20}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
+                />
+              </div>
+               <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Brochure/PDF URL</label>
+                <input
+                  type="url"
+                  name="brochureUrl"
+                  value={formData.brochureUrl}
+                  onChange={handleChange}
+                  placeholder="e.g. https://example.com/brochure.pdf"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

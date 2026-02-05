@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Filter, X, ChevronDown, ChevronUp, Check, Building2, MapPin, Home, DollarSign, PenTool, Layout, Calendar, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const ProjectFilters = ({ filters, onChange, onClear }) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -53,17 +54,18 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
         onChange={(e) => handleInputChange('road', e.target.value)}
         className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
       />
-      <select
+      <LuxurySelect 
         value={filters.city || ''}
-        onChange={(e) => handleInputChange('city', e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
-      >
-        <option value="">Any City</option>
-        <option value="Dhaka">Dhaka</option>
-        <option value="Chittagong">Chittagong</option>
-        <option value="Sylhet">Sylhet</option>
-        <option value="Rajshahi">Rajshahi</option>
-      </select>
+        onChange={(val) => handleInputChange('city', val)}
+        options={[
+          { label: 'Any City', value: '' },
+          { label: 'Dhaka', value: 'Dhaka' },
+          { label: 'Chittagong', value: 'Chittagong' },
+          { label: 'Sylhet', value: 'Sylhet' },
+          { label: 'Rajshahi', value: 'Rajshahi' }
+        ]}
+        className="!bg-white/5 !border-white/10 !px-3 !py-2 !text-sm"
+      />
     </div>
   );
 

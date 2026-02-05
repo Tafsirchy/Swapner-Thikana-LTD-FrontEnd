@@ -6,10 +6,12 @@ import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2,
 import PropertyCard from '@/components/shared/PropertyCard';
 import FilterPills from '@/components/search/FilterPills';
 import SaveSearchModal from '@/components/search/SaveSearchModal';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 
 // Dynamic import for map view
 const PropertiesMapView = dynamic(() => import('@/components/map/PropertiesMapView'), {
@@ -23,6 +25,7 @@ const PropertiesMapView = dynamic(() => import('@/components/map/PropertiesMapVi
 
 const PropertiesPage = () => {
   const { user } = useAuth();
+  const searchParams = useSearchParams();
   
   // Raw Data State
   const [allProperties, setAllProperties] = useState([]);
@@ -35,10 +38,10 @@ const PropertiesPage = () => {
 
   // Filter State
   const [filters, setFilters] = useState({
-    search: '',
-    listingType: '',
-    propertyType: '',
-    city: '',
+    search: searchParams.get('search') || '',
+    listingType: searchParams.get('listingType') || '',
+    propertyType: searchParams.get('propertyType') || '',
+    city: searchParams.get('city') || '',
     minPrice: '',
     maxPrice: '',
     bedrooms: '',
@@ -52,6 +55,23 @@ const PropertiesPage = () => {
     bounds: '',
     polygon: ''
   });
+
+  // Update filters when URL params change
+  useEffect(() => {
+    const search = searchParams.get('search') || '';
+    const city = searchParams.get('city') || '';
+    const listingType = searchParams.get('listingType') || '';
+    const propertyType = searchParams.get('propertyType') || '';
+    
+    setFilters(prev => ({
+      ...prev,
+      search,
+      city,
+      listingType,
+      propertyType,
+      page: 1
+    }));
+  }, [searchParams]);
 
   // 1. Fetch ALL Properties on Mount
   useEffect(() => {
@@ -320,25 +340,27 @@ const PropertiesPage = () => {
                 />
               </div>
               <div className="flex flex-wrap lg:flex-nowrap gap-4">
-                <select 
-                  className="bg-zinc-900/80 text-zinc-300 border border-white/5 rounded-none py-3.5 px-6 outline-none focus:border-brand-gold/30 appearance-none min-w-[150px]"
+                <LuxurySelect 
                   value={filters.listingType}
-                  onChange={(e) => setFilters({...filters, listingType: e.target.value, page: 1})}
-                >
-                  <option value="">All Types</option>
-                  <option value="sale">For Sale</option>
-                  <option value="rent">For Rent</option>
-                </select>
-                <select 
-                  className="bg-zinc-900/80 text-zinc-300 border border-white/5 rounded-none py-3.5 px-6 outline-none focus:border-brand-gold/30 appearance-none min-w-[150px]"
+                  onChange={(val) => setFilters({...filters, listingType: val, page: 1})}
+                  options={[
+                    { label: 'All Types', value: '' },
+                    { label: 'For Sale', value: 'sale' },
+                    { label: 'For Rent', value: 'rent' }
+                  ]}
+                  className="!rounded-none min-w-[150px] !bg-zinc-900/80 !border-white/5"
+                />
+                <LuxurySelect 
                   value={filters.city}
-                  onChange={(e) => setFilters({...filters, city: e.target.value, page: 1})}
-                >
-                  <option value="">All Cities</option>
-                  <option value="Dhaka">Dhaka</option>
-                  <option value="Chattogram">Chattogram</option>
-                  <option value="Sylhet">Sylhet</option>
-                </select>
+                  onChange={(val) => setFilters({...filters, city: val, page: 1})}
+                  options={[
+                    { label: 'All Cities', value: '' },
+                    { label: 'Dhaka', value: 'Dhaka' },
+                    { label: 'Chattogram', value: 'Chattogram' },
+                    { label: 'Sylhet', value: 'Sylhet' }
+                  ]}
+                  className="!rounded-none min-w-[150px] !bg-zinc-900/80 !border-white/5"
+                />
                 <button 
                   type="button"
                   onClick={() => setShowFilters(!showFilters)}

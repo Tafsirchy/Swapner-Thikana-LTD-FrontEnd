@@ -40,7 +40,8 @@ const EditPropertyPage = () => {
     area: '',
     amenities: [],
     features: [],
-    featured: false
+    featured: false,
+    brochureUrl: ''
   });
 
   const steps = [
@@ -83,7 +84,8 @@ const EditPropertyPage = () => {
           area: property.area || '',
           amenities: property.amenities || [],
           features: property.features || [],
-          featured: property.featured || false
+          featured: property.featured || false,
+          brochureUrl: property.brochureUrl || ''
         });
 
         if (property.images) {

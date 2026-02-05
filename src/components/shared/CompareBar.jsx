@@ -26,23 +26,23 @@ const CompareBar = () => {
   };
 
   return (
-    <div className="fixed bottom-6 left-0 right-0 z-[100] pointer-events-none px-4">
+    <div className="fixed bottom-4 left-0 right-0 z-[1000] pointer-events-none px-4">
       <div className="max-container mx-auto">
         <motion.div
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          className="pointer-events-auto relative glass-extreme border-brand-gold/20 rounded-[2rem] p-4 md:p-6 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6"
+          className="pointer-events-auto relative glass-extreme border-brand-gold/20 rounded-2xl md:rounded-[2rem] p-3 md:p-6 shadow-2xl flex items-center justify-between gap-4 md:gap-6"
         >
-          {/* Left: Info */}
-          <div className="flex items-center gap-6">
-            <div className="flex -space-x-4">
+          {/* Left: Info & Thumbnails */}
+          <div className="flex items-center gap-4 md:gap-6 min-w-0">
+            <div className="flex -space-x-3 md:-space-x-4 shrink-0">
               {selectedItems.map((item) => (
                 <motion.div
                   key={item._id}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  className="relative w-14 h-14 rounded-2xl border-4 border-royal-deep overflow-hidden shadow-lg group"
+                  className="relative w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl border-2 md:border-4 border-royal-deep overflow-hidden shadow-lg group"
                 >
                   <Image
                     src={item.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop'}
@@ -54,43 +54,41 @@ const CompareBar = () => {
                     onClick={() => removeFromCompare(item._id)}
                     className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white"
                   >
-                    <X size={16} />
+                    <X size={14} />
                   </button>
                 </motion.div>
               ))}
             </div>
             
-            <div className="hidden sm:block">
-              <h4 className="text-zinc-100 font-bold mb-0.5">
+            <div className="hidden sm:block truncate">
+              <h4 className="text-zinc-100 font-bold mb-0.5 text-sm md:text-base">
                 {selectedItems.length} {selectedItems.length === 1 ? 'Item' : 'Items'} Selected
               </h4>
-              <p className="text-zinc-400 text-xs tracking-wider uppercase font-medium">Ready for comparison</p>
+              <p className="text-zinc-500 text-[10px] tracking-wider uppercase font-bold italic">Ready for comparison</p>
             </div>
           </div>
 
           {/* Right: Actions */}
-          <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="flex items-center gap-2 md:gap-3 shrink-0">
             <button
               onClick={clearCompare}
-              className="px-6 py-3.5 rounded-2xl border border-red-500/30 text-red-400 font-bold hover:bg-red-500/10 transition-all text-sm flex items-center gap-2 hover:text-red-300 whitespace-nowrap shadow-lg shadow-red-500/5"
+              className="p-3.5 md:px-6 md:py-3.5 rounded-xl md:rounded-2xl border border-red-500/20 text-red-500/70 font-bold hover:bg-red-500/10 transition-all text-xs flex items-center gap-2 hover:text-red-400 shadow-lg shadow-red-500/5"
+              title="Clear All"
             >
               <Trash2 size={16} />
-              <span className="hidden sm:inline">Clear All</span>
+              <span className="hidden md:inline">Clear All</span>
             </button>
             <button
               onClick={handleCompare}
               disabled={selectedItems.length < 2}
-              className="flex-1 md:flex-none px-10 py-3.5 bg-brand-gold text-royal-deep rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg shadow-brand-gold/20 hover:bg-brand-gold-light transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
+              className="px-5 md:px-10 py-3.5 bg-brand-gold text-royal-deep rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm uppercase tracking-widest shadow-lg shadow-brand-gold/20 hover:bg-brand-gold-light transition-all flex items-center justify-center gap-2 md:gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
             >
-              <Layers size={18} />
-              Compare Now
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              <span className="md:hidden bg-royal-deep/10 px-2 py-0.5 rounded text-[10px]">{selectedItems.length}</span>
+              <Layers size={18} className="hidden sm:block" />
+              <span className="hidden sm:inline">Compare Now</span>
+              <span className="sm:hidden">Compare</span>
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
-          </div>
-
-          {/* Mobile Badge (only if many items) */}
-          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-gold text-royal-deep text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter shadow-lg shadow-brand-gold/20 border-2 border-royal-deep whitespace-nowrap md:hidden">
-            {selectedItems.length} / 4 Selected
           </div>
         </motion.div>
       </div>

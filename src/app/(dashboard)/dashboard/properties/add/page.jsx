@@ -36,7 +36,8 @@ const AddPropertyPage = () => {
     area: '',
     amenities: [],
     features: [],
-    featured: false
+    featured: false,
+    brochureUrl: ''
   });
 
   const steps = [

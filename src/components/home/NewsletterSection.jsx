@@ -204,7 +204,7 @@ const NewsletterSection = () => {
                             {/* Outer Glow */}
                             <div className="absolute -inset-1 bg-gradient-to-r from-brand-gold/0 via-brand-gold/20 to-brand-gold/0 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             
-                            <div className="relative flex items-center bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-1.5 focus-within:border-brand-gold/50 transition-all shadow-inner">
+                            <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-1.5 focus-within:border-brand-gold/50 transition-all shadow-inner gap-2 sm:gap-0">
                                 <input 
                                     type="email" 
                                     placeholder="your@prestige.email" 
@@ -221,7 +221,7 @@ const NewsletterSection = () => {
                                      disabled={status === 'loading' || status === 'success'}
                                      baseColor={status === 'success' ? 'bg-emerald-600' : 'bg-brand-gold'}
                                      liquidColor={status === 'success' ? 'fill-white/10' : 'fill-brand-gold'}
-                                     className="!px-6 !py-3 !rounded-xl shadow-lg shadow-brand-gold/20"
+                                     className="!px-6 !py-3 !rounded-xl shadow-lg shadow-brand-gold/20 w-full sm:w-auto flex-shrink-0"
                                  >
                                      <AnimatePresence mode="wait">
                                          {status === 'loading' ? (

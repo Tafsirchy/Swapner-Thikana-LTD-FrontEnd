@@ -46,7 +46,7 @@ const ShareButton = ({ title, text, url }) => {
   return (
     <button
       onClick={handleShare}
-      className="p-3 rounded-full bg-zinc-900/40 backdrop-blur-md border border-white/10 text-zinc-300 hover:text-white hover:bg-zinc-900/60 transition-all duration-300 group"
+      className="p-3 rounded-full bg-zinc-950/80 backdrop-blur-md border border-white/20 text-zinc-50 hover:text-white hover:bg-zinc-900 transition-all duration-300 group shadow-xl"
       aria-label="Share"
     >
       <Share2 

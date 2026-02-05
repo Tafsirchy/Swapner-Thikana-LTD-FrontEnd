@@ -5,15 +5,26 @@ import { motion } from 'framer-motion';
 import { Building2, Loader2, ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
 import ProjectCard from '@/components/shared/ProjectCard';
 import ProjectFilters from '@/components/projects/ProjectFilters';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 import { api } from '@/lib/api';
+import { useSearchParams } from 'next/navigation';
+
+const SORT_OPTIONS = [
+  { label: "Newest Project", value: "newest" },
+  { label: "Price (Low to High)", value: "price-asc" },
+  { label: "Price (High to Low)", value: "price-desc" },
+  { label: "Size (Large to Small)", value: "size-desc" },
+  { label: "Size (Small to Large)", value: "size-asc" }
+];
 
 const ProjectsPage = () => {
+  const searchParams = useSearchParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
-    status: '',
-    city: '',
-    area: '',
+    status: searchParams.get('status') || '',
+    city: searchParams.get('city') || '',
+    area: searchParams.get('area') || '',
     road: '',
     minSize: '',
     maxSize: '',
@@ -28,6 +39,21 @@ const ProjectsPage = () => {
     availableOnly: false,
     parking: false,
   });
+
+  // Update filters when URL params change
+  useEffect(() => {
+    const status = searchParams.get('status') || '';
+    const city = searchParams.get('city') || '';
+    const area = searchParams.get('area') || '';
+    
+    setFilters(prev => ({
+      ...prev,
+      status,
+      city,
+      area,
+      page: 1
+    }));
+  }, [searchParams]);
   const [sort, setSort] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -141,24 +167,19 @@ const ProjectsPage = () => {
           {/* Results Area */}
           <div className="flex-1">
              {/* Sort & Controls */}
-             <div className="flex justify-between items-center mb-6 pb-4 border-b border-white/5">
-                <p className="text-zinc-400 text-sm">
+             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-6 border-b border-white/5 gap-4">
+                <p className="text-zinc-500 text-sm font-medium">
                    Showing <span className="text-zinc-100 font-bold">{projects.length}</span> results
                 </p>
                 
-                <div className="flex items-center gap-2">
-                   <ArrowUpDown size={16} className="text-zinc-500" />
-                   <select
+                <div className="w-full sm:w-64">
+                   <LuxurySelect
                      value={sort}
-                     onChange={(e) => setSort(e.target.value)}
-                     className="bg-transparent text-sm text-zinc-300 outline-none cursor-pointer hover:text-brand-gold"
-                   >
-                     <option value="newest">Newest Project</option>
-                     <option value="price-asc">Price (Low to High)</option>
-                     <option value="price-desc">Price (High to Low)</option>
-                     <option value="size-desc">Size (Large to Small)</option>
-                     <option value="size-asc">Size (Small to Large)</option>
-                   </select>
+                     onChange={setSort}
+                     options={SORT_OPTIONS}
+                     icon={<ArrowUpDown size={14} />}
+                     className="!py-3 !rounded-xl !text-xs font-bold uppercase tracking-widest bg-zinc-950/50"
+                   />
                 </div>
              </div>
 

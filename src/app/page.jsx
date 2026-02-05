@@ -11,6 +11,8 @@ import VirtualRealitySection from '@/components/home/VirtualRealitySection';
 import NewsletterSection from '@/components/home/NewsletterSection';
 import InvestmentSection from '@/components/home/InvestmentSection';
 import LiquidButton from '@/components/shared/LiquidButton';
+import LuxurySelect from '@/components/shared/LuxurySelect';
+import { useRouter } from 'next/navigation';
 
 // Creative Stat Item with Architectural Timeline Positioning
 const StatItem = ({ stat, index }) => {
@@ -83,27 +85,42 @@ const StatItem = ({ stat, index }) => {
 };
 
 export default function Home() {
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [location, setLocation] = React.useState('All Locations');
+
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    const params = new URLSearchParams();
+    if (searchQuery) params.set('search', searchQuery);
+    if (location !== 'All Locations') params.set('city', location);
+    
+    router.push(`/properties?${params.toString()}`);
+  };
+
   return (
     <div className="flex flex-col w-full">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center">
         {/* Background Image with Overlay */}
-        <motion.div 
-          className="absolute inset-0 z-0 bg-cover bg-center"
-          style={{ 
-            backgroundImage: "url('/luxury_home_hero.png')",
-          }}
-          initial={{ scale: 1 }}
-          animate={{ scale: 1.1 }}
-          transition={{ 
-            duration: 5, 
-            repeat: Infinity, 
-            repeatType: "reverse", 
-            ease: "linear" 
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-royal-deep/80 via-royal-deep/40 to-royal-deep/90"></div>
-        </motion.div>
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div 
+            className="absolute inset-0 z-0 bg-cover bg-center"
+            style={{ 
+              backgroundImage: "url('/luxury_home_hero.png')",
+            }}
+            initial={{ scale: 1 }}
+            animate={{ scale: 1.1 }}
+            transition={{ 
+              duration: 5, 
+              repeat: Infinity, 
+              repeatType: "reverse", 
+              ease: "linear" 
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-royal-deep/80 via-royal-deep/40 to-royal-deep/90"></div>
+          </motion.div>
+        </div>
 
         <div className="max-container px-4 pt-44 md:pt-32 relative z-10 text-center text-zinc-100">
           <motion.div
@@ -128,33 +145,35 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-none shadow-2xl"
+            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-none shadow-2xl relative z-50"
           >
-            <div className="flex flex-col md:flex-row items-center gap-2">
+            <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-center gap-2">
               <div className="flex-1 w-full flex items-center px-4 gap-3 bg-white/5 rounded-none border border-white/5 focus-within:border-brand-gold/30 transition-all">
                 <Search size={20} className="text-brand-gold" />
                 <input 
                   type="text" 
                   placeholder="Area, project or property type..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full py-4 bg-transparent outline-none text-zinc-100 placeholder:text-zinc-500"
                 />
               </div>
-              <div className="flex-1 w-full flex items-center px-4 gap-3 bg-white/5 rounded-none border border-white/5">
-                <MapPin size={20} className="text-brand-gold" />
-                <select className="w-full py-4 bg-transparent outline-none text-zinc-100 appearance-none">
-                  <option className="bg-royal-deep">All Locations</option>
-                  <option className="bg-royal-deep">Gulshan</option>
-                  <option className="bg-royal-deep">Banani</option>
-                  <option className="bg-royal-deep">Dhanmondi</option>
-                  <option className="bg-royal-deep">Uttara</option>
-                </select>
+              <div className="flex-1 w-full bg-white/5 border border-white/5">
+                <LuxurySelect 
+                  value={location}
+                  onChange={setLocation}
+                  options={['All Locations', 'Dhaka', 'Chattogram', 'Sylhet']}
+                  icon={<MapPin size={20} />}
+                  className="!bg-transparent !border-none !py-4"
+                />
               </div>
               <LiquidButton 
+                type="submit"
                 className="w-full md:w-auto shadow-lg shadow-brand-gold/20"
               >
                 Search
               </LiquidButton>
-            </div>
+            </form>
           </motion.div>
         </div>
 

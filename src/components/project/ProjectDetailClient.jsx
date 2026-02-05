@@ -52,7 +52,9 @@ const ProjectDetailClient = ({ project }) => {
           className="object-cover"
           priority
         />
+        {/* Gradients for readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent h-1/2"></div>
         
         {/* Share & Download Buttons */}
         <div className="absolute top-28 right-4 md:right-8 z-50 flex flex-col md:flex-row gap-3 items-end">
