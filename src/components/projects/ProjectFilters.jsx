@@ -70,12 +70,13 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
   );
 
   const renderProjectInfoInputs = () => (
-    <div className="space-y-3 p-1">
-      <div className="flex flex-col gap-2">
+    <div className="space-y-4 p-1">
+      <div className="flex flex-col gap-3">
         {['ongoing', 'ready', 'upcoming'].map(status => (
-          <label key={status} className="flex items-center gap-2 cursor-pointer group">
-            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${filters.status === status ? 'bg-brand-gold border-brand-gold' : 'border-zinc-600 group-hover:border-zinc-400'}`}>
-              {filters.status === status && <Check size={12} className="text-royal-deep" />}
+          <label key={status} className="flex items-center justify-between gap-4 cursor-pointer group p-3 bg-white/5 border border-white/5 hover:border-brand-gold/30 transition-all active:scale-[0.98]">
+            <span className="text-sm text-zinc-300 font-bold uppercase tracking-widest capitalize">{status}</span>
+            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${filters.status === status ? 'bg-brand-gold border-brand-gold shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'border-zinc-700 group-hover:border-zinc-500'}`}>
+              {filters.status === status && <div className="w-2.5 h-2.5 bg-royal-deep rounded-full" />}
             </div>
             <input 
               type="radio" 
@@ -84,17 +85,20 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
               onChange={() => handleInputChange('status', filters.status === status ? '' : status)}
               className="hidden"
             />
-            <span className="text-sm text-zinc-400 capitalize">{status}</span>
           </label>
         ))}
       </div>
-      <input
-          type="number"
-          placeholder="Target Year (e.g. 2027)"
-          value={filters.completionYear || ''}
-          onChange={(e) => handleInputChange('completionYear', e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
-        />
+      <div className="pt-2">
+        <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mb-2 block">Completion Year</label>
+        <input
+            type="number"
+            inputMode="numeric"
+            placeholder="e.g. 2027"
+            value={filters.completionYear || ''}
+            onChange={(e) => handleInputChange('completionYear', e.target.value)}
+            className="w-full bg-white/5 border border-white/10 rounded-none px-4 py-3 text-sm text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-mono"
+          />
+      </div>
     </div>
   );
 
@@ -145,9 +149,10 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
         </div>
       </div>
       
-      <label className="flex items-center gap-2 cursor-pointer group">
-          <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${filters.availableOnly ? 'bg-brand-gold border-brand-gold' : 'border-zinc-600 group-hover:border-zinc-400'}`}>
-            {filters.availableOnly && <Check size={12} className="text-royal-deep" />}
+      <label className="flex items-center justify-between gap-4 cursor-pointer group p-3 bg-white/5 border border-white/5 hover:border-brand-gold/30 transition-all active:scale-[0.98]">
+          <span className="text-sm text-zinc-300 font-bold uppercase tracking-widest">Available Flats Only</span>
+          <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${filters.availableOnly ? 'bg-brand-gold border-brand-gold shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'border-zinc-700 group-hover:border-zinc-500'}`}>
+            {filters.availableOnly && <Check size={14} className="text-royal-deep stroke-[3]" />}
           </div>
           <input 
             type="checkbox" 
@@ -155,7 +160,6 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
             onChange={(e) => handleInputChange('availableOnly', e.target.checked)}
             className="hidden"
           />
-          <span className="text-sm text-zinc-400">Available Flats Only</span>
       </label>
     </div>
   );
@@ -182,9 +186,10 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
         </div>
       </div>
       
-      <label className="flex items-center gap-2 cursor-pointer group">
-          <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${filters.parking ? 'bg-brand-gold border-brand-gold' : 'border-zinc-600 group-hover:border-zinc-400'}`}>
-            {filters.parking && <Check size={12} className="text-royal-deep" />}
+      <label className="flex items-center justify-between gap-4 cursor-pointer group p-3 bg-white/5 border border-white/5 hover:border-brand-gold/30 transition-all active:scale-[0.98]">
+          <span className="text-sm text-zinc-300 font-bold uppercase tracking-widest">Parking Included</span>
+          <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${filters.parking ? 'bg-brand-gold border-brand-gold shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'border-zinc-700 group-hover:border-zinc-500'}`}>
+            {filters.parking && <Check size={14} className="text-royal-deep stroke-[3]" />}
           </div>
           <input 
             type="checkbox" 
@@ -192,7 +197,6 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
             onChange={(e) => handleInputChange('parking', e.target.checked)}
             className="hidden"
           />
-          <span className="text-sm text-zinc-400">Parking Included</span>
       </label>
     </div>
   );

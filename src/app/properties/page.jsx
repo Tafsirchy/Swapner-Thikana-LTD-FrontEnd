@@ -265,7 +265,7 @@ const PropertiesContent = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-24">
+    <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24">
       {/* Search & Header Section */}
       <section className="mb-12">
         <div className="max-container px-4">
@@ -280,10 +280,10 @@ const PropertiesContent = () => {
               <Building2 size={16} />
               Premium Listings
             </motion.div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold font-cinzel text-zinc-100 mb-6 tracking-tight">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold font-cinzel text-zinc-100 mb-4 sm:mb-6 tracking-tight leading-tight">
               Discover Exclusive <span className="text-brand-gold">Properties</span>
             </h1>
-            <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed mb-10">
+            <p className="max-w-2xl mx-auto text-zinc-400 text-sm sm:text-lg leading-relaxed mb-8 sm:mb-10 px-2 sm:px-0">
               Browse our curated collection of luxury apartments, commercial spaces, and exclusive land opportunities designed for your lifestyle.
             </p>
 
@@ -300,11 +300,12 @@ const PropertiesContent = () => {
                   <span className="hidden sm:inline">Save Search</span>
                 </button>
               )}
-              <div className="flex bg-white/5 border border-white/5 p-1 rounded-xl">
+              <div className="flex bg-white/5 border border-white/10 p-1 rounded-xl shadow-inner">
                   <button 
                     onClick={() => setViewMode('grid')}
                     className={`p-2.5 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-brand-gold text-royal-deep shadow-lg' : 'text-zinc-400 hover:text-zinc-200'}`}
                     title="Grid View"
+                    aria-label="Switch to Grid View"
                   >
                     <LayoutGrid size={20} />
                   </button>
@@ -312,6 +313,7 @@ const PropertiesContent = () => {
                     onClick={() => setViewMode('list')}
                     className={`p-2.5 rounded-lg transition-all ${viewMode === 'list' ? 'bg-brand-gold text-royal-deep shadow-lg' : 'text-zinc-400 hover:text-zinc-200'}`}
                     title="List View"
+                    aria-label="Switch to List View"
                   >
                     <List size={20} />
                   </button>
@@ -319,6 +321,7 @@ const PropertiesContent = () => {
                     onClick={() => setViewMode('map')}
                     className={`p-2.5 rounded-lg transition-all ${viewMode === 'map' ? 'bg-brand-gold text-royal-deep shadow-lg' : 'text-zinc-400 hover:text-zinc-200'}`}
                     title="Map View"
+                    aria-label="Switch to Map View"
                   >
                     <Map size={20} />
                   </button>
@@ -333,8 +336,8 @@ const PropertiesContent = () => {
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-gold" size={18} />
                 <input 
                   type="text" 
-                  placeholder="Search by title, neighborhood or keyword..."
-                  className="w-full bg-white/5 border border-white/5 rounded-none py-3.5 pl-12 pr-4 text-zinc-100 outline-none focus:border-brand-gold/30 transition-all placeholder:text-zinc-500"
+                  placeholder="Title, neighborhood, or keyword..."
+                  className="w-full bg-white/5 border border-white/10 rounded-none py-4 sm:py-3.5 pl-12 pr-4 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all placeholder:text-zinc-500 text-sm sm:text-base"
                   value={filters.search}
                   onChange={(e) => setFilters({...filters, search: e.target.value, page: 1})}
                 />
@@ -364,14 +367,15 @@ const PropertiesContent = () => {
                 <button 
                   type="button"
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center gap-2 px-6 py-3.5 rounded-none border transition-all ${showFilters ? 'bg-brand-gold text-royal-deep border-brand-gold' : 'border-white/10 text-zinc-100 hover:border-brand-gold/30'}`}
+                  className={`flex items-center justify-center gap-2 px-6 py-4 sm:py-3.5 rounded-none border transition-all ${showFilters ? 'bg-brand-gold text-royal-deep border-brand-gold' : 'border-white/10 text-zinc-100 hover:border-brand-gold/30'}`}
+                  aria-label={showFilters ? "Hide advanced filters" : "Show advanced filters"}
                 >
                   <SlidersHorizontal size={18} />
-                  Filters
+                  <span className="font-bold sm:font-normal">Filters</span>
                 </button>
                 <button 
                   type="submit"
-                  className="bg-brand-emerald text-white px-8 py-3.5 rounded-none font-bold hover:bg-brand-emerald-light transition-all shadow-lg shadow-brand-emerald/10"
+                  className="bg-brand-emerald text-white px-8 py-4 sm:py-3.5 rounded-none font-bold hover:bg-brand-emerald-light transition-all shadow-lg shadow-brand-emerald/10"
                 >
                   Search
                 </button>
@@ -387,7 +391,7 @@ const PropertiesContent = () => {
                   exit={{ opacity: 0, height: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="p-8 mt-4 glass rounded-none border-white/10 space-y-6">
+                  <div className="p-5 sm:p-8 mt-4 glass rounded-none border-white/10 space-y-5 sm:space-y-6">
                     {/* Row 1: Property Type, Bedrooms, Bathrooms */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="space-y-2">

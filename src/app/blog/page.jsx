@@ -62,26 +62,35 @@ const BlogPage = () => {
             <BookOpen size={16} />
             Luxury Insights
           </motion.div>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold text-zinc-100 mb-8 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-zinc-100 mb-6 sm:mb-8 tracking-tight leading-tight">
             The <span className="text-brand-gold ">Luxe</span> Journal
           </h1>
-          <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed mb-12">
+          <p className="max-w-2xl mx-auto text-zinc-400 text-base sm:text-lg leading-relaxed mb-8 sm:mb-12 px-4 sm:px-0">
             Stay ahead of the market with exclusive architectural insights, real estate investment strategies, and luxury lifestyle spotlights from our concierge team.
           </p>
 
-          <div className="max-w-xl mx-auto relative group">
-            <form onSubmit={handleSearch}>
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-brand-gold" size={20} />
+          <div className="max-w-xl mx-auto">
+            <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 sm:gap-0 sm:relative px-4 sm:px-0">
+              {/* Search icon - Hidden on mobile, shown on desktop */}
+              <Search className="hidden sm:block sm:absolute sm:left-6 sm:top-1/2 sm:-translate-y-1/2 text-brand-gold" size={20} />
+              
+              {/* Input - Full width on mobile, inline on desktop */}
+              <label htmlFor="blog-search" className="sr-only">Search blog posts</label>
               <input 
-                type="text" 
-                placeholder="Search journals and insights..." 
-                className="w-full bg-white/5 border border-white/10 rounded-full py-5 pl-14 pr-32 text-zinc-100 focus:border-brand-gold/40 outline-none transition-all"
+                id="blog-search"
+                type="search"
+                inputMode="search"
+                placeholder="Search journals..." 
+                autoComplete="off"
+                className="w-full h-12 sm:h-auto bg-white/5 border border-white/10 rounded-xl sm:rounded-full sm:py-5 px-5 sm:pl-14 sm:pr-32 text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
                 value={filters.search}
                 onChange={(e) => setFilters({...filters, search: e.target.value})}
               />
+              
+              {/* Button - Full width on mobile, inline on desktop */}
               <button 
                 type="submit"
-                className="absolute right-2 top-2 bottom-2 px-8 bg-brand-gold text-royal-deep font-bold rounded-full hover:bg-brand-gold-light transition-all active:scale-95 shadow-lg shadow-brand-gold/20"
+                className="w-full h-12 sm:w-auto sm:absolute sm:right-2 sm:top-2 sm:bottom-2 sm:h-auto px-8 bg-brand-gold text-royal-deep font-bold text-sm rounded-xl sm:rounded-full hover:bg-brand-gold-light transition-all active:scale-95 shadow-lg shadow-brand-gold/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
                 Search
               </button>
@@ -112,21 +121,23 @@ const BlogPage = () => {
                    <button 
                       onClick={() => handlePageChange(Math.max(1, filters.page - 1))}
                       disabled={filters.page === 1}
-                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                      aria-label="Previous page"
+                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                    >
-                     <ChevronLeft size={20} />
+                      <ChevronLeft size={20} />
                    </button>
                    
-                   <span className="text-sm font-bold text-zinc-500 tracking-widest">
+                   <span className="text-xs sm:text-sm font-bold text-zinc-500 tracking-wider sm:tracking-widest">
                       PAGE <span className="text-brand-gold">{filters.page}</span> / {totalPages}
                    </span>
 
                    <button 
                       onClick={() => handlePageChange(Math.min(totalPages, filters.page + 1))}
                       disabled={filters.page === totalPages}
-                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                      aria-label="Next page"
+                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep disabled:opacity-30 disabled:cursor-not-allowed transition-all"
                    >
-                     <ChevronRight size={20} />
+                      <ChevronRight size={20} />
                    </button>
                 </div>
               )}
@@ -151,9 +162,37 @@ const BlogPage = () => {
                 </div>
                 <div className="w-full max-w-md">
                    <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                      <input type="text" placeholder="Full Name" className="w-full bg-white/20 border border-royal-deep/10 rounded-2xl px-6 py-4 placeholder:text-royal-deep/60 placeholder:font-medium text-royal-deep font-bold" />
-                      <input type="email" placeholder="Email Address" className="w-full bg-white/20 border border-royal-deep/10 rounded-2xl px-6 py-4 placeholder:text-royal-deep/60 placeholder:font-medium text-royal-deep font-bold" />
-                      <button className="w-full py-5 bg-royal-deep text-white font-extrabold rounded-2xl hover:scale-[1.02] transition-all shadow-2xl active:scale-95">
+                      {/* Name field - Hidden on mobile for reduced friction */}
+                      <div className="hidden sm:block">
+                        <label htmlFor="newsletter-name" className="sr-only">Full Name</label>
+                        <input 
+                          id="newsletter-name"
+                          type="text" 
+                          placeholder="Full Name" 
+                          autoComplete="name"
+                          className="w-full h-12 bg-white/20 border border-royal-deep/10 rounded-2xl px-6 placeholder:text-royal-deep/60 placeholder:font-medium text-royal-deep font-bold focus:ring-2 focus:ring-royal-deep/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all" 
+                        />
+                      </div>
+                      
+                      {/* Email field - Always visible */}
+                      <div>
+                        <label htmlFor="newsletter-email" className="sr-only">Email Address</label>
+                        <input 
+                          id="newsletter-email"
+                          type="email" 
+                          required
+                          placeholder="Email Address" 
+                          inputMode="email"
+                          autoComplete="email"
+                          className="w-full h-12 bg-white/20 border border-royal-deep/10 rounded-2xl px-6 placeholder:text-royal-deep/60 placeholder:font-medium text-royal-deep font-bold focus:ring-2 focus:ring-royal-deep/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all" 
+                        />
+                      </div>
+                      
+                      {/* Button - Proper touch target */}
+                      <button 
+                        type="submit"
+                        className="w-full h-14 bg-royal-deep text-white font-extrabold rounded-2xl hover:scale-[1.02] transition-all shadow-2xl active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                      >
                         Subscribe Now
                       </button>
                    </form>

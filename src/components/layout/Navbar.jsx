@@ -222,15 +222,16 @@ const Navbar = () => {
         {!isDashboard && (
           <div className="md:hidden w-full flex justify-between items-center">
              <button
-               className="text-brand-gold p-2"
+               className="text-brand-gold p-2 hover:bg-white/5 rounded-full transition-colors"
                onClick={() => setIsOpen(!isOpen)}
                aria-label={isOpen ? "Close Menu" : "Open Menu"}
+               aria-expanded={isOpen}
              >
-               {isOpen ? <X size={28} /> : <Menu size={28} />}
+               {isOpen ? <X size={26} /> : <Menu size={26} />}
              </button>
             
             <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2">
-                <Image src="/logo.png" alt="shwapner Thikana" width={110} height={64} className="h-14 w-auto object-contain" priority />
+                <Image src="/logo.png" alt="shwapner Thikana" width={110} height={64} className="h-12 sm:h-14 w-auto object-contain transition-all" priority />
             </Link>
 
             {/* Mobile Utilities */}
@@ -281,21 +282,21 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-full left-0 w-full h-[calc(100vh-100%)] bg-royal-deep/98 z-40 md:hidden flex flex-col p-8 gap-6 backdrop-blur-xl overflow-y-auto border-t border-white/5"
+            className="absolute top-full left-0 w-full h-[calc(100vh-100%)] bg-royal-deep/98 z-40 md:hidden flex flex-col p-6 sm:p-8 gap-5 sm:gap-6 backdrop-blur-xl overflow-y-auto border-t border-white/5"
           >
             {[...leftNav, ...rightNav].map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
               
               if (link.hasDropdown) {
                 return (
-                  <div key={link.name} className="flex flex-col gap-4">
-                    <span className="text-xl font-bold text-brand-gold italic border-b border-brand-gold/20 pb-2">{link.name}</span>
+                  <div key={link.name} className="flex flex-col gap-3">
+                    <span className="text-lg font-bold text-brand-gold italic border-b border-brand-gold/20 pb-2">{link.name}</span>
                     <div className="grid grid-cols-1 gap-y-3 pl-4">
                       {[...link.dropdownItems.left, ...link.dropdownItems.right].map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.href}
-                          className="text-base font-medium text-zinc-300 hover:text-brand-gold py-1 flex items-center gap-2"
+                          className="text-sm sm:text-base font-medium text-zinc-300 hover:text-brand-gold py-2.5 flex items-center gap-2"
                           onClick={() => setIsOpen(false)}
                         >
                           <div className="w-1.5 h-1.5 rounded-full bg-brand-gold/50"></div>
@@ -311,7 +312,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`text-xl font-semibold border-b border-white/5 pb-4 transition-colors ${
+                  className={`text-lg font-bold border-b border-white/5 pb-3 transition-colors ${
                     isActive ? 'text-brand-gold' : 'text-zinc-100 hover:text-brand-gold'
                   }`}
                   onClick={() => setIsOpen(false)}

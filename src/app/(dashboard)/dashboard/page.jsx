@@ -15,7 +15,7 @@ import UpcomingReminders from '@/components/dashboard/UpcomingReminders';
 import SmartImage from '@/components/shared/SmartImage';
 
 const StatCard = ({ title, value, icon: Icon, color, trend }) => (
-  <div className="bg-white/5 border border-white/5 p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-all">
+  <div className="bg-white/5 border border-white/5 p-4 sm:p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-all">
     <div className={`absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity ${color}`}>
       <Icon size={80} />
     </div>
@@ -23,9 +23,9 @@ const StatCard = ({ title, value, icon: Icon, color, trend }) => (
       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${color} bg-white/5`}>
         <Icon size={24} />
       </div>
-      <h3 className="text-zinc-400 text-sm font-medium uppercase tracking-wider mb-1">{title}</h3>
+      <h3 className="text-zinc-400 text-[10px] sm:text-sm font-medium uppercase tracking-wider mb-1">{title}</h3>
       <div className="flex items-end gap-3">
-        <span className="text-3xl font-bold text-zinc-100">{value}</span>
+        <span className="text-2xl sm:text-3xl font-bold text-zinc-100">{value}</span>
         {trend && (
            <span className="text-xs font-bold text-emerald-400 mb-1 flex items-center gap-1">
              <TrendingUp size={12} /> {trend}
@@ -80,8 +80,8 @@ const CustomerDashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-         <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+         <div className="bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8">
             <div className="flex items-center justify-between mb-6">
                <h2 className="text-xl font-bold text-zinc-100">Recent Inquiries</h2>
                <ViewAllLink href="/dashboard/inquiries" />
@@ -117,10 +117,10 @@ const CustomerDashboard = () => {
                )}
             </div>
          </div>
-         <div className="bg-brand-gold/10 border border-brand-gold/20 rounded-3xl p-8 flex flex-col justify-center text-center">
-            <h2 className="text-2xl font-bold text-brand-gold mb-2">Find Your Dream Home</h2>
-            <p className="text-zinc-400 mb-6 max-w-sm mx-auto">Explore our latest premium listings tailored to your preferences.</p>
-            <Link href="/properties" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all">
+         <div className="bg-brand-gold/10 border border-brand-gold/20 rounded-3xl p-6 sm:p-8 flex flex-col justify-center text-center">
+            <h2 className="text-xl sm:text-2xl font-bold text-brand-gold mb-2">Find Your Dream Home</h2>
+            <p className="text-zinc-400 text-sm sm:text-base mb-6 max-w-sm mx-auto">Explore our latest premium listings tailored to your preferences.</p>
+            <Link href="/properties" className="inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:px-8 sm:py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all text-sm sm:text-base">
                Browse Properties
             </Link>
          </div>
@@ -188,7 +188,7 @@ const AgentDashboard = () => {
           <div className="lg:col-span-2">
              <ProfileStrengthMeter strength={stats?.profileStrength} />
           </div>
-          <div className="bg-white/5 border border-white/5 rounded-3xl p-8 flex flex-col justify-between">
+          <div className="bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
              <div>
                 <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-2 mb-2">
                    <TrendingUp size={20} className="text-emerald-500" />
@@ -213,61 +213,87 @@ const AgentDashboard = () => {
                    <p className="text-zinc-500 text-sm italic mt-4">No listings active yet</p>
                 )}
              </div>
-             <Link href="/dashboard/properties/add" className="mt-8 flex items-center justify-center gap-2 px-6 py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95 shadow-xl shadow-brand-gold/20">
+             <Link href="/dashboard/properties/add" className="mt-8 flex items-center justify-center gap-2 px-6 py-3.5 sm:py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95 shadow-xl shadow-brand-gold/20 text-sm sm:text-base">
                 <PlusCircle size={18} /> Add New Listing
              </Link>
           </div>
        </div>
 
        {/* Recent Leads & Reminders */}
-       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <div className="lg:col-span-3 bg-white/5 border border-white/5 rounded-3xl p-8">
+       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
+          <div className="lg:col-span-3 bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8">
              <div className="flex items-center justify-between mb-8">
                 <div>
                    <h2 className="text-xl font-bold text-zinc-100">Recent Prospects</h2>
                    <p className="text-zinc-500 text-xs mt-1">Your 5 most recent property inquiries</p>
                 </div>
                 <ViewAllLink href="/dashboard/leads" />
-             </div>
-             <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                   <thead>
-                      <tr className="border-b border-white/10">
-                         <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Client</th>
-                         <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Interest</th>
-                         <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Status</th>
-                      </tr>
-                   </thead>
-                   <tbody className="divide-y divide-white/5">
-                      {stats?.recentLeads?.length > 0 ? (
-                         stats.recentLeads.map((lead, i) => (
-                            <tr key={i} className="group hover:bg-white/[0.02] transition-colors">
-                               <td className="py-4 px-2">
-                                  <div className="font-bold text-zinc-200 text-sm">{lead.name}</div>
-                                  <div className="text-[10px] text-zinc-500">{new Date(lead.createdAt).toLocaleDateString()}</div>
-                               </td>
-                               <td className="py-4 px-2">
-                                  <div className="text-zinc-300 text-xs truncate max-w-[150px]">
-                                     {lead.property?.title || lead.interestType}
-                                  </div>
-                               </td>
-                               <td className="py-4 px-2">
-                                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                                     lead.status === 'new' ? 'bg-blue-500/10 text-blue-500' :
-                                     lead.status === 'contacted' ? 'bg-yellow-500/10 text-yellow-500' :
-                                     'bg-emerald-500/10 text-emerald-500'
-                                  }`}>
-                                     {lead.status}
-                                  </span>
-                               </td>
-                            </tr>
-                         ))
-                      ) : (
-                         <tr><td colSpan="3" className="py-10 text-center text-zinc-500 italic text-sm">No recent inquiries to display</td></tr>
-                      )}
-                   </tbody>
-                </table>
-             </div>
+              </div>
+              <div className="space-y-3 lg:hidden">
+                 {stats?.recentLeads?.length > 0 ? (
+                    stats.recentLeads.map((lead, i) => (
+                       <div key={i} className="p-4 bg-white/5 rounded-2xl border border-white/5">
+                          <div className="flex items-center justify-between mb-2">
+                             <div className="font-bold text-zinc-100 text-sm">{lead.name}</div>
+                             <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                                lead.status === 'new' ? 'bg-blue-500/10 text-blue-500' :
+                                lead.status === 'contacted' ? 'bg-yellow-500/10 text-yellow-500' :
+                                'bg-emerald-500/10 text-emerald-500'
+                             }`}>
+                                {lead.status}
+                             </span>
+                          </div>
+                          <div className="text-zinc-400 text-xs mb-1 truncate">
+                             {lead.property?.title || lead.interestType}
+                          </div>
+                          <div className="text-[10px] text-zinc-500">
+                             {new Date(lead.createdAt).toLocaleDateString()}
+                          </div>
+                       </div>
+                    ))
+                 ) : (
+                    <div className="text-center py-6 text-zinc-500 italic text-sm">No recent inquiries</div>
+                 )}
+              </div>
+              <div className="hidden lg:block overflow-x-auto">
+                 <table className="w-full text-left">
+                    <thead>
+                       <tr className="border-b border-white/10">
+                          <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Client</th>
+                          <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Interest</th>
+                          <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Status</th>
+                       </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                       {stats?.recentLeads?.length > 0 ? (
+                          stats.recentLeads.map((lead, i) => (
+                             <tr key={i} className="group hover:bg-white/[0.02] transition-colors">
+                                <td className="py-4 px-2">
+                                   <div className="font-bold text-zinc-200 text-sm">{lead.name}</div>
+                                   <div className="text-[10px] text-zinc-500">{new Date(lead.createdAt).toLocaleDateString()}</div>
+                                </td>
+                                <td className="py-4 px-2">
+                                   <div className="text-zinc-300 text-xs truncate max-w-[150px]">
+                                      {lead.property?.title || lead.interestType}
+                                   </div>
+                                </td>
+                                <td className="py-4 px-2">
+                                   <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                                      lead.status === 'new' ? 'bg-blue-500/10 text-blue-500' :
+                                      lead.status === 'contacted' ? 'bg-yellow-500/10 text-yellow-500' :
+                                      'bg-emerald-500/10 text-emerald-500'
+                                   }`}>
+                                      {lead.status}
+                                   </span>
+                                </td>
+                             </tr>
+                          ))
+                       ) : (
+                          <tr><td colSpan="3" className="py-10 text-center text-zinc-500 italic text-sm">No recent inquiries to display</td></tr>
+                       )}
+                    </tbody>
+                 </table>
+              </div>
           </div>
 
           <div className="lg:col-span-2">
@@ -312,7 +338,7 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <StatCard title="Total Users" value={stats?.totalUsers || 0} icon={Users} color="text-blue-500" />
         <StatCard title="Active Listings" value={stats?.activeListings || 0} icon={Building2} color="text-brand-gold" />
         <StatCard title="Pending Approvals" value={stats?.pendingApprovals || 0} icon={Clock} color="text-yellow-500" />
@@ -321,9 +347,9 @@ const AdminDashboard = () => {
         <StatCard title="Management Users" value={stats?.managementUsers || 0} icon={Users} color="text-purple-500" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         {/* Approvals Queue */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+        <div className="bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-zinc-100">Pending Approvals</h2>
             <ViewAllLink href="/dashboard/admin/properties" />
@@ -331,17 +357,17 @@ const AdminDashboard = () => {
           <div className="space-y-4">
             {pendingProperties.length > 0 ? (
               pendingProperties.map((property) => (
-                <div key={property._id} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
+                <div key={property._id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 group">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center">
-                      <Building2 size={24} className="text-zinc-600" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-zinc-800 flex items-center justify-center shrink-0">
+                      <Building2 size={20} className="text-zinc-600 sm:size-24" />
                     </div>
-                    <div>
-                      <h4 className="font-bold text-sm text-zinc-100">{property.title}</h4>
-                      <p className="text-xs text-zinc-400 mt-1">Submitted by {property.agent?.name || 'Unknown Agent'}</p>
+                    <div className="overflow-hidden">
+                      <h4 className="font-bold text-sm text-zinc-100 truncate">{property.title}</h4>
+                      <p className="text-[10px] sm:text-xs text-zinc-400 mt-1 truncate">By {property.agent?.name || 'Unknown'}</p>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 sm:ml-auto">
                     <button 
                       onClick={async () => {
                         try {
@@ -352,7 +378,8 @@ const AdminDashboard = () => {
                           toast.error('Failed to approve property');
                         }
                       }}
-                      className="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
+                      className="flex-1 sm:flex-none p-3 sm:p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center"
+                      aria-label="Approve"
                     >
                       <CheckCircle size={18} />
                     </button>
@@ -368,7 +395,8 @@ const AdminDashboard = () => {
                           toast.error('Failed to reject property');
                         }
                       }}
-                      className="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                      className="flex-1 sm:flex-none p-3 sm:p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center"
+                      aria-label="Reject"
                     >
                       <XCircle size={18} />
                     </button>
@@ -382,7 +410,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* System Health */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+        <div className="bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8">
           <h2 className="text-xl font-bold text-zinc-100 mb-6">System Health</h2>
           <div className="space-y-6">
             {[
@@ -400,7 +428,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Connectivity Test */}
-        <div className="bg-brand-gold/5 border border-brand-gold/20 rounded-3xl p-8 lg:col-span-2">
+        <div className="bg-brand-gold/5 border border-brand-gold/20 rounded-3xl p-5 sm:p-8 lg:col-span-2">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <h2 className="text-xl font-bold text-zinc-100 mb-2 flex items-center gap-2">

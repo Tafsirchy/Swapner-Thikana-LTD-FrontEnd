@@ -45,25 +45,25 @@ const MagazinesPage = () => {
 
       <div className="max-container px-4">
         {/* Header */}
-        <div className="text-center mb-32">
+        <div className="text-center mb-16 sm:mb-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-brand-gold/5 border border-brand-gold/20 text-brand-gold text-xs font-black uppercase tracking-[0.4em] my-6"
+            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 rounded-full bg-brand-gold/5 border border-brand-gold/20 text-brand-gold text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] my-6"
           >
             <BookOpen size={14} className="animate-pulse" />
             The Archive
           </motion.div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-bold text-zinc-100 mb-8 tracking-tighter transition-all duration-700">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-cinzel font-bold text-zinc-100 mb-6 sm:mb-8 tracking-tighter transition-all duration-700">
             Luxe <span className="text-brand-gold">Living</span>
           </h1>
-          <p className="max-w-2xl mx-auto text-zinc-500 text-lg leading-relaxed font-serif italic">
+          <p className="max-w-2xl mx-auto text-zinc-500 text-base sm:text-lg leading-relaxed font-serif italic px-4 sm:px-0">
             A quarterly exploration into the heights of architectural innovation and the essence of refined urban existence.
           </p>
         </div>
 
         {/* Magazines Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 sm:gap-y-24">
           {magazines.length > 0 ? (
             magazines.map((mag, i) => (
               <motion.div
@@ -110,15 +110,15 @@ const MagazinesPage = () => {
                           <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-transparent to-black/20"></div>
                           
                           {/* Interactive Badge */}
-                          <div className="absolute top-6 left-6 px-3 py-1 bg-brand-gold text-royal-deep text-[8px] font-black uppercase tracking-widest">
+                          <div className="absolute top-6 left-6 px-3 py-1 bg-brand-gold text-royal-deep text-[10px] sm:text-[8px] font-black uppercase tracking-widest">
                             Collectors Edition
                           </div>
 
                           <div className="absolute bottom-8 left-8 right-8 text-white">
-                            <span className="text-brand-gold text-[10px] font-black uppercase tracking-[0.4em] mb-4 block italic">
+                            <span className="text-brand-gold text-xs sm:text-[10px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] mb-3 sm:mb-4 block italic">
                               {mag.publisher || 'STLTD Media'}
                             </span>
-                            <h3 className="text-3xl font-cinzel font-bold leading-tight mb-2 group-hover:text-brand-gold transition-colors duration-500">
+                            <h3 className="text-2xl sm:text-3xl font-cinzel font-bold leading-tight mb-2 group-hover:text-brand-gold transition-colors duration-500">
                                {mag.title}
                             </h3>
                             <div className="w-12 h-0.5 bg-brand-gold mt-4 group-hover:w-full transition-all duration-700"></div>
@@ -132,7 +132,7 @@ const MagazinesPage = () => {
                 {/* Info & CTA Overlay - Revealed as parent lifts */}
                 <div className="absolute inset-x-0 bottom-0 z-10 transition-all duration-700 opacity-0 group-hover:opacity-100 flex flex-col justify-end h-full pointer-events-none group-hover:pointer-events-auto">
                    <div className="space-y-4 p-6 bg-zinc-950 border-t border-white/5 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
-                      <div className="flex items-center justify-between text-zinc-500 text-[9px] font-black uppercase tracking-[0.5em] mb-2 opacity-60">
+                      <div className="flex items-center justify-between text-zinc-500 text-[10px] sm:text-[9px] font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] mb-2 opacity-60">
                          <span>Issue {i + 1}</span>
                          <span className="italic">{mag.publicationDate ? new Date(mag.publicationDate).getFullYear() : '2024'} Edition</span>
                       </div>
@@ -142,7 +142,7 @@ const MagazinesPage = () => {
                         
                         <Link 
                           href={`/about/magazines/${mag.slug}`} 
-                          className="group/explore flex items-center gap-3 text-zinc-100 font-black text-[9px] uppercase tracking-[0.4em] hover:text-brand-gold transition-all duration-500"
+                          className="group/explore flex items-center gap-3 text-zinc-100 font-black text-[10px] sm:text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] hover:text-brand-gold transition-all duration-500 px-2 py-1 -ml-2"
                         >
                            Explore <ArrowRight size={14} className="group-hover/explore:translate-x-2 transition-transform" />
                         </Link>
@@ -160,21 +160,27 @@ const MagazinesPage = () => {
         </div>
 
         {/* Subscription Section - Luxury Redesign */}
-        <div className="mt-48 relative isolate">
+        <div className="mt-24 sm:mt-48 relative isolate overflow-hidden">
            <div className="absolute inset-0 bg-zinc-950 border border-white/5 -z-10"></div>
            <div className="absolute top-0 right-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1512418490979-92798ccc13b0?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-5 grayscale scale-110"></div>
            
-           <div className="p-12 lg:p-24 flex flex-col lg:flex-row items-center justify-between gap-16 backdrop-blur-3xl">
-              <div className="max-w-2xl">
-                 <div className="w-20 h-px bg-brand-gold mb-8"></div>
-                 <h2 className="text-5xl md:text-6xl font-cinzel font-bold text-white mb-8 leading-[0.85] tracking-tighter italic">Join the global <br/><span className="text-brand-gold">Subscription</span></h2>
-                 <p className="text-zinc-500 text-lg font-serif italic pr-12 leading-relaxed">Secure your place on our physical distribution list for exclusive hard-cover architectural annuals and quarterly collector\&apos;s pieces.</p>
+           <div className="p-8 sm:p-12 lg:p-24 flex flex-col lg:flex-row items-center justify-between gap-10 sm:gap-16 backdrop-blur-3xl">
+              <div className="max-w-2xl text-center lg:text-left">
+                 <div className="w-16 h-px bg-brand-gold mb-6 sm:mb-8 mx-auto lg:mx-0"></div>
+                 <h2 className="text-3xl sm:text-4xl md:text-6xl font-cinzel font-bold text-white mb-6 sm:mb-8 leading-tight tracking-tighter italic">
+                   Join the global <br/><span className="text-brand-gold">Subscription</span>
+                 </h2>
+                 <p className="text-zinc-500 text-sm sm:text-base md:text-lg font-serif italic lg:pr-12 leading-relaxed">
+                   Secure your place on our physical distribution list for exclusive hard-cover architectural annuals and quarterly collector\&apos;s pieces.
+                 </p>
               </div>
-              <div className="flex flex-col items-center gap-8 w-full lg:w-auto">
-                 <button className="w-full lg:w-auto px-16 py-6 bg-brand-gold text-royal-deep font-black uppercase tracking-[0.3em] text-[10px] hover:bg-brand-gold-light hover:scale-105 transition-all shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] active:scale-95 whitespace-nowrap">
+              <div className="flex flex-col items-center gap-6 w-full lg:w-auto">
+                 <button className="w-full sm:w-auto px-10 py-5 sm:px-16 sm:py-6 bg-brand-gold text-royal-deep font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-[10px] hover:bg-brand-gold-light hover:scale-105 transition-all shadow-[0_20px_40px_-15px_rgba(212,175,55,0.3)] active:scale-95 whitespace-nowrap">
                     Request Physical Copy
                  </button>
-                 <span className="text-zinc-600 text-[9px] uppercase tracking-[0.6em] font-black">Limited to 500 members annually</span>
+                 <span className="text-zinc-600 text-[10px] sm:text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.6em] font-black text-center">
+                   Limited to 500 members annually
+                 </span>
               </div>
            </div>
         </div>

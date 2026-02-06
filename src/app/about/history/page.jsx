@@ -45,22 +45,22 @@ const HistoryPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-20">
+    <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-20">
       <div className="max-container px-4">
         {/* Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-12 sm:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] my-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] my-6"
           >
             <History size={16} />
             Our Journey
           </motion.div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-8 tracking-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6 sm:mb-8 tracking-tight leading-tight">
             Our <span className="text-brand-gold">History</span>
           </h1>
-          <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
+          <p className="max-w-2xl mx-auto text-zinc-400 text-base sm:text-lg leading-relaxed px-2 sm:px-0">
             A decade of architectural excellence, unwavering trust, and the pursuit of the perfect home.
           </p>
         </div>
@@ -81,7 +81,7 @@ const HistoryPage = () => {
               <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-brand-gold/0 via-brand-gold/50 to-brand-gold/0 hidden md:block"></div>
 
               {/* Milestones */}
-              <div className="space-y-24">
+              <div className="space-y-16 sm:space-y-24">
                 {milestones.map((milestone, i) => (
                   <motion.div
                     key={milestone._id || i}
@@ -93,19 +93,19 @@ const HistoryPage = () => {
                     {/* Year Side */}
                     <div className="flex-1 text-center md:text-left">
                       <div className={`flex flex-col ${i % 2 === 0 ? 'md:items-start' : 'md:items-end'}`}>
-                        <span className="text-7xl font-black text-white/5 group-hover:text-brand-gold/10 transition-colors duration-500 mb-2">
+                        <span className="text-5xl sm:text-7xl font-black text-white/5 group-hover:text-brand-gold/10 transition-colors duration-500 mb-1 sm:mb-2">
                            {milestone.year}
                         </span>
-                        <h3 className="text-3xl font-bold text-brand-gold italic mb-4">{milestone.title}</h3>
-                        <p className={`text-zinc-400 leading-relaxed max-w-md ${i % 2 === 0 ? 'md:text-left' : 'md:text-right'}`}>
+                        <h3 className="text-xl sm:text-3xl font-bold text-brand-gold italic mb-3 sm:mb-4">{milestone.title}</h3>
+                        <p className={`text-zinc-400 text-sm sm:text-base leading-relaxed max-w-md ${i % 2 === 0 ? 'md:text-left' : 'md:text-right'} px-4 sm:px-0`}>
                           {milestone.description}
                         </p>
                       </div>
                     </div>
 
                     {/* Center Icon */}
-                    <div className="relative z-10 w-16 h-16 rounded-2xl bg-royal-deep border border-brand-gold/30 flex items-center justify-center shadow-[0_0_20px_rgba(197,164,126,0.1)] shrink-0">
-                       {iconMap[milestone.icon] || <History className="text-brand-gold" size={24} />}
+                    <div className="relative z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-royal-deep border border-brand-gold/30 flex items-center justify-center shadow-[0_0_20px_rgba(197,164,126,0.1)] shrink-0">
+                       {iconMap[milestone.icon] || <History className="text-brand-gold" size={20} />}
                     </div>
 
                     {/* Empty Side for MD+ screens */}
@@ -118,9 +118,9 @@ const HistoryPage = () => {
         </div>
 
         {/* Future Vision */}
-        <div className="mt-40 text-center glass p-20 rounded-[4rem] border-white/5 max-w-5xl mx-auto">
-            <h2 className="text-4xl font-bold text-zinc-100 mb-6 italic">The Future is Architectural</h2>
-            <p className="text-zinc-400 text-lg max-w-2xl mx-auto leading-relaxed">
+        <div className="mt-20 sm:mt-40 text-center glass p-8 sm:p-20 rounded-[2rem] sm:rounded-[4rem] border-white/5 max-w-5xl mx-auto">
+            <h2 className="text-2xl sm:text-4xl font-bold text-zinc-100 mb-4 sm:mb-6 italic">The Future is Architectural</h2>
+            <p className="text-zinc-400 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
                As we move forward, our focus remains on integrating sustainable technologies with timeless design, ensuring that every Shwapner Thikana project is a legacy for generations to come.
             </p>
         </div>

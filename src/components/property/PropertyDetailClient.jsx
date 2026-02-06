@@ -114,15 +114,17 @@ const PropertyDetailClient = ({ initialProperty }) => {
         <div className="hidden md:flex absolute inset-x-0 top-1/2 -translate-y-1/2 justify-between px-8 z-20">
           <button 
             onClick={() => setActiveImage(prev => (prev === 0 ? property.images.length - 1 : prev - 1))}
-            className="p-4 rounded-full glass border-white/20 text-white hover:bg-brand-gold hover:text-royal-deep transition-all"
-            aria-label="Previous Image"
+            className="p-4 rounded-full glass border-white/20 text-white hover:bg-brand-gold hover:text-royal-deep transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
+            aria-label="Previous image"
+            aria-controls="property-gallery"
           >
             <ChevronLeft size={24} />
           </button>
           <button 
             onClick={() => setActiveImage(prev => (prev === property.images.length - 1 ? 0 : prev + 1))}
-            className="p-4 rounded-full glass border-white/20 text-white hover:bg-brand-gold hover:text-royal-deep transition-all"
-            aria-label="Next Image"
+            className="p-4 rounded-full glass border-white/20 text-white hover:bg-brand-gold hover:text-royal-deep transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
+            aria-label="Next image"
+            aria-controls="property-gallery"
           >
             <ChevronRight size={24} />
           </button>
@@ -298,41 +300,63 @@ const PropertyDetailClient = ({ initialProperty }) => {
               </h3>
               
               <form onSubmit={handleInquirySubmit} className="space-y-4">
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Your Full Name" 
-                  className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100"
-                  value={inquiry.name}
-                  onChange={(e) => setInquiry({...inquiry, name: e.target.value})}
-                />
-                <input 
-                  type="email" 
-                  required
-                  placeholder="Email Address" 
-                  className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100"
-                  value={inquiry.email}
-                  onChange={(e) => setInquiry({...inquiry, email: e.target.value})}
-                />
-                <input 
-                  type="tel" 
-                  required
-                  placeholder="Phone Number" 
-                  className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100"
-                  value={inquiry.phone}
-                  onChange={(e) => setInquiry({...inquiry, phone: e.target.value})}
-                />
-                <textarea 
-                  rows="4"
-                  required
-                  placeholder="Additional message or preferences..."
-                  className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100 resize-none"
-                  value={inquiry.message}
-                  onChange={(e) => setInquiry({...inquiry, message: e.target.value})}
-                ></textarea>
+                <div>
+                  <label htmlFor="desktop-inquiry-name" className="sr-only">Full Name</label>
+                  <input 
+                    id="desktop-inquiry-name"
+                    type="text" 
+                    required
+                    placeholder="Your Full Name"
+                    autoComplete="name"
+                    className="w-full h-12 bg-zinc-900 border border-white/10 rounded-xl px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
+                    value={inquiry.name}
+                    onChange={(e) => setInquiry({...inquiry, name: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="desktop-inquiry-email" className="sr-only">Email Address</label>
+                  <input 
+                    id="desktop-inquiry-email"
+                    type="email" 
+                    required
+                    placeholder="Email Address"
+                    inputMode="email"
+                    autoComplete="email"
+                    className="w-full h-12 bg-zinc-900 border border-white/10 rounded-xl px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
+                    value={inquiry.email}
+                    onChange={(e) => setInquiry({...inquiry, email: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="desktop-inquiry-phone" className="sr-only">Phone Number</label>
+                  <input 
+                    id="desktop-inquiry-phone"
+                    type="tel" 
+                    required
+                    placeholder="Phone Number"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    className="w-full h-12 bg-zinc-900 border border-white/10 rounded-xl px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
+                    value={inquiry.phone}
+                    onChange={(e) => setInquiry({...inquiry, phone: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="desktop-inquiry-message" className="sr-only">Message</label>
+                  <textarea 
+                    id="desktop-inquiry-message"
+                    rows="4"
+                    required
+                    placeholder="Additional message or preferences..."
+                    className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none resize-none transition-all"
+                    value={inquiry.message}
+                    onChange={(e) => setInquiry({...inquiry, message: e.target.value})}
+                  ></textarea>
+                </div>
                 <button 
+                  type="submit"
                   disabled={submitting}
-                  className="w-full py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95 shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2"
+                  className="w-full h-14 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95 shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? <Loader2 className="animate-spin" /> : <><Send size={18} /> Send Inquiry</>}
                 </button>
@@ -360,7 +384,8 @@ const PropertyDetailClient = ({ initialProperty }) => {
         </div>
         <button
           onClick={() => setShowInquiryModal(true)}
-          className="flex-1 py-3.5 bg-brand-gold text-royal-deep font-bold rounded-xl shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2 text-sm"
+          className="flex-1 h-14 bg-brand-gold text-royal-deep font-bold rounded-xl shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2 text-sm active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+          aria-label="Open inquiry form"
         >
           <Send size={16} /> Inquire Now
         </button>
@@ -369,7 +394,12 @@ const PropertyDetailClient = ({ initialProperty }) => {
       {/* Mobile Inquiry Modal (Bottom Sheet Style) */}
       <AnimatePresence>
         {showInquiryModal && (
-          <div className="fixed inset-0 z-[1000] md:hidden">
+          <div 
+            className="fixed inset-0 z-[1000] md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-inquiry-modal-title"
+          >
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -387,7 +417,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
             >
               <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-6" />
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
+                <h3 id="mobile-inquiry-modal-title" className="text-xl font-bold text-zinc-100 flex items-center gap-2">
                   <ShieldCheck className="text-brand-gold" size={24} />
                   Exclusive Inquiry
                 </h3>
@@ -400,33 +430,51 @@ const PropertyDetailClient = ({ initialProperty }) => {
               </div>
               
               <form onSubmit={handleInquirySubmit} className="space-y-4">
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Your Full Name" 
-                  className="w-full bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100"
-                  value={inquiry.name}
-                  onChange={(e) => setInquiry({...inquiry, name: e.target.value})}
-                />
-                <input 
-                  type="email" 
-                  required
-                  placeholder="Email Address" 
-                  className="w-full bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100"
-                  value={inquiry.email}
-                  onChange={(e) => setInquiry({...inquiry, email: e.target.value})}
-                />
-                <input 
-                  type="tel" 
-                  required
-                  placeholder="Phone Number" 
-                  className="w-full bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100"
-                  value={inquiry.phone}
-                  onChange={(e) => setInquiry({...inquiry, phone: e.target.value})}
-                />
+                <div>
+                  <label htmlFor="mobile-inquiry-name" className="sr-only">Full Name</label>
+                  <input 
+                    id="mobile-inquiry-name"
+                    type="text" 
+                    required
+                    placeholder="Your Full Name"
+                    autoComplete="name"
+                    className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
+                    value={inquiry.name}
+                    onChange={(e) => setInquiry({...inquiry, name: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="mobile-inquiry-email" className="sr-only">Email Address</label>
+                  <input 
+                    id="mobile-inquiry-email"
+                    type="email" 
+                    required
+                    placeholder="Email Address"
+                    inputMode="email"
+                    autoComplete="email"
+                    className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
+                    value={inquiry.email}
+                    onChange={(e) => setInquiry({...inquiry, email: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="mobile-inquiry-phone" className="sr-only">Phone Number</label>
+                  <input 
+                    id="mobile-inquiry-phone"
+                    type="tel" 
+                    required
+                    placeholder="Phone Number"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
+                    value={inquiry.phone}
+                    onChange={(e) => setInquiry({...inquiry, phone: e.target.value})}
+                  />  
+                </div>
                 <button 
+                  type="submit"
                   disabled={submitting}
-                  className="w-full py-4 bg-brand-gold text-royal-deep font-bold rounded-xl shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2"
+                  className="w-full h-14 bg-brand-gold text-royal-deep font-bold rounded-xl shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? <Loader2 className="animate-spin" /> : <><Send size={18} /> Send Inquiry</>}
                 </button>

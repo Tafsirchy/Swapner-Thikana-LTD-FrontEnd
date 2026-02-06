@@ -29,18 +29,18 @@ const AgenciesPage = () => {
   return (
     <div className="min-h-screen bg-royal-deep pt-32 pb-0 overflow-hidden">
       {/* Hero Header */}
-      <div className="max-container px-4 mb-24 lg:mb-32">
+      <div className="max-container px-4 mb-16 sm:mb-24 lg:mb-32">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 rounded-full px-6 py-2 bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] font-black uppercase tracking-[0.4em] mb-8"
+          className="inline-flex items-center gap-2 rounded-full px-5 sm:px-6 py-2 bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] mb-6 sm:mb-8"
         >
           <Globe size={14} /> Our Network
         </motion.div>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-cinzel font-bold text-white mb-8 leading-none">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-cinzel font-bold text-white mb-6 sm:mb-8 leading-tight sm:leading-none">
           Strategic <span className="text-brand-gold">Outposts</span>
         </h1>
-        <p className="max-w-2xl text-zinc-400 text-lg leading-relaxed font-serif italic">
+        <p className="max-w-2xl text-zinc-400 text-base sm:text-lg leading-relaxed font-serif italic">
           Localized expertise with a global standard of excellence. Our boutique agencies are the cornerstones of our national presence.
         </p>
       </div>
@@ -66,7 +66,7 @@ const AgenciesPage = () => {
               whileInView={{ opacity: 1 }}
               transition={{ duration: 1 }}
               viewport={{ once: true }}
-              className="relative min-h-screen flex items-center justify-center py-20 lg:py-0 border-b border-white/5 last:border-0"
+              className="relative min-h-[auto] lg:min-h-screen flex items-center justify-center py-16 sm:py-20 lg:py-0 border-b border-white/5 last:border-0"
             >
               {/* Background Immersive Image */}
               <div className="absolute inset-0 z-0">
@@ -89,16 +89,16 @@ const AgenciesPage = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.8, delay: 0.2 }}
                     >
-                      <span className="text-brand-gold font-black text-xs uppercase tracking-[0.5em] mb-4 block">
+                      <span className="text-brand-gold font-black text-[10px] sm:text-xs uppercase tracking-[0.5em] mb-4 block">
                         Network Station 0{i + 1}
                       </span>
-                      <h2 className="text-4xl md:text-6xl font-cinzel font-bold text-white mb-6 uppercase leading-tight">
+                      <h2 className="text-2xl sm:text-4xl lg:text-6xl font-cinzel font-bold text-white mb-4 sm:mb-6 uppercase leading-tight">
                         {agency.name.split(' ').map((word, idx) => (
                           <span key={idx} className={idx % 2 !== 0 ? 'text-brand-gold' : ''}>{word} </span>
                         ))}
                       </h2>
-                      <div className="flex items-center justify-center lg:justify-start gap-4 text-zinc-500 font-serif italic text-2xl">
-                         <MapPin size={24} className="text-brand-gold/50" />
+                      <div className="flex items-center justify-center lg:justify-start gap-4 text-zinc-500 font-serif italic text-xl sm:text-2xl">
+                         <MapPin size={22} className="text-brand-gold/50" />
                          <span>{agency.location || agency.contactInfo?.address?.split(',')[0]} Outpost</span>
                       </div>
                     </motion.div>
@@ -109,12 +109,12 @@ const AgenciesPage = () => {
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="flex-1 bg-zinc-950/80 backdrop-blur-3xl border border-white/5 p-12 lg:p-16 relative overflow-hidden group shadow-2xl"
+                    className="flex-1 bg-zinc-950/80 backdrop-blur-3xl border border-white/5 p-6 sm:p-12 lg:p-16 relative overflow-hidden group shadow-2xl w-full"
                   >
                     {/* Decorative Corner Brackets */}
                     <div className="absolute top-0 right-0 w-24 h-24 border-t border-r border-brand-gold/20 -translate-x-0 translate-y-0 transition-transform duration-700 group-hover:scale-110"></div>
                     
-                    <p className="text-zinc-400 text-lg leading-relaxed mb-12 font-light opacity-80 group-hover:opacity-100 transition-opacity">
+                    <p className="text-zinc-400 text-base sm:text-lg leading-relaxed mb-8 sm:mb-12 font-light opacity-80 group-hover:opacity-100 transition-opacity">
                       {agency.description || "Representing excellence in every transaction, our boutique office specializes in the curation of luxury living spaces and strategic investment consulting."}
                     </p>
 
@@ -138,7 +138,8 @@ const AgenciesPage = () => {
                         href={agency.website || agency.contactInfo?.website || "#"} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="flex-1 border-b border-brand-gold py-4 text-brand-gold font-black text-xs uppercase tracking-[0.4em] flex items-center justify-between group/btn hover:text-white transition-colors"
+                        className="flex-1 border-b border-brand-gold py-4 text-brand-gold font-black text-[10px] sm:text-xs uppercase tracking-[0.4em] flex items-center justify-between group/btn hover:text-white transition-colors"
+                        aria-label={`Connect with ${agency.name} Station`}
                       >
                         Connect with Station <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-2" />
                       </a>

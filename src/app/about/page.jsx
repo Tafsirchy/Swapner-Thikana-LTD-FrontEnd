@@ -37,9 +37,9 @@ const AboutPage = () => {
     return <Gem size={24} />;
   };
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-24 overflow-x-hidden">
+    <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="mb-32">
+      <section className="mb-16 sm:mb-32">
         <div className="max-container px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -51,24 +51,24 @@ const AboutPage = () => {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em]">
                 Founded in 2011
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 tracking-tight leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 tracking-tight leading-tight">
                 Redefining the Art of <span className="text-brand-gold">Luxury Living</span>
               </h1>
-              <p className="text-zinc-400 text-lg leading-relaxed italic">
+              <p className="text-zinc-400 text-base sm:text-lg leading-relaxed italic">
                 &quot;shwapner Thikana Ltd was established with a singular vision: to bring world-class architectural standards and uncompromising service to Bangladesh&apos;s premium real estate landscape.&quot;
               </p>
-              <div className="flex items-center gap-12 pt-6">
+              <div className="grid grid-cols-2 sm:flex sm:items-center gap-6 sm:gap-12 pt-6">
                 <div>
-                  <span className="block text-4xl font-bold text-brand-gold mb-1">15+</span>
-                  <span className="text-xs text-zinc-500 uppercase font-bold tracking-widest">Years Exp.</span>
+                  <span className="block text-3xl sm:text-4xl font-bold text-brand-gold mb-1">15+</span>
+                  <span className="text-[10px] sm:text-xs text-zinc-500 uppercase font-black tracking-widest">Years Exp.</span>
                 </div>
                 <div>
-                  <span className="block text-4xl font-bold text-brand-gold mb-1">1,250+</span>
-                  <span className="text-xs text-zinc-500 uppercase font-bold tracking-widest">Listings</span>
+                  <span className="block text-3xl sm:text-4xl font-bold text-brand-gold mb-1">1,250+</span>
+                  <span className="text-[10px] sm:text-xs text-zinc-500 uppercase font-black tracking-widest">Listings</span>
                 </div>
                 <div>
-                  <span className="block text-4xl font-bold text-brand-gold mb-1">800+</span>
-                  <span className="text-xs text-zinc-500 uppercase font-bold tracking-widest">Families</span>
+                  <span className="block text-3xl sm:text-4xl font-bold text-brand-gold mb-1">800+</span>
+                  <span className="text-[10px] sm:text-xs text-zinc-500 uppercase font-black tracking-widest">Families</span>
                 </div>
               </div>
             </motion.div>
@@ -91,11 +91,11 @@ const AboutPage = () => {
       </section>
 
       {/* Philosophy Section */}
-      <section className="mb-40 py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
+      <section className="mb-20 sm:mb-40 py-16 sm:py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-96 h-96 bg-brand-emerald/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="max-container px-4 text-center mb-20">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6">Our Platinum <span className="text-brand-gold">Philosophy</span></h2>
-          <p className="text-zinc-400 max-w-2xl mx-auto italic">Every brick we lay and every home we list is governed by four core pillars of excellence.</p>
+        <div className="max-container px-4 text-center mb-12 sm:mb-20">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6">Our Platinum <span className="text-brand-gold">Philosophy</span></h2>
+          <p className="text-zinc-400 text-sm sm:text-base max-w-2xl mx-auto italic px-4">Every brick we lay and every home we list is governed by four core pillars of excellence.</p>
         </div>
 
         <div className="max-container px-4">
@@ -135,7 +135,7 @@ const AboutPage = () => {
                       </motion.div>
 
                       <div className="space-y-4">
-                        <h3 className="text-3xl font-cinzel font-bold text-zinc-100 tracking-wider group-hover:text-brand-gold transition-colors duration-500">
+                        <h3 className="text-2xl sm:text-3xl font-cinzel font-bold text-zinc-100 tracking-wider group-hover:text-brand-gold transition-colors duration-500">
                           {pill.title}
                         </h3>
                         <div className="w-12 h-0.5 bg-brand-gold/30 group-hover:w-full transition-all duration-700"></div>
@@ -198,7 +198,7 @@ const AboutPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                   viewport={{ once: true }}
-                  className="text-4xl md:text-5xl lg:text-6xl font-cinzel text-white leading-[0.85] tracking-tighter"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-cinzel text-white leading-tight sm:leading-[0.85] tracking-tighter"
                 >
                   Experts in {" "}
                   <span className="text-brand-gold relative inline-block">
@@ -207,7 +207,7 @@ const AboutPage = () => {
                       initial={{ width: 0 }}
                       whileInView={{ width: '100%' }}
                       transition={{ delay: 0.8, duration: 1.5 }}
-                      className="absolute -bottom-4 left-0 h-1 bg-brand-gold/20"
+                      className="absolute -bottom-2 sm:-bottom-4 left-0 h-0.5 sm:h-1 bg-brand-gold/20"
                     />
                   </span>
                 </motion.h2>
@@ -368,13 +368,13 @@ const AboutPage = () => {
                           <Image src={leaders[2].image || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200'} alt={leaders[2].name} fill className="object-cover scale-110 group-hover:scale-100 transition-all duration-[1.2s]" />
                           <div className="absolute inset-0 bg-brand-gold/10 mix-blend-overlay"></div>
                         </div>
-                        <div className="absolute -left-8 bottom-16 p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50">
+                        <div className="absolute left-0 sm:-left-8 bottom-16 p-4 sm:p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-6 sm:gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50">
                         <div className="flex-shrink-0 text-brand-gold/40 group-hover:text-brand-gold transition-colors duration-500">
                            {getRoleIcon(leaders[2].role)}
                         </div>
                         <div>
-                          <h4 className="text-lg font-cinzel font-bold text-white tracking-widest">{leaders[2].name}</h4>
-                          <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-[0.3em] mt-2 italic">{leaders[2].role}</p>
+                          <h4 className="text-base sm:text-lg font-cinzel font-bold text-white tracking-widest">{leaders[2].name}</h4>
+                          <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-[0.3em] mt-1 sm:mt-2 italic">{leaders[2].role}</p>
                         </div>
                       </div>
                       </div>

@@ -44,31 +44,33 @@ const MagazineDetailsPage = () => {
   if (!magazine) return null;
 
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-24">
+    <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24">
       <div className="max-container px-4">
         {/* Back Button */}
         <Link 
           href="/about/magazines"
-          className="inline-flex items-center gap-2 text-zinc-400 hover:text-brand-gold transition-colors mb-12 group"
+          className="inline-flex items-center gap-2 text-zinc-400 hover:text-brand-gold transition-colors mb-8 sm:mb-12 group p-2 -ml-2"
+          aria-label="Back to Magazines"
         >
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-          Back to Magazines
+          <span className="text-sm sm:text-base">Back to Magazines</span>
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
           {/* Left: Magazine Cover */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-5"
           >
-            <div className="relative aspect-square overflow-hidden shadow-2xl shadow-black/50 border border-white/5 group">
+            <div className="relative aspect-[3/4] overflow-hidden shadow-2xl shadow-black/50 border border-white/5 group">
               <Image 
                 src={magazine.coverImage || '/placeholder-magazine.jpg'}
                 alt={magazine.title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 priority
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/40 to-transparent"></div>
             </div>
@@ -101,26 +103,26 @@ const MagazineDetailsPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="lg:col-span-7 flex flex-col pt-4"
           >
-            <div className="flex items-center gap-4 mb-6">
-              <span className="px-4 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-widest">
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+              <span className="px-3 sm:px-4 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] sm:text-xs font-bold uppercase tracking-widest">
                 {magazine.publisher || 'Swapner Thikana'}
               </span>
-              <span className="flex items-center gap-2 text-zinc-400 text-sm font-medium">
-                <Calendar size={16} />
+              <span className="flex items-center gap-2 text-zinc-400 text-xs sm:text-sm font-medium">
+                <Calendar size={14} className="sm:size-4" />
                 {magazine.publicationDate ? new Date(magazine.publicationDate).toLocaleDateString(undefined, { month: 'long', year: 'numeric' }) : 'Recent'}
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold text-zinc-100 mb-8 leading-[1.1] tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold text-zinc-100 mb-6 sm:mb-8 leading-[1.1] tracking-tight">
               {magazine.title}
             </h1>
 
-            <div className="p-8 bg-white/5 border border-white/10 mb-10">
-              <h3 className="text-zinc-100 font-bold mb-4 flex items-center gap-2">
-                <BookOpen size={20} className="text-brand-gold" />
+            <div className="p-5 sm:p-8 bg-white/5 border border-white/10 mb-8 sm:mb-10">
+              <h3 className="text-zinc-100 text-sm sm:text-base font-bold mb-4 flex items-center gap-2">
+                <BookOpen size={18} className="text-brand-gold" />
                 Issue Overview
               </h3>
-              <p className="text-zinc-400 text-lg leading-relaxed italic">
+              <p className="text-zinc-400 text-base sm:text-lg leading-relaxed italic">
                 "{magazine.description}"
               </p>
             </div>

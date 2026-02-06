@@ -41,7 +41,7 @@ const BlogCard = ({ post }) => {
         
         {/* Floating Category Badge */}
         <div className="absolute top-6 left-6">
-          <span className="px-5 py-2 bg-brand-gold text-royal-deep text-[9px] font-black uppercase tracking-[0.3em] shadow-[0_10px_20px_-5px_rgba(212,175,55,0.4)] transition-transform duration-500 group-hover:-translate-y-1">
+          <span className="px-4 py-2 sm:px-5 bg-brand-gold text-royal-deep text-[10px] sm:text-[9px] font-black uppercase tracking-wider sm:tracking-[0.3em] shadow-[0_10px_20px_-5px_rgba(212,175,55,0.4)] transition-transform duration-500 group-hover:-translate-y-1">
             {category || 'Lifestyle'}
           </span>
         </div>
@@ -50,15 +50,15 @@ const BlogCard = ({ post }) => {
       {/* Metadata Panel - Floating & Overlapping */}
       <div className="relative px-8 pb-10 pt-12 flex-1 flex flex-col">
         {/* Date/Author Glass Panel */}
-        <div className="absolute -top-5 left-8 right-8 bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-3 flex items-center justify-between text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500 shadow-2xl transition-transform duration-700 group-hover:-translate-y-2">
+        <div className="absolute -top-5 left-4 right-4 sm:left-8 sm:right-8 bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 text-[10px] sm:text-[9px] font-black uppercase tracking-wider sm:tracking-[0.2em] text-zinc-500 shadow-2xl transition-transform duration-700 group-hover:-translate-y-2">
           <div className="flex items-center gap-3">
             <Calendar size={12} className="text-brand-gold" />
             <span className="opacity-80">{new Date(createdAt).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>
           </div>
-          <div className="w-px h-3 bg-white/10"></div>
+          <div className="hidden sm:block w-px h-3 bg-white/10"></div>
           <div className="flex items-center gap-3">
             <User size={12} className="text-brand-gold" />
-            <span className="truncate max-w-[100px]">By {author || 'Admin'}</span>
+            <span className="truncate max-w-[140px] sm:max-w-[100px]">By {author || 'Admin'}</span>
           </div>
         </div>
 
@@ -79,7 +79,7 @@ const BlogCard = ({ post }) => {
           <div className="mt-auto pt-4 border-t border-white/5">
             <Link 
               href={`/blog/${slug}`}
-              className="inline-flex items-center gap-4 text-brand-gold font-black text-[10px] uppercase tracking-[0.4em] group/link"
+              className="inline-flex items-center gap-4 text-brand-gold font-black text-xs sm:text-[10px] uppercase tracking-wider sm:tracking-[0.4em] group/link py-3 -mx-2 px-2 rounded-lg hover:bg-white/5 transition-all"
             >
               <span className="relative overflow-hidden">
                 <span className="block transition-transform duration-500 group-hover:-translate-y-full">Read Full Insight</span>

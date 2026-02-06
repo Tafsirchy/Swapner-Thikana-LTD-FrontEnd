@@ -40,22 +40,22 @@ const AgentsPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-12">
+    <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-12">
       <div className="max-container px-4">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] my-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] my-6"
           >
             <Handshake size={16} />
-Meet Our Team
+            Meet Our Team
           </motion.div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6">
+          <h1 className="text-2xl sm:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6 tracking-tight leading-tight">
             Elite Real Estate <span className="text-brand-gold">Consultants</span>
           </h1>
-          <p className="text-zinc-400 max-w-2xl mx-auto text-lg">
+          <p className="text-zinc-400 max-w-2xl mx-auto text-sm sm:text-lg leading-relaxed px-2 sm:px-0">
             Our experienced agents are dedicated to helping you find your perfect property. 
             With deep market knowledge and a commitment to excellence, we ensure a seamless experience.
           </p>
@@ -79,7 +79,7 @@ Meet Our Team
                 className="group relative bg-zinc-900 border border-white/5 rounded-none overflow-hidden hover:border-brand-gold/30 transition-all duration-300"
               >
                 {/* Image */}
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative h-60 sm:h-64 overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10"></div>
                   <Image 
                     src={agent.image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop'} 

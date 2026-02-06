@@ -38,7 +38,7 @@ const ManagementPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-24 overflow-x-hidden relative isolate [ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24 overflow-x-hidden relative isolate [ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       {/* Artistic Background Elements */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-brand-gold/5 rounded-full blur-[160px] -translate-y-1/2 translate-x-1/2 pointer-events-none -z-10"></div>
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-emerald/5 rounded-full blur-[140px] translate-y-1/2 -translate-x-1/2 pointer-events-none -z-10"></div>
@@ -56,7 +56,7 @@ const ManagementPage = () => {
 
       <div className="max-container px-4">
         {/* Header Section */}
-        <div className="flex flex-col lg:flex-row items-start justify-between mb-24 gap-12">
+        <div className="flex flex-col lg:flex-row items-start justify-between mb-12 sm:mb-24 gap-8 sm:gap-12">
            <div className="max-w-3xl">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -71,7 +71,7 @@ const ManagementPage = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="text-4xl md:text-5xl lg:text-6xl font-cinzel text-white leading-[0.85] tracking-tighter"
+                className="text-3xl sm:text-5xl lg:text-6xl font-cinzel text-white leading-[0.95] sm:leading-[0.85] tracking-tighter"
               >
                 Our {" "}
                 <span className="text-brand-gold relative inline-block">
@@ -99,7 +99,7 @@ const ManagementPage = () => {
         </div>
 
         {/* Staggered Artistic Gallery - Grid Based */}
-        <div className="mb-40">
+        <div className="mb-20 sm:mb-40">
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                {[...Array(3)].map((_, i) => (
@@ -135,15 +135,15 @@ const ManagementPage = () => {
                           sizes="(max-width: 768px) 100vw, 400px"
                           className="object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" 
                         />
-                        {/* Social Icons on Hover */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-8">
+                        {/* Social Icons - Visible on SM, Hover on LG */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-8">
                            {leaders[1].email && (
-                             <a href={`mailto:${leaders[1].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                             <a href={`mailto:${leaders[1].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform">
                                <Mail size={18} />
                              </a>
                            )}
                            {leaders[1].whatsapp && (
-                             <a href={`https://wa.me/${leaders[1].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform delay-75">
+                             <a href={`https://wa.me/${leaders[1].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform sm:delay-75">
                                <MessageCircle size={18} />
                              </a>
                            )}
@@ -203,15 +203,15 @@ const ManagementPage = () => {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                         
-                        {/* Social Icons on Hover */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-6 pb-4">
+                        {/* Social Icons - Visible on SM, Hover on LG */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-6 pb-4">
                            {leaders[0].email && (
-                             <a href={`mailto:${leaders[0].email}`} className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                             <a href={`mailto:${leaders[0].email}`} className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform">
                                <Mail size={22} />
                              </a>
                            )}
                            {leaders[0].whatsapp && (
-                             <a href={`https://wa.me/${leaders[0].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform delay-75">
+                             <a href={`https://wa.me/${leaders[0].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform sm:delay-75">
                                <MessageCircle size={22} />
                              </a>
                            )}
@@ -221,7 +221,7 @@ const ManagementPage = () => {
                         <div className="mt-8 flex justify-between items-start pb-4 px-4">
                           <div className="space-y-1">
                             <p className="text-brand-gold font-cinzel text-[10px] uppercase tracking-[0.3em] font-black italic mb-2">{leaders[0].role}</p>
-                            <h3 className="text-4xl font-cinzel font-bold text-white tracking-widest leading-none">{leaders[0].name}</h3>
+                            <h3 className="text-2xl sm:text-4xl font-cinzel font-bold text-white tracking-widest leading-none">{leaders[0].name}</h3>
                           </div>
                           <div className="flex flex-col items-end gap-2 pt-1">
                             <div className="text-brand-gold/30 group-hover:text-brand-gold/80 transition-colors duration-700">
@@ -253,15 +253,15 @@ const ManagementPage = () => {
                         />
                         <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
                         
-                        {/* Social Icons on Hover */}
-                        <div className="absolute inset-0 bg-royal-deep/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4">
+                        {/* Social Icons - Visible on SM, Hover on LG */}
+                        <div className="absolute inset-0 bg-royal-deep/40 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4">
                            {leaders[3].email && (
-                             <a href={`mailto:${leaders[3].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                             <a href={`mailto:${leaders[3].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform">
                                <Mail size={18} />
                              </a>
                            )}
                            {leaders[3].whatsapp && (
-                             <a href={`https://wa.me/${leaders[3].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform delay-75">
+                             <a href={`https://wa.me/${leaders[3].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform sm:delay-75">
                                <MessageCircle size={18} />
                              </a>
                            )}
@@ -269,7 +269,7 @@ const ManagementPage = () => {
                       </div>
                       <div className="mt-8 flex items-center justify-between">
                         <div className="space-y-1">
-                          <h4 className="text-2xl font-cinzel font-bold text-white tracking-widest">{leaders[3].name}</h4>
+                          <h4 className="text-xl sm:text-2xl font-cinzel font-bold text-white tracking-widest">{leaders[3].name}</h4>
                           <p className="text-[10px] text-brand-gold font-black uppercase tracking-[0.4em] italic leading-none">{leaders[3].role}</p>
                         </div>
                         <div className="text-brand-gold/40 group-hover:text-brand-gold/80 transition-colors duration-700">
@@ -303,21 +303,21 @@ const ManagementPage = () => {
                         />
                         <div className="absolute inset-0 bg-brand-gold/5 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-1000"></div>
                         
-                        {/* Social Icons on Hover */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4">
+                        {/* Social Icons - Visible on SM, Hover on LG */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4">
                            {leaders[2].email && (
-                             <a href={`mailto:${leaders[2].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                             <a href={`mailto:${leaders[2].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform">
                                <Mail size={18} />
                              </a>
                            )}
                            {leaders[2].whatsapp && (
-                             <a href={`https://wa.me/${leaders[2].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 transition-transform delay-75">
+                             <a href={`https://wa.me/${leaders[2].whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-green-500 hover:text-white transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform sm:delay-75">
                                <MessageCircle size={18} />
                              </a>
                            )}
                         </div>
                       </div>
-                      <div className="absolute -left-8 bottom-16 p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50">
+                      <div className="absolute sm:-left-8 bottom-0 sm:bottom-16 p-5 sm:p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-6 sm:gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50 w-full sm:w-auto">
                       <div className="flex-shrink-0 text-brand-gold/40 group-hover:text-brand-gold transition-colors duration-500">
                          {getRoleIcon(leaders[2].role)}
                       </div>
@@ -342,9 +342,9 @@ const ManagementPage = () => {
         </div>
 
         {/* Join the Team CTA */}
-        <div className="mt-40 bg-zinc-950 border border-white/5 rounded-none p-12 lg:p-20 flex flex-col items-center text-center relative overflow-hidden group">
+        <div className="mt-20 sm:mt-40 bg-zinc-950 border border-white/5 rounded-none p-8 sm:p-12 lg:p-20 flex flex-col items-center text-center relative overflow-hidden group">
            <div className="absolute inset-0 bg-brand-gold/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-           <h2 className="text-4xl md:text-5xl font-cinzel font-bold text-white mb-6 italic relative z-10">Want to join our vision?</h2>
+           <h2 className="text-3xl sm:text-4xl md:text-5xl font-cinzel font-bold text-white mb-6 italic relative z-10">Want to join our vision?</h2>
            <p className="text-zinc-500 max-w-xl mb-10 leading-relaxed italic relative z-10">
               We are always looking for passionate architects, real estate consultants, and creative minds to join our elite team.
            </p>

@@ -78,13 +78,17 @@ const ProjectDetailClient = ({ project }) => {
         <div className="hidden md:flex absolute inset-x-0 top-1/2 -translate-y-1/2 justify-between px-8 z-30">
           <button 
             onClick={() => setActiveImage(prev => (prev === 0 ? project.images.length - 1 : prev - 1))}
-            className="p-4 rounded-full bg-black/20 backdrop-blur-md border border-white/10 text-white hover:bg-brand-gold hover:text-royal-deep transition-all"
+            className="p-4 rounded-full bg-black/20 backdrop-blur-md border border-white/10 text-white hover:bg-brand-gold hover:text-royal-deep transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
+            aria-label="Previous image"
+            aria-controls="project-gallery"
           >
             <ChevronLeft size={24} />
           </button>
           <button 
             onClick={() => setActiveImage(prev => (prev === project.images.length - 1 ? 0 : prev + 1))}
-            className="p-4 rounded-full bg-black/20 backdrop-blur-md border border-white/10 text-white hover:bg-brand-gold hover:text-royal-deep transition-all"
+            className="p-4 rounded-full bg-black/20 backdrop-blur-md border border-white/10 text-white hover:bg-brand-gold hover:text-royal-deep transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
+            aria-label="Next image"
+            aria-controls="project-gallery"
           >
             <ChevronRight size={24} />
           </button>
@@ -268,22 +272,33 @@ const ProjectDetailClient = ({ project }) => {
                 <div className="mt-10 pt-8 border-t border-white/5 space-y-4">
                    <h4 className="text-xs font-bold text-white uppercase tracking-widest text-center mb-6">Request Private Consultation</h4>
                    <form className="space-y-3" onSubmit={handleInquirySubmit}>
-                      <input 
-                         type="text" 
-                         required
-                         placeholder="Name" 
-                         className="w-full bg-zinc-950/50 border border-white/5 rounded-2xl px-5 py-4 text-sm focus:border-brand-gold/50 outline-none transition-all text-white" 
-                         value={inquiry.name}
-                         onChange={(e) => setInquiry({...inquiry, name: e.target.value})}
-                      />
-                      <input 
-                         type="tel" 
-                         required
-                         placeholder="Phone" 
-                         className="w-full bg-zinc-950/50 border border-white/5 rounded-2xl px-5 py-4 text-sm focus:border-brand-gold/50 outline-none transition-all text-white" 
-                         value={inquiry.phone}
-                         onChange={(e) => setInquiry({...inquiry, phone: e.target.value})}
-                      />
+                      <div>
+                        <label htmlFor="desktop-project-inquiry-name" className="sr-only">Name</label>
+                        <input 
+                           id="desktop-project-inquiry-name"
+                           type="text" 
+                           required
+                           placeholder="Name"
+                           autoComplete="name"
+                           className="w-full h-12 bg-zinc-950/50 border border-white/5 rounded-2xl px-5 text-sm text-white placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all" 
+                           value={inquiry.name}
+                           onChange={(e) => setInquiry({...inquiry, name: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="desktop-project-inquiry-phone" className="sr-only">Phone</label>
+                        <input 
+                           id="desktop-project-inquiry-phone"
+                           type="tel" 
+                           required
+                           placeholder="Phone"
+                           inputMode="tel"
+                           autoComplete="tel"
+                           className="w-full h-12 bg-zinc-950/50 border border-white/5 rounded-2xl px-5 text-sm text-white placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all" 
+                           value={inquiry.phone}
+                           onChange={(e) => setInquiry({...inquiry, phone: e.target.value})}
+                        />
+                      </div>
                       <LiquidButton 
                          type="submit"
                          disabled={submitting}
@@ -305,14 +320,16 @@ const ProjectDetailClient = ({ project }) => {
          <div className="p-4 bg-zinc-950/90 backdrop-blur-2xl border-t border-white/10 flex gap-3 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
             <a 
               href="tel:01731227755" 
-              className="flex-1 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center gap-2 text-white font-bold text-sm active:scale-95 transition-all"
+              className="flex-1 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center gap-2 text-white font-bold text-sm active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
+              aria-label="Call sales hotline"
             >
                <Phone size={18} className="text-brand-gold" />
                Call Sales
             </a>
             <button 
               onClick={() => setShowInquiryModal(true)}
-              className="flex-[1.5] h-14 rounded-2xl bg-brand-gold text-royal-deep font-bold text-sm flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg shadow-brand-gold/20"
+              className="flex-[1.5] h-14 rounded-2xl bg-brand-gold text-royal-deep font-bold text-sm flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg shadow-brand-gold/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              aria-label="Open inquiry form"
             >
                <Send size={18} />
                Inquire Now
@@ -323,7 +340,12 @@ const ProjectDetailClient = ({ project }) => {
       {/* Mobile Inquiry Modal (Bottom Sheet Style) synchronized with Property Details */}
       <AnimatePresence>
         {showInquiryModal && (
-          <div className="fixed inset-0 z-[1000] md:hidden">
+          <div 
+            className="fixed inset-0 z-[1000] md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-project-inquiry-modal-title"
+          >
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -341,7 +363,7 @@ const ProjectDetailClient = ({ project }) => {
             >
               <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-6" />
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
+                <h3 id="mobile-project-inquiry-modal-title" className="text-xl font-bold text-zinc-100 flex items-center gap-2">
                   <ShieldCheck className="text-brand-gold" size={24} />
                   Exclusive Inquiry
                 </h3>
@@ -354,41 +376,62 @@ const ProjectDetailClient = ({ project }) => {
               </div>
               
               <form onSubmit={handleInquirySubmit} className="space-y-4">
-                <input 
-                  type="text" 
-                  required
-                  placeholder="Your Full Name" 
-                  className="w-full bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100 placeholder:text-zinc-500"
-                  value={inquiry.name}
-                  onChange={(e) => setInquiry({...inquiry, name: e.target.value})}
-                />
-                <input 
-                  type="email" 
-                  required
-                  placeholder="Email Address" 
-                  className="w-full bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100 placeholder:text-zinc-500"
-                  value={inquiry.email}
-                  onChange={(e) => setInquiry({...inquiry, email: e.target.value})}
-                />
-                <input 
-                  type="tel" 
-                  required
-                  placeholder="Phone Number" 
-                  className="w-full bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100 placeholder:text-zinc-500"
-                  value={inquiry.phone}
-                  onChange={(e) => setInquiry({...inquiry, phone: e.target.value})}
-                />
-                <textarea 
-                  rows="4"
-                  required
-                  placeholder="Additional message or preferences..."
-                  className="w-full bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-brand-gold/50 outline-none text-zinc-100 placeholder:text-zinc-500 resize-none"
-                  value={inquiry.message}
-                  onChange={(e) => setInquiry({...inquiry, message: e.target.value})}
-                ></textarea>
+                <div>
+                  <label htmlFor="mobile-project-inquiry-name" className="sr-only">Full Name</label>
+                  <input 
+                    id="mobile-project-inquiry-name"
+                    type="text" 
+                    required
+                    placeholder="Your Full Name"
+                    autoComplete="name"
+                    className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
+                    value={inquiry.name}
+                    onChange={(e) => setInquiry({...inquiry, name: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="mobile-project-inquiry-email" className="sr-only">Email Address</label>
+                  <input 
+                    id="mobile-project-inquiry-email"
+                    type="email" 
+                    required
+                    placeholder="Email Address"
+                    inputMode="email"
+                    autoComplete="email"
+                    className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
+                    value={inquiry.email}
+                    onChange={(e) => setInquiry({...inquiry, email: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="mobile-project-inquiry-phone" className="sr-only">Phone Number</label>
+                  <input 
+                    id="mobile-project-inquiry-phone"
+                    type="tel" 
+                    required
+                    placeholder="Phone Number"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    className="w-full h-12 bg-zinc-800 border border-white/10 rounded-xl px-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
+                    value={inquiry.phone}
+                    onChange={(e) => setInquiry({...inquiry, phone: e.target.value})}
+                  />
+                </div>
+                <div className="md:block">
+                  <label htmlFor="mobile-project-inquiry-message" className="sr-only">Message (Optional)</label>
+                  <textarea 
+                    id="mobile-project-inquiry-message"
+                    rows="4"
+                    placeholder="Additional message or preferences (optional)..."
+                    className="w-full bg-zinc-800 border border-white/10 rounded-xl px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none resize-none transition-all"
+                    value={inquiry.message}
+                    onChange={(e) => setInquiry({...inquiry, message: e.target.value})}
+                  ></textarea>
+                </div>
                 <button 
+                  type="submit"
                   disabled={submitting}
-                  className="w-full py-4 bg-brand-gold text-royal-deep font-bold rounded-xl shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
+                  className="w-full h-14 bg-brand-gold text-royal-deep font-bold rounded-xl shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? <Loader2 className="animate-spin" /> : <><Send size={18} /> Request Private Consultation</>}
                 </button>

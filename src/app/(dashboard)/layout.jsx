@@ -116,7 +116,11 @@ const DashboardLayout = ({ children }) => {
         `}>
           <div className="lg:hidden px-6 pt-6 pb-2 flex items-center justify-between">
             <span className="font-bold text-xl text-zinc-100">Dashboard</span>
-            <button onClick={toggleSidebar} className="text-zinc-400 p-2 hover:bg-white/5 rounded-full transition-colors">
+            <button 
+              onClick={toggleSidebar} 
+              className="text-zinc-400 p-2 hover:bg-white/5 rounded-full transition-colors"
+              aria-label="Close Sidebar"
+            >
               <X size={24} />
             </button>
           </div>
@@ -130,14 +134,14 @@ const DashboardLayout = ({ children }) => {
           </div>
 
           <div className="flex flex-col h-full">
-            <div className="px-4 pt-6 pb-2 flex-1 overflow-y-auto min-h-0 custom-scrollbar" data-lenis-prevent>
-              <div className="flex items-center gap-3 px-4 py-4 mb-8 bg-white/5 rounded-2xl border border-white/5 mt-2">
-                <div className="w-10 h-10 rounded-full bg-brand-gold flex items-center justify-center text-royal-deep font-bold text-lg">
+            <div className="px-3 sm:px-4 pt-6 pb-2 flex-1 overflow-y-auto min-h-0 custom-scrollbar" data-lenis-prevent>
+              <div className="flex items-center gap-3 px-3 py-3 sm:px-4 sm:py-4 mb-4 sm:mb-8 bg-white/5 rounded-2xl border border-white/5 mt-2">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-gold flex items-center justify-center text-royal-deep font-bold text-base sm:text-lg">
                   {user?.name?.[0] || 'U'}
                 </div>
                 <div className="flex-1 overflow-hidden">
-                  <h4 className="text-sm font-bold truncate">{user?.name}</h4>
-                  <span className="text-xs text-brand-gold uppercase tracking-wider font-bold">{user?.role}</span>
+                  <h4 className="text-xs sm:text-sm font-bold truncate">{user?.name}</h4>
+                  <span className="text-[10px] text-brand-gold uppercase tracking-wider font-bold">{user?.role}</span>
                 </div>
               </div>
 
@@ -151,7 +155,8 @@ const DashboardLayout = ({ children }) => {
                       <div key={link.id} className="space-y-1">
                         <button
                           onClick={() => toggleExpand(link.id)}
-                          className={`w-full flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl transition-all font-medium text-sm group ${
+                          aria-expanded={isExpanded}
+                          className={`w-full flex items-center justify-between gap-3 px-4 py-2.5 sm:py-3.5 rounded-xl transition-all font-medium text-sm group ${
                             isAnySubActive && !isExpanded
                               ? 'bg-brand-gold/10 text-brand-gold' 
                               : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
@@ -202,7 +207,7 @@ const DashboardLayout = ({ children }) => {
                       key={link.href}
                       href={link.href}
                       onClick={() => setSidebarOpen(false)}
-                      className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium text-sm group ${
+                      className={`flex items-center gap-3 px-4 py-2.5 sm:py-3.5 rounded-xl transition-all font-medium text-sm group ${
                         isActive 
                           ? 'bg-brand-gold text-royal-deep font-bold shadow-lg shadow-brand-gold/20' 
                           : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
@@ -241,7 +246,11 @@ const DashboardLayout = ({ children }) => {
         <main className="flex-1 flex flex-col min-w-0 min-h-screen lg:ml-72 pt-0">
           {/* Topbar (Mobile Only) */}
           <header className="lg:hidden h-16 border-b border-white/5 bg-zinc-900/50 flex items-center justify-between px-4">
-            <button onClick={toggleSidebar} className="text-zinc-400">
+            <button 
+              onClick={toggleSidebar} 
+              className="text-zinc-400"
+              aria-label="Open Sidebar"
+            >
               <Menu size={24} />
             </button>
             <Link href="/" className="flex items-center">
@@ -250,13 +259,13 @@ const DashboardLayout = ({ children }) => {
             <div className="w-6"></div> {/* Spacer for balance */}
           </header>
 
-          <div className="p-4 lg:p-8 relative flex-1">
+          <div className="p-3.5 sm:p-4 lg:p-8 relative flex-1">
             {/* Top Header (Desktop) - Only show on Overview page */}
             {pathname === '/dashboard' && (
               <header className="hidden lg:flex items-center justify-between mb-8 pb-6 border-b border-white/5">
                  <div>
-                    <h1 className="text-4xl font-bold text-zinc-100">Overview</h1>
-                    <p className="text-zinc-400 text-lg mt-2">Welcome back, {user?.name}</p>
+                    <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100">Overview</h1>
+                    <p className="text-zinc-400 text-sm sm:text-lg mt-2">Welcome back, {user?.name}</p>
                  </div>
                  <div className="flex items-center gap-4">
                     <button className="p-3 rounded-full bg-white/5 border border-white/5 text-zinc-400 hover:text-brand-gold transition-colors relative">

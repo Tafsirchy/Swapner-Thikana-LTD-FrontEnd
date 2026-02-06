@@ -247,10 +247,18 @@ const ReviewSection = ({ propertyId }) => {
             <p className="text-sm">Fetching verified reviews...</p>
           </div>
         ) : reviews.length === 0 ? (
-          <div className="text-center py-12 md:py-16 bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[2.5rem] border-dashed">
+          <div className="text-center py-12 md:py-16 bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[2.5rem] border-dashed space-y-6">
             <p className="text-zinc-500 italic font-medium tracking-wide text-sm md:text-base">
               No reviews available yet.
             </p>
+            {/* Write a Review Button - Visible on Mobile in Empty State */}
+            <button 
+              onClick={() => setShowForm(true)}
+              className="md:hidden inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-gold/10 border border-brand-gold/30 rounded-xl text-brand-gold hover:bg-brand-gold/20 transition-all font-bold text-sm group shadow-lg shadow-brand-gold/10"
+            >
+              <MessageSquare size={18} className="group-hover:scale-110 transition-transform" />
+              Write a Review
+            </button>
           </div>
         ) : (
           reviews.map((review) => (

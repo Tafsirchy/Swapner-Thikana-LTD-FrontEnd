@@ -13,23 +13,23 @@ const NewsletterPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-24">
+    <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24">
       <div className="max-container px-4">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-20">
+          <div className="text-center mb-12 sm:mb-20">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] my-6"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] my-6"
             >
               <Mail size={16} />
               Executive Club
             </motion.div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-8 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6 sm:mb-8 tracking-tight leading-tight">
               The <span className="text-brand-gold">Newsletter</span>
             </h1>
-            <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
+            <p className="max-w-2xl mx-auto text-zinc-400 text-base sm:text-lg leading-relaxed px-2 sm:px-0">
               Join our exclusive distribution list for high-net-worth individuals and architectural enthusiasts.
             </p>
           </div>
@@ -40,11 +40,11 @@ const NewsletterPage = () => {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="flex-1 w-full bg-white/5 border border-white/10 rounded-none p-10 lg:p-16 relative overflow-hidden"
+              className="flex-1 w-full bg-white/5 border border-white/10 rounded-none p-6 sm:p-10 lg:p-16 relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
               
-              <h3 className="text-3xl font-bold text-white mb-8 italic">Subscribe for Insights</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 italic">Subscribe for Insights</h3>
               <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                 <div className="space-y-2">
                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Full Name</label>
@@ -66,7 +66,7 @@ const NewsletterPage = () => {
                    <input type="checkbox" id="consent" className="w-5 h-5 rounded-none border-white/10 bg-white/5 text-brand-gold focus:ring-brand-gold/20" />
                    <label htmlFor="consent" className="text-zinc-500 text-sm">I agree to receive marketing communications and market reports.</label>
                 </div>
-                <button className="w-full bg-brand-gold text-royal-deep py-5 rounded-none font-bold text-lg hover:bg-brand-gold-light transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-gold/10 mt-8 active:scale-[0.98]">
+                <button className="w-full bg-brand-gold text-royal-deep py-4 sm:py-5 rounded-none font-bold text-base sm:text-lg hover:bg-brand-gold-light transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-gold/10 mt-6 sm:mt-8 active:scale-[0.98]">
                    Join the List <Send size={20} />
                 </button>
               </form>
@@ -83,8 +83,8 @@ const NewsletterPage = () => {
               className="flex-1 space-y-10"
             >
                <div>
-                  <h2 className="text-3xl font-bold text-zinc-100 mb-6 leading-tight">Beyond a simple email.</h2>
-                  <p className="text-zinc-400 text-lg leading-relaxed">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-zinc-100 mb-4 sm:mb-6 leading-tight">Beyond a simple email.</h2>
+                  <p className="text-zinc-400 text-base sm:text-lg leading-relaxed">
                      Our newsletter is a curated executive briefing designed for those who value time and architectural significance. 
                   </p>
                </div>

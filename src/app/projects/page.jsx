@@ -133,21 +133,21 @@ const ProjectsContent = () => {
   }, [currentPage]);
 
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-24">
-      <section className="mb-12">
+    <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24">
+      <section className="mb-8 sm:mb-12">
         <div className="max-container px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold uppercase tracking-[0.2em] mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] mb-6"
           >
             <Building2 size={16} />
             Architectural Landmarks
           </motion.div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold font-cinzel text-zinc-100 mb-8 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold font-cinzel text-zinc-100 mb-6 sm:mb-8 tracking-tight leading-tight">
             Our Iconic <span className="text-brand-gold">Developments</span>
           </h1>
-          <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
+          <p className="max-w-2xl mx-auto text-zinc-400 text-base sm:text-lg leading-relaxed px-2 sm:px-0">
             From skyline-defining towers to boutique residential havens, explore our portfolio of ongoing and completed architectural masterpieces across Bangladesh.
           </p>
         </div>
@@ -155,7 +155,7 @@ const ProjectsContent = () => {
 
       <section className="max-container px-4">
         {/* Filters Top Bar */}
-        <div className="sticky top-28 z-30 mb-8">
+        <div className="sticky top-20 sm:top-28 z-30 mb-8 px-2 sm:px-0">
           <ProjectFilters 
             filters={filters} 
             onChange={handleFilterChange} 
@@ -198,23 +198,25 @@ const ProjectsContent = () => {
     
                   {/* Pagination Controls */}
                   {totalPages > 1 && (
-                    <div className="flex justify-center items-center gap-4">
+                    <div className="flex justify-center items-center gap-4 sm:gap-6 pt-4">
                        <button 
                           onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                           disabled={currentPage === 1}
-                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                          aria-label="Previous Page"
+                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
                        >
                          <ChevronLeft size={20} />
                        </button>
                        
-                       <span className="text-sm font-bold text-zinc-500 tracking-widest">
+                       <span className="text-xs sm:text-sm font-bold text-zinc-500 tracking-[0.2em] sm:tracking-widest uppercase">
                           PAGE <span className="text-brand-gold">{currentPage}</span> / {totalPages}
                        </span>
     
                        <button 
                           onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                           disabled={currentPage === totalPages}
-                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                          aria-label="Next Page"
+                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
                        >
                          <ChevronRight size={20} />
                        </button>

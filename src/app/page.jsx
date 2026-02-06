@@ -38,9 +38,9 @@ const StatItem = ({ stat, index }) => {
   const isEven = index % 2 === 0;
 
   return (
-    <div className={`relative flex flex-col items-center flex-1 ${!isEven ? 'pt-24' : 'pb-24'}`}>
+    <div className={`relative flex flex-col items-center flex-1 w-full ${!isEven ? 'sm:pt-24' : 'sm:pb-24'}`}>
       {/* Connecting Stem (Vertical Line) */}
-      <div className={`absolute left-1/2 -translate-x-1/2 w-px bg-brand-gold/30 h-24 ${
+      <div className={`absolute left-1/2 -translate-x-1/2 w-px bg-brand-gold/30 h-24 hidden sm:block ${
         isEven ? 'bottom-0' : 'top-0'
       }`}>
         {/* Decorative Anchor Dot */}
@@ -122,19 +122,19 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <div className="max-container px-4 pt-44 md:pt-32 relative z-10 text-center text-zinc-100">
+        <div className="max-container px-4 pt-32 md:pt-32 relative z-10 text-center text-zinc-100">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="inline-block px-4 py-1.5 rounded-full bg-brand-gold/20 border border-brand-gold/30 text-brand-gold text-xs font-semibold md:font-bold tracking-[0.2em] uppercase mb-5 backdrop-blur-sm">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-brand-gold/20 border border-brand-gold/30 text-brand-gold text-[10px] sm:text-xs font-semibold md:font-bold tracking-[0.2em] uppercase mb-5 backdrop-blur-sm">
               Premium Real Estate in Bangladesh
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-cinzel mb-6 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-cinzel mb-6 tracking-tight leading-tight">
               Discover Your <span className="text-brand-gold">Dream</span> Address
             </h1>
-            <p className="text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
+            <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed font-light px-2">
               Elevating the art of living. shwapner Thikana Ltd brings you the most exclusive 
               properties and innovative projects in Dhaka&apos;s premier neighborhoods.
             </p>
@@ -145,7 +145,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-none shadow-2xl relative z-50"
+            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-none shadow-2xl relative z-50 mb-8 sm:mb-0"
           >
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-center gap-2">
               <div className="flex-1 w-full flex items-center px-4 gap-3 bg-white/5 rounded-none border border-white/5 focus-within:border-brand-gold/30 transition-all">
@@ -155,21 +155,21 @@ export default function Home() {
                   placeholder="Area, project or property type..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full py-4 bg-transparent outline-none text-zinc-100 placeholder:text-zinc-500"
+                  className="w-full py-4 bg-transparent outline-none text-zinc-100 placeholder:text-zinc-500 text-sm sm:text-base"
                 />
               </div>
-              <div className="flex-1 w-full bg-white/5 border border-white/5">
+              <div className="flex-1 w-full bg-white/5 border border-white/5 rounded-none overflow-hidden sm:overflow-visible">
                 <LuxurySelect 
                   value={location}
                   onChange={setLocation}
                   options={['All Locations', 'Dhaka', 'Chattogram', 'Sylhet']}
                   icon={<MapPin size={20} />}
-                  className="!bg-transparent !border-none !py-4"
+                  className="!bg-transparent !border-none !py-4 text-sm sm:text-base border-b border-white/10 md:border-none"
                 />
               </div>
               <LiquidButton 
                 type="submit"
-                className="w-full md:w-auto shadow-lg shadow-brand-gold/20"
+                className="w-full md:w-auto shadow-lg shadow-brand-gold/20 py-4"
               >
                 Search
               </LiquidButton>
@@ -198,7 +198,7 @@ export default function Home() {
           {/* Horizontal Axis Line (Desktop Only) */}
           <div className="absolute top-1/2 left-0 w-full h-px bg-brand-gold/20 hidden lg:block -translate-y-1/2"></div>
           
-          <div className="flex flex-col lg:flex-row items-stretch justify-between gap-12 lg:gap-0 relative z-10">
+          <div className="flex flex-col lg:flex-row items-stretch justify-between gap-8 sm:gap-12 lg:gap-0 relative z-10">
             {[
               { label: 'Properties Listed', value: 1250, suffix: '+', icon: <Building /> },
               { label: 'Happy Families', value: 800, suffix: '+', icon: <Users /> },
