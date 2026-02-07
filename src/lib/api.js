@@ -60,7 +60,16 @@ apiInstance.interceptors.response.use(
     const isVerification403 = response?.status === 403 && response?.data?.message?.toLowerCase().includes('verify');
     
     if (!config?.suppressErrorLogs && !isAuthMe401 && !isVerification403) {
-      console.error(`[API] Error in ${config?.method?.toUpperCase()} ${config?.url}:`, error.message);
+      console.error(`[API] Error in ${config?.method?.toUpperCase()} ${config?.url}:`, {
+        message: error.message,
+        status: response?.status,
+        data: response?.data,
+        headers: response?.headers
+      });
+      
+      if (response?.status === 404) {
+        console.warn('[API] 404 detected. This could be a routing mismatch between frontend and backend, or Vercel not mapping the path.');
+      }
     }
     
     // Only redirect to login if:
@@ -271,10 +280,10 @@ export const api = {
   },
   masterPlan: {
     getAllProjects: (params) => apiInstance.get('/master-plan/projects', { params }),
-    linkProject: (data) => apiInstance.post('/admin/region-projects', data),
-    getLinks: (params) => apiInstance.get('/admin/region-projects', { params }),
-    updateLink: (id, data) => apiInstance.put(`/admin/region-projects/${id}`, data),
-    deleteLink: (id) => apiInstance.delete(`/admin/region-projects/${id}`),
+    linkProject: (data) => apiInstance.post('/master-plan/admin/region-projects', data),
+    getLinks: (params) => apiInstance.get('/master-plan/admin/region-projects', { params }),
+    updateLink: (id, data) => apiInstance.put(`/master-plan/admin/region-projects/${id}`, data),
+    deleteLink: (id) => apiInstance.delete(`/master-plan/admin/region-projects/${id}`),
   }
 };
 

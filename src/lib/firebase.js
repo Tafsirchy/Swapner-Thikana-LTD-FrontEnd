@@ -77,7 +77,12 @@ export const requestForToken = async () => {
       console.warn('No registration token available. Request permission to generate one.');
     }
   } catch (err) {
-    console.error('An error occurred while retrieving token. ', err);
+    if (err.message?.includes('installations/request-failed')) {
+      console.error('[Firebase] Installations 400 Error detected! This usually means the App ID or API Key in Vercel environment variables does not match the actual Firebase project "shwapner-thikana-ltd".');
+      console.warn('[Firebase] Troubleshooting: 1. Confirm NEXT_PUBLIC_FIREBASE_APP_ID is correct. 2. Ensure NEXT_PUBLIC_FIREBASE_PROJECT_ID matches the project ID in your Firebase Console.');
+    } else {
+      console.error('An error occurred while retrieving token. ', err);
+    }
   }
 };
 
