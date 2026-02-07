@@ -48,7 +48,7 @@ const AddMagazinePage = () => {
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3">
+          <h1 className="text-xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3">
              <Book className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
              Add Magazine
           </h1>
@@ -57,14 +57,14 @@ const AddMagazinePage = () => {
         <button 
           type="button"
           onClick={() => router.back()}
-          className="p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
+          className="p-3 sm:p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
         >
           <X size={24} />
         </button>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-6">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-6">
            <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-4">
               <Info size={20} className="text-brand-gold" />
               Magazine Details
@@ -80,7 +80,7 @@ const AddMagazinePage = () => {
                   value={formData.title}
                   onChange={handleChange}
                   placeholder="e.g. Winter Edition 2024"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                 />
               </div>
 
@@ -92,7 +92,7 @@ const AddMagazinePage = () => {
                   name="publisher"
                   value={formData.publisher}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                 />
               </div>
 
@@ -106,7 +106,7 @@ const AddMagazinePage = () => {
                     name="publicationDate"
                     value={formData.publicationDate}
                     onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium [color-scheme:dark]"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ const AddMagazinePage = () => {
                     value={formData.pdfUrl}
                     onChange={handleChange}
                     placeholder="https://example.com/magazine.pdf"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                   />
                 </div>
               </div>
@@ -144,7 +144,7 @@ const AddMagazinePage = () => {
                   onChange={handleChange}
                   rows={3}
                   placeholder="Tell readers what's inside this edition..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
                 />
               </div>
 
