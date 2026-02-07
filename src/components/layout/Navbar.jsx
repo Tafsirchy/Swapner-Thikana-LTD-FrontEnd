@@ -282,7 +282,7 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-full left-0 w-full h-[calc(100vh-100%)] bg-royal-deep/98 z-40 md:hidden flex flex-col p-6 sm:p-8 gap-5 sm:gap-6 backdrop-blur-xl overflow-y-auto border-t border-white/5"
+            className="absolute top-full left-0 w-full h-[calc(100dvh-100%)] bg-royal-deep/98 z-40 md:hidden flex flex-col p-6 sm:p-8 gap-5 sm:gap-6 backdrop-blur-xl overflow-y-auto border-t border-white/5"
           >
             {[...leftNav, ...rightNav].map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));
@@ -290,7 +290,14 @@ const Navbar = () => {
               if (link.hasDropdown) {
                 return (
                   <div key={link.name} className="flex flex-col gap-3">
-                    <span className="text-lg font-bold text-brand-gold italic border-b border-brand-gold/20 pb-2">{link.name}</span>
+                    <Link 
+                      href={link.href}
+                      className="text-lg font-bold text-brand-gold italic border-b border-brand-gold/20 pb-2 flex items-center justify-between group"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.name}
+                      <span className="text-xs not-italic font-normal opacity-70 group-hover:opacity-100 transition-opacity">View Page</span>
+                    </Link>
                     <div className="grid grid-cols-1 gap-y-3 pl-4">
                       {[...link.dropdownItems.left, ...link.dropdownItems.right].map((sub) => (
                         <Link
