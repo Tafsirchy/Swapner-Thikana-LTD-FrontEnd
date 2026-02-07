@@ -38,8 +38,18 @@ const nextConfig = {
     '@photo-sphere-viewer/markers-plugin',
     'three',
   ],
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'three': 'three',
+    };
+    return config;
+  },
   turbopack: {
     root: '.',
+    resolveAlias: {
+      'three': 'three'
+    }
   },
 };
 
