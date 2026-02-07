@@ -239,11 +239,45 @@ const AboutPage = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-16 items-start">
-                
-                {/* Column 1 - Left Staggered */}
-                <div className="space-y-16 lg:pt-32">
-                  {/* Leader 2 - Elevated Offset */}
-                  {leaders[1] && (
+                {/* Mobile View - Simple Ordered List */}
+                <div className="md:hidden space-y-12">
+                  {leaders.map((leader, index) => (
+                    <motion.div
+                      key={leader._id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1, duration: 0.8 }}
+                      viewport={{ once: true }}
+                      className="w-full"
+                    >
+                      <div className="relative group overflow-hidden bg-zinc-950/40 backdrop-blur-3xl p-4 ring-1 ring-white/5">
+                        <div className="relative aspect-square overflow-hidden grayscale contrast-125 hover:grayscale-0 transition-all duration-1000">
+                          <Image 
+                            src={leader.image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200'} 
+                            alt={leader.name} 
+                            fill 
+                            className="object-cover" 
+                          />
+                        </div>
+                        <div className="mt-6 flex flex-col items-center text-center">
+                            <div className="mb-4 p-2 rounded-full bg-brand-gold/5 border border-brand-gold/10 text-brand-gold">
+                               {getRoleIcon(leader.role)}
+                            </div>
+                            <h4 className="text-xl font-cinzel font-bold text-zinc-100 tracking-[0.2em] mb-2">{leader.name}</h4>
+                            <div className="w-8 h-px bg-brand-gold/40 mb-3"></div>
+                            <p className="text-[9px] text-brand-gold uppercase tracking-[0.5em] font-black">{leader.role}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Desktop View - Staggered Artistic Gallery - Hidden on SM */}
+                <div className="hidden md:contents">
+                  {/* Column 1 - Left Staggered */}
+                  <div className="space-y-16 lg:pt-32">
+                    {/* Leader 2 - Elevated Offset */}
+                    {leaders[1] && (
                     <motion.div
                       initial={{ opacity: 0, x: -60 }}
                       whileInView={{ opacity: 1, x: 0 }}
@@ -388,12 +422,12 @@ const AboutPage = () => {
                     className="hidden lg:block w-32 h-32 border border-brand-gold/20 rounded-full opacity-30 blur-sm mx-auto"
                   />
                 </div>
-
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
-      </section>
+      </div>
+    </section>
 
 
     </div>
