@@ -329,7 +329,7 @@ const Navbar = () => {
               );
             })}
             
-            <div className="mt-8 pt-8 border-t border-white/10 flex flex-col gap-4">
+            <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-4">
                {/* Mobile Utilities */}
               {isAuthenticated ? (
                 <LiquidButton
