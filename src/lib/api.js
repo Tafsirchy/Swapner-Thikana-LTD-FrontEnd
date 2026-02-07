@@ -96,48 +96,48 @@ apiInstance.interceptors.response.use(
 
 export const api = {
   auth: {
-    register: (data) => apiInstance.post('/auth/register', data),
+    register: (data) => apiInstance.post('auth/register', data),
     login: (data) => 
-      apiInstance.post('/auth/login', data),
-    me: () => apiInstance.get('/auth/me'),
-    changePassword: (data) => apiInstance.post('/auth/change-password', data),
-    verifyEmail: (token) => apiInstance.post('/auth/verify-email', { token }),
-    resendVerification: (data) => apiInstance.post('/auth/resend-verification', data),
-    forgotPassword: (email) => apiInstance.post('/auth/forgot-password', { email }),
-    resetPassword: (token, password) => apiInstance.post('/auth/reset-password', { token, password }),
+      apiInstance.post('auth/login', data),
+    me: () => apiInstance.get('auth/me'),
+    changePassword: (data) => apiInstance.post('auth/change-password', data),
+    verifyEmail: (token) => apiInstance.post('auth/verify-email', { token }),
+    resendVerification: (data) => apiInstance.post('auth/resend-verification', data),
+    forgotPassword: (email) => apiInstance.post('auth/forgot-password', { email }),
+    resetPassword: (token, password) => apiInstance.post('auth/reset-password', { token, password }),
     logout: async () => {
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
       }
-      return apiInstance.post('/auth/logout');
+      return apiInstance.post('auth/logout');
     }
   },
   user: {
-    getProfile: () => apiInstance.get('/users/profile'),
+    getProfile: () => apiInstance.get('users/profile'),
     updateProfile: (data) => {
       const isFormData = data instanceof FormData;
-      return apiInstance.put('/users/profile', data, {
+      return apiInstance.put('users/profile', data, {
         headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : undefined
       });
     },
-    deleteProfileImage: () => apiInstance.delete('/users/profile/image'),
-    getSavedProperties: () => apiInstance.get('/users/saved-properties'),
-    addToWishlist: (propertyId) => apiInstance.post(`/users/saved-properties/${propertyId}`),
-    removeFromWishlist: (propertyId) => apiInstance.delete(`/users/saved-properties/${propertyId}`),
-    getAgents: () => apiInstance.get('/users/agents'),
-    getRecentlyViewed: () => apiInstance.get('/users/recently-viewed'),
-    addRecentlyViewed: (propertyId) => apiInstance.post(`/users/recently-viewed/${propertyId}`),
+    deleteProfileImage: () => apiInstance.delete('users/profile/image'),
+    getSavedProperties: () => apiInstance.get('users/saved-properties'),
+    addToWishlist: (propertyId) => apiInstance.post(`users/saved-properties/${propertyId}`),
+    removeFromWishlist: (propertyId) => apiInstance.delete(`users/saved-properties/${propertyId}`),
+    getAgents: () => apiInstance.get('users/agents'),
+    getRecentlyViewed: () => apiInstance.get('users/recently-viewed'),
+    addRecentlyViewed: (propertyId) => apiInstance.post(`users/recently-viewed/${propertyId}`),
   },
   properties: {
-    getAll: (params) => apiInstance.get('/properties', { params }),
-    getMyProperties: (params) => apiInstance.get('/properties/my-listings', { params }),
-    getById: (id) => apiInstance.get(`/properties/id/${id}`),
-    getBySlug: (slug) => apiInstance.get(`/properties/slug/${slug}`),
-    create: (data) => apiInstance.post('/properties', data),
-    update: (id, data) => apiInstance.put(`/properties/${id}`, data),
-    delete: (id) => apiInstance.delete(`/properties/${id}`),
-    toggleSave: (id) => apiInstance.post(`/properties/${id}/save`),
-    uploadImages: (id, data) => apiInstance.post(`/properties/${id}/images`, data, {
+    getAll: (params) => apiInstance.get('properties', { params }),
+    getMyProperties: (params) => apiInstance.get('properties/my-listings', { params }),
+    getById: (id) => apiInstance.get(`properties/id/${id}`),
+    getBySlug: (slug) => apiInstance.get(`properties/slug/${slug}`),
+    create: (data) => apiInstance.post('properties', data),
+    update: (id, data) => apiInstance.put(`properties/${id}`, data),
+    delete: (id) => apiInstance.delete(`properties/${id}`),
+    toggleSave: (id) => apiInstance.post(`properties/${id}/save`),
+    uploadImages: (id, data) => apiInstance.post(`properties/${id}/images`, data, {
       headers: { 'Content-Type': 'multipart/form-data' }
     }),
   },
@@ -274,16 +274,16 @@ export const api = {
     delete: (id) => apiInstance.delete(`/history/${id}`),
   },
   regions: {
-    getAll: () => apiInstance.get('/regions'),
-    getById: (id) => apiInstance.get(`/regions/${id}/projects`),
-    update: (id, data) => apiInstance.put(`/regions/admin/${id}`, data),
+    getAll: () => apiInstance.get('regions'),
+    getById: (id) => apiInstance.get(`regions/${id}/projects`),
+    update: (id, data) => apiInstance.put(`regions/admin/${id}`, data),
   },
   masterPlan: {
-    getAllProjects: (params) => apiInstance.get('/master-plan/projects', { params }),
-    linkProject: (data) => apiInstance.post('/master-plan/admin/region-projects', data),
-    getLinks: (params) => apiInstance.get('/master-plan/admin/region-projects', { params }),
-    updateLink: (id, data) => apiInstance.put(`/master-plan/admin/region-projects/${id}`, data),
-    deleteLink: (id) => apiInstance.delete(`/master-plan/admin/region-projects/${id}`),
+    getAllProjects: (params) => apiInstance.get('master-plan/projects', { params }),
+    linkProject: (data) => apiInstance.post('master-plan/admin/region-projects', data),
+    getLinks: (params) => apiInstance.get('master-plan/admin/region-projects', { params }),
+    updateLink: (id, data) => apiInstance.put(`master-plan/admin/region-projects/${id}`, data),
+    deleteLink: (id) => apiInstance.delete(`master-plan/admin/region-projects/${id}`),
   }
 };
 
