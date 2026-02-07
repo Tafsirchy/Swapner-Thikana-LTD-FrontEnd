@@ -32,10 +32,11 @@ try {
       console.warn('[Firebase] Configuration incomplete or invalid:', {
         hasProjectId: !!firebaseConfig.projectId,
         hasApiKey: !!firebaseConfig.apiKey,
+        hasAppId: !!firebaseConfig.appId,
         isDefaultKey: firebaseConfig.apiKey === 'your_firebase_api_key',
-        containsUndefined: String(firebaseConfig.apiKey).includes('undefined')
+        containsUndefined: String(firebaseConfig.apiKey).includes('undefined') || String(firebaseConfig.appId).includes('undefined')
       });
-      console.warn('[Firebase] Notifications will be disabled. Please check Vercel environment variables.');
+      console.warn('[Firebase] Notifications will be disabled. Please check Vercel environment variables including NEXT_PUBLIC_FIREBASE_APP_ID.');
     }
   }
 } catch (error) {
