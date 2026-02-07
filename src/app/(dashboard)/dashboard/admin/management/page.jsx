@@ -108,7 +108,10 @@ const AdminManagementListPage = () => {
               <div className="min-w-0 flex-1">
                 <div className="font-bold text-zinc-100 truncate">{member.name}</div>
                 <div className="text-xs text-zinc-500 truncate">{member.email}</div>
-                <div className="text-sm text-brand-gold mt-1 font-medium">{member.role}</div>
+                <div className="flex items-center justify-between mt-1">
+                  <div className="text-sm text-brand-gold font-medium">{member.role}</div>
+                  <div className="text-[10px] bg-white/5 px-2 py-0.5 rounded border border-white/5 text-zinc-500 font-mono">Order: {member.order || 0}</div>
+                </div>
               </div>
             </div>
 
@@ -138,6 +141,7 @@ const AdminManagementListPage = () => {
               <tr className="border-b border-white/10 bg-white/[0.02]">
                 <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Leader Profile</th>
                 <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Role</th>
+                <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Order</th>
                 <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest text-right">Actions</th>
               </tr>
             </thead>
@@ -161,6 +165,9 @@ const AdminManagementListPage = () => {
                   </td>
                   <td className="px-6 py-4">
                     <span className="text-sm text-zinc-400">{member.role}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-xs font-mono text-zinc-500">{member.order || 0}</span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">

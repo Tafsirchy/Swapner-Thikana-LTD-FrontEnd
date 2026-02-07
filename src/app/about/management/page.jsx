@@ -114,11 +114,58 @@ const ManagementPage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-16 items-start">
-              
-              {/* Column 1 - Left Staggered */}
-              <div className="space-y-16 lg:pt-32">
-                {/* Leader 2 - Elevated Offset */}
-                {leaders[1] && (
+              {/* Mobile View - Simple Ordered List */}
+              <div className="md:hidden space-y-12">
+                {leaders.map((leader, index) => (
+                  <motion.div
+                    key={leader._id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.8 }}
+                    viewport={{ once: true }}
+                    className="w-full"
+                  >
+                    <div className="relative group overflow-hidden bg-zinc-950/40 backdrop-blur-3xl p-4 ring-1 ring-white/5">
+                      <div className="relative aspect-square overflow-hidden mb-6">
+                        <SmartImage 
+                          src={leader.image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200'} 
+                          alt={leader.name} 
+                          fill 
+                          sizes="100vw"
+                          className="object-cover grayscale contrast-125" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent flex items-end justify-center gap-4 pb-8">
+                           {leader.email && (
+                             <a href={`mailto:${leader.email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white">
+                               <Mail size={18} />
+                             </a>
+                           )}
+                           {leader.whatsapp && (
+                             <a href={`https://wa.me/${leader.whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white">
+                               <MessageCircle size={18} />
+                             </a>
+                           )}
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-center text-center">
+                          <div className="mb-4 p-2 rounded-full bg-brand-gold/5 border border-brand-gold/10 text-brand-gold">
+                             {getRoleIcon(leader.role)}
+                          </div>
+                          <h4 className="text-xl font-cinzel font-bold text-zinc-100 tracking-[0.2em] mb-2">{leader.name}</h4>
+                          <div className="w-8 h-px bg-brand-gold/40 mb-3"></div>
+                          <p className="text-[9px] text-brand-gold uppercase tracking-[0.5em] font-black">{leader.role}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Desktop View - Staggered Artistic Gallery - Hidden on SM */}
+              <div className="hidden md:contents">
+                {/* Column 1 - Left Staggered */}
+                <div className="space-y-16 lg:pt-32">
+                  {/* Leader 2 - Elevated Offset */}
+                  {leaders[1] && (
                   <motion.div
                     initial={{ opacity: 0, x: -60 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -338,8 +385,9 @@ const ManagementPage = () => {
                 />
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
 
         {/* Join the Team CTA */}
         <div className="mt-20 sm:mt-40 bg-zinc-950 border border-white/5 rounded-none p-8 sm:p-12 lg:p-20 flex flex-col items-center text-center relative overflow-hidden group">
