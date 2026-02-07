@@ -430,7 +430,7 @@ const MasterPlanAdminPage = () => {
               />
             </div>
 
-            <div className="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar">
+            <div className="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar" data-lenis-prevent>
               {filteredAvailableProjects.length === 0 ? (
                 <div className="text-center py-8 text-zinc-500">
                   <Building2 size={48} className="mx-auto mb-2 opacity-20" />
@@ -494,7 +494,7 @@ const MasterPlanAdminPage = () => {
               <span className="ml-2 text-sm text-zinc-400">({currentLinkedProjects.length})</span>
             </h3>
 
-            <div className="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar">
+            <div className="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar" data-lenis-prevent>
               {currentLinkedProjects.length === 0 ? (
                 <div className="text-center py-8 text-zinc-500">
                   <Building2 size={48} className="mx-auto mb-2 opacity-20" />

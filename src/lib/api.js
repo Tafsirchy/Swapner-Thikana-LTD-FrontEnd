@@ -9,11 +9,18 @@ const apiInstance = axios.create({
 });
 
 // Diagnostic check for production baseURL
-if (process.env.NODE_ENV === 'production' && typeof window === 'undefined') {
+if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
   const currentBaseURL = apiInstance.defaults.baseURL;
-  if (!process.env.NEXT_PUBLIC_API_URL || currentBaseURL.includes('localhost')) {
-    console.warn('[API] WARNING: Missing or incorrect NEXT_PUBLIC_API_URL in production environment!');
-    console.warn('[API] Current BaseURL:', currentBaseURL);
+  const envValue = process.env.NEXT_PUBLIC_API_URL;
+  
+  if (!envValue || currentBaseURL.includes('localhost')) {
+    console.warn('[API] CRITICAL: Incorrect NEXT_PUBLIC_API_URL in production!', {
+      envValue,
+      currentBaseURL,
+      expectedToNotBeLocal: true
+    });
+  } else {
+    console.log('[API] Initialized in production with:', currentBaseURL);
   }
 }
 

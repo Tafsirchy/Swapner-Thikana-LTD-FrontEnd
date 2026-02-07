@@ -15,7 +15,12 @@ let app = null;
 let messaging = null;
 
 try {
-  if (firebaseConfig.projectId && firebaseConfig.apiKey && firebaseConfig.apiKey !== 'your_firebase_api_key') {
+  const isConfigValid = firebaseConfig.projectId && 
+                       firebaseConfig.apiKey && 
+                       firebaseConfig.apiKey !== 'your_firebase_api_key' &&
+                       !firebaseConfig.apiKey.includes('undefined');
+
+  if (isConfigValid) {
     app = initializeApp(firebaseConfig);
     
     // Messaging service
@@ -24,11 +29,17 @@ try {
     }
   } else {
     if (process.env.NODE_ENV === 'production') {
-      console.warn('Firebase configuration missing or invalid. Notifications will be disabled.');
+      console.warn('[Firebase] Configuration incomplete or invalid:', {
+        hasProjectId: !!firebaseConfig.projectId,
+        hasApiKey: !!firebaseConfig.apiKey,
+        isDefaultKey: firebaseConfig.apiKey === 'your_firebase_api_key',
+        containsUndefined: String(firebaseConfig.apiKey).includes('undefined')
+      });
+      console.warn('[Firebase] Notifications will be disabled. Please check Vercel environment variables.');
     }
   }
 } catch (error) {
-  console.error('Firebase initialization error:', error);
+  console.error('[Firebase] Initialization error:', error);
 }
 
 export { messaging };
