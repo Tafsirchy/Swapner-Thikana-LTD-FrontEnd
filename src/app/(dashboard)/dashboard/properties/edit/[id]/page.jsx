@@ -13,6 +13,7 @@ import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import imageCompression from 'browser-image-compression';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const EditPropertyPage = () => {
   const router = useRouter();
@@ -260,7 +261,7 @@ const EditPropertyPage = () => {
         ))}
       </div>
 
-      <div className="bg-white/5 border border-white/5 rounded-3xl p-8 min-h-[400px]">
+      <div className="bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8 min-h-[400px]">
         <AnimatePresence mode="wait">
           {currentStep === 1 && (
             <motion.div 
@@ -276,7 +277,7 @@ const EditPropertyPage = () => {
                         type="text" 
                         value={formData.title}
                         onChange={(e) => handleInputChange('title', e.target.value)}
-                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
+                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-base"
                      />
                   </div>
                   <div>
@@ -285,39 +286,41 @@ const EditPropertyPage = () => {
                         value={formData.description}
                         onChange={(e) => handleInputChange('description', e.target.value)}
                         rows={5}
-                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 resize-none text-zinc-100"
+                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 resize-none text-zinc-100 text-base"
                      />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                      <div>
                         <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">Listing Type</label>
-                        <select 
+                        <LuxurySelect
                            value={formData.listingType}
-                           onChange={(e) => handleInputChange('listingType', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
-                        >
-                           <option value="sale">For Sale</option>
-                           <option value="rent">For Rent</option>
-                        </select>
+                           onChange={(val) => handleInputChange('listingType', val)}
+                           options={[
+                              { label: 'For Sale', value: 'sale' },
+                              { label: 'For Rent', value: 'rent' }
+                           ]}
+                           className="rounded-xl text-base"
+                        />
                      </div>
                      <div>
                         <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">Property Type</label>
-                        <select 
+                        <LuxurySelect
                            value={formData.propertyType}
-                           onChange={(e) => handleInputChange('propertyType', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
-                        >
-                           <option value="apartment">Apartment</option>
-                           <option value="villa">Luxury Villa</option>
-                           <option value="duplex">Duplex</option>
-                           <option value="penthouse">Penthouse</option>
-                           <option value="commercial">Commercial Space</option>
-                           <option value="office">Office</option>
-                           <option value="shop">Shop</option>
-                           <option value="warehouse">Warehouse</option>
-                           <option value="land">Land</option>
-                           <option value="house">House</option>
-                        </select>
+                           onChange={(val) => handleInputChange('propertyType', val)}
+                           options={[
+                              { label: 'Apartment', value: 'apartment' },
+                              { label: 'Luxury Villa', value: 'villa' },
+                              { label: 'Duplex', value: 'duplex' },
+                              { label: 'Penthouse', value: 'penthouse' },
+                              { label: 'Commercial Space', value: 'commercial' },
+                              { label: 'Office', value: 'office' },
+                              { label: 'Shop', value: 'shop' },
+                              { label: 'Warehouse', value: 'warehouse' },
+                              { label: 'Land', value: 'land' },
+                              { label: 'House', value: 'house' }
+                           ]}
+                           className="rounded-xl text-base"
+                        />
                      </div>
                   </div>
                </div>
@@ -344,21 +347,22 @@ const EditPropertyPage = () => {
                            if (data.lat) handleLocationChange('latitude', data.lat);
                            if (data.lon) handleLocationChange('longitude', data.lon);
                         }}
-                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
+                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-base"
                      />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                      <div>
                         <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">City</label>
-                        <select 
+                        <LuxurySelect
                            value={formData.location.city}
-                           onChange={(e) => handleLocationChange('city', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
-                        >
-                           <option value="Dhaka">Dhaka</option>
-                           <option value="Chattogram">Chattogram</option>
-                           <option value="Sylhet">Sylhet</option>
-                        </select>
+                           onChange={(val) => handleLocationChange('city', val)}
+                           options={[
+                              { label: 'Dhaka', value: 'Dhaka' },
+                              { label: 'Chattogram', value: 'Chattogram' },
+                              { label: 'Sylhet', value: 'Sylhet' }
+                           ]}
+                           className="rounded-xl text-base"
+                        />
                      </div>
                      <div>
                         <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">Area / Neighborhood</label>
@@ -366,7 +370,7 @@ const EditPropertyPage = () => {
                            type="text" 
                            value={formData.location.area}
                            onChange={(e) => handleLocationChange('area', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-base"
                         />
                      </div>
                   </div>
@@ -388,17 +392,17 @@ const EditPropertyPage = () => {
                         type="number" 
                         value={formData.price}
                         onChange={(e) => handleInputChange('price', e.target.value)}
-                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 font-mono text-zinc-100"
+                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 font-mono text-zinc-100 text-base"
                      />
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                      <div>
                         <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">Area (Sq Ft)</label>
                         <input 
                            type="number" 
                            value={formData.area}
                            onChange={(e) => handleInputChange('area', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-base"
                         />
                      </div>
                      <div>
@@ -407,7 +411,7 @@ const EditPropertyPage = () => {
                            type="number" 
                            value={formData.bedrooms}
                            onChange={(e) => handleInputChange('bedrooms', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-base"
                         />
                      </div>
                      <div>
@@ -416,7 +420,7 @@ const EditPropertyPage = () => {
                            type="number" 
                            value={formData.bathrooms}
                            onChange={(e) => handleInputChange('bathrooms', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-base"
                         />
                      </div>
                   </div>

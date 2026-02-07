@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Send, Upload, Home, DollarSign, Clock } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { api } from '@/lib/api';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const SellWithUsPage = () => {
   const [loading, setLoading] = useState(false);
@@ -157,7 +158,7 @@ const SellWithUsPage = () => {
                   <input 
                     type="text" 
                     required
-                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all"
+                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all text-base"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                   />
@@ -167,7 +168,7 @@ const SellWithUsPage = () => {
                   <input 
                     type="tel" 
                     required
-                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all"
+                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all text-base"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                   />
@@ -180,25 +181,25 @@ const SellWithUsPage = () => {
                   <input 
                     type="email" 
                     required
-                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all"
+                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all text-base"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                   />
                 </div>
                  <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Property Type</label>
-                  <select 
-                    required
-                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-300 focus:border-brand-gold/50 outline-none transition-all"
+                  <LuxurySelect
                     value={formData.propertyType}
-                    onChange={(e) => setFormData({...formData, propertyType: e.target.value})}
-                  >
-                    <option value="">Select Type</option>
-                    <option value="apartment">Apartment</option>
-                    <option value="villa">Luxury Villa</option>
-                    <option value="commercial">Commercial Space</option>
-                    <option value="land">Land / Plot</option>
-                  </select>
+                    onChange={(val) => setFormData({...formData, propertyType: val})}
+                    options={[
+                      { label: 'Apartment', value: 'apartment' },
+                      { label: 'Luxury Villa', value: 'villa' },
+                      { label: 'Commercial Space', value: 'commercial' },
+                      { label: 'Land / Plot', value: 'land' }
+                    ]}
+                    placeholder="Select Type"
+                    className="rounded-xl !bg-zinc-900/50 !border-white/10 text-base"
+                  />
                 </div>
               </div>
 
@@ -207,7 +208,7 @@ const SellWithUsPage = () => {
                 <input 
                   type="text" 
                   required
-                  className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all"
+                  className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all text-base"
                   value={formData.address}
                   onChange={(e) => setFormData({...formData, address: e.target.value})}
                 />
@@ -249,7 +250,7 @@ const SellWithUsPage = () => {
                 <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Additional Details</label>
                 <textarea 
                   rows="4"
-                  className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all resize-none"
+                  className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all resize-none text-base"
                   value={formData.message}
                   onChange={(e) => setFormData({...formData, message: e.target.value})}
                   placeholder="Tell us more about the property (e.g., number of floors, age of building, amenities...)"

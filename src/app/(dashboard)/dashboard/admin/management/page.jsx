@@ -65,8 +65,8 @@ const AdminManagementListPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <Crown size={32} className="text-brand-gold" />
+          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
+            <Crown className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
             Leadership Management
           </h1>
           <p className="text-zinc-400 mt-2 text-lg">
@@ -92,7 +92,45 @@ const AdminManagementListPage = () => {
         />
       </div>
 
-      <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-4">
+        {displayMembers.map((member) => (
+          <div key={member._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+            <div className="flex gap-4">
+              <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden">
+                {member.image ? (
+                  <img src={member.image} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <Users size={24} className="text-zinc-600" />
+                )}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="font-bold text-zinc-100 truncate">{member.name}</div>
+                <div className="text-xs text-zinc-500 truncate">{member.email}</div>
+                <div className="text-sm text-brand-gold mt-1 font-medium">{member.role}</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+              <Link
+                href={`/dashboard/admin/management/edit/${member._id}`}
+                className="flex-1 py-2 bg-white/5 hover:bg-brand-gold hover:text-royal-deep rounded-lg transition-all text-brand-gold flex items-center justify-center gap-2 font-medium text-xs"
+              >
+                <Edit2 size={14} /> Edit
+              </Link>
+              <button
+                onClick={() => handleDelete(member._id)}
+                className="flex-1 py-2 bg-white/5 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-all text-zinc-400 flex items-center justify-center gap-2 font-medium text-xs"
+              >
+                <Trash2 size={14} /> Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-zinc-400">
             <thead>

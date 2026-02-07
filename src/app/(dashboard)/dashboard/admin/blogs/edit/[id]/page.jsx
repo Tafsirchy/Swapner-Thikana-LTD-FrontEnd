@@ -6,6 +6,7 @@ import { FileText, Save, X, Tag, Layout, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const EditBlogPage = () => {
   const router = useRouter();
@@ -106,7 +107,7 @@ const EditBlogPage = () => {
         </div>
         <button 
           onClick={() => router.back()}
-          className="p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors"
+          className="p-3 hover:bg-white/5 rounded-full text-zinc-400 transition-colors"
         >
           <X size={24} />
         </button>
@@ -130,21 +131,19 @@ const EditBlogPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2 text-xs uppercase tracking-wider">Category</label>
-                  <div className="relative">
-                    <Layout className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                    <select
-                      name="category"
-                      value={formData.category}
-                      onChange={handleChange}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium appearance-none"
-                    >
-                      <option value="Real Estate">Real Estate</option>
-                      <option value="Lifestyle">Lifestyle</option>
-                      <option value="Investment">Investment</option>
-                      <option value="Market Trends">Market Trends</option>
-                      <option value="Construction">Construction</option>
-                    </select>
-                  </div>
+                  <LuxurySelect
+                    value={formData.category}
+                    onChange={(val) => setFormData(prev => ({ ...prev, category: val }))}
+                    options={[
+                      { label: 'Real Estate', value: 'Real Estate' },
+                      { label: 'Lifestyle', value: 'Lifestyle' },
+                      { label: 'Investment', value: 'Investment' },
+                      { label: 'Market Trends', value: 'Market Trends' },
+                      { label: 'Construction', value: 'Construction' }
+                    ]}
+                    icon={<Layout size={18} />}
+                    className="rounded-xl !bg-white/5 !border-white/10 text-zinc-100 text-base"
+                  />
                 </div>
 
                 <div>
@@ -165,7 +164,7 @@ const EditBlogPage = () => {
                   value={formData.content}
                   onChange={handleChange}
                   rows={12}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none text-zinc-300 text-sm sm:text-base"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none text-zinc-300 text-base"
                 />
               </div>
 
@@ -186,7 +185,7 @@ const EditBlogPage = () => {
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
                       onKeyDown={handleAddTag}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-base"
                     />
                 </div>
               </div>

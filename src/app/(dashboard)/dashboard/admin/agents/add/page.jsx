@@ -6,6 +6,7 @@ import { Users, Save, X, Mail, Phone, Briefcase, Award, ShieldCheck } from 'luci
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const OnboardAgentPage = () => {
   const router = useRouter();
@@ -49,22 +50,22 @@ const OnboardAgentPage = () => {
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3 italic font-sans italic">
-             <Users className="text-brand-gold" size={32} />
+          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3 italic font-sans italic">
+             <Users className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
              Onboard New Agent
           </h1>
           <p className="text-zinc-400 mt-1 text-sm font-sans italic">Professional verification and onboarding for new platform agents.</p>
         </div>
         <button 
           onClick={() => router.back()}
-          className="p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors"
+          className="p-3 hover:bg-white/5 rounded-full text-zinc-400 transition-colors touch-manipulation"
         >
           <X size={24} />
         </button>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-6 shadow-xl">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-6 shadow-xl">
            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
                 <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2 font-sans italic">Full Legal Name</label>
@@ -75,7 +76,7 @@ const OnboardAgentPage = () => {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="e.g. Zayan Ahmed"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
                 />
               </div>
 
@@ -90,7 +91,7 @@ const OnboardAgentPage = () => {
                     value={formData.specialty}
                     onChange={handleChange}
                     placeholder="e.g. Luxury Penthouses"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
                   />
                 </div>
               </div>
@@ -106,7 +107,7 @@ const OnboardAgentPage = () => {
                     value={formData.experience}
                     onChange={handleChange}
                     placeholder="e.g. 8 Years"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
                   />
                 </div>
               </div>
@@ -122,7 +123,7 @@ const OnboardAgentPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="agent@stltd.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
                   />
                 </div>
               </div>
@@ -138,7 +139,7 @@ const OnboardAgentPage = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+880 1..."
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
                   />
                 </div>
               </div>
@@ -151,7 +152,7 @@ const OnboardAgentPage = () => {
                   onChange={handleChange}
                   rows={4}
                   placeholder="Tell us about the agent's expertise and background..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium font-sans resize-none"
                 />
               </div>
 
@@ -167,17 +168,18 @@ const OnboardAgentPage = () => {
               <div>
                 <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2 font-sans italic">Verification Status</label>
                 <div className="relative">
-                   <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
-                   <select
-                      name="status"
+                   <LuxurySelect
                       value={formData.status}
-                      onChange={handleChange}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans appearance-none"
-                    >
-                      <option value="Verified">Verified</option>
-                      <option value="Pending">Pending Review</option>
-                      <option value="Suspended">Suspended</option>
-                    </select>
+                      onChange={(value) => setFormData(prev => ({ ...prev, status: value }))}
+                      options={[
+                        { label: 'Verified', value: 'Verified' },
+                        { label: 'Pending Review', value: 'Pending' },
+                        { label: 'Suspended', value: 'Suspended' }
+                      ]}
+                      icon={<ShieldCheck size={18} />}
+                      placeholder="Select Status"
+                      className="rounded-xl"
+                   />
                 </div>
               </div>
 
@@ -191,13 +193,13 @@ const OnboardAgentPage = () => {
                   name="rating"
                   value={formData.rating}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
                 />
               </div>
            </div>
         </div>
 
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
            <button
              type="button"
              onClick={() => router.back()}
@@ -208,7 +210,7 @@ const OnboardAgentPage = () => {
            <button
              type="submit"
              disabled={loading}
-             className="flex-2 px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50 font-sans uppercase italic"
+             className="grow-[2] px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50 font-sans uppercase italic"
            >
              <Save size={20} />
              {loading ? 'Onboarding...' : 'ONBOARD NEW AGENT'}

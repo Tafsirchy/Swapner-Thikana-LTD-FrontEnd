@@ -6,6 +6,7 @@ import { Heart, Search, ArrowUpDown } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
 import ProjectCard from '@/components/shared/ProjectCard';
 import { api } from '@/lib/api';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const SavedPropertiesPage = () => {
   const [activeTab, setActiveTab] = useState('saved'); // 'saved' | 'collections'
@@ -129,16 +130,18 @@ const SavedPropertiesPage = () => {
               {sortedProperties.length > 0 && (
                 <div className="flex items-center gap-2 ml-auto">
                   <ArrowUpDown size={18} className="text-zinc-400" />
-                  <select 
+                  <LuxurySelect
                     value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
-                  >
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                  </select>
+                    onChange={setSortBy}
+                    options={[
+                      { label: 'Newest First', value: 'newest' },
+                      { label: 'Oldest First', value: 'oldest' },
+                      { label: 'Price: Low to High', value: 'price-low' },
+                      { label: 'Price: High to Low', value: 'price-high' }
+                    ]}
+                    placeholder="Sort By"
+                    className="!py-1.5 w-48 text-xs"
+                  />
                 </div>
               )}
             </div>

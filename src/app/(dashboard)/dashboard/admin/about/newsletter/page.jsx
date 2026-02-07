@@ -14,14 +14,14 @@ const AdminNewsletterPage = () => {
     <div className="space-y-8 pb-12">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-4xl font-bold text-zinc-100">Newsletter Management</h2>
+          <h2 className="text-2xl sm:text-4xl font-bold text-zinc-100">Newsletter Management</h2>
           <p className="text-zinc-400 mt-2 text-lg font-sans">Manage your distribution list and campaign analytics.</p>
         </div>
-        <div className="flex gap-4">
-          <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-zinc-300 font-bold rounded-xl hover:border-brand-gold hover:text-brand-gold transition-all text-sm">
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+          <button className="flex items-center justify-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-zinc-300 font-bold rounded-xl hover:border-brand-gold hover:text-brand-gold transition-all text-sm w-full sm:w-auto">
             <Send size={18} /> Send Campaign
           </button>
-          <button className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg text-sm">
+          <button className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg text-sm w-full sm:w-auto">
             <Plus size={18} /> Export List
           </button>
         </div>

@@ -6,6 +6,7 @@ import { FileText, PlusCircle, Search, Filter, Eye, Edit2, Trash2, Calendar, Use
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const AdminBlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -97,15 +98,17 @@ const AdminBlogsPage = () => {
         </div>
         <div className="flex items-center gap-2 mt-2 sm:mt-0">
           <Filter size={18} className="text-zinc-400 flex-shrink-0" />
-          <select
+          <LuxurySelect
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="flex-1 sm:flex-none bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
-          >
-            <option value="all">All Status</option>
-            <option value="published">Published</option>
-            <option value="draft">Draft</option>
-          </select>
+            onChange={setStatusFilter}
+            options={[
+              { label: 'All Status', value: 'all' },
+              { label: 'Published', value: 'published' },
+              { label: 'Draft', value: 'draft' }
+            ]}
+            placeholder="All Status"
+            className="!py-2.5 sm:!py-3 sm:w-40"
+          />
         </div>
       </div>
 

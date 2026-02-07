@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { MessageSquare, Building2, Clock, Filter, Search, Download } from 'lucide-react';
 import { api } from '@/lib/api';
 import { exportLeadsCSV } from '@/utils/exportUtils';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const statusColors = {
   new: 'bg-blue-500/10 text-blue-500',
@@ -75,17 +76,19 @@ const InquiriesPage = () => {
         {/* Filter Dropdown */}
         <div className="flex items-center gap-2">
           <Filter size={18} className="text-zinc-400" />
-          <select 
+          <LuxurySelect
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
-          >
-            <option value="all">All Status</option>
-            <option value="new">New</option>
-            <option value="contacted">Contacted</option>
-            <option value="converted">Converted</option>
-            <option value="closed">Closed</option>
-          </select>
+            onChange={setStatusFilter}
+            options={[
+              { label: 'All Status', value: 'all' },
+              { label: 'New', value: 'new' },
+              { label: 'Contacted', value: 'contacted' },
+              { label: 'Converted', value: 'converted' },
+              { label: 'Closed', value: 'closed' }
+            ]}
+            placeholder="All Status"
+            className="!py-2 w-40"
+          />
         </div>
       </div>
 

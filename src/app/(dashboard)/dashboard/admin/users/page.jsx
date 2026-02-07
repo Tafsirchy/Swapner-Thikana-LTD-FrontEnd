@@ -271,32 +271,34 @@ const AdminUsersPage = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <select
+                    <div className="flex items-center gap-2 max-w-[140px]">
+                      <LuxurySelect
                         value={user.role}
-                        onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                        onChange={(val) => handleRoleChange(user._id, val)}
                         disabled={isSelf}
-                        className={`${roleColors[user.role]} px-3 py-1 rounded-full font-bold text-xs uppercase bg-transparent border-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
-                      >
-                        <option value="customer">Customer</option>
-                        <option value="agent">Agent</option>
-                        <option value="management">Management</option>
-                        <option value="admin">Admin</option>
-                      </select>
+                        options={[
+                          { label: 'Customer', value: 'customer' },
+                          { label: 'Agent', value: 'agent' },
+                          { label: 'Management', value: 'management' },
+                          { label: 'Admin', value: 'admin' },
+                        ]}
+                        className={`!py-1 px-3 rounded-full font-bold text-[10px] uppercase border-0 ${roleColors[user.role]}`}
+                      />
                       {isSelf && <Lock size={12} className="text-zinc-600" title="Cannot change your own role" />}
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <select
+                    <div className="flex items-center gap-2 max-w-[120px]">
+                      <LuxurySelect
                         value={user.status}
-                        onChange={(e) => handleStatusChange(user._id, e.target.value)}
+                        onChange={(val) => handleStatusChange(user._id, val)}
                         disabled={isSelf}
-                        className={`${statusColors[user.status]} px-3 py-1 rounded-full font-bold text-xs uppercase bg-transparent border-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
-                      >
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                      </select>
+                        options={[
+                          { label: 'Active', value: 'active' },
+                          { label: 'Inactive', value: 'inactive' },
+                        ]}
+                        className={`!py-1 px-3 rounded-full font-bold text-[10px] uppercase border-0 ${statusColors[user.status]}`}
+                      />
                       {isSelf && <Lock size={12} className="text-zinc-600" title="Cannot change your own status" />}
                     </div>
                   </td>

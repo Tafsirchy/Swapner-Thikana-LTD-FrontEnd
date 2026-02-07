@@ -10,6 +10,7 @@ import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
 import imageCompression from 'browser-image-compression';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const EditProjectPage = () => {
   const router = useRouter();
@@ -178,17 +179,17 @@ const EditProjectPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
-             <Edit2 className="text-brand-gold" size={32} />
+          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3">
+             <Edit2 className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
              Edit Project
           </h1>
-          <p className="text-zinc-400 mt-1">Update the details of your real estate project.</p>
+          <p className="text-zinc-400 mt-1 text-sm sm:text-base">Update the details of your real estate project.</p>
         </div>
         <button 
           onClick={() => router.back()}
-          className="p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors"
+          className="p-3 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
         >
           <X size={24} />
         </button>
@@ -196,7 +197,7 @@ const EditProjectPage = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-6">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-6">
            <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-4">
               <Info size={20} className="text-brand-gold" />
               General Information
@@ -210,7 +211,7 @@ const EditProjectPage = () => {
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-base sm:text-sm"
                 />
               </div>
               <div>
@@ -222,7 +223,7 @@ const EditProjectPage = () => {
                   onChange={handleChange}
                   rows={4}
                   minLength={20}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none text-base"
                 />
               </div>
                <div>
@@ -239,29 +240,29 @@ const EditProjectPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Project Type</label>
-                  <select
-                    name="type"
+                  <LuxurySelect
                     value={formData.type}
-                    onChange={handleChange}
-                    className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
-                  >
-                    <option value="residential" className="bg-zinc-900 text-zinc-100">Residential</option>
-                    <option value="commercial" className="bg-zinc-900 text-zinc-100">Commercial</option>
-                    <option value="mixed" className="bg-zinc-900 text-zinc-100">Mixed Use</option>
-                  </select>
+                    onChange={(val) => setFormData(prev => ({ ...prev, type: val }))}
+                    options={[
+                      { label: 'Residential', value: 'residential' },
+                      { label: 'Commercial', value: 'commercial' },
+                      { label: 'Mixed Use', value: 'mixed' }
+                    ]}
+                    className="rounded-xl text-base !bg-zinc-900 !border-white/10"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Current Status</label>
-                  <select
-                    name="status"
+                  <LuxurySelect
                     value={formData.status}
-                    onChange={handleChange}
-                    className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
-                  >
-                    <option value="upcoming" className="bg-zinc-900 text-zinc-100">Upcoming</option>
-                    <option value="ongoing" className="bg-zinc-900 text-zinc-100">Ongoing</option>
-                    <option value="completed" className="bg-zinc-900 text-zinc-100">Completed</option>
-                  </select>
+                    onChange={(val) => setFormData(prev => ({ ...prev, status: val }))}
+                    options={[
+                      { label: 'Upcoming', value: 'upcoming' },
+                      { label: 'Ongoing', value: 'ongoing' },
+                      { label: 'Completed', value: 'completed' }
+                    ]}
+                    className="rounded-xl text-base !bg-zinc-900 !border-white/10"
+                  />
                 </div>
               </div>
            </div>
@@ -269,7 +270,7 @@ const EditProjectPage = () => {
 
         {/* Location & Schedule */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-           <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+           <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
               <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
                 <MapPin size={20} className="text-brand-gold" />
                 Location
@@ -307,7 +308,7 @@ const EditProjectPage = () => {
               </div>
            </div>
 
-           <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+           <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
               <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
                 <Calendar size={20} className="text-brand-gold" />
                 Timeline
@@ -320,7 +321,7 @@ const EditProjectPage = () => {
                   value={formData.handoverDate}
                   onChange={handleChange}
                   placeholder="e.g. December 2027"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-base sm:text-sm"
                 />
                 <p className="text-xs text-zinc-500 mt-2">Can be a specific date or text like &apos;Late 2026&apos;</p>
               </div>
@@ -328,7 +329,7 @@ const EditProjectPage = () => {
         </div>
 
         {/* Technical Specs */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
           <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
              <Building2 size={20} className="text-brand-gold" />
              Technical Specifications
@@ -342,7 +343,7 @@ const EditProjectPage = () => {
                   value={formData.landSize}
                   onChange={handleChange}
                   placeholder="e.g. 6 Katha"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                 />
              </div>
              <div>
@@ -353,7 +354,7 @@ const EditProjectPage = () => {
                   value={formData.floorConfiguration}
                   onChange={handleChange}
                   placeholder="e.g. G+9"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                 />
              </div>
              <div>
@@ -364,7 +365,7 @@ const EditProjectPage = () => {
                   value={formData.totalUnits}
                   onChange={handleChange}
                   placeholder="e.g. 18 Nos."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                 />
              </div>
              <div>
@@ -375,14 +376,14 @@ const EditProjectPage = () => {
                   value={formData.unitsPerFloor}
                   onChange={handleChange}
                   placeholder="e.g. 2 Units Flat"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                 />
              </div>
           </div>
         </div>
 
         {/* Apartment Details */}
-         <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+         <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
           <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
              <Building2 size={20} className="text-brand-gold" />
              Apartment Details
@@ -397,23 +398,23 @@ const EditProjectPage = () => {
                     value={formData.flatSize}
                     onChange={handleChange}
                     placeholder="e.g. A Unit: 1950 Sft, B Unit: 1750 Sft"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                   />
                </div>
                <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Room Counts</label>
                    <div className="grid grid-cols-3 gap-3">
-                       <input type="text" name="bedroomCount" value={formData.bedroomCount} onChange={handleChange} placeholder="Bed (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-xs" />
-                       <input type="text" name="bathroomCount" value={formData.bathroomCount} onChange={handleChange} placeholder="Bath (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-xs" />
-                       <input type="text" name="balconyCount" value={formData.balconyCount} onChange={handleChange} placeholder="Balcony (2/3)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-xs" />
+                       <input type="text" name="bedroomCount" value={formData.bedroomCount} onChange={handleChange} placeholder="Bed (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
+                       <input type="text" name="bathroomCount" value={formData.bathroomCount} onChange={handleChange} placeholder="Bath (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
+                       <input type="text" name="balconyCount" value={formData.balconyCount} onChange={handleChange} placeholder="Balcony (2/3)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
                    </div>
                </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-               <div><label className="text-xs text-zinc-500 block mb-1">Parking</label><input type="text" name="parking" value={formData.parking} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-white" placeholder="e.g. 1 per Flat"/></div>
-               <div><label className="text-xs text-zinc-500 block mb-1">Lift</label><input type="text" name="lift" value={formData.lift} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-white" placeholder="e.g. 1 Lift"/></div>
-               <div><label className="text-xs text-zinc-500 block mb-1">Stair</label><input type="text" name="stair" value={formData.stair} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-white" placeholder="e.g. Yes"/></div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+               <div><label className="text-xs text-zinc-500 block mb-1">Parking</label><input type="text" name="parking" value={formData.parking} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="e.g. 1 per Flat"/></div>
+               <div><label className="text-xs text-zinc-500 block mb-1">Lift</label><input type="text" name="lift" value={formData.lift} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="e.g. 1 Lift"/></div>
+               <div><label className="text-xs text-zinc-500 block mb-1">Stair</label><input type="text" name="stair" value={formData.stair} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="e.g. Yes"/></div>
             </div>
 
             <div>
@@ -424,14 +425,14 @@ const EditProjectPage = () => {
                  value={formData.commonFacilities}
                  onChange={handleChange}
                  placeholder="e.g. Rooftop Community Area, Hall Room, BBQ"
-                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                />
             </div>
           </div>
         </div>
 
         {/* Pricing & Sales */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
           <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
              <Info size={20} className="text-brand-gold" />
              Sales Info
@@ -445,7 +446,7 @@ const EditProjectPage = () => {
                   value={formData.pricePerSqFt}
                   onChange={handleChange}
                   placeholder="e.g. 9500 Taka SFT"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-base sm:text-sm"
                 />
              </div>
              <div>
@@ -456,14 +457,14 @@ const EditProjectPage = () => {
                   value={formData.availableFlats}
                   onChange={handleChange}
                   placeholder="e.g. 3A, 3B(2nd Floor)..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-base sm:text-sm"
                 />
              </div>
           </div>
         </div>
 
         {/* Image Portfolio */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-8">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-8">
            <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
               <Upload size={20} className="text-brand-gold" />
               Project Portfolio (Images)
@@ -558,7 +559,7 @@ const EditProjectPage = () => {
         </div>
 
         {/* Features */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
            <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
                 <Type size={20} className="text-brand-gold" />
@@ -579,12 +580,12 @@ const EditProjectPage = () => {
                      type="text"
                      value={feature}
                      onChange={(e) => handleFeatureChange(index, e.target.value)}
-                     className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all"
+                     className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all text-base"
                    />
                    <button 
                      type="button"
                      onClick={() => removeFeature(index)}
-                     className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all"
+                     className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shrink-0"
                    >
                      <Trash2 size={18} />
                    </button>
@@ -593,21 +594,21 @@ const EditProjectPage = () => {
            </div>
         </div>
 
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
            <button
              type="button"
              onClick={() => router.back()}
-             className="flex-1 px-8 py-4 bg-white/5 text-zinc-300 font-bold rounded-2xl hover:bg-white/10 transition-all border border-white/5"
+             className="w-full sm:flex-1 px-8 py-4 bg-white/5 text-zinc-300 font-bold rounded-2xl hover:bg-white/10 transition-all border border-white/5 order-2 sm:order-1"
            >
-             Cancel
+             CANCEL
            </button>
            <button
              type="submit"
              disabled={saving}
-             className="flex-2 px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50"
+             className="w-full sm:flex-[2] px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50 order-1 sm:order-2"
            >
              <Save size={20} />
-             {saving ? 'Saving Changes...' : 'Save Project'}
+             {saving ? 'SAVING CHANGES...' : 'SAVE PROJECT'}
            </button>
         </div>
       </form>

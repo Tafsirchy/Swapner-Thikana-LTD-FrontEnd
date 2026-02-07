@@ -65,8 +65,8 @@ const AdminAgenciesPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <Briefcase size={32} className="text-brand-gold" />
+          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
+            <Briefcase className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
             Agency Management
           </h1>
           <p className="text-zinc-400 mt-2 text-lg">
@@ -93,8 +93,63 @@ const AdminAgenciesPage = () => {
         />
       </div>
 
-      {/* Agencies Table */}
-      <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-4">
+        {displayAgencies.map((agency) => (
+          <div key={agency._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+            <div className="flex gap-4">
+              <div className="w-16 h-16 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden">
+                {agency.logo ? (
+                  <img src={agency.logo} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <Briefcase size={24} className="text-zinc-600" />
+                )}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="font-bold text-zinc-100 truncate">{agency.name}</div>
+                <div className="text-sm text-zinc-500 truncate">{agency.email}</div>
+                <div className="flex items-center gap-2 text-xs text-zinc-400 mt-1">
+                  <Phone size={12} className="text-brand-gold" />
+                  {agency.phone}
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-2 border-t border-white/5">
+              <div className="flex items-start gap-2 text-xs text-zinc-400">
+                <MapPin size={14} className="text-brand-gold mt-0.5 flex-shrink-0" />
+                <span className="line-clamp-2">{agency.address}</span>
+              </div>
+              {agency.website && (
+                <div className="flex items-center gap-2 text-xs">
+                  <Globe size={12} className="text-brand-gold" />
+                  <a href={agency.website} target="_blank" rel="noopener noreferrer" className="text-brand-gold hover:underline truncate">
+                    {agency.website.replace(/^https?:\/\//, '')}
+                  </a>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+              <Link
+                href={`/dashboard/admin/agencies/edit/${agency._id}`}
+                className="flex-1 py-2.5 bg-white/5 hover:bg-brand-gold hover:text-royal-deep rounded-xl transition-all text-brand-gold flex items-center justify-center gap-2 font-medium text-sm"
+              >
+                <Edit2 size={16} /> Edit
+              </Link>
+              <button
+                onClick={() => handleDelete(agency._id)}
+                className="flex-1 py-2.5 bg-white/5 hover:bg-red-500/10 hover:text-red-500 rounded-xl transition-all text-zinc-400 flex items-center justify-center gap-2 font-medium text-sm"
+              >
+                <Trash2 size={16} /> Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Agencies Table */}
+      <div className="hidden md:block bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-zinc-400">
             <thead>

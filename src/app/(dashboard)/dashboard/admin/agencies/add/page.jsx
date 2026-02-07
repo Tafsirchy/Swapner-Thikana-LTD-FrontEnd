@@ -44,15 +44,15 @@ const AddAgencyPage = () => {
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
-             <Briefcase className="text-brand-gold" size={32} />
+          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3">
+             <Briefcase className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
              Add New Agency
           </h1>
           <p className="text-zinc-400 mt-1">Register a new partner real estate agency.</p>
         </div>
         <button 
           onClick={() => router.back()}
-          className="p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors"
+          className="p-3 hover:bg-white/5 rounded-full text-zinc-400 transition-colors touch-manipulation"
         >
           <X size={24} />
         </button>
@@ -60,7 +60,7 @@ const AddAgencyPage = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-6">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-6">
            <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-4">
               <Info size={20} className="text-brand-gold" />
               Agency Information
@@ -76,7 +76,7 @@ const AddAgencyPage = () => {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="e.g. Elite Properties Ltd."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium"
                 />
               </div>
 
@@ -88,7 +88,7 @@ const AddAgencyPage = () => {
                   onChange={handleChange}
                   rows={3}
                   placeholder="Tell us about the agency's expertise..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
                 />
               </div>
 
@@ -103,7 +103,7 @@ const AddAgencyPage = () => {
         </div>
 
         {/* Contact Info */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-6">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-6">
            <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-4">
               <Phone size={20} className="text-brand-gold" />
               Contact Details
@@ -120,7 +120,7 @@ const AddAgencyPage = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium"
                   />
                 </div>
               </div>
@@ -135,7 +135,7 @@ const AddAgencyPage = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium"
                   />
                 </div>
               </div>
@@ -150,7 +150,7 @@ const AddAgencyPage = () => {
                     value={formData.website}
                     onChange={handleChange}
                     placeholder="https://www.eliteproperties.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium"
                   />
                 </div>
               </div>
@@ -165,14 +165,14 @@ const AddAgencyPage = () => {
                     value={formData.address}
                     onChange={handleChange}
                     rows={2}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
                   />
                 </div>
               </div>
            </div>
         </div>
 
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
            <button
              type="button"
              onClick={() => router.back()}
@@ -183,7 +183,7 @@ const AddAgencyPage = () => {
            <button
              type="submit"
              disabled={loading}
-             className="flex-2 px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50"
+             className="grow-[2] px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50"
            >
              <Save size={20} />
              {loading ? 'Registering...' : 'Register Agency'}

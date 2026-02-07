@@ -10,6 +10,7 @@ import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
 import imageCompression from 'browser-image-compression';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const AddProjectPage = () => {
   const router = useRouter();
@@ -123,7 +124,7 @@ const AddProjectPage = () => {
         </div>
         <button 
           onClick={() => router.back()}
-          className="p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
+          className="p-3 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
         >
           <X size={24} />
         </button>
@@ -159,7 +160,7 @@ const AddProjectPage = () => {
                   rows={4}
                   placeholder="Describe the project vision, uniqueness, and target audience..."
                   minLength={20}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none text-base"
                 />
               </div>
               <div>
@@ -176,29 +177,29 @@ const AddProjectPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Project Type</label>
-                  <select
-                    name="type"
+                  <LuxurySelect
                     value={formData.type}
-                    onChange={handleChange}
-                    className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
-                  >
-                    <option value="residential" className="bg-zinc-900 text-zinc-100">Residential</option>
-                    <option value="commercial" className="bg-zinc-900 text-zinc-100">Commercial</option>
-                    <option value="mixed" className="bg-zinc-900 text-zinc-100">Mixed Use</option>
-                  </select>
+                    onChange={(val) => setFormData(prev => ({ ...prev, type: val }))}
+                    options={[
+                      { label: 'Residential', value: 'residential' },
+                      { label: 'Commercial', value: 'commercial' },
+                      { label: 'Mixed Use', value: 'mixed' }
+                    ]}
+                    className="rounded-xl text-base !bg-zinc-900 !border-white/10"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Current Status</label>
-                  <select
-                    name="status"
+                  <LuxurySelect
                     value={formData.status}
-                    onChange={handleChange}
-                    className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
-                  >
-                    <option value="upcoming" className="bg-zinc-900 text-zinc-100">Upcoming</option>
-                    <option value="ongoing" className="bg-zinc-900 text-zinc-100">Ongoing</option>
-                    <option value="completed" className="bg-zinc-900 text-zinc-100">Completed</option>
-                  </select>
+                    onChange={(val) => setFormData(prev => ({ ...prev, status: val }))}
+                    options={[
+                      { label: 'Upcoming', value: 'upcoming' },
+                      { label: 'Ongoing', value: 'ongoing' },
+                      { label: 'Completed', value: 'completed' }
+                    ]}
+                    className="rounded-xl text-base !bg-zinc-900 !border-white/10"
+                  />
                 </div>
               </div>
            </div>
@@ -206,7 +207,7 @@ const AddProjectPage = () => {
 
         {/* Location & Schedule */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-           <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+           <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
               <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
                 <MapPin size={20} className="text-brand-gold" />
                 Location
@@ -244,7 +245,7 @@ const AddProjectPage = () => {
               </div>
            </div>
 
-           <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+           <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
               <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
                 <Calendar size={20} className="text-brand-gold" />
                 Timeline
@@ -265,7 +266,7 @@ const AddProjectPage = () => {
         </div>
 
         {/* Technical Specs */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
           <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
              <Building2 size={20} className="text-brand-gold" />
              Technical Specifications
@@ -279,7 +280,7 @@ const AddProjectPage = () => {
                   value={formData.landSize}
                   onChange={handleChange}
                   placeholder="e.g. 6 Katha"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                 />
              </div>
              <div>
@@ -290,7 +291,7 @@ const AddProjectPage = () => {
                   value={formData.floorConfiguration}
                   onChange={handleChange}
                   placeholder="e.g. G+9"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                 />
              </div>
              <div>
@@ -301,7 +302,7 @@ const AddProjectPage = () => {
                   value={formData.totalUnits}
                   onChange={handleChange}
                   placeholder="e.g. 18 Nos."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                 />
              </div>
              <div>
@@ -312,14 +313,14 @@ const AddProjectPage = () => {
                   value={formData.unitsPerFloor}
                   onChange={handleChange}
                   placeholder="e.g. 2 Units Flat"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                 />
              </div>
           </div>
         </div>
 
         {/* Apartment Details */}
-         <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+         <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
           <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
              <Building2 size={20} className="text-brand-gold" />
              Apartment Details
@@ -334,23 +335,23 @@ const AddProjectPage = () => {
                     value={formData.flatSize}
                     onChange={handleChange}
                     placeholder="e.g. A Unit: 1950 Sft, B Unit: 1750 Sft"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                   />
                </div>
                <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Room Counts</label>
                    <div className="grid grid-cols-3 gap-3">
-                       <input type="text" name="bedroomCount" value={formData.bedroomCount} onChange={handleChange} placeholder="Bed (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-xs" />
-                       <input type="text" name="bathroomCount" value={formData.bathroomCount} onChange={handleChange} placeholder="Bath (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-xs" />
-                       <input type="text" name="balconyCount" value={formData.balconyCount} onChange={handleChange} placeholder="Balcony (2/3)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-xs" />
+                       <input type="text" name="bedroomCount" value={formData.bedroomCount} onChange={handleChange} placeholder="Bed (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
+                       <input type="text" name="bathroomCount" value={formData.bathroomCount} onChange={handleChange} placeholder="Bath (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
+                       <input type="text" name="balconyCount" value={formData.balconyCount} onChange={handleChange} placeholder="Balcony (2/3)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
                    </div>
                </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-               <div><label className="text-xs text-zinc-500 block mb-1">Parking</label><input type="text" name="parking" value={formData.parking} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-white" placeholder="e.g. 1 per Flat"/></div>
-               <div><label className="text-xs text-zinc-500 block mb-1">Lift</label><input type="text" name="lift" value={formData.lift} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-white" placeholder="e.g. 1 Lift"/></div>
-               <div><label className="text-xs text-zinc-500 block mb-1">Stair</label><input type="text" name="stair" value={formData.stair} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-sm text-white" placeholder="e.g. Yes"/></div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+               <div><label className="text-xs text-zinc-500 block mb-1">Parking</label><input type="text" name="parking" value={formData.parking} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="e.g. 1 per Flat"/></div>
+               <div><label className="text-xs text-zinc-500 block mb-1">Lift</label><input type="text" name="lift" value={formData.lift} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="e.g. 1 Lift"/></div>
+               <div><label className="text-xs text-zinc-500 block mb-1">Stair</label><input type="text" name="stair" value={formData.stair} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="e.g. Yes"/></div>
             </div>
 
             <div>
@@ -361,14 +362,14 @@ const AddProjectPage = () => {
                  value={formData.commonFacilities}
                  onChange={handleChange}
                  placeholder="e.g. Rooftop Community Area, Hall Room, BBQ"
-                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                />
             </div>
           </div>
         </div>
 
         {/* Pricing & Sales */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
           <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-6">
              <Info size={20} className="text-brand-gold" />
              Sales Info
@@ -400,7 +401,7 @@ const AddProjectPage = () => {
         </div>
 
         {/* Image Portfolio */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-8">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-8">
            <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
               <Upload size={20} className="text-brand-gold" />
               Project Portfolio (Images)
@@ -493,7 +494,7 @@ const AddProjectPage = () => {
         </div>
 
         {/* Features */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8">
            <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
                 <Type size={20} className="text-brand-gold" />
@@ -515,12 +516,12 @@ const AddProjectPage = () => {
                      value={feature}
                      onChange={(e) => handleFeatureChange(index, e.target.value)}
                      placeholder={`Feature #${index + 1}`}
-                     className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all"
+                     className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all text-base"
                    />
                    <button 
                      type="button"
                      onClick={() => removeFeature(index)}
-                     className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all"
+                     className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shrink-0"
                    >
                      <Trash2 size={18} />
                    </button>
@@ -540,7 +541,7 @@ const AddProjectPage = () => {
            <button
              type="submit"
              disabled={loading}
-             className="w-full sm:flex-2 px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50 order-1 sm:order-2"
+             className="w-full sm:flex-[2] px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50 order-1 sm:order-2"
            >
              <Save size={20} />
              {loading ? 'CREATING...' : 'LAUNCH PROJECT'}

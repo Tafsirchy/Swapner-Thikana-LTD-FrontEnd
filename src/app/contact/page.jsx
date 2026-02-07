@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageSquare, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -131,17 +132,18 @@ const ContactPage = () => {
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] sm:text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Inquiry Type</label>
-                    <select 
-                      className="w-full bg-zinc-900 border border-white/5 rounded-xl sm:rounded-2xl px-5 py-3 sm:px-6 sm:py-4 outline-none focus:border-brand-gold/30 transition-all text-zinc-300 appearance-none text-sm sm:text-base"
+                    <LuxurySelect 
                       value={formData.subject}
-                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                    >
-                      <option>General Inquiry</option>
-                      <option>Property Acquisition</option>
-                      <option>Asset Management</option>
-                      <option>Sell Your Residence</option>
-                      <option>Architectural Partnership</option>
-                    </select>
+                      onChange={(val) => setFormData({...formData, subject: val})}
+                      options={[
+                        { label: 'General Inquiry', value: 'General Inquiry' },
+                        { label: 'Property Acquisition', value: 'Property Acquisition' },
+                        { label: 'Asset Management', value: 'Asset Management' },
+                        { label: 'Sell Your Residence', value: 'Sell Your Residence' },
+                        { label: 'Architectural Partnership', value: 'Architectural Partnership' }
+                      ]}
+                      className="rounded-xl sm:rounded-2xl !bg-zinc-900 !border-white/5 text-sm sm:text-base"
+                    />
                   </div>
                   <div className="md:col-span-2 space-y-2">
                     <label className="text-[10px] sm:text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">A Brief Message</label>

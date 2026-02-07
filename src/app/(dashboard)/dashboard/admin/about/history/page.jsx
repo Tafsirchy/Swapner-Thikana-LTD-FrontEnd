@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Edit2, Trash2, ScrollText, Loader2, X, Save, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit2, Trash2, ScrollText, Loader2, X, Save, Eye, EyeOff, ShieldCheck, Award, Briefcase, Users, History } from 'lucide-react';
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const AdminHistoryPage = () => {
   const [milestones, setMilestones] = useState([]);
@@ -235,14 +236,14 @@ const AdminHistoryPage = () => {
                 </h3>
                 <button 
                   onClick={handleCloseModal}
-                  className="p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors"
+                  className="p-3 hover:bg-white/5 rounded-full text-zinc-400 transition-colors touch-manipulation"
                 >
                   <X size={24} />
                 </button>
               </div>
 
-              <div className="overflow-y-auto custom-scrollbar">
-                <form onSubmit={handleSubmit} className="p-8 space-y-6">
+              <div className="overflow-y-auto custom-scrollbar flex-1" data-lenis-prevent>
+                <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-zinc-400 mb-2">Year</label>
@@ -252,22 +253,24 @@ const AdminHistoryPage = () => {
                         value={formData.year}
                         onChange={(e) => setFormData({...formData, year: e.target.value})}
                         placeholder="e.g. 2024"
-                        className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all"
+                        className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 text-base focus:border-brand-gold focus:ring-1 focus:ring-brand-gold outline-none transition-all"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-zinc-400 mb-2">Icon</label>
-                      <select 
+                      <LuxurySelect
                         value={formData.icon}
-                        onChange={(e) => setFormData({...formData, icon: e.target.value})}
-                        className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 focus:border-brand-gold outline-none transition-all"
-                      >
-                        <option value="History">History</option>
-                        <option value="Users">Users</option>
-                        <option value="Building">Building</option>
-                        <option value="ShieldCheck">ShieldCheck</option>
-                        <option value="Award">Award</option>
-                      </select>
+                        onChange={(value) => setFormData({...formData, icon: value})}
+                        options={[
+                          { label: 'History', value: 'History' },
+                          { label: 'Users', value: 'Users' },
+                          { label: 'Building', value: 'Building' },
+                          { label: 'ShieldCheck', value: 'ShieldCheck' },
+                          { label: 'Award', value: 'Award' }
+                        ]}
+                        className="rounded-xl h-12"
+                        placeholder="Select Icon"
+                      />
                     </div>
                   </div>
 
@@ -279,7 +282,7 @@ const AdminHistoryPage = () => {
                       value={formData.title}
                       onChange={(e) => setFormData({...formData, title: e.target.value})}
                       placeholder="e.g. The Expansion"
-                      className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 focus:border-brand-gold outline-none transition-all"
+                      className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 text-base focus:border-brand-gold outline-none transition-all"
                     />
                   </div>
 
@@ -291,7 +294,7 @@ const AdminHistoryPage = () => {
                       value={formData.description}
                       onChange={(e) => setFormData({...formData, description: e.target.value})}
                       placeholder="Tell the story..."
-                      className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 focus:border-brand-gold outline-none transition-all resize-none"
+                      className="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 text-base focus:border-brand-gold outline-none transition-all resize-none"
                     />
                   </div>
 
@@ -302,19 +305,21 @@ const AdminHistoryPage = () => {
                         type="number"
                         value={formData.order}
                         onChange={(e) => setFormData({...formData, order: parseInt(e.target.value)})}
-                        className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 focus:border-brand-gold outline-none transition-all"
+                        className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 text-base focus:border-brand-gold outline-none transition-all"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-zinc-400 mb-2">Status</label>
-                      <select 
+                      <LuxurySelect
                         value={formData.status}
-                        onChange={(e) => setFormData({...formData, status: e.target.value})}
-                        className="w-full h-12 px-4 bg-white/5 border border-white/10 rounded-xl text-zinc-100 focus:border-brand-gold outline-none transition-all"
-                      >
-                        <option value="Published">Published</option>
-                        <option value="Draft">Draft</option>
-                      </select>
+                        onChange={(value) => setFormData({...formData, status: value})}
+                        options={[
+                          { label: 'Published', value: 'Published' },
+                          { label: 'Draft', value: 'Draft' }
+                        ]}
+                        className="rounded-xl h-12"
+                        placeholder="Select Status"
+                      />
                     </div>
                   </div>
 
@@ -330,6 +335,9 @@ const AdminHistoryPage = () => {
                 </form>
               </div>
             </motion.div>
+            
+            <style jsx>{`
+            `}</style>
           </div>
         )}
       </AnimatePresence>

@@ -396,51 +396,54 @@ const PropertiesContent = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Property Type</label>
-                        <select 
-                          className="w-full bg-white/5 border border-white/5 rounded-xl py-3 px-4 text-zinc-300 outline-none focus:border-brand-gold/50"
+                        <LuxurySelect 
                           value={filters.propertyType}
-                          onChange={(e) => setFilters({...filters, propertyType: e.target.value, page: 1})}
-                        >
-                          <option value="">Any Type</option>
-                          <option value="apartment">Apartment</option>
-                          <option value="villa">Luxury Villa</option>
-                          <option value="duplex">Duplex</option>
-                          <option value="penthouse">Penthouse</option>
-                          <option value="commercial">Commercial Space</option>
-                          <option value="land">Land</option>
-                          <option value="office">Office</option>
-                          <option value="shop">Shop</option>
-                          <option value="warehouse">Warehouse</option>
-                        </select>
+                          onChange={(val) => setFilters({...filters, propertyType: val, page: 1})}
+                          options={[
+                            { label: 'Any Type', value: '' },
+                            { label: 'Apartment', value: 'apartment' },
+                            { label: 'Luxury Villa', value: 'villa' },
+                            { label: 'Duplex', value: 'duplex' },
+                            { label: 'Penthouse', value: 'penthouse' },
+                            { label: 'Commercial Space', value: 'commercial' },
+                            { label: 'Land', value: 'land' },
+                            { label: 'Office', value: 'office' },
+                            { label: 'Shop', value: 'shop' },
+                            { label: 'Warehouse', value: 'warehouse' }
+                          ]}
+                          className="rounded-xl text-base !bg-white/5 !border-white/5"
+                        />
                       </div>
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Bedrooms</label>
-                        <select 
-                          className="w-full bg-white/5 border border-white/5 rounded-xl py-3 px-4 text-zinc-300 outline-none focus:border-brand-gold/50"
+                        <LuxurySelect 
                           value={filters.bedrooms}
-                          onChange={(e) => setFilters({...filters, bedrooms: e.target.value, page: 1})}
-                        >
-                          <option value="">Any</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5+</option>
-                        </select>
+                          onChange={(val) => setFilters({...filters, bedrooms: val, page: 1})}
+                          options={[
+                            { label: 'Any', value: '' },
+                            { label: '1', value: '1' },
+                            { label: '2', value: '2' },
+                            { label: '3', value: '3' },
+                            { label: '4', value: '4' },
+                            { label: '5+', value: '5' }
+                          ]}
+                          className="rounded-xl text-base !bg-white/5 !border-white/5"
+                        />
                       </div>
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Bathrooms</label>
-                        <select 
-                          className="w-full bg-white/5 border border-white/5 rounded-xl py-3 px-4 text-zinc-300 outline-none focus:border-brand-gold/50"
+                        <LuxurySelect 
                           value={filters.bathrooms}
-                          onChange={(e) => setFilters({...filters, bathrooms: e.target.value, page: 1})}
-                        >
-                          <option value="">Any</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4+</option>
-                        </select>
+                          onChange={(val) => setFilters({...filters, bathrooms: val, page: 1})}
+                          options={[
+                            { label: 'Any', value: '' },
+                            { label: '1', value: '1' },
+                            { label: '2', value: '2' },
+                            { label: '3', value: '3' },
+                            { label: '4+', value: '4' }
+                          ]}
+                          className="rounded-xl text-base !bg-white/5 !border-white/5"
+                        />
                       </div>
                     </div>
 
@@ -549,18 +552,19 @@ const PropertiesContent = () => {
             </p>
             <div className="flex items-center gap-3">
               <label className="text-sm text-zinc-400">Sort by:</label>
-              <select
+              <LuxurySelect
                 value={filters.sort}
-                onChange={(e) => setFilters({...filters, sort: e.target.value, page: 1})}
-                className="bg-white/5 border border-white/5 rounded-xl px-4 py-2.5 text-zinc-300 outline-none focus:border-brand-gold/50 cursor-pointer"
-              >
-                <option value="featured">Featured First</option>
-                <option value="newest">Newest First</option>
-                <option value="popular">Most Popular</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="area-desc">Area: Largest First</option>
-              </select>
+                onChange={(val) => setFilters({...filters, sort: val, page: 1})}
+                options={[
+                  { label: 'Featured First', value: 'featured' },
+                  { label: 'Newest First', value: 'newest' },
+                  { label: 'Most Popular', value: 'popular' },
+                  { label: 'Price: Low to High', value: 'price-asc' },
+                  { label: 'Price: High to Low', value: 'price-desc' },
+                  { label: 'Area: Largest First', value: 'area-desc' }
+                ]}
+                className="rounded-xl text-sm !bg-white/5 !border-white/5"
+              />
             </div>
           </div>
 

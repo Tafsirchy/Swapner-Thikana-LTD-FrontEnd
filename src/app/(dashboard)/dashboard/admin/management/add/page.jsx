@@ -46,8 +46,8 @@ const AddLeaderPage = () => {
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3 italic">
-             <Crown className="text-brand-gold" size={32} />
+          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3 italic">
+             <Crown className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
              Add Leadership Member
           </h1>
           <p className="text-zinc-400 mt-1 text-sm">Onboard a new member to the Board of Directors or Executive Team.</p>
@@ -61,7 +61,7 @@ const AddLeaderPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-6 shadow-xl">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-6 shadow-xl">
            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
                 <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2">Full Name</label>
@@ -146,7 +146,7 @@ const AddLeaderPage = () => {
            </div>
         </div>
 
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
            <button
              type="button"
              onClick={() => router.back()}

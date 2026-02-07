@@ -234,21 +234,6 @@ const InteractiveMasterPlan = () => {
                     }}
                     data-lenis-prevent
                 >
-                    <style jsx>{`
-                        .custom-scrollbar::-webkit-scrollbar {
-                            width: 4px;
-                        }
-                        .custom-scrollbar::-webkit-scrollbar-track {
-                            background: transparent;
-                        }
-                        .custom-scrollbar::-webkit-scrollbar-thumb {
-                            background: rgba(255, 255, 255, 0.05);
-                            border-radius: 10px;
-                        }
-                        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                            background: rgba(255, 255, 255, 0.1);
-                        }
-                    `}</style>
                     <div className="p-8 pb-24">
                     <div className="flex justify-between items-center mb-8">
                         <h3 className="text-3xl font-cinzel text-white">{activeRegion.name}</h3>

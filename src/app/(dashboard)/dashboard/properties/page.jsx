@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const AgentPropertiesPage = () => {
   const [properties, setProperties] = useState([]);
@@ -74,29 +75,33 @@ const AgentPropertiesPage = () => {
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2 flex-1 sm:flex-none">
                 <Filter size={18} className="text-zinc-400 shrink-0" />
-                <select 
+                <LuxurySelect
                   value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="w-full sm:w-auto bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
-                >
-                  <option value="all">All Status</option>
-                  <option value="published">Published</option>
-                  <option value="pending">Pending</option>
-                  <option value="sold">Sold</option>
-                </select>
+                  onChange={setStatusFilter}
+                  options={[
+                    { label: 'All Status', value: 'all' },
+                    { label: 'Published', value: 'published' },
+                    { label: 'Pending', value: 'pending' },
+                    { label: 'Sold', value: 'sold' }
+                  ]}
+                  placeholder="All Status"
+                  className="!py-2.5 sm:w-40"
+                />
               </div>
 
-              <select 
+              <LuxurySelect
                 value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                className="flex-1 sm:flex-none bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
-              >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="popular">Most Popular</option>
-              </select>
+                onChange={setSort}
+                options={[
+                  { label: 'Newest First', value: 'newest' },
+                  { label: 'Oldest First', value: 'oldest' },
+                  { label: 'Price: Low to High', value: 'price-asc' },
+                  { label: 'Price: High to Low', value: 'price-desc' },
+                  { label: 'Most Popular', value: 'popular' }
+                ]}
+                placeholder="Sort By"
+                className="!py-2.5 sm:w-48"
+              />
             </div>
           )}
           
