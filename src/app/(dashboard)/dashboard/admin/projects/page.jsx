@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Building2, PlusCircle, Search, Filter, Eye, Edit2, Trash2, Calendar, MapPin, ChevronDown } from 'lucide-react';
+import { Building2, PlusCircle, Search, Filter, Eye, Edit2, Trash2, Calendar, MapPin, ChevronDown, Star } from 'lucide-react';
 import { api } from '@/lib/api';
 import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
@@ -55,6 +55,16 @@ const AdminProjectsPage = () => {
       toast.success('Project deleted successfully');
     } catch {
       toast.error('Failed to delete project');
+    }
+  };
+
+  const handleToggleHomeFeatured = async (id, currentStatus) => {
+    try {
+      await api.projects.update(id, { isHomeFeatured: !currentStatus });
+      setProjects(projects.map(p => p._id === id ? { ...p, isHomeFeatured: !currentStatus } : p));
+      toast.success(currentStatus ? 'Removed from Home Featured' : 'Added to Home Featured');
+    } catch {
+      toast.error('Failed to update featured status');
     }
   };
 
@@ -165,6 +175,13 @@ const AdminProjectsPage = () => {
               >
                 <Eye size={18} />
               </Link>
+              <button
+                onClick={() => handleToggleHomeFeatured(project._id, project.isHomeFeatured)}
+                className={`p-2.5 rounded-xl transition-all ${project.isHomeFeatured ? 'bg-brand-gold text-royal-deep' : 'bg-white/5 text-zinc-400 hover:bg-white/10'}`}
+                title={project.isHomeFeatured ? 'Remove from Home Featured' : 'Add to Home Featured'}
+              >
+                <Star size={18} fill={project.isHomeFeatured ? 'currentColor' : 'none'} />
+              </button>
               <Link
                 href={`/dashboard/admin/projects/edit/${project._id}`}
                 className="p-2.5 bg-white/5 hover:bg-brand-gold hover:text-royal-deep rounded-xl transition-all text-brand-gold"
@@ -245,6 +262,13 @@ const AdminProjectsPage = () => {
                       >
                         <Eye size={18} />
                       </Link>
+                      <button
+                        onClick={() => handleToggleHomeFeatured(project._id, project.isHomeFeatured)}
+                        className={`p-2 rounded-lg transition-all ${project.isHomeFeatured ? 'text-brand-gold bg-brand-gold/10' : 'text-zinc-400 hover:bg-white/10'}`}
+                        title={project.isHomeFeatured ? 'Remove from Home Featured' : 'Add to Home Featured'}
+                      >
+                        <Star size={18} fill={project.isHomeFeatured ? 'currentColor' : 'none'} />
+                      </button>
                       <Link
                         href={`/dashboard/admin/projects/edit/${project._id}`}
                         className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"

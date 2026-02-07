@@ -90,20 +90,24 @@ const AboutSection = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await api.projects.getAll();
-        
-        let displayProjects = [];
-        // Handle various potential API response structures
-        if (Array.isArray(res)) {
-            displayProjects = res;
-        } else if (res.projects && Array.isArray(res.projects)) {
-            displayProjects = res.projects;
-        } else if (res.data && Array.isArray(res.data)) {
-            displayProjects = res.data;
-        } else if (res.data && res.data.projects && Array.isArray(res.data.projects)) {
-            displayProjects = res.data.projects;
-        }
+        // 1. First fetch specifically home featured projects
+        const featuredRes = await api.projects.getAll({ homeFeatured: true, limit: 6 });
+        let displayProjects = featuredRes.data?.projects || [];
 
+        // 2. If not enough featured, fill with latest projects
+        if (displayProjects.length < 6) {
+            const latestRes = await api.projects.getAll({ limit: 6 });
+            const latestProjects = latestRes.data?.projects || [];
+            
+            for (const p of latestProjects) {
+                if (displayProjects.length >= 6) break;
+                // Avoid duplicates
+                if (!displayProjects.some(fp => fp._id === p._id)) {
+                    displayProjects.push(p);
+                }
+            }
+        }
+        
         const fallbackProjects = [
             { _id: 'fallback-1', slug: 'the-grand-palace', title: 'The Grand Palace', location: { city: 'Gulshan' }, images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c'], type: 'Residential' },
             { _id: 'fallback-2', slug: 'skyline-heights', title: 'Skyline Heights', location: { city: 'Banani' }, images: ['https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea'], type: 'Commercial' },
@@ -113,11 +117,11 @@ const AboutSection = () => {
             { _id: 'fallback-6', slug: 'lakeside-manor', title: 'Lakeside Manor', location: { city: 'Baridhara' }, images: ['https://images.unsplash.com/photo-1600607687644-c7171b42498f'], type: 'Residential' },
         ];
 
-        // Fill with fallback if not enough API data to complete the 6-item grid
+        // 3. Fill with fallback if still not enough projects total
         if (displayProjects.length < 6) {
-           displayProjects = [...displayProjects, ...fallbackProjects.slice(displayProjects.length, 6)];
+            displayProjects = [...displayProjects, ...fallbackProjects.slice(displayProjects.length, 6)];
         } else {
-           displayProjects = displayProjects.slice(0, 6);
+            displayProjects = displayProjects.slice(0, 6);
         }
         
         setProjects(displayProjects);
