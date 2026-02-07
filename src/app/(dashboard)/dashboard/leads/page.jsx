@@ -143,43 +143,41 @@ const LeadsPage = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <BarChart3 size={32} className="text-brand-gold" />
+          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
+            <BarChart3 className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
             Lead Pipeline
           </h1>
-          <p className="text-zinc-400 mt-2 text-lg font-sans">Manage and track your property inquiries</p>
+          <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg">Manage and track your property inquiries</p>
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="relative">
+          <div className="relative w-full sm:w-64">
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
             <input 
               type="text"
               placeholder="Search leads..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 w-64 text-sm"
+              className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
             />
           </div>
         </div>
       </div>
 
       {/* Kanban Board */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="flex overflow-x-auto pb-6 -mx-4 px-4 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 gap-6 scrollbar-hide snap-x snap-mandatory">
         {STATUS_COLUMNS.map(column => (
-          <div key={column.id} className="flex flex-col gap-4">
-            <div className="flex items-center justify-between px-2">
+          <div key={column.id} className="flex flex-col gap-4 min-w-[280px] sm:min-w-[320px] lg:min-w-0 snap-center">
             <div className="flex items-center justify-between px-3 py-2 bg-white/[0.03] border border-white/5 rounded-2xl">
               <div className="flex items-center gap-3">
                 <span className={`${column.color} ${column.bg} p-2 rounded-xl border border-white/5 shadow-inner`}>
                   {column.icon}
                 </span>
-                <h3 className="font-cinzel font-bold text-zinc-100 uppercase tracking-widest text-xs">{column.title}</h3>
+                <h3 className="font-cinzel font-bold text-zinc-100 uppercase tracking-widest text-[10px] sm:text-xs">{column.title}</h3>
               </div>
               <span className="bg-brand-gold/10 text-brand-gold text-[10px] font-bold px-2 py-0.5 rounded-full border border-brand-gold/20">
                 {getLeadsByStatus(column.id).length}
               </span>
-            </div>
             </div>
 
             <div 
@@ -204,18 +202,18 @@ const LeadsPage = () => {
                       <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-gold/60 px-2 py-0.5 bg-brand-gold/5 rounded-full border border-brand-gold/10">
                         {lead.interestType || 'Inquiry'}
                       </span>
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
                         {column.id === 'closed' && (
                           <button 
                             onClick={(e) => handleDeleteLead(lead._id, e)}
-                            className="p-1.5 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                            className="p-2 sm:p-1.5 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
                             title="Delete Lead"
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={16} />
                           </button>
                         )}
-                        <button className="p-1.5 text-zinc-600 hover:text-zinc-300 transition-all">
-                          <MoreVertical size={14} />
+                        <button className="p-2 sm:p-1.5 text-zinc-600 hover:text-zinc-300 transition-all">
+                          <MoreVertical size={16} />
                         </button>
                       </div>
                     </div>
@@ -224,14 +222,14 @@ const LeadsPage = () => {
                       {lead.subject || lead.propertyName || (lead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${lead.interestType}`)}
                     </p>
                     
-                    <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-3 border-t border-white/5">
+                    <div className="flex items-center justify-between text-[11px] text-zinc-500 pt-3 border-t border-white/5">
                       <span className="flex items-center gap-1.5">
-                        <Calendar size={12} className="text-zinc-600" />
+                        <Calendar size={13} className="text-zinc-600" />
                         {new Date(lead.createdAt).toLocaleDateString()}
                       </span>
                       {lead.notes?.length > 0 && (
-                        <span className="bg-brand-gold/10 text-brand-gold px-2 py-0.5 rounded-lg border border-brand-gold/10 font-bold">
-                          {lead.notes.length} NOTES
+                        <span className="bg-brand-gold/10 text-brand-gold px-2 py-0.5 rounded-lg border border-brand-gold/10 font-bold uppercase tracking-tighter">
+                          {lead.notes.length} Notes
                         </span>
                       )}
                     </div>
@@ -242,7 +240,7 @@ const LeadsPage = () => {
               {getLeadsByStatus(column.id).length > visibleCounts[column.id] && (
                 <button 
                   onClick={() => handleLoadMore(column.id)}
-                  className="w-full py-3 bg-white/5 border border-white/5 rounded-2xl text-[10px] font-bold text-zinc-500 uppercase tracking-widest hover:bg-white/10 hover:text-brand-gold transition-all"
+                  className="w-full py-3.5 bg-white/5 border border-white/5 rounded-2xl text-[10px] font-bold text-zinc-400 uppercase tracking-widest hover:bg-white/10 hover:text-brand-gold transition-all"
                 >
                   See More ({getLeadsByStatus(column.id).length - visibleCounts[column.id]} left)
                 </button>
@@ -274,7 +272,8 @@ const LeadsPage = () => {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="relative w-full max-w-5xl bg-zinc-950 border border-white/10 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col h-[95vh] sm:h-[90vh] md:h-[80vh]"
+              className="relative w-full max-w-5xl bg-zinc-950 border border-white/10 rounded-2xl md:rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col h-auto max-h-[90vh] md:h-[80vh] overflow-y-auto md:overflow-hidden custom-scrollbar"
+              data-lenis-prevent
             >
               {/* Close Button - More prominent on mobile */}
               <button 
@@ -284,21 +283,21 @@ const LeadsPage = () => {
                 <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
               </button>
 
-              <div className="flex flex-col md:flex-row w-full h-full overflow-hidden">
+              <div className="flex flex-col md:flex-row w-full h-auto md:h-full md:overflow-hidden">
                 {/* Sidebar Info (Left Column) */}
-                <div className="w-full md:w-2/5 border-b md:border-b-0 md:border-r border-white/5 p-6 md:p-8 bg-zinc-900/40 backdrop-blur-xl flex flex-col overflow-y-auto custom-scrollbar shrink-0 h-auto max-h-[40%] md:h-full md:max-h-none min-h-0">
+                <div className="w-full md:w-2/5 border-b md:border-b-0 md:border-r border-white/5 p-5 sm:p-8 bg-zinc-900/40 backdrop-blur-xl flex flex-col md:overflow-y-auto md:h-full shrink-0 min-h-0">
                   <div className="mb-6 md:mb-10">
                     <div className="w-16 h-16 md:w-20 md:h-20 bg-brand-gold/10 rounded-2xl md:rounded-[2rem] flex items-center justify-center text-brand-gold mb-4 md:mb-6 border border-brand-gold/20 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
                       <User size={32} className="md:hidden" />
                       <User size={40} className="hidden md:block" />
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-cinzel font-bold text-zinc-100 leading-tight uppercase tracking-tight">{selectedLead.name}</h2>
-                    <p className="text-zinc-500 text-[10px] md:text-xs mt-2 font-medium tracking-widest uppercase">LEAD SINCE {new Date(selectedLead.createdAt).toLocaleDateString()}</p>
+                    <h2 className="text-xl sm:text-3xl font-cinzel font-bold text-zinc-100 leading-tight uppercase tracking-tight">{selectedLead.name}</h2>
+                    <p className="text-zinc-500 text-xs mt-2 font-medium tracking-widest uppercase">LEAD SINCE {new Date(selectedLead.createdAt).toLocaleDateString()}</p>
                   </div>
 
                   <div className="space-y-6">
                     <div className="p-5 bg-white/[0.03] border border-white/5 rounded-[2rem] backdrop-blur-md">
-                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-4">Contact Details</p>
+                      <p className="text-xs font-bold text-zinc-500 uppercase tracking-[0.15em] mb-4">Contact Details</p>
                       <div className="space-y-4">
                         <a href={`mailto:${selectedLead.email}`} className="flex items-center gap-4 text-sm text-zinc-300 hover:text-brand-gold transition-all group">
                           <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-brand-gold/30 transition-colors">
@@ -316,7 +315,7 @@ const LeadsPage = () => {
                     </div>
 
                     <div className="p-5 bg-white/[0.03] border border-white/5 rounded-[2rem] backdrop-blur-md">
-                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] mb-4">Subject & Interest</p>
+                      <p className="text-xs font-bold text-zinc-500 uppercase tracking-[0.15em] mb-4">Subject & Interest</p>
                       <div className="space-y-4">
                         <div className="flex items-center gap-3 text-base text-zinc-100 font-bold font-cinzel uppercase tracking-wide">
                            {selectedLead.subject || (selectedLead.interestType === 'general' ? 'General Inquiry' : `Inquiry for ${selectedLead.interestType}`)}
@@ -353,13 +352,13 @@ const LeadsPage = () => {
                     </div>
 
                     <div className="pt-4 space-y-4">
-                      <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Quick Move Status</p>
+                      <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Quick Move Status</p>
                       <div className="grid grid-cols-2 gap-2">
                         {STATUS_COLUMNS.map(col => (
                           <button
                             key={col.id}
                             onClick={() => handleStatusChange(selectedLead._id, col.id)}
-                            className={`px-3 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all ${
+                            className={`px-3 py-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all ${
                               selectedLead.status === col.id 
                                 ? 'bg-brand-gold text-royal-deep'
                                 : 'bg-white/5 text-zinc-400 hover:bg-white/10'
@@ -374,9 +373,9 @@ const LeadsPage = () => {
                         <div className="pt-2">
                           <button 
                             onClick={() => handleDeleteLead(selectedLead._id)}
-                            className="w-full py-3 bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
+                            className="w-full py-4 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold uppercase tracking-[0.15em] rounded-xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center gap-2"
                           >
-                            <Trash2 size={14} /> Delete Lead Permanent
+                            <Trash2 size={16} /> Delete Lead Permanent
                           </button>
                         </div>
                       )}
@@ -384,7 +383,7 @@ const LeadsPage = () => {
                   </div>
 
                   {/* Main Content: Notes (Right Column) */}
-                <div className="w-full md:w-3/5 flex flex-col flex-1 min-h-0 overflow-hidden bg-zinc-950/20">
+                <div className="w-full md:w-3/5 flex flex-col flex-1 min-h-0 bg-zinc-950/20">
                   <div className="p-6 md:p-8 border-b border-white/5 flex items-center justify-between bg-zinc-950/40 backdrop-blur-md sticky top-0 z-10">
                     <h3 className="text-base md:text-lg font-cinzel font-bold text-zinc-100 flex items-center gap-3 uppercase tracking-widest">
                       <Plus size={18} className="text-brand-gold p-0.5 border border-brand-gold rounded-full" />
@@ -392,13 +391,13 @@ const LeadsPage = () => {
                     </h3>
                   </div>
 
-                  <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 custom-scrollbar">
+                  <div className="flex-1 md:overflow-y-auto p-6 md:p-8 space-y-6 md:custom-scrollbar">
                     {selectedLead.notes?.map((note, idx) => (
                       <div key={idx} className="relative pl-6 border-l-2 border-white/5">
                         <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-zinc-900 border-2 border-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.3)]"></div>
                         <div className="bg-white/[0.03] p-4 rounded-2xl border border-white/5">
                           <p className="text-sm text-zinc-200 leading-relaxed mb-3">{note.text}</p>
-                          <div className="flex items-center justify-between text-[10px] text-zinc-500">
+                          <div className="flex items-center justify-between text-xs text-zinc-500">
                             <span className="font-bold flex items-center gap-1">
                               <User size={10} />
                               {note.authorName}
@@ -430,7 +429,7 @@ const LeadsPage = () => {
                         placeholder="Add a follow-up note..."
                         value={newNote}
                         onChange={(e) => setNewNote(e.target.value)}
-                        className="w-full bg-zinc-950 border border-white/10 rounded-xl md:rounded-2xl pl-5 md:pl-6 pr-12 md:pr-14 py-3 md:py-4 text-xs md:text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
+                        className="w-full bg-zinc-950 border border-white/10 rounded-xl md:rounded-2xl pl-5 md:pl-6 pr-12 md:pr-14 py-3.5 md:py-4 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
                       />
                       <button 
                         type="submit"
@@ -450,7 +449,7 @@ const LeadsPage = () => {
       </AnimatePresence>
 
       <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.1); }

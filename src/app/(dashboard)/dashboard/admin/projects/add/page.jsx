@@ -113,17 +113,17 @@ const AddProjectPage = () => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-12">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
-             <Plus className="text-brand-gold" size={32} />
+          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3">
+             <Plus className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
              Add New Project
           </h1>
-          <p className="text-zinc-400 mt-1">Fill in the details to launch a new real estate project.</p>
+          <p className="text-zinc-400 mt-1 text-sm sm:text-base">Fill in the details to launch a new real estate project.</p>
         </div>
         <button 
           onClick={() => router.back()}
-          className="p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors"
+          className="p-2 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
         >
           <X size={24} />
         </button>
@@ -131,7 +131,7 @@ const AddProjectPage = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-6">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-6">
            <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2 mb-4">
               <Info size={20} className="text-brand-gold" />
               General Information
@@ -146,7 +146,7 @@ const AddProjectPage = () => {
                   value={formData.title}
                   onChange={handleChange}
                   placeholder="e.g. Shwapner Thikana Premium Village"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
                 />
               </div>
               <div>
@@ -170,7 +170,7 @@ const AddProjectPage = () => {
                   value={formData.brochureUrl}
                   onChange={handleChange}
                   placeholder="e.g. https://example.com/brochure.pdf"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -227,7 +227,7 @@ const AddProjectPage = () => {
                              }
                           }));
                        }}
-                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
                     />
                  </div>
                  <div>
@@ -238,7 +238,7 @@ const AddProjectPage = () => {
                       name="location.city"
                       value={formData.location.city}
                       onChange={handleChange}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
                     />
                  </div>
               </div>
@@ -257,7 +257,7 @@ const AddProjectPage = () => {
                   value={formData.handoverDate}
                   onChange={handleChange}
                   placeholder="e.g. December 2027"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
                 />
                 <p className="text-xs text-zinc-500 mt-2">Can be a specific date or text like &apos;Late 2026&apos;</p>
               </div>
@@ -382,7 +382,7 @@ const AddProjectPage = () => {
                   value={formData.pricePerSqFt}
                   onChange={handleChange}
                   placeholder="e.g. 9500 Taka SFT"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
                 />
              </div>
              <div>
@@ -393,7 +393,7 @@ const AddProjectPage = () => {
                   value={formData.availableFlats}
                   onChange={handleChange}
                   placeholder="e.g. 3A, 3B(2nd Floor)..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
                 />
              </div>
           </div>
@@ -529,21 +529,21 @@ const AddProjectPage = () => {
            </div>
         </div>
 
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
            <button
              type="button"
              onClick={() => router.back()}
-             className="flex-1 px-8 py-4 bg-white/5 text-zinc-300 font-bold rounded-2xl hover:bg-white/10 transition-all border border-white/5"
+             className="w-full sm:flex-1 px-8 py-4 bg-white/5 text-zinc-300 font-bold rounded-2xl hover:bg-white/10 transition-all border border-white/5 order-2 sm:order-1"
            >
-             Cancel
+             CANCEL
            </button>
            <button
              type="submit"
              disabled={loading}
-             className="flex-2 px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50"
+             className="w-full sm:flex-2 px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50 order-1 sm:order-2"
            >
              <Save size={20} />
-             {loading ? 'Creating...' : 'Launch Project'}
+             {loading ? 'CREATING...' : 'LAUNCH PROJECT'}
            </button>
         </div>
       </form>

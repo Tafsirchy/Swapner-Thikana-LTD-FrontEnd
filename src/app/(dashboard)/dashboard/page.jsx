@@ -23,7 +23,7 @@ const StatCard = ({ title, value, icon: Icon, color, trend }) => (
       <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${color} bg-white/5`}>
         <Icon size={24} />
       </div>
-      <h3 className="text-zinc-400 text-[10px] sm:text-sm font-medium uppercase tracking-wider mb-1">{title}</h3>
+      <h3 className="text-zinc-400 text-xs sm:text-sm font-medium uppercase tracking-wider mb-1">{title}</h3>
       <div className="flex items-end gap-3">
         <span className="text-2xl sm:text-3xl font-bold text-zinc-100">{value}</span>
         {trend && (

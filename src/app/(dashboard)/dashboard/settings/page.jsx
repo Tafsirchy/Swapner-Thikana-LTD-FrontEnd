@@ -134,13 +134,12 @@ const SettingsPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Page Header */}
-      <div className="mb-10">
-        <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
-          <User size={36} className="text-brand-gold" />
+      <div className="mb-6 sm:mb-10 px-1 sm:px-0">
+        <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
+          <User size={36} className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
           Account Settings
         </h1>
-        <p className="text-zinc-400 mt-2 text-lg">Manage your personal information and security preferences.</p>
+        <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg">Manage your personal information and security preferences.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -154,7 +153,7 @@ const SettingsPage = () => {
             </div>
             
             {/* Avatar & Info */}
-            <div className="px-8 pb-8 -mt-12 relative text-center">
+            <div className="px-5 sm:px-8 pb-8 -mt-12 relative text-center">
               <div 
                 className="w-24 h-24 rounded-3xl bg-zinc-900 border-4 border-zinc-900 mx-auto flex items-center justify-center text-3xl font-bold text-brand-gold shadow-xl relative overflow-hidden group mb-4"
               >
@@ -168,7 +167,7 @@ const SettingsPage = () => {
                  
                  {/* Upload & Actions Overlay */}
                  <div 
-                    className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center gap-3 transition-all z-10 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/50 flex lg:hidden group-hover:flex items-center justify-center gap-3 transition-all z-10 backdrop-blur-sm"
                  >
                     {/* Upload Button */}
                     <button
@@ -224,10 +223,10 @@ const SettingsPage = () => {
         {/* Right Column: Settings Tabs & Forms */}
         <div className="lg:col-span-2 space-y-6">
            {/* Tab Navigation */}
-           <div className="flex items-center gap-2 p-1 bg-white/5 border border-white/5 rounded-2xl w-fit">
+           <div className="flex items-center gap-1 sm:gap-2 p-1 bg-white/5 border border-white/5 rounded-2xl w-full sm:w-fit overflow-x-auto no-scrollbar">
               <button
                  onClick={() => setActiveTab('general')}
-                 className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                 className={`flex-1 sm:flex-none px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
                     activeTab === 'general' 
                     ? 'bg-brand-gold text-royal-deep shadow-lg' 
                     : 'text-zinc-400 hover:text-white hover:bg-white/5'
@@ -238,7 +237,7 @@ const SettingsPage = () => {
               </button>
               <button
                  onClick={() => setActiveTab('security')}
-                 className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                 className={`flex-1 sm:flex-none px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
                     activeTab === 'security' 
                     ? 'bg-brand-gold text-royal-deep shadow-lg' 
                     : 'text-zinc-400 hover:text-white hover:bg-white/5'
@@ -250,7 +249,7 @@ const SettingsPage = () => {
            </div>
 
            {/* Content Area */}
-           <div className="bg-white/5 border border-white/5 rounded-3xl p-8 min-h-[500px]">
+           <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 min-h-[400px] sm:min-h-[500px]">
               <AnimatePresence mode="wait">
                  {activeTab === 'general' ? (
                     <motion.div
@@ -269,7 +268,7 @@ const SettingsPage = () => {
                                    type="text" 
                                    value={formData.name}
                                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                   className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900"
+                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                 />
                              </div>
                              <div className="space-y-2">
@@ -278,7 +277,7 @@ const SettingsPage = () => {
                                    type="text" 
                                    value={formData.phone}
                                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                                   className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900"
+                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                 />
                              </div>
                           </div>
@@ -290,11 +289,11 @@ const SettingsPage = () => {
                                    type="email" 
                                    value={user?.email || ''}
                                    disabled
-                                   className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3 outline-none text-zinc-400"
+                                   className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none text-zinc-400 text-sm sm:text-base"
                                 />
                                 <Lock size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500" />
                              </div>
-                             <p className="text-[10px] text-zinc-500">To change your email, please contact support.</p>
+                             <p className="text-[10px] sm:text-xs text-zinc-500">To change your email, please contact support.</p>
                           </div>
 
                           {user?.role === 'agent' && (
@@ -304,7 +303,7 @@ const SettingsPage = () => {
                                    value={formData.bio}
                                    onChange={(e) => setFormData({...formData, bio: e.target.value})}
                                    rows={4}
-                                   className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 resize-none transition-all focus:bg-zinc-900"
+                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 resize-none transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                    placeholder="Tell clients about your experience..."
                                 />
                              </div>
@@ -314,7 +313,7 @@ const SettingsPage = () => {
                              <button 
                                 type="submit" 
                                 disabled={isLoading}
-                                className="flex items-center gap-2 px-8 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-white hover:text-royal-deep transition-all shadow-lg active:scale-95 disabled:opacity-70"
+                                className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 sm:py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-white hover:text-royal-deep transition-all shadow-lg active:scale-95 disabled:opacity-70 text-sm sm:text-base"
                              >
                                 {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
                                 Save Changes
@@ -339,7 +338,7 @@ const SettingsPage = () => {
                                    type={showPasswords.current ? "text" : "password"}
                                    value={passwordData.currentPassword}
                                    onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
-                                   className="w-full bg-zinc-900/50 border border-white/10 rounded-xl pl-4 pr-12 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900"
+                                   className="w-full bg-zinc-900/50 border border-white/10 rounded-xl pl-4 pr-12 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                    placeholder="••••••••"
                                 />
                                 <button
@@ -360,7 +359,7 @@ const SettingsPage = () => {
                                       type={showPasswords.new ? "text" : "password"}
                                       value={passwordData.newPassword}
                                       onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
-                                      className="w-full bg-zinc-900/50 border border-white/10 rounded-xl pl-4 pr-12 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900"
+                                      className="w-full bg-zinc-900/50 border border-white/10 rounded-xl pl-4 pr-12 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                       placeholder="••••••••"
                                    />
                                    <button
@@ -380,7 +379,7 @@ const SettingsPage = () => {
                                       type={showPasswords.confirm ? "text" : "password"}
                                       value={passwordData.confirmPassword}
                                       onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
-                                      className="w-full bg-zinc-900/50 border border-white/10 rounded-xl pl-4 pr-12 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900"
+                                      className="w-full bg-zinc-900/50 border border-white/10 rounded-xl pl-4 pr-12 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                       placeholder="••••••••"
                                    />
                                    <button
@@ -398,7 +397,7 @@ const SettingsPage = () => {
                              <button 
                                 type="submit" 
                                 disabled={isPasswordLoading}
-                                className="flex items-center gap-2 px-8 py-3 bg-white/5 border border-white/10 text-white font-bold rounded-xl hover:bg-brand-gold hover:text-royal-deep hover:border-brand-gold transition-all shadow-lg active:scale-95 disabled:opacity-70"
+                                className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 sm:py-3 bg-white/5 border border-white/10 text-white font-bold rounded-xl hover:bg-brand-gold hover:text-royal-deep hover:border-brand-gold transition-all shadow-lg active:scale-95 disabled:opacity-70 text-sm sm:text-base"
                              >
                                 {isPasswordLoading ? <Loader2 size={18} className="animate-spin" /> : <Shield size={18} />}
                                 Update Security

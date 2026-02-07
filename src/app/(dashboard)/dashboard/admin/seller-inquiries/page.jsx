@@ -8,6 +8,8 @@ import {
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
+import LuxurySelect from '@/components/shared/LuxurySelect';
+import LuxuryPagination from '@/components/shared/LuxuryPagination';
 
 const statusConfig = {
   pending: { label: 'Pending', color: 'bg-yellow-500/10 text-yellow-500', icon: Clock },
@@ -49,7 +51,7 @@ const InquiryDetailsModal = ({ inquiry, onClose, onUpdateStatus }) => {
         </div>
 
         {/* Modal Content */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 scrollbar-hide">
+        <div className="flex-1 overflow-y-auto p-5 sm:p-8 space-y-6 sm:space-y-8 scrollbar-hide">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Left Column: Seller & Property Info */}
             <div className="space-y-6">
@@ -165,16 +167,20 @@ const AdminSellerInquiriesPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [updatingId, setUpdatingId] = useState(null);
   const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const fetchInquiries = useCallback(async () => {
+  const fetchInquiries = useCallback(async (page = 1) => {
     try {
       setLoading(true);
       const params = {
         status: statusFilter !== 'all' ? statusFilter : undefined,
-        limit: 100
+        limit: 10,
+        page
       };
       const response = await api.seller.getAllInquiries(params);
       setInquiries(response.data.inquiries || []);
+      setTotalPages(response.data.pagination?.pages || 1);
     } catch {
       toast.error('Failed to load inquiries');
     } finally {
@@ -183,8 +189,8 @@ const AdminSellerInquiriesPage = () => {
   }, [statusFilter]);
 
   useEffect(() => {
-    fetchInquiries();
-  }, [fetchInquiries]);
+    fetchInquiries(currentPage);
+  }, [fetchInquiries, currentPage]);
 
   const handleUpdateStatus = async (id, newStatus) => {
     try {
@@ -220,11 +226,11 @@ const AdminSellerInquiriesPage = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2 font-cinzel italic tracking-wide">
-            <Users className="text-brand-gold" />
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-3 font-cinzel italic tracking-wide">
+            <Users className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
             Seller Inquiries
           </h1>
-          <p className="text-zinc-400 text-xs tracking-widest mt-1 opacity-70 uppercase font-medium">Manage &quot;Sell with Us&quot; form submissions</p>
+          <p className="text-zinc-400 text-[10px] sm:text-xs tracking-widest mt-1 opacity-70 uppercase font-medium">Manage &quot;Sell with Us&quot; form submissions</p>
         </div>
       </div>
 
@@ -234,10 +240,10 @@ const AdminSellerInquiriesPage = () => {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
           <input 
             type="text"
-            placeholder="Search inquiries by name, email, phone..."
+            placeholder="Search inquiries..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:border-brand-gold/50 transition-all text-sm font-medium placeholder:text-zinc-600"
+            className="w-full pl-12 pr-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:border-brand-gold/50 transition-all text-sm font-medium placeholder:text-zinc-600"
           />
         </div>
 
@@ -259,8 +265,86 @@ const AdminSellerInquiriesPage = () => {
         </div>
       </div>
 
-      {/* Inquiries List */}
-      <div className="glass rounded-[2.5rem] border border-white/5 overflow-hidden shadow-2xl overflow-x-auto">
+      {/* Mobile Card View */}
+      <div className="lg:hidden space-y-4">
+        {loading ? (
+          <div className="py-20 text-center text-zinc-500 bg-white/5 rounded-3xl border border-white/5">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-xs font-bold uppercase tracking-widest opacity-50">Retriving inquiries...</span>
+            </div>
+          </div>
+        ) : filteredInquiries.length === 0 ? (
+          <div className="py-20 text-center text-zinc-600 italic bg-white/5 rounded-3xl border border-white/5">
+            No inquiries found matching your criteria.
+          </div>
+        ) : (
+          filteredInquiries.map((inquiry) => (
+            <div key={inquiry._id} className="bg-white/5 border border-white/5 rounded-2xl p-5 space-y-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col gap-1 min-w-0">
+                  <span className="font-bold text-zinc-100 text-base truncate">{inquiry.name}</span>
+                  <div className="flex items-center gap-2 text-[10px] text-zinc-500 truncate">
+                    <Mail size={12} className="text-brand-gold/60" />
+                    {inquiry.email}
+                  </div>
+                </div>
+                <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase inline-flex items-center gap-1 border border-white/5 flex-shrink-0 ${statusConfig[inquiry.status]?.color}`}>
+                  {React.createElement(statusConfig[inquiry.status]?.icon || Clock, { size: 10 })}
+                  {statusConfig[inquiry.status]?.label}
+                </span>
+              </div>
+
+              <div className="space-y-2 py-3 border-y border-white/5">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 bg-brand-gold/10 text-brand-gold text-[9px] font-black uppercase rounded tracking-widest leading-none">
+                    {inquiry.propertyType}
+                  </span>
+                  {inquiry.images?.length > 0 && (
+                    <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[9px] font-black uppercase rounded tracking-widest leading-none">
+                      {inquiry.images.length} Photos
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-start gap-2 text-[11px] text-zinc-400 italic">
+                  <MapPin size={12} className="text-brand-gold mt-0.5 shrink-0" />
+                  <span className="line-clamp-1">{inquiry.address}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between gap-3 pt-1">
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => setSelectedInquiry(inquiry)}
+                    className="p-2.5 bg-white/5 rounded-xl text-zinc-400 hover:text-brand-gold transition-all border border-white/5"
+                  >
+                    <Eye size={18} />
+                  </button>
+                  <a href={`tel:${inquiry.phone}`} className="p-2.5 bg-white/5 rounded-xl text-zinc-400 hover:text-brand-gold transition-all border border-white/5">
+                    <Phone size={18} />
+                  </a>
+                </div>
+                <div className="w-[140px]">
+                  <LuxurySelect 
+                    value={inquiry.status}
+                    onChange={(val) => handleUpdateStatus(inquiry._id, val)}
+                    options={[
+                      { label: 'Pending', value: 'pending' },
+                      { label: 'Contacted', value: 'contacted' },
+                      { label: 'Approved', value: 'approved' },
+                      { label: 'Rejected', value: 'rejected' }
+                    ]}
+                    className="!py-2 !px-3 !rounded-xl text-[10px] font-bold uppercase tracking-widest"
+                  />
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden lg:block glass rounded-[2.5rem] border border-white/5 overflow-hidden shadow-2xl overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-white/5 bg-white/[0.03]">
@@ -365,6 +449,12 @@ const AdminSellerInquiriesPage = () => {
           />
         )}
       </AnimatePresence>
+
+      <LuxuryPagination 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

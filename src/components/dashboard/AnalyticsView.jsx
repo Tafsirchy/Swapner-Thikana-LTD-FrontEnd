@@ -11,10 +11,10 @@ import {
 import { api } from '@/lib/api';
 import React, { useState, useEffect } from 'react';
 
-const COLORS = ['#D4AF37', '#8B7355', '#1E293B', '#334155', '#475569'];
+const COLORS = ['#D4AF37', '#8B7355', '#C0C0C0', '#708090', '#2C3E50', '#A0522D', '#696969', '#4682B4'];
 
 const StatCard = ({ title, value, change, icon: Icon, trend }) => (
-  <div className="bg-zinc-900/50 border border-white/5 rounded-3xl p-6 relative overflow-hidden group hover:border-brand-gold/20 transition-all">
+  <div className="bg-zinc-900/50 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-6 relative overflow-hidden group hover:border-brand-gold/20 transition-all">
     <div className="flex justify-between items-start mb-4">
       <div className="p-3 bg-brand-gold/10 rounded-2xl text-brand-gold">
         <Icon size={24} />
@@ -27,8 +27,8 @@ const StatCard = ({ title, value, change, icon: Icon, trend }) => (
       )}
     </div>
     <div>
-      <p className="text-zinc-500 text-sm font-medium">{title}</p>
-      <h3 className="text-3xl font-bold text-zinc-100 mt-1">{value}</h3>
+      <p className="text-zinc-500 text-xs sm:text-sm font-medium">{title}</p>
+      <h3 className="text-2xl sm:text-3xl font-bold text-zinc-100 mt-1">{value}</h3>
     </div>
     <div className="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity">
       <Icon size={120} />
@@ -65,7 +65,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
   return (
     <div className="space-y-8 pb-12">
       {/* KPI Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {isAdmin ? (
           <>
             <StatCard title="Overall Growth" value="24%" change="12" icon={TrendingUp} trend="up" />
@@ -83,16 +83,16 @@ const AnalyticsView = ({ isAdmin = false }) => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         {/* Trend Chart */}
-        <div className="bg-zinc-900/50 border border-white/5 rounded-[2.5rem] p-8">
+        <div className="bg-zinc-900/50 border border-white/5 rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
               <Calendar size={20} className="text-brand-gold" />
               {isAdmin ? 'Leads & User Growth' : 'Recent Lead Activity'}
             </h3>
           </div>
-          <div className="h-[300px]">
+          <div className="h-[250px] sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               {isAdmin ? (
                 <AreaChart data={data.leadsTrend}>
@@ -128,39 +128,52 @@ const AnalyticsView = ({ isAdmin = false }) => {
         </div>
 
         {/* Distribution Chart */}
-        <div className="bg-zinc-900/50 border border-white/5 rounded-[2.5rem] p-8">
+        <div className="bg-zinc-900/50 border border-white/5 rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8">
           <h3 className="text-xl font-bold text-zinc-100 mb-8 flex items-center gap-2">
             <Building2 size={20} className="text-brand-gold" />
             {isAdmin ? 'Property Type Distribution' : 'Lead Status Breakdown'}
           </h3>
-          <div className="h-[300px] flex items-center justify-center">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={isAdmin ? data.typeDistribution : data.leadStats}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={80}
-                  outerRadius={100}
-                  paddingAngle={5}
-                  dataKey="count"
-                  nameKey="_id"
-                >
-                  {(isAdmin ? data.typeDistribution : data.leadStats).map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                   contentStyle={{ backgroundColor: '#18181b', border: '1px solid #27272a', borderRadius: '12px' }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="flex flex-wrap lg:flex-col gap-3 ml-0 lg:ml-4 mt-6 lg:mt-0">
+          <div className="flex flex-col lg:flex-row items-center gap-8 px-2 sm:px-4">
+            <div className="w-full h-[250px] sm:h-[300px] relative">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={isAdmin ? data.typeDistribution : data.leadStats}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius="65%"
+                    outerRadius="85%"
+                    paddingAngle={5}
+                    dataKey="count"
+                    nameKey="_id"
+                    stroke="none"
+                  >
+                    {(isAdmin ? data.typeDistribution : data.leadStats).map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                     contentStyle={{ backgroundColor: '#18181b', border: '1px solid #27272a', borderRadius: '12px' }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              {/* Optional: Center label */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-zinc-500 text-[10px] uppercase font-bold tracking-widest">Total</span>
+                <span className="text-2xl font-bold text-zinc-100 italic">
+                  {(isAdmin ? data.typeDistribution : data.leadStats).reduce((acc, curr) => acc + curr.count, 0)}
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-3 w-full lg:w-48">
               {(isAdmin ? data.typeDistribution : data.leadStats).map((entry, index) => (
-                <div key={entry._id} className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
-                  <span className="text-[10px] text-zinc-400 capitalize whitespace-nowrap">{entry._id}</span>
-                  <span className="text-[10px] font-bold text-zinc-200">{entry.count}</span>
+                <div key={entry._id} className="flex items-center justify-between gap-3 bg-white/5 px-4 py-2.5 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
+                    <span className="text-xs text-zinc-400 capitalize truncate font-medium">{entry._id}</span>
+                  </div>
+                  <span className="text-xs font-bold text-zinc-100 italic">{entry.count}</span>
                 </div>
               ))}
             </div>
@@ -170,13 +183,13 @@ const AnalyticsView = ({ isAdmin = false }) => {
 
       {/* Tables Section */}
       <div className="grid grid-cols-1 gap-8">
-        <div className="bg-zinc-900/50 border border-white/5 rounded-[2.5rem] overflow-hidden">
-          <div className="p-8 border-b border-white/5">
+        <div className="bg-zinc-900/50 border border-white/5 rounded-2xl sm:rounded-[2.5rem] overflow-hidden">
+          <div className="p-5 sm:p-8 border-b border-white/5">
             <h3 className="text-xl font-bold text-zinc-100">
               {isAdmin ? 'Top Performing Properties' : 'My Listings Performance'}
             </h3>
           </div>
-          <div className="overflow-x-auto">
+          <div className="hidden lg:block overflow-x-auto">
             <table className="w-full text-left">
               <thead>
                 <tr className="bg-white/[0.02] text-zinc-500 text-xs uppercase tracking-wider">
@@ -213,6 +226,36 @@ const AnalyticsView = ({ isAdmin = false }) => {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="lg:hidden divide-y divide-white/5">
+            {(isAdmin ? data.topProperties : data.listingsPerformance)?.slice(0, 5).map((property, idx) => (
+              <div key={property._id} className="p-5 space-y-3">
+                <div className="flex justify-between items-start gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bold text-zinc-100 text-sm line-clamp-2">{property.title}</div>
+                    <div className="text-xs text-zinc-500 mt-1">{property.location?.area || 'Premium Location'}</div>
+                  </div>
+                  <div className="text-brand-gold font-bold text-xs whitespace-nowrap">
+                    BDT {property.price?.toLocaleString()}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="text-xs text-zinc-500">Platform Rank</div>
+                  <div className="flex-1 max-w-[100px] h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div 
+                      className="bg-brand-gold h-full rounded-full" 
+                      style={{ width: `${Math.max(20, 100 - (idx * 15))}%` }}
+                    ></div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between pt-1">
+                  <div className="text-xs text-zinc-500">Engagement</div>
+                  <div className="text-xs font-bold text-zinc-300">{property.views.toLocaleString()} Views</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

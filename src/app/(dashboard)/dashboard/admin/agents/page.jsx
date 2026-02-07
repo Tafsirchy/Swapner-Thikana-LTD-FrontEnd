@@ -5,21 +5,29 @@ import Link from 'next/link';
 import { Users, PlusCircle, Search, Edit2, Trash2, Mail, Phone, Star, ShieldCheck } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import LuxuryPagination from '@/components/shared/LuxuryPagination';
 
 const AdminAgentsListPage = () => {
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchAgents();
-  }, []);
+    fetchAgents(currentPage);
+  }, [currentPage, searchQuery]);
 
-  const fetchAgents = async () => {
+  const fetchAgents = async (page = 1) => {
     try {
       setLoading(true);
-      const response = await api.agents.getAll();
+      const response = await api.agents.getAll({
+        search: searchQuery || undefined,
+        page,
+        limit: 10
+      });
       setAgents(response.data.agents || []);
+      setTotalPages(response.data.pagination?.pages || 1);
     } catch (error) {
       console.error('Error fetching agents:', error);
       toast.error('Failed to load agents');
@@ -40,10 +48,8 @@ const AdminAgentsListPage = () => {
     }
   };
 
-  const filteredAgents = agents.filter(agent => 
-    agent.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    agent.specialty?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Server-side filtering
+  const displayAgents = agents;
 
   if (loading) {
     return (
@@ -98,7 +104,7 @@ const AdminAgentsListPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {filteredAgents.map((agent) => (
+              {displayAgents.map((agent) => (
                 <tr key={agent._id} className="group hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
@@ -159,13 +165,19 @@ const AdminAgentsListPage = () => {
         </div>
       </div>
 
-      {filteredAgents.length === 0 && (
+      {displayAgents.length === 0 && (
         <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">
           <Users size={48} className="mx-auto text-zinc-700 mb-4" />
           <h3 className="text-lg font-bold text-zinc-300 font-sans italic">No Agents Found</h3>
           <p className="text-zinc-500 max-w-xs mx-auto mt-1 font-sans italic">Quiet here. Onboard your first agent to start listing properties.</p>
         </div>
       )}
+
+      <LuxuryPagination 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { Building2, CheckCircle, XCircle, Star, Search, Filter, Eye } from 'lucide-react';
+import { Building2, CheckCircle, XCircle, Star, Search, Filter, Eye, ChevronDown, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import LuxurySelect from '@/components/shared/LuxurySelect';
+import LuxuryPagination from '@/components/shared/LuxuryPagination';
 
 const statusColors = {
   pending: 'bg-yellow-500/10 text-yellow-500',
@@ -20,18 +22,24 @@ const AdminPropertiesPage = () => {
   const [featuredFilter, setFeaturedFilter] = useState('all');
   const [sort, setSort] = useState('newest');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const fetchProperties = useCallback(async () => {
+  const fetchProperties = useCallback(async (page = 1) => {
     try {
       setLoading(true);
       const params = {
         status: statusFilter !== 'all' ? statusFilter : undefined,
         featured: featuredFilter !== 'all' ? featuredFilter : undefined,
-        sort: sort
+        search: searchQuery || undefined,
+        sort: sort,
+        limit: 10,
+        page
       };
       
       const data = await api.admin.getProperties(params);
       setProperties(data.data.properties || []);
+      setTotalPages(data.data.pagination?.pages || 1);
       
       // Mock data
       // setProperties([
@@ -62,11 +70,11 @@ const AdminPropertiesPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [statusFilter, featuredFilter, sort]);
+  }, [statusFilter, featuredFilter, sort, searchQuery]);
 
   useEffect(() => {
-    fetchProperties();
-  }, [fetchProperties]);
+    fetchProperties(currentPage);
+  }, [fetchProperties, currentPage]);
 
   const handleApprove = async (propertyId) => {
     try {
@@ -105,15 +113,8 @@ const AdminPropertiesPage = () => {
     }
   };
 
-  const filteredProperties = properties.filter(property => {
-    const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         property.location?.area?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || property.status === statusFilter;
-    const matchesFeatured = featuredFilter === 'all' || 
-                           (featuredFilter === 'true' && property.featured) || 
-                           (featuredFilter === 'false' && !property.featured);
-    return matchesSearch && matchesStatus && matchesFeatured;
-  });
+  // Filters now handled on server-side
+  const displayProperties = properties;
 
   if (loading) {
     return (
@@ -129,106 +130,187 @@ const AdminPropertiesPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <Building2 size={32} className="text-brand-gold" />
+          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
+            <Building2 className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
             Property Management
           </h1>
-          <p className="text-zinc-400 mt-2 text-lg font-sans">
+          <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg">
             Review and approve property listings
           </p>
         </div>
         <Link
           href="/dashboard/properties/add"
-          className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10 text-sm sm:text-base"
         >
-          <Building2 size={18} /> Add New Property
+          <Building2 size={18} /> ADD NEW PROPERTY
         </Link>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1 relative">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+      <div className="flex flex-col gap-4">
+        <div className="relative">
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search properties..."
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 outline-none focus:border-brand-gold/50"
+            className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-sm"
           />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:items-center gap-3 w-full lg:w-auto">
-          <div className="flex items-center gap-2 text-zinc-400 sm:col-span-2 lg:col-auto mb-1 lg:mb-0">
-            <Filter size={18} />
-            <span className="text-xs font-bold uppercase tracking-wider lg:hidden">Filters</span>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:items-center gap-3">
+          <div className="sm:hidden flex items-center gap-2 text-zinc-500 mb-1">
+            <Filter size={16} />
+            <span className="text-[10px] font-bold uppercase tracking-wider">Quick Filters</span>
           </div>
-          <select
+          
+          <LuxurySelect
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
-          >
-            <option value="all">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="published">Published</option>
-            <option value="rejected">Rejected</option>
-            <option value="sold">Sold</option>
-          </select>
+            onChange={setStatusFilter}
+            placeholder="All Status"
+            options={[
+              { label: 'All Status', value: 'all' },
+              { label: 'Pending', value: 'pending' },
+              { label: 'Published', value: 'published' },
+              { label: 'Rejected', value: 'rejected' },
+              { label: 'Sold', value: 'sold' }
+            ]}
+            className="!py-2.5"
+          />
 
-          <select
+          <LuxurySelect
             value={featuredFilter}
-            onChange={(e) => setFeaturedFilter(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm"
-          >
-            <option value="all">Featured: All</option>
-            <option value="true">Featured Only</option>
-            <option value="false">Non-Featured</option>
-          </select>
+            onChange={setFeaturedFilter}
+            placeholder="Featured: All"
+            options={[
+              { label: 'Featured: All', value: 'all' },
+              { label: 'Featured Only', value: 'true' },
+              { label: 'Non-Featured', value: 'false' }
+            ]}
+            className="!py-2.5"
+          />
 
-          <select
+          <LuxurySelect
             value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer text-sm sm:col-span-2 lg:col-auto"
-          >
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="popular">Most Popular</option>
-          </select>
+            onChange={setSort}
+            placeholder="Newest First"
+            options={[
+              { label: 'Newest First', value: 'newest' },
+              { label: 'Oldest First', value: 'oldest' },
+              { label: 'Price: Low to High', value: 'price-asc' },
+              { label: 'Price: High to Low', value: 'price-desc' },
+              { label: 'Most Popular', value: 'popular' }
+            ]}
+            className="!py-2.5 sm:col-span-2 lg:col-auto"
+          />
         </div>
       </div>
 
-      {/* Properties Table */}
-      <div className="bg-white/5 border border-white/5 rounded-3xl overflow-hidden">
+      {/* Mobile Card View */}
+      <div className="lg:hidden space-y-4">
+        {displayProperties.map((property) => (
+          <div key={property._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+            <div className="flex justify-between items-start gap-4">
+              <div className="min-w-0 flex-1">
+                <div className="font-bold text-zinc-100 line-clamp-2">{property.title}</div>
+                <div className="text-[10px] text-zinc-500 uppercase tracking-tight mt-1 flex items-center gap-1">
+                  <MapPin size={10} className="text-brand-gold" />
+                  {property.location.area}
+                </div>
+              </div>
+              <span className={`${statusColors[property.status]} px-2 py-0.5 rounded-full font-bold text-[9px] uppercase tracking-wider`}>
+                {property.status}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between text-xs py-2 border-y border-white/5">
+              <div className="text-zinc-500">Price</div>
+              <div className="font-bold text-zinc-100">৳{(property.price / 10000000).toFixed(2)}Cr</div>
+            </div>
+
+            <div className="flex items-center justify-between gap-2 pt-2">
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/properties/${property.slug || property._id}`}
+                  className="p-2.5 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white"
+                  title="View"
+                >
+                  <Eye size={18} />
+                </Link>
+                <Link
+                  href={`/dashboard/admin/properties/edit/${property._id}`}
+                  className="p-2.5 bg-white/5 hover:bg-brand-gold hover:text-royal-deep rounded-xl transition-all text-brand-gold"
+                  title="Edit"
+                >
+                  <Building2 size={18} />
+                </Link>
+                <button
+                  onClick={() => handleToggleFeatured(property._id, property.featured)}
+                  className={`p-2.5 rounded-xl transition-all ${
+                    property.featured 
+                      ? 'bg-yellow-500/20 text-yellow-500' 
+                      : 'bg-white/5 text-zinc-500'
+                  }`}
+                  title="Feature"
+                >
+                  <Star size={18} fill={property.featured ? 'currentColor' : 'none'} />
+                </button>
+              </div>
+
+              {property.status === 'pending' && (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleReject(property._id)}
+                    className="p-2.5 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                    title="Reject"
+                  >
+                    <XCircle size={18} />
+                  </button>
+                  <button
+                    onClick={() => handleApprove(property._id)}
+                    className="px-4 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 font-bold text-xs flex items-center gap-2 hover:bg-emerald-500 hover:text-white transition-all uppercase"
+                  >
+                    <CheckCircle size={16} /> Approve
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden lg:block bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-zinc-400">
             <thead>
-              <tr className="border-b border-white/10">
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Property</th>
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Agent</th>
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Price</th>
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Status</th>
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Featured</th>
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Actions</th>
+              <tr className="border-b border-white/10 bg-white/[0.02]">
+                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Property</th>
+                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Agent</th>
+                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Price</th>
+                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Status</th>
+                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Featured</th>
+                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {filteredProperties.map((property) => (
+              {displayProperties.map((property) => (
                 <tr key={property._id} className="group hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4">
                     <div>
                       <div className="font-bold text-zinc-100">{property.title}</div>
-                      <div className="text-xs text-zinc-500">{property.location.area}</div>
+                      <div className="text-xs text-zinc-500 uppercase tracking-tight mt-0.5">{property.location.area}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    {property.agent?.name || 'Unknown'}
+                    <div className="text-xs">{property.agent?.name || 'Unknown'}</div>
                   </td>
                   <td className="px-6 py-4 font-bold text-zinc-100">
                     ৳{(property.price / 10000000).toFixed(2)}Cr
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`${statusColors[property.status]} px-3 py-1 rounded-full font-bold text-xs uppercase`}>
+                    <span className={`${statusColors[property.status]} px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider`}>
                       {property.status}
                     </span>
                   </td>
@@ -241,14 +323,14 @@ const AdminPropertiesPage = () => {
                           : 'bg-white/5 text-zinc-500 hover:bg-white/10'
                       }`}
                     >
-                      <Star size={18} fill={property.featured ? 'currentColor' : 'none'} />
+                      <Star size={16} fill={property.featured ? 'currentColor' : 'none'} />
                     </button>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/properties/${property.slug || property._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
                         title="View"
                       >
                         <Eye size={18} />
@@ -265,14 +347,14 @@ const AdminPropertiesPage = () => {
                         <>
                           <button
                             onClick={() => handleApprove(property._id)}
-                            className="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
+                            className="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-lg shadow-emerald-500/10"
                             title="Approve"
                           >
                             <CheckCircle size={18} />
                           </button>
                           <button
                             onClick={() => handleReject(property._id)}
-                            className="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                            className="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg shadow-red-500/10"
                             title="Reject"
                           >
                             <XCircle size={18} />
@@ -288,11 +370,17 @@ const AdminPropertiesPage = () => {
         </div>
       </div>
 
-      {filteredProperties.length === 0 && (
+      {displayProperties.length === 0 && (
         <div className="text-center py-12 text-zinc-500">
           No properties found matching your criteria
         </div>
       )}
+
+      <LuxuryPagination 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

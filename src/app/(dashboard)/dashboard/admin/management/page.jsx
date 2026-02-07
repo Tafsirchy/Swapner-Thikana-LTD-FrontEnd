@@ -5,21 +5,29 @@ import Link from 'next/link';
 import { Users, PlusCircle, Search, Edit2, Trash2, Mail, Phone, Crown } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import LuxuryPagination from '@/components/shared/LuxuryPagination';
 
 const AdminManagementListPage = () => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchMembers();
-  }, []);
+    fetchMembers(currentPage);
+  }, [currentPage, searchQuery]);
 
-  const fetchMembers = async () => {
+  const fetchMembers = async (page = 1) => {
     try {
       setLoading(true);
-      const response = await api.management.getAll();
+      const response = await api.management.getAll({
+        search: searchQuery || undefined,
+        page,
+        limit: 10
+      });
       setMembers(response.data.members || []);
+      setTotalPages(response.data.pagination?.pages || 1);
     } catch (error) {
       console.error('Error fetching management:', error);
       toast.error('Failed to load management members');
@@ -40,10 +48,8 @@ const AdminManagementListPage = () => {
     }
   };
 
-  const filteredMembers = members.filter(member => 
-    member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    member.role.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Server-side filtering
+  const displayMembers = members;
 
   if (loading) {
     return (
@@ -97,7 +103,7 @@ const AdminManagementListPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {filteredMembers.map((member) => (
+              {displayMembers.map((member) => (
                 <tr key={member._id} className="group hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
@@ -142,13 +148,19 @@ const AdminManagementListPage = () => {
         </div>
       </div>
 
-      {filteredMembers.length === 0 && (
+      {displayMembers.length === 0 && (
         <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">
           <Users size={48} className="mx-auto text-zinc-700 mb-4" />
           <h3 className="text-lg font-bold text-zinc-300">No Leaders Found</h3>
           <p className="text-zinc-500 max-w-xs mx-auto mt-1">Start building your leadership board by adding your first leader.</p>
         </div>
       )}
+
+      <LuxuryPagination 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

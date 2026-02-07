@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { exportUsersCSV } from '@/utils/exportUtils';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const roleColors = {
   admin: 'bg-purple-500/10 text-purple-500',
@@ -109,11 +110,11 @@ const AdminUsersPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <Users size={32} className="text-brand-gold" />
+          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
+            <Users className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
             User Management
           </h1>
-          <p className="text-zinc-400 mt-2 text-lg">
+          <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg">
             Manage user roles and permissions
           </p>
         </div>
@@ -121,44 +122,131 @@ const AdminUsersPage = () => {
           <button
             onClick={() => exportUsersCSV(users)}
             disabled={users.length === 0}
-            className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-bold hover:bg-white/10 transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-bold hover:bg-white/10 transition-all disabled:opacity-50 text-xs sm:text-base"
           >
-            <Download size={18} className="text-brand-gold" />
+            <Download size={16} className="text-brand-gold" />
             Export CSV
           </button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
         <div className="flex-1 relative">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => handleFilterChange('search', e.target.value)}
-            placeholder="Search by name or email..."
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 outline-none focus:border-brand-gold/50"
+            placeholder="Search users..."
+            className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm"
           />
         </div>
-        <div className="flex items-center gap-2">
-          <Filter size={18} className="text-zinc-400" />
-          <select
-            value={roleFilter}
-            onChange={(e) => handleFilterChange('role', e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 cursor-pointer"
-          >
-            <option value="all">All Roles</option>
-            <option value="customer">Customers</option>
-            <option value="agent">Agents</option>
-            <option value="management">Management</option>
-            <option value="admin">Admins</option>
-          </select>
+        <div className="flex items-center gap-3">
+          <Filter size={16} className="text-zinc-400 shrink-0" />
+          <div className="flex-1 sm:w-48">
+            <LuxurySelect
+              value={roleFilter}
+              onChange={(val) => handleFilterChange('role', val)}
+              options={[
+                { label: 'All Roles', value: 'all' },
+                { label: 'Customers', value: 'customer' },
+                { label: 'Agents', value: 'agent' },
+                { label: 'Management', value: 'management' },
+                { label: 'Admins', value: 'admin' },
+              ]}
+              className="!py-2.5 sm:!py-3 rounded-xl text-sm"
+            />
+          </div>
         </div>
       </div>
 
-      {/* Users Table */}
-      <div className="bg-white/5 border border-white/5 rounded-3xl min-h-[400px]">
+      {/* Users List (Mobile Card View) */}
+      <div className="lg:hidden space-y-4">
+        {users.map((user) => {
+          const isSelf = currentUser?.id === user._id || currentUser?._id === user._id;
+          return (
+            <div key={user._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+              <div className="flex justify-between items-start">
+                <div>
+                  <div className="font-bold text-zinc-100">{user.name}</div>
+                  <div className="text-xs text-zinc-500">{user.email}</div>
+                </div>
+                {!isSelf && (
+                  <div className="relative">
+                    <button 
+                      onClick={() => setActiveMenu(activeMenu === user._id ? null : user._id)}
+                      className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    >
+                      <MoreVertical size={18} />
+                    </button>
+                    <AnimatePresence>
+                      {activeMenu === user._id && (
+                        <>
+                          <div className="fixed inset-0 z-10" onClick={() => setActiveMenu(null)} />
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                            className="absolute right-0 mt-2 w-48 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl z-20 overflow-hidden"
+                          >
+                            <div className="p-2">
+                              <button
+                                onClick={() => handleDeleteUser(user._id)}
+                                className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                              >
+                                <Trash2 size={16} />
+                                Delete User
+                              </button>
+                            </div>
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                <div className="space-y-1">
+                  <div className="text-[10px] uppercase text-zinc-500 font-bold tracking-wider">Role</div>
+                  <LuxurySelect
+                    value={user.role}
+                    onChange={(val) => handleRoleChange(user._id, val)}
+                    disabled={isSelf}
+                    options={[
+                      { label: 'Customer', value: 'customer' },
+                      { label: 'Agent', value: 'agent' },
+                      { label: 'Management', value: 'management' },
+                      { label: 'Admin', value: 'admin' },
+                    ]}
+                    className={`!py-2 rounded-lg font-bold text-xs uppercase ${roleColors[user.role]} border-0`}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <div className="text-[10px] uppercase text-zinc-500 font-bold tracking-wider">Status</div>
+                  <LuxurySelect
+                    value={user.status}
+                    onChange={(val) => handleStatusChange(user._id, val)}
+                    disabled={isSelf}
+                    options={[
+                      { label: 'Active', value: 'active' },
+                      { label: 'Inactive', value: 'inactive' },
+                    ]}
+                    className={`!py-2 rounded-lg font-bold text-xs uppercase ${statusColors[user.status]} border-0`}
+                  />
+                </div>
+              </div>
+              <div className="text-[10px] text-zinc-500 pt-2">
+                Joined {new Date(user.createdAt).toLocaleDateString()}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Users Table (Desktop View) */}
+      <div className="hidden lg:block bg-white/5 border border-white/5 rounded-3xl min-h-[400px]">
         <div className="overflow-x-auto min-h-[400px]">
           <table className="w-full text-left text-sm text-zinc-400">
             <thead>

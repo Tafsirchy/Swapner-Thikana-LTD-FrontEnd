@@ -237,13 +237,13 @@ const EditPropertyPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
-          <Save size={32} className="text-brand-gold" />
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3">
+          <Save className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
           Edit Property
         </h1>
-        <div className="text-sm text-zinc-400">
-           Step <span className="text-brand-gold font-bold">{currentStep}</span> of {steps.length}
+        <div className="text-sm text-zinc-400 shrink-0">
+           Step <span className="text-brand-gold font-bold">{currentStep}</span> <span className="hidden sm:inline">of {steps.length}</span>
         </div>
       </div>
 
@@ -267,7 +267,7 @@ const EditPropertyPage = () => {
         ))}
       </div>
 
-      <div className="bg-white/5 border border-white/5 rounded-3xl p-8 min-h-[400px]">
+      <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 min-h-[400px]">
         <AnimatePresence mode="wait">
           {currentStep === 1 && (
             <motion.div 
@@ -283,7 +283,7 @@ const EditPropertyPage = () => {
                         type="text" 
                         value={formData.title}
                         onChange={(e) => handleInputChange('title', e.target.value)}
-                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                      />
                   </div>
                   <div>
@@ -301,7 +301,7 @@ const EditPropertyPage = () => {
                         <select 
                            value={formData.listingType}
                            onChange={(e) => handleInputChange('listingType', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                         >
                            <option value="sale">For Sale</option>
                            <option value="rent">For Rent</option>
@@ -312,7 +312,7 @@ const EditPropertyPage = () => {
                         <select 
                            value={formData.propertyType}
                            onChange={(e) => handleInputChange('propertyType', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                         >
                            <option value="apartment">Apartment</option>
                            <option value="villa">Luxury Villa</option>
@@ -331,7 +331,7 @@ const EditPropertyPage = () => {
                         <select 
                            value={formData.status}
                            onChange={(e) => handleInputChange('status', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                         >
                            <option value="pending">Pending Review</option>
                            <option value="published">Published</option>
@@ -383,7 +383,7 @@ const EditPropertyPage = () => {
                            if (data.lat) handleLocationChange('latitude', data.lat);
                            if (data.lon) handleLocationChange('longitude', data.lon);
                         }}
-                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                      />
                      {/* Hidden Coordinate Fields for Debug/Verify */}
                      <div className="grid grid-cols-2 gap-4 mt-2">
@@ -403,7 +403,7 @@ const EditPropertyPage = () => {
                         <select 
                            value={formData.location.city}
                            onChange={(e) => handleLocationChange('city', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                         >
                            <option value="Dhaka">Dhaka</option>
                            <option value="Chattogram">Chattogram</option>
@@ -416,7 +416,7 @@ const EditPropertyPage = () => {
                            type="text" 
                            value={formData.location.area}
                            onChange={(e) => handleLocationChange('area', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                         />
                      </div>
                   </div>
@@ -448,7 +448,7 @@ const EditPropertyPage = () => {
                            type="number" 
                            value={formData.area}
                            onChange={(e) => handleInputChange('area', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                         />
                      </div>
                      <div>
@@ -457,7 +457,7 @@ const EditPropertyPage = () => {
                            type="number" 
                            value={formData.bedrooms}
                            onChange={(e) => handleInputChange('bedrooms', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                         />
                      </div>
                      <div>
@@ -466,7 +466,7 @@ const EditPropertyPage = () => {
                            type="number" 
                            value={formData.bathrooms}
                            onChange={(e) => handleInputChange('bathrooms', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                         />
                      </div>
                   </div>
@@ -479,7 +479,7 @@ const EditPropertyPage = () => {
                         value={formData.brochureUrl}
                         onChange={(e) => handleInputChange('brochureUrl', e.target.value)}
                         placeholder="https://..."
-                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50"
+                        className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-sm sm:text-base"
                      />
                    </div>
             </motion.div>

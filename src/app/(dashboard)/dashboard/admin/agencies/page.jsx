@@ -5,21 +5,29 @@ import Link from 'next/link';
 import { Briefcase, PlusCircle, Search, Edit2, Trash2, MapPin, Globe, Phone } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import LuxuryPagination from '@/components/shared/LuxuryPagination';
 
 const AdminAgenciesPage = () => {
   const [agencies, setAgencies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchAgencies();
-  }, []);
+    fetchAgencies(currentPage);
+  }, [currentPage, searchQuery]);
 
-  const fetchAgencies = async () => {
+  const fetchAgencies = async (page = 1) => {
     try {
       setLoading(true);
-      const response = await api.agencies.getAll();
+      const response = await api.agencies.getAll({
+        search: searchQuery || undefined,
+        page,
+        limit: 10
+      });
       setAgencies(response.data.agencies || []);
+      setTotalPages(response.data.pagination?.pages || 1);
     } catch (error) {
       console.error('Error fetching agencies:', error);
       toast.error('Failed to load agencies');
@@ -40,10 +48,8 @@ const AdminAgenciesPage = () => {
     }
   };
 
-  const filteredAgencies = agencies.filter(agency => 
-    agency.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    agency.address?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Server-side filtering
+  const displayAgencies = agencies;
 
   if (loading) {
     return (
@@ -100,7 +106,7 @@ const AdminAgenciesPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {filteredAgencies.map((agency) => (
+              {displayAgencies.map((agency) => (
                 <tr key={agency._id} className="group hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
@@ -162,13 +168,19 @@ const AdminAgenciesPage = () => {
         </div>
       </div>
 
-      {filteredAgencies.length === 0 && (
+      {displayAgencies.length === 0 && (
         <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">
           <Briefcase size={48} className="mx-auto text-zinc-700 mb-4" />
           <h3 className="text-lg font-bold text-zinc-300">No Agencies Found</h3>
           <p className="text-zinc-500 max-w-xs mx-auto mt-1">Try adjusting your search to find what you're looking for.</p>
         </div>
       )}
+
+      <LuxuryPagination 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

@@ -205,14 +205,14 @@ export const api = {
     delete: (id) => apiInstance.delete(`/agencies/${id}`),
   },
   management: {
-    getAll: () => apiInstance.get('/management'),
+    getAll: (params) => apiInstance.get('/management', { params }),
     getById: (id) => apiInstance.get(`/management/${id}`),
     create: (data) => apiInstance.post('/management', data),
     update: (id, data) => apiInstance.put(`/management/${id}`, data),
     delete: (id) => apiInstance.delete(`/management/${id}`),
   },
   agents: {
-    getAll: () => apiInstance.get('/agents'),
+    getAll: (params) => apiInstance.get('/agents', { params }),
     getById: (id) => apiInstance.get(`/agents/${id}`),
     create: (data) => apiInstance.post('/agents', data),
     update: (id, data) => apiInstance.put(`/agents/${id}`, data),

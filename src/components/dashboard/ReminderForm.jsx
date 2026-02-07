@@ -55,7 +55,7 @@ const ReminderForm = ({ leadId, leadName, onSuccess, onClose }) => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Reminder Title</label>
+          <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-1.5">Reminder Title</label>
           <input 
             type="text"
             required
@@ -67,7 +67,7 @@ const ReminderForm = ({ leadId, leadName, onSuccess, onClose }) => {
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Date</label>
+            <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-1.5">Date</label>
             <div className="relative">
               <Calendar size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
               <input 
@@ -80,7 +80,7 @@ const ReminderForm = ({ leadId, leadName, onSuccess, onClose }) => {
             </div>
           </div>
           <div>
-            <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Time</label>
+            <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-1.5">Time</label>
             <div className="relative">
               <Clock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
               <input 
@@ -95,7 +95,7 @@ const ReminderForm = ({ leadId, leadName, onSuccess, onClose }) => {
         </div>
 
         <div>
-          <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-1">Add Note (Optional)</label>
+          <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-1.5">Add Note (Optional)</label>
           <textarea 
             rows="2"
             className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-zinc-100 outline-none focus:border-brand-gold/50 resize-none"

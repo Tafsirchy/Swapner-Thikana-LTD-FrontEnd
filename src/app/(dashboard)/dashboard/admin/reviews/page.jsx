@@ -1,20 +1,27 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { MessageSquare, Star, Trash2, User, Building2, UserCheck } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
+import { MessageSquare, Star, Trash2, ShieldCheck, UserCheck, User, Building2 } from 'lucide-react';
+import LuxuryPagination from '@/components/shared/LuxuryPagination';
 
 const AdminReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const fetchReviews = useCallback(async () => {
+  const fetchReviews = useCallback(async (page = 1) => {
     try {
       setLoading(true);
-      const response = await api.reviews.getAllAdmin();
+      const response = await api.reviews.getAllAdmin({ 
+        page,
+        limit: 10
+      });
       setReviews(response.data.reviews || []);
+      setTotalPages(response.data.pagination?.pages || 1);
     } catch (err) {
       console.error('Error fetching reviews:', err);
       toast.error('Failed to load reviews');
@@ -24,8 +31,8 @@ const AdminReviewsPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchReviews();
-  }, [fetchReviews]);
+    fetchReviews(currentPage);
+  }, [fetchReviews, currentPage]);
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this review permanently?')) return;
@@ -52,17 +59,17 @@ const AdminReviewsPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <MessageSquare size={32} className="text-brand-gold" />
+          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
+            <MessageSquare size={32} className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
             Project & Property Reviews
           </h1>
-          <p className="text-zinc-400 mt-2 text-lg font-sans">Monitor and manage all user feedback in one place</p>
+          <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg font-sans">Monitor and manage all user feedback in one place</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4">
         {reviews.map((review) => (
-          <div key={review._id} className="bg-white/5 border border-white/5 rounded-3xl p-6 hover:border-white/10 transition-all group">
+          <div key={review._id} className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-6 hover:border-white/10 transition-all group">
             <div className="flex flex-col md:flex-row gap-6">
               {/* User Info */}
               <div className="flex items-start gap-4 md:w-64 flex-shrink-0">
@@ -88,12 +95,12 @@ const AdminReviewsPage = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap gap-2 mb-3">
                    {review.propertyId && (
-                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-[10px] font-bold uppercase tracking-tight">
+                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-xs font-bold uppercase tracking-tight">
                         <Building2 size={12} /> Property Review
                      </div>
                    )}
                    {review.agentId && (
-                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-500/10 text-purple-400 rounded-full text-[10px] font-bold uppercase tracking-tight">
+                     <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-500/10 text-purple-400 rounded-full text-xs font-bold uppercase tracking-tight">
                         <UserCheck size={12} /> Agent Review
                      </div>
                    )}
@@ -123,6 +130,12 @@ const AdminReviewsPage = () => {
           </div>
         )}
       </div>
+
+      <LuxuryPagination 
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };

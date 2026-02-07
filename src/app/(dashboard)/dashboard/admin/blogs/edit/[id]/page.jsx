@@ -96,13 +96,13 @@ const EditBlogPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
-             <FileText className="text-brand-gold" size={32} />
+          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3">
+             <FileText className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" size={32} />
              Edit Blog Post
           </h1>
-          <p className="text-zinc-400 mt-1">Refine your article for the best engagement.</p>
+          <p className="text-zinc-400 mt-1 text-sm sm:text-base">Refine your article for the best engagement.</p>
         </div>
         <button 
           onClick={() => router.back()}
@@ -113,7 +113,7 @@ const EditBlogPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-8 space-y-6">
+        <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-6">
            <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-zinc-400 mb-2 text-xs uppercase tracking-wider">Post Title</label>
@@ -123,7 +123,7 @@ const EditBlogPage = () => {
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-bold text-lg"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-bold text-base sm:text-lg"
                 />
               </div>
 
@@ -165,7 +165,7 @@ const EditBlogPage = () => {
                   value={formData.content}
                   onChange={handleChange}
                   rows={12}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none text-zinc-300"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium resize-none text-zinc-300 text-sm sm:text-base"
                 />
               </div>
 
@@ -207,18 +207,18 @@ const EditBlogPage = () => {
            </div>
         </div>
 
-        <div className="flex gap-4 pt-4">
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
            <button
              type="button"
              onClick={() => router.back()}
-             className="flex-1 px-8 py-4 bg-white/5 text-zinc-300 font-bold rounded-2xl hover:bg-white/10 transition-all border border-white/5"
+             className="order-2 sm:order-1 flex-1 px-8 py-4 bg-white/5 text-zinc-300 font-bold rounded-2xl hover:bg-white/10 transition-all border border-white/5 text-sm sm:text-base"
            >
              Cancel
            </button>
            <button
              type="submit"
              disabled={saving}
-             className="flex-2 px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50"
+             className="order-1 sm:order-2 flex-2 px-12 py-4 bg-brand-gold text-royal-deep font-bold rounded-2xl hover:bg-brand-gold-light transition-all shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 disabled:opacity-50 text-sm sm:text-base"
            >
              <Save size={20} />
              {saving ? 'Saving...' : 'Save Changes'}
