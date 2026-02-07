@@ -138,9 +138,9 @@ const ProjectCard = ({ project }) => {
             </div>
             <Link 
               href={`/projects/${slug}`}
-              className="flex items-center gap-2 text-brand-gold text-xs sm:text-sm font-black uppercase tracking-wider hover:gap-3 transition-all px-2 py-1 -mr-2"
+              className="flex items-center gap-1 text-brand-gold text-xs sm:text-sm font-black uppercase tracking-wider hover:gap-2 transition-all px-2 py-1 -mr-2"
             >
-              Learn More
+              More
               <ArrowRight size={16} />
             </Link>
           </div>

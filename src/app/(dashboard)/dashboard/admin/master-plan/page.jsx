@@ -229,8 +229,21 @@ const MasterPlanAdminPage = () => {
 
   const currentRegion = regions[activeTab] || {};
   const currentLinkedProjects = linkedProjects[activeTab] || [];
-  const linkedProjectIds = currentLinkedProjects.map(lp => lp.projectId.toString());
-  const availableProjects = allProjects.filter(p => !linkedProjectIds.includes(p._id));
+  
+  // Robust ID comparison: Ensure we use strings for everything
+  const linkedProjectIds = currentLinkedProjects.map(lp => String(lp.projectId));
+  const availableProjects = allProjects.filter(p => !linkedProjectIds.includes(String(p._id)));
+  
+  // Diagnostic trace for developers
+  if (allProjects.length > 0 && availableProjects.length === 0 && linkedProjectIds.length < allProjects.length) {
+    console.warn('[Admin] Master Plan Filtering Mismatch:', {
+      total: allProjects.length,
+      linked: linkedProjectIds.length,
+      available: availableProjects.length,
+      firstProjectId: allProjects[0]?._id,
+      firstLinkedId: linkedProjectIds[0]
+    });
+  }
   
   const filteredAvailableProjects = availableProjects.filter(p => {
     if (!searchQuery) return true;
