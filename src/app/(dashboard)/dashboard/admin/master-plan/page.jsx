@@ -496,17 +496,21 @@ const MasterPlanAdminPage = () => {
                   >
                     <div className="flex items-start gap-3">
                       <GripVertical size={20} className="text-zinc-600 flex-shrink-0 mt-1 cursor-move" />
-                        <div className="w-20 h-20 rounded-lg overflow-hidden relative flex-shrink-0">
+                      <div className="w-20 h-20 rounded-lg bg-zinc-800 flex items-center justify-center overflow-hidden relative flex-shrink-0 border border-white/5">
+                        {link.project?.image ? (
                           <SmartImage
                             src={link.project.image}
-                            alt={link.project.title}
+                            alt={link.project?.title || 'Project'}
                             fill
                             className="object-cover"
                           />
-                        </div>
+                        ) : (
+                          <Building2 size={24} className="text-zinc-600" />
+                        )}
+                      </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-zinc-100 truncate">{link.project?.title}</h4>
-                        <p className="text-sm text-zinc-400 truncate">{link.project?.location}</p>
+                        <h4 className="font-semibold text-zinc-100 truncate">{link.project?.title || 'Unknown Project'}</h4>
+                        <p className="text-sm text-zinc-400 truncate">{link.project?.location || 'No location set'}</p>
                         <div className="flex gap-2 mt-2">
                           <button
                             onClick={() => handleToggleFeatured(link._id, link.isFeatured)}

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Building2, PlusCircle, Search, Filter, Eye, Edit2, Trash2, Calendar, MapPin, ChevronDown } from 'lucide-react';
 import { api } from '@/lib/api';
+import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
