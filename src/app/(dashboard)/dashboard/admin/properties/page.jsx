@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { Building2, CheckCircle, XCircle, Star, Search, Filter, Eye, ChevronDown, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Building2, CheckCircle, XCircle, Star, Search, Filter, Eye, ChevronDown, MapPin, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import LuxurySelect from '@/components/shared/LuxurySelect';
@@ -98,6 +98,19 @@ const AdminPropertiesPage = () => {
       toast.success('Property rejected');
     } catch {
       toast.error('Failed to reject property');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this property? This action cannot be undone.')) return;
+    
+    try {
+      await api.properties.delete(id);
+      setProperties(properties.filter(p => p._id !== id));
+      toast.success('Property deleted successfully');
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error('Failed to delete property');
     }
   };
 
@@ -256,6 +269,13 @@ const AdminPropertiesPage = () => {
                 >
                   <Star size={18} fill={property.featured ? 'currentColor' : 'none'} />
                 </button>
+                <button
+                  onClick={() => handleDelete(property._id)}
+                  className="p-2.5 bg-white/5 hover:bg-red-500/10 rounded-xl transition-colors text-zinc-400 hover:text-red-500"
+                  title="Delete"
+                >
+                  <Trash2 size={18} />
+                </button>
               </div>
 
               {property.status === 'pending' && (
@@ -342,6 +362,13 @@ const AdminPropertiesPage = () => {
                       >
                         <Building2 size={18} />
                       </Link>
+                      <button
+                        onClick={() => handleDelete(property._id)}
+                        className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
+                        title="Delete"
+                      >
+                        <Trash2 size={18} />
+                      </button>
 
                       {property.status === 'pending' && (
                         <>

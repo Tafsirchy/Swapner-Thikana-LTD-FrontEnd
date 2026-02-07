@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutDashboard, Heart, Search, Settings, 
   Menu, X, Building2, PlusCircle, Users, FileText, 
-  BarChart3, Bell, MessageSquare, ChevronDown, ChevronUp, Info, LogOut, Home
+  BarChart3, Bell, MessageSquare, ChevronDown, ChevronUp, Info, LogOut, Home, Map
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image';
@@ -60,6 +60,7 @@ const DashboardLayout = ({ children }) => {
           ]},
           {name: 'Properties', href: '/dashboard/admin/properties', icon: Building2 },
           { name: 'Projects', href: '/dashboard/admin/projects', icon: Building2 },
+          { name: 'Master Plan', href: '/dashboard/admin/master-plan', icon: Map },
           { name: 'Seller Inquiries', href: '/dashboard/admin/seller-inquiries', icon: Users },
           { name: 'Leads Pipeline', href: '/dashboard/leads', icon: BarChart3 },
           { name: 'Reviews', href: '/dashboard/admin/reviews', icon: MessageSquare },
@@ -79,6 +80,7 @@ const DashboardLayout = ({ children }) => {
           ]},
           { name: 'Properties', href: '/dashboard/admin/properties', icon: Building2 },
           { name: 'Projects', href: '/dashboard/admin/projects', icon: Building2 },
+          { name: 'Master Plan', href: '/dashboard/admin/master-plan', icon: Map },
           { name: 'Leads Pipeline', href: '/dashboard/leads', icon: BarChart3 },
           { name: 'Analytics', href: '/dashboard/admin/analytics', icon: BarChart3 },
           { name: 'Settings', href: '/dashboard/settings', icon: Settings },

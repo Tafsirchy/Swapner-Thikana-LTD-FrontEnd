@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Building2, PlusCircle, Edit, Trash2, Eye, Filter } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import LuxurySelect from '@/components/shared/LuxurySelect';
@@ -35,7 +36,7 @@ const AgentPropertiesPage = () => {
   }, [fetchProperties]);
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this property?')) {
+    if (window.confirm('Are you sure you want to delete this property? This action cannot be undone.')) {
       try {
         await api.properties.delete(id);
         setProperties(properties.filter(p => p._id !== id));

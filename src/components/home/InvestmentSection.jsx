@@ -8,7 +8,7 @@ import { CheckCircle2, TrendingUp, ShieldCheck, ArrowRight } from 'lucide-react'
 
 const InvestmentSection = () => {
   return (
-    <section className="py-32 bg-royal-deep relative overflow-hidden">
+    <section className="py-16 sm:py-24 lg:py-32 bg-royal-deep relative overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-gold/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-emerald/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
@@ -30,7 +30,7 @@ const InvestmentSection = () => {
           >
             {/* Main Image Frame */}
             <div className="relative z-20 overflow-hidden rounded-sm border border-white/10 shadow-2xl">
-              <div className="relative aspect-[4/5] w-full">
+              <div className="relative aspect-square sm:aspect-[4/5] w-full">
                 <SmartImage 
                   src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1920&auto=format&fit=crop" 
                   alt="Luxury Modern Architecture" 
@@ -42,7 +42,7 @@ const InvestmentSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-transparent to-transparent"></div>
                 
                 {/* Floating Badge */}
-                <div className="absolute bottom-8 left-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-sm">
+                <div className="absolute bottom-4 left-4 right-4 sm:bottom-8 sm:left-8 sm:right-8 bg-white/10 backdrop-blur-md border border-white/20 p-4 sm:p-6 rounded-sm">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-brand-gold text-xs font-bold tracking-widest uppercase">Market Growth</span>
                     <TrendingUp size={16} className="text-brand-emerald" />
@@ -107,8 +107,8 @@ const InvestmentSection = () => {
               </div>
 
               {/* CTA Button */}
-              <div className="flex gap-6 items-center">
-                <LiquidButton className="px-8 py-4">
+              <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
+                <LiquidButton className="w-full sm:w-auto px-8 py-4">
                   Download Investment Guide
                 </LiquidButton>
                 

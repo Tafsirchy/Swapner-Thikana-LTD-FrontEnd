@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { Mail, ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import LiquidButton from '@/components/shared/LiquidButton';
 
 const FloatingParticle = ({ delay, duration, size, initialX, initialY, mouseX, mouseY }) => {
@@ -78,10 +79,13 @@ const NewsletterSection = () => {
   // Sync mount state and generate particles
   React.useEffect(() => {
     setMounted(true);
-    const generatedParticles = [...Array(15)].map((_, i) => ({
-      delay: i * 0.5,
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const particleCount = isMobile ? 6 : 15;
+    
+    const generatedParticles = [...Array(particleCount)].map((_, i) => ({
+      delay: i * (isMobile ? 1 : 0.5),
       duration: 6 + Math.random() * 6,
-      size: 2 + Math.random() * 10,
+      size: 2 + Math.random() * (isMobile ? 6 : 10),
       initialX: `${Math.random() * 100}%`,
       initialY: `${Math.random() * 100}%`
     }));
@@ -104,7 +108,7 @@ const NewsletterSection = () => {
         ref={containerRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="py-16 md:py-24 relative overflow-hidden bg-black min-h-[600px] flex items-center"
+        className="py-16 md:py-24 relative overflow-hidden bg-black min-h-[450px] sm:min-h-[600px] flex items-center"
     >
         {/* Deep 3D Background Layer */}
         <motion.div 
@@ -120,7 +124,7 @@ const NewsletterSection = () => {
         >
              {/* Bright Background Image */}
              <div className="absolute inset-0 opacity-40 scale-110">
-                <Image 
+                <SmartImage 
                     src="https://images.unsplash.com/photo-1548623960-629433e1d65a?q=80&w=2000&auto=format&fit=crop" 
                     alt="Newsletter Background"
                     fill
@@ -160,7 +164,7 @@ const NewsletterSection = () => {
         <div className="max-container px-4 relative z-10 w-full flex justify-center">
             <div className="w-full max-w-4xl">
                 <div 
-                    className="bg-zinc-950/40 border border-white/10 backdrop-blur-3xl p-8 md:p-12 lg:p-16 text-center relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] rounded-3xl"
+                    className="bg-zinc-950/40 border border-white/10 backdrop-blur-3xl p-6 sm:p-12 lg:p-16 text-center relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] rounded-2xl sm:rounded-3xl"
                 >
                     {/* Interior Lighting - Dynamic & Brighter */}
                     <motion.div 
@@ -188,7 +192,7 @@ const NewsletterSection = () => {
                              </div>
                         </div>
 
-                        <span className="text-brand-gold font-bold tracking-[0.5em] uppercase text-[10px] mb-3 block">
+                        <span className="text-brand-gold font-bold tracking-[0.2em] sm:tracking-[0.5em] uppercase text-[10px] mb-3 block">
                             The Portfolio Briefing
                         </span>
                         

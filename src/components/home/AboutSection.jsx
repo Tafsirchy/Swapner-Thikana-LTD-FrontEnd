@@ -145,7 +145,7 @@ const AboutSection = () => {
       <div className="max-container px-4 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-end mb-20 gap-8">
+        <div className="flex flex-col lg:flex-row justify-between items-end mb-12 sm:mb-20 gap-8">
             <motion.div 
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -185,7 +185,7 @@ const AboutSection = () => {
 
         {/* Management Showcase - Dynamic 3D Carousel Redesign */}
         <div 
-          className="relative h-[720px] mb-32 flex items-center justify-center overflow-hidden lg:overflow-visible"
+          className="relative h-[480px] md:h-[720px] mb-20 md:mb-32 flex items-center justify-center overflow-hidden lg:overflow-visible"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >

@@ -94,16 +94,17 @@ const SaveSearchModal = ({ isOpen, onClose, filters }) => {
                 <Bell size={14} className="inline mr-1" />
                 Email Alerts
               </label>
-              <select
+              <LuxurySelect
                 value={alertFrequency}
-                onChange={(e) => setAlertFrequency(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-colors cursor-pointer"
-              >
-                <option value="never">Never</option>
-                <option value="instant">Instantly (when new matches found)</option>
-                <option value="daily">Daily Digest</option>
-                <option value="weekly">Weekly Digest</option>
-              </select>
+                onChange={(val) => setAlertFrequency(val)}
+                options={[
+                  { label: 'Never', value: 'never' },
+                  { label: 'Instantly (when new matches found)', value: 'instant' },
+                  { label: 'Daily Digest', value: 'daily' },
+                  { label: 'Weekly Digest', value: 'weekly' }
+                ]}
+                className="rounded-xl"
+              />
               <p className="text-xs text-zinc-500 mt-2">
                 Get notified when new properties match your saved search criteria
               </p>

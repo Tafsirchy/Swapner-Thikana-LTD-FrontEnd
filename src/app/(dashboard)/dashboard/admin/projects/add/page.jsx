@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Building2, Save, X, Plus, Trash2, MapPin, Type, Calendar, Info, Upload, Loader2 } from 'lucide-react';
+import { Building2, Save, X, Plus, Trash2, MapPin, Type, Calendar, Info, Upload, Loader2, Home } from 'lucide-react';
 import Image from 'next/image';
 
 import { api } from '@/lib/api';
@@ -32,12 +32,22 @@ const AddProjectPage = () => {
     floorConfiguration: '', // G+9
     totalUnits: '',
     unitsPerFloor: '',
+    facing: '',
+    roadWidth: '',
+    surroundings: '',
     
     // Apartment Details
     flatSize: '', // A: 1950, B: 1750
     bedroomCount: '',
     bathroomCount: '',
     balconyCount: '',
+    
+    unitDetails: {
+      drawingRoom: 'Yes',
+      livingRoom: 'Yes/Family Living',
+      dining: 'Yes',
+      kitchen: 'Yes'
+    },
     
     // Amenities & Facilities
     parking: '',
@@ -50,12 +60,19 @@ const AddProjectPage = () => {
     pricePerSqFt: '',
     availableFlats: '',
 
+    // Contact
+    contact: {
+      phone: '',
+      facebook: ''
+    },
+
     // Images
     thumbnail: '',
     images: [],
     
     // Files
-    brochureUrl: ''
+    brochureUrl: '',
+    mapUrl: ''
   });
 
   const handleChange = (e) => {
@@ -231,16 +248,29 @@ const AddProjectPage = () => {
                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
                     />
                  </div>
-                 <div>
-                    <label className="block text-sm font-medium text-zinc-400 mb-2">City</label>
-                    <input
-                      required
-                      type="text"
-                      name="location.city"
-                      value={formData.location.city}
-                      onChange={handleChange}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
-                    />
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-2">City</label>
+                      <input
+                        required
+                        type="text"
+                        name="location.city"
+                        value={formData.location.city}
+                        onChange={handleChange}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-zinc-400 mb-2">Google Maps URL</label>
+                      <input
+                        type="url"
+                        name="mapUrl"
+                        value={formData.mapUrl}
+                        onChange={handleChange}
+                        placeholder="Share link"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
+                      />
+                    </div>
                  </div>
               </div>
            </div>
@@ -316,6 +346,39 @@ const AddProjectPage = () => {
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
                 />
              </div>
+             <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Facing</label>
+                <input
+                  type="text"
+                  name="facing"
+                  value={formData.facing}
+                  onChange={handleChange}
+                  placeholder="e.g. South Facing"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
+                />
+             </div>
+             <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Road Width</label>
+                <input
+                  type="text"
+                  name="roadWidth"
+                  value={formData.roadWidth}
+                  onChange={handleChange}
+                  placeholder="e.g. 60 ft Road"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
+                />
+             </div>
+             <div className="md:col-span-2">
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Surroundings</label>
+                <input
+                  type="text"
+                  name="surroundings"
+                  value={formData.surroundings}
+                  onChange={handleChange}
+                  placeholder="e.g. In front of Park, Lake View"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-zinc-100 outline-none focus:border-brand-gold/50 text-base sm:text-sm"
+                />
+             </div>
           </div>
         </div>
 
@@ -343,9 +406,16 @@ const AddProjectPage = () => {
                    <div className="grid grid-cols-3 gap-3">
                        <input type="text" name="bedroomCount" value={formData.bedroomCount} onChange={handleChange} placeholder="Bed (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
                        <input type="text" name="bathroomCount" value={formData.bathroomCount} onChange={handleChange} placeholder="Bath (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
-                       <input type="text" name="balconyCount" value={formData.balconyCount} onChange={handleChange} placeholder="Balcony (2/3)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
+                       <input type="text" name="balconyCount" value={formData.balconyCount} onChange={handleChange} placeholder="Balcony" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
                    </div>
                </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+               <div><label className="text-xs text-zinc-500 block mb-1">Drawing Room</label><input type="text" name="unitDetails.drawingRoom" value={formData.unitDetails.drawingRoom} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="Yes/No"/></div>
+               <div><label className="text-xs text-zinc-500 block mb-1">Living Room</label><input type="text" name="unitDetails.livingRoom" value={formData.unitDetails.livingRoom} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="Yes/No"/></div>
+               <div><label className="text-xs text-zinc-500 block mb-1">Dining</label><input type="text" name="unitDetails.dining" value={formData.unitDetails.dining} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="Yes/No"/></div>
+               <div><label className="text-xs text-zinc-500 block mb-1">Kitchen</label><input type="text" name="unitDetails.kitchen" value={formData.unitDetails.kitchen} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="Yes/No"/></div>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -394,6 +464,29 @@ const AddProjectPage = () => {
                   value={formData.availableFlats}
                   onChange={handleChange}
                   placeholder="e.g. 3A, 3B(2nd Floor)..."
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
+                />
+             </div>
+
+             <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Contact Phone</label>
+                <input
+                  type="text"
+                  name="contact.phone"
+                  value={formData.contact.phone}
+                  onChange={handleChange}
+                  placeholder="e.g. 01920070019"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
+                />
+             </div>
+             <div>
+                <label className="block text-sm font-medium text-zinc-400 mb-2">Facebook Page URL</label>
+                <input
+                  type="url"
+                  name="contact.facebook"
+                  value={formData.contact.facebook}
+                  onChange={handleChange}
+                  placeholder="e.g. https://facebook.com/group"
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium text-sm sm:text-base"
                 />
              </div>

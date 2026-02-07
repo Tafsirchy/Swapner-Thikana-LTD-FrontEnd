@@ -24,6 +24,8 @@ const LuxurySelect = ({
   className = "" 
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [openUpward, setOpenUpward] = useState(false);
+  const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 });
   const containerRef = useRef(null);
 
   // Close when clicking outside
@@ -36,6 +38,33 @@ const LuxurySelect = ({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Recalculate position and detect upward flip
+  useEffect(() => {
+    if (isOpen && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      const shouldFlip = spaceBelow < 280 && spaceAbove > spaceBelow;
+      
+      setOpenUpward(shouldFlip);
+      setCoords({
+        top: shouldFlip ? rect.top - 8 : rect.bottom + 8,
+        left: rect.left,
+        width: rect.width
+      });
+
+      // Close on scroll or resize to prevent floating issues
+      const handleClose = () => setIsOpen(false);
+      window.addEventListener('scroll', handleClose, true);
+      window.addEventListener('resize', handleClose);
+      
+      return () => {
+        window.removeEventListener('scroll', handleClose, true);
+        window.removeEventListener('resize', handleClose);
+      };
+    }
+  }, [isOpen]);
 
   const handleSelect = (option) => {
     const val = typeof option === 'string' ? option : option.value;
@@ -72,11 +101,19 @@ const LuxurySelect = ({
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            initial={{ opacity: 0, y: openUpward ? 10 : -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            exit={{ opacity: 0, y: openUpward ? 10 : -10, scale: 0.95 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute z-[100] top-full left-0 w-full mt-2 bg-zinc-950/90 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-2xl rounded-2xl"
+            style={{ 
+              position: 'fixed',
+              top: openUpward ? 'auto' : coords.top,
+              bottom: openUpward ? (window.innerHeight - coords.top) : 'auto',
+              left: coords.left,
+              width: coords.width,
+              zIndex: 9999
+            }}
+            className="bg-zinc-900/98 border border-white/20 shadow-[0_25px_60px_rgba(0,0,0,0.8)] overflow-hidden backdrop-blur-3xl rounded-2xl"
             data-lenis-prevent
           >
             <div className="max-h-60 overflow-y-auto custom-scrollbar">
@@ -90,8 +127,8 @@ const LuxurySelect = ({
                     key={index}
                     type="button"
                     onClick={() => handleSelect(option)}
-                    className={`w-full flex items-center justify-between px-5 py-3 text-left text-sm transition-all hover:bg-white/5 ${
-                      isSelected ? 'text-brand-gold bg-brand-gold/10 font-bold' : 'text-zinc-400'
+                    className={`w-full flex items-center justify-between px-5 py-3 text-left text-sm transition-all hover:bg-white/10 ${
+                      isSelected ? 'text-brand-gold bg-brand-gold/15 font-bold' : 'text-zinc-300'
                     }`}
                   >
                     <span>{label}</span>
@@ -101,7 +138,7 @@ const LuxurySelect = ({
               })}
             </div>
             {/* Decorative bottom line */}
-            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-brand-gold/20 to-transparent" />
+            <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent" />
           </motion.div>
         )}
       </AnimatePresence>

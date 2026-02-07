@@ -343,27 +343,35 @@ const PropertiesContent = () => {
                 />
               </div>
               <div className="flex flex-wrap lg:flex-nowrap gap-4">
-                <LuxurySelect 
-                  value={filters.listingType}
-                  onChange={(val) => setFilters({...filters, listingType: val, page: 1})}
-                  options={[
-                    { label: 'All Types', value: '' },
-                    { label: 'For Sale', value: 'sale' },
-                    { label: 'For Rent', value: 'rent' }
-                  ]}
-                  className="!rounded-none min-w-[150px] !bg-zinc-900/80 !border-white/5"
-                />
-                <LuxurySelect 
-                  value={filters.city}
-                  onChange={(val) => setFilters({...filters, city: val, page: 1})}
-                  options={[
-                    { label: 'All Cities', value: '' },
-                    { label: 'Dhaka', value: 'Dhaka' },
-                    { label: 'Chattogram', value: 'Chattogram' },
-                    { label: 'Sylhet', value: 'Sylhet' }
-                  ]}
-                  className="!rounded-none min-w-[150px] !bg-zinc-900/80 !border-white/5"
-                />
+                <div className="flex flex-col items-start gap-1.5 min-w-[150px]">
+                  <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Listing Type</label>
+                  <LuxurySelect 
+                    value={filters.listingType}
+                    onChange={(val) => setFilters({...filters, listingType: val, page: 1})}
+                    options={[
+                      { label: 'All Types', value: '' },
+                      { label: 'For Sale', value: 'sale' },
+                      { label: 'For Rent', value: 'rent' }
+                    ]}
+                    icon={<Building2 size={16} />}
+                    className="!rounded-none !bg-zinc-900/80 !border-white/5"
+                  />
+                </div>
+                <div className="flex flex-col items-start gap-1.5 min-w-[150px]">
+                  <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">City</label>
+                  <LuxurySelect 
+                    value={filters.city}
+                    onChange={(val) => setFilters({...filters, city: val, page: 1})}
+                    options={[
+                      { label: 'All Cities', value: '' },
+                      { label: 'Dhaka', value: 'Dhaka' },
+                      { label: 'Chattogram', value: 'Chattogram' },
+                      { label: 'Sylhet', value: 'Sylhet' }
+                    ]}
+                    icon={<Map size={16} />}
+                    className="!rounded-none !bg-zinc-900/80 !border-white/5"
+                  />
+                </div>
                 <button 
                   type="button"
                   onClick={() => setShowFilters(!showFilters)}
@@ -395,7 +403,7 @@ const PropertiesContent = () => {
                     {/* Row 1: Property Type, Bedrooms, Bathrooms */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Property Type</label>
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Property Type</label>
                         <LuxurySelect 
                           value={filters.propertyType}
                           onChange={(val) => setFilters({...filters, propertyType: val, page: 1})}
@@ -411,11 +419,12 @@ const PropertiesContent = () => {
                             { label: 'Shop', value: 'shop' },
                             { label: 'Warehouse', value: 'warehouse' }
                           ]}
+                          icon={<Building2 size={18} />}
                           className="rounded-xl text-base !bg-white/5 !border-white/5"
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Bedrooms</label>
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Bedrooms</label>
                         <LuxurySelect 
                           value={filters.bedrooms}
                           onChange={(val) => setFilters({...filters, bedrooms: val, page: 1})}
@@ -431,7 +440,7 @@ const PropertiesContent = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Bathrooms</label>
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Bathrooms</label>
                         <LuxurySelect 
                           value={filters.bathrooms}
                           onChange={(val) => setFilters({...filters, bathrooms: val, page: 1})}
@@ -450,7 +459,7 @@ const PropertiesContent = () => {
                     {/* Row 2: Price Range */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Min Price (BDT)</label>
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Min Price (BDT)</label>
                         <input 
                           type="number" 
                           placeholder="Min Price"
@@ -460,7 +469,7 @@ const PropertiesContent = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Max Price (BDT)</label>
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Max Price (BDT)</label>
                         <input 
                           type="number" 
                           placeholder="Max Price"
@@ -474,7 +483,7 @@ const PropertiesContent = () => {
                     {/* Row 3: Area Range */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Min Area (sq ft)</label>
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Min Area (sq ft)</label>
                         <input 
                           type="number" 
                           placeholder="Min Area"
@@ -484,7 +493,7 @@ const PropertiesContent = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Max Area (sq ft)</label>
+                        <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Max Area (sq ft)</label>
                         <input 
                           type="number" 
                           placeholder="Max Area"
@@ -550,21 +559,22 @@ const PropertiesContent = () => {
               Showing <span className="text-zinc-100 font-bold">{filteredAndSortedProperties.length}</span> results 
               {allProperties.length > 0 && <span className="text-xs text-zinc-600 ml-2">(from {allProperties.length} total)</span>}
             </p>
-            <div className="flex items-center gap-3">
-              <label className="text-sm text-zinc-400">Sort by:</label>
-              <LuxurySelect
-                value={filters.sort}
-                onChange={(val) => setFilters({...filters, sort: val, page: 1})}
-                options={[
-                  { label: 'Featured First', value: 'featured' },
-                  { label: 'Newest First', value: 'newest' },
-                  { label: 'Most Popular', value: 'popular' },
-                  { label: 'Price: Low to High', value: 'price-asc' },
-                  { label: 'Price: High to Low', value: 'price-desc' },
-                  { label: 'Area: Largest First', value: 'area-desc' }
-                ]}
-                className="rounded-xl text-sm !bg-white/5 !border-white/5"
-              />
+            <div className="flex flex-col gap-1.5 min-w-[180px]">
+               <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Sort by</label>
+               <LuxurySelect
+                 value={filters.sort}
+                 onChange={(val) => setFilters({...filters, sort: val, page: 1})}
+                 options={[
+                   { label: 'Featured First', value: 'featured' },
+                   { label: 'Newest First', value: 'newest' },
+                   { label: 'Most Popular', value: 'popular' },
+                   { label: 'Price: Low to High', value: 'price-asc' },
+                   { label: 'Price: High to Low', value: 'price-desc' },
+                   { label: 'Area: Largest First', value: 'area-desc' }
+                 ]}
+                 icon={<SlidersHorizontal size={14} />}
+                 className="rounded-xl text-sm !bg-white/5 !border-white/5"
+               />
             </div>
           </div>
 

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Upload, Home, DollarSign, Clock } from 'lucide-react';
+import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import { api } from '@/lib/api';
 import LuxurySelect from '@/components/shared/LuxurySelect';
@@ -220,11 +221,11 @@ const SellWithUsPage = () => {
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                   {selectedImages.map((img, idx) => (
                     <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-white/10 group">
-                      <img src={img.preview} alt="preview" className="w-full h-full object-cover" />
+                      <SmartImage src={img.preview} alt="preview" fill className="object-cover" />
                       <button 
                         type="button"
                         onClick={() => removeImage(idx)}
-                        className="absolute top-1 right-1 bg-red-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-1 right-1 bg-red-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-20"
                       >
                         <Upload className="rotate-45" size={12} />
                       </button>

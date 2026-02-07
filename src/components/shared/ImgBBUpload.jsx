@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Upload, X, Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import SmartImage from './SmartImage';
 import { toast } from 'react-hot-toast';
 
 import { api } from '@/lib/api';
@@ -104,7 +105,7 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
       <div className="relative group">
         {preview ? (
           <div className="relative w-full h-64 bg-zinc-900 rounded-2xl overflow-hidden border border-white/10 group-hover:border-brand-gold/50 transition-all">
-            <Image 
+            <SmartImage 
               src={preview} 
               alt="Preview" 
               fill 

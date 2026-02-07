@@ -29,12 +29,31 @@ apiInstance.interceptors.request.use(
 // Response interceptor for data extraction and 401 handling
 apiInstance.interceptors.response.use(
   (response) => response.data,
-  (error) => {
-    const isAuthMe401 = error.response?.status === 401 && error.config?.url?.includes('/auth/me');
-    const isVerification403 = error.response?.status === 403 && error.response?.data?.message?.toLowerCase().includes('verify');
+  async (error) => {
+    const { config, response } = error;
     
-    if (!error.config?.suppressErrorLogs && !isAuthMe401 && !isVerification403) {
-      console.error(`[API] Error in ${error.config?.method?.toUpperCase()} ${error.config?.url}:`, error.message);
+    // Add retry logic
+    const MAX_RETRIES = 3;
+    config.retryCount = config.retryCount || 0;
+    
+    // Only retry on network errors or 5xx server errors
+    const shouldRetry = !response || (response.status >= 500 && response.status <= 599);
+    
+    if (shouldRetry && config.retryCount < MAX_RETRIES) {
+      config.retryCount += 1;
+      const delay = Math.pow(2, config.retryCount) * 1000; // Exponential backoff
+      
+      console.warn(`[API] Retrying ${config.method?.toUpperCase()} ${config.url} (${config.retryCount}/${MAX_RETRIES}) in ${delay}ms...`);
+      
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return apiInstance(config);
+    }
+
+    const isAuthMe401 = response?.status === 401 && config?.url?.includes('/auth/me');
+    const isVerification403 = response?.status === 403 && response?.data?.message?.toLowerCase().includes('verify');
+    
+    if (!config?.suppressErrorLogs && !isAuthMe401 && !isVerification403) {
+      console.error(`[API] Error in ${config?.method?.toUpperCase()} ${config?.url}:`, error.message);
     }
     
     // Only redirect to login if:
@@ -42,7 +61,7 @@ apiInstance.interceptors.response.use(
     // 2. NOT from /auth/me (checking auth status)
     // 3. NOT already on auth pages
     // 4. User is on a protected route (dashboard, etc.)
-    if (error.response?.status === 401 && !isAuthMe401) {
+    if (response?.status === 401 && !isAuthMe401) {
       if (typeof window !== 'undefined') {
         const currentPath = window.location.pathname;
         const isProtectedRoute = currentPath.startsWith('/dashboard') || 
@@ -237,6 +256,18 @@ export const api = {
     create: (data) => apiInstance.post('/history', data),
     update: (id, data) => apiInstance.put(`/history/${id}`, data),
     delete: (id) => apiInstance.delete(`/history/${id}`),
+  },
+  regions: {
+    getAll: () => apiInstance.get('/regions'),
+    getById: (id) => apiInstance.get(`/regions/${id}/projects`),
+    update: (id, data) => apiInstance.put(`/regions/admin/${id}`, data),
+  },
+  masterPlan: {
+    getAllProjects: (params) => apiInstance.get('/master-plan/projects', { params }),
+    linkProject: (data) => apiInstance.post('/admin/region-projects', data),
+    getLinks: (params) => apiInstance.get('/admin/region-projects', { params }),
+    updateLink: (id, data) => apiInstance.put(`/admin/region-projects/${id}`, data),
+    deleteLink: (id) => apiInstance.delete(`/admin/region-projects/${id}`),
   }
 };
 

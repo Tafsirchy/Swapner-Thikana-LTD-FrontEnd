@@ -148,7 +148,7 @@ const VirtualRealitySection = () => {
       {/* Background Ambience */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-royal-deep/30 via-black to-black opacity-50 pointer-events-none"></div>
 
-      <div className="max-container px-4 w-full relative z-10 flex flex-col md:flex-row gap-0 h-[80vh]">
+      <div className="max-container px-4 w-full relative z-10 flex flex-col md:flex-row gap-0 min-h-[600px] md:h-[80vh]">
         
         {/* Glass Aside (Sidebar) */}
         {!selectedProject && (
@@ -207,7 +207,7 @@ const VirtualRealitySection = () => {
                                         <motion.div 
                                             key={item.id}
                                             onClick={() => setSelectedProject(item)}
-                                            className="group cursor-pointer p-3 rounded-lg flex items-center justify-between hover:bg-white/10 transition-colors border-b border-white/5 last:border-0"
+                                            className="group cursor-pointer p-4 rounded-xl flex items-center justify-between hover:bg-white/10 transition-colors border-b border-white/5 last:border-0 active:bg-white/5"
                                             whileHover={{ x: 5 }}
                                         >
                                             <div>
@@ -234,10 +234,10 @@ const VirtualRealitySection = () => {
                 {selectedProject ? (
                     <motion.div 
                         key="viewer"
-                        initial={{ opacity: 0, scale: 1.5, filter: 'blur(10px)' }}
-                        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                        exit={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
-                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }} // Hyperspace easing
+                        initial={{ opacity: 0, scale: 1.1 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
                         className="absolute inset-0 z-30 w-full h-full"
                     >
                         {/* HUD Interface */}
@@ -253,8 +253,8 @@ const VirtualRealitySection = () => {
                             </div>
                         </div>
 
-                        <div className="absolute bottom-6 left-6 z-40 font-cinzel text-white">
-                             <h3 className="text-4xl font-bold">{selectedProject.name}</h3>
+                        <div className="absolute bottom-6 left-6 z-40 font-cinzel text-white max-w-[calc(100%-120px)]">
+                             <h3 className="text-2xl sm:text-4xl font-bold truncate">{selectedProject.name}</h3>
                              <p className="text-zinc-400 text-sm uppercase tracking-[0.3em]">{selectedProject.location}</p>
                         </div>
                         

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import SmartImage from '../shared/SmartImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, MapPin, CheckCircle2, 
@@ -59,7 +60,7 @@ const ProjectDetailClient = ({ project }) => {
             transition={{ duration: 0.6 }}
             className="absolute inset-0"
           >
-            <Image 
+            <SmartImage 
               src={project.images?.[activeImage] || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'} 
               alt={project.title}
               fill
@@ -230,11 +231,10 @@ const ProjectDetailClient = ({ project }) => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                 {project.images?.map((img, i) => (
                   <div key={i} className={`relative rounded-2xl md:rounded-3xl overflow-hidden group border border-white/5 ${i === 0 ? 'col-span-2 row-span-2 h-64 md:h-[28rem]' : 'h-32 md:h-52'}`}>
-                    <Image 
+                    <SmartImage 
                       src={img} 
                       alt="" 
                       fill 
-                      loading="lazy"
                       sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                       className="object-cover transition-all duration-700 group-hover:scale-105" 
                     />

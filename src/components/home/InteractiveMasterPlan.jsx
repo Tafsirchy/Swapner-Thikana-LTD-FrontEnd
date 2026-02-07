@@ -5,61 +5,154 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight, Building, Home, TrendingUp } from 'lucide-react';
 import SmartImage from '@/components/shared/SmartImage';
 import LiquidButton from '@/components/shared/LiquidButton';
+import ErrorBoundary from '@/components/shared/ErrorBoundary';
+import MasterPlanModal from './MasterPlanModal';
+import ProjectDetailsModal from '@/components/shared/ProjectDetailsModal';
+import api from '@/lib/api';
+import { toast } from 'react-hot-toast';
 
-const regions = [
+// Fixed SVG paths and positions (never fetched from API)
+const REGION_PATHS = [
   {
-    id: 'uttara',
-    name: 'Uttara',
-    path: 'M260 280 L340 280 L360 340 L300 360 L240 320 Z', 
-    stats: { projects: 12, value: 'High', type: 'Residential' },
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750',
-    description: 'The premium gateway to Dhaka, featuring exclusive residential sectors and modern amenities.'
+    id: 'dhaka',
+    name: 'Dhaka',
+    path: 'M380 280 L460 270 L480 340 L420 360 L360 330 Z',
+    position: { x: 420, y: 310 }
   },
   {
-    id: 'purbachal',
-    name: 'Purbachal',
-    path: 'M400 280 L480 260 L500 340 L420 360 Z',
-    stats: { projects: 8, value: 'Emerging', type: 'Mixed Use' },
-    image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233',
-    description: 'The future modern city, designed for sustainable living and next-gen commercial hubs.'
+    id: 'mymensingh',
+    name: 'Mymensingh',
+    path: 'M380 130 L460 120 L480 190 L420 210 L360 180 Z',
+    position: { x: 420, y: 170 }
   },
   {
-    id: 'gazipur',
-    name: 'Gazipur',
-    path: 'M260 100 L360 100 L340 180 L240 180 Z',
-    stats: { projects: 5, value: 'Industrial', type: 'Industrial/Res' },
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef',
-    description: 'A thriving industrial hub with rapidly developing residential eco-townships.'
+    id: 'rajshahi',
+    name: 'Rajshahi',
+    path: 'M130 280 L210 270 L230 340 L170 360 L110 330 Z',
+    position: { x: 170, y: 310 }
   },
   {
     id: 'sylhet',
     name: 'Sylhet',
-    path: 'M450 50 L550 20 L580 140 L480 160 Z', 
-    stats: { projects: 6, value: 'Luxury', type: 'Resort/Res' },
-    image: 'https://images.unsplash.com/photo-1605146764387-0d9b0f975962',
-    description: 'Scenic landscapes and luxury tea-estate villas for the discerning elite.'
+    path: 'M630 130 L710 120 L730 190 L670 210 L610 180 Z',
+    position: { x: 670, y: 170 }
   },
   {
     id: 'chittagong',
     name: 'Chittagong',
-    path: 'M450 450 L550 480 L520 580 L400 520 Z',
-    stats: { projects: 9, value: 'Premium', type: 'Port City' },
-    image: 'https://images.unsplash.com/photo-1449844908441-8829872d2607',
-    description: 'The commercial capital, offering premium port-city living and hillside retreats.'
+    path: 'M630 430 L710 420 L730 490 L670 510 L610 480 Z',
+    position: { x: 670, y: 470 }
   },
   {
     id: 'rangpur',
     name: 'Rangpur',
-    path: 'M50 80 L150 60 L180 160 L80 180 Z',
-    stats: { projects: 4, value: 'Value', type: 'Residential' },
-    image: 'https://images.unsplash.com/photo-1549517045-bc93de075e53',
-    description: 'A historic region transforming into a modern heritage city with new developments.'
+    path: 'M130 130 L210 120 L230 190 L170 210 L110 180 Z',
+    position: { x: 170, y: 170 }
+  },
+  {
+    id: 'khulna',
+    name: 'Khulna',
+    path: 'M130 430 L210 420 L230 490 L170 510 L110 480 Z',
+    position: { x: 170, y: 470 }
+  },
+  {
+    id: 'barisal',
+    name: 'Barisal',
+    path: 'M380 430 L460 420 L480 490 L420 510 L360 480 Z',
+    position: { x: 420, y: 470 }
   }
 ];
 
 const InteractiveMasterPlan = () => {
+  const [regions, setRegions] = useState([]);
+  const [loadingRegions, setLoadingRegions] = useState(true);
+  const [regionProjects, setRegionProjects] = useState({});
+  const [loadingProjects, setLoadingProjects] = useState(false);
   const [activeRegion, setActiveRegion] = useState(null);
   const [hoveredRegion, setHoveredRegion] = useState(null);
+  const [showFullPlan, setShowFullPlan] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  // Fetch region content on component mount
+  useEffect(() => {
+    const fetchRegionContent = async () => {
+      try {
+        const data = await api.regions.getAll();
+        
+        if (data.success) {
+          // Merge hardcoded paths with dynamic content
+          const mergedRegions = REGION_PATHS.map(pathData => {
+            const apiData = data.data.regions.find(r => r.id === pathData.id);
+            return {
+              ...pathData,
+              image: apiData?.image || 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750',
+              description: apiData?.description || 'Coming soon...',
+              projectCount: apiData?.projectCount || 0
+            };
+          });
+          
+          setRegions(mergedRegions);
+        } else {
+          throw new Error('Failed to fetch regions');
+        }
+      } catch (error) {
+        console.error('Error fetching regions:', error);
+        // Fallback: use paths with defaults
+        setRegions(REGION_PATHS.map(r => ({
+          ...r,
+          image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750',
+          description: '',
+          projectCount: 0
+        })));
+      } finally {
+        setLoadingRegions(false);
+      }
+    };
+
+    fetchRegionContent();
+  }, []);
+
+  // Fetch projects for a specific region
+  const handleRegionClick = async (region) => {
+    setActiveRegion(region);
+    setLoadingProjects(true);
+
+    try {
+      const data = await api.regions.getById(region.id);
+      
+      if (data.success) {
+        setRegionProjects(prev => ({
+          ...prev,
+          [region.id]: data.data.projects || []
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching region projects:', error);
+      setRegionProjects(prev => ({
+        ...prev,
+        [region.id]: []
+      }));
+    } finally {
+      setLoadingProjects(false);
+    }
+  };
+
+  const handleProjectClick = async (projectId) => {
+    try {
+      setLoadingProjects(true); // Reuse loading state for modal too or add new one
+      const response = await api.projects.getById(projectId);
+      if (response.success) {
+        setSelectedProject(response.data.project);
+      } else {
+        toast.error('Failed to load project details');
+      }
+    } catch (error) {
+      console.error('Error fetching project details:', error);
+      toast.error('Unable to fetch project information');
+    } finally {
+      setLoadingProjects(false);
+    }
+  };
 
   // Body scroll lock effect
   useEffect(() => {
@@ -73,9 +166,9 @@ const InteractiveMasterPlan = () => {
   }, [activeRegion]);
 
   return (
-    <section className="py-24 bg-royal-deep relative overflow-hidden text-white">
+    <section className="py-16 md:py-24 bg-royal-deep relative overflow-hidden text-white">
       {/* Background Decor */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
+      <div className="absolute inset-0 opacity-10 pointer-events-none" aria-hidden="true">
         <svg width="100%" height="100%">
           <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
             <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
@@ -96,22 +189,34 @@ const InteractiveMasterPlan = () => {
             <p className="text-zinc-400 max-w-2xl mx-auto">
                 Explore our strategic footprint across the nation. Select a region to discover our active developments and future vision.
             </p>
+            {/* Mobile Interaction Hint */}
+            <div className="mt-4 flex items-center gap-2 text-brand-gold/60 text-[10px] uppercase tracking-[0.2em] font-bold md:hidden animate-pulse">
+                <div className="w-1 h-1 bg-brand-gold rounded-full" />
+                Tap a region to explore
+                <div className="w-1 h-1 bg-brand-gold rounded-full" />
+            </div>
         </div>
 
         {/* Map Container */}
-        <div className="relative w-full max-w-4xl aspect-[16/9] md:aspect-[2/1] bg-white/5 border border-white/10 backdrop-blur-sm p-4 flex items-center justify-center overflow-hidden">
+        <div className="relative w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] md:aspect-[2/1] bg-white/5 border border-white/10 backdrop-blur-sm p-2 sm:p-4 flex items-center justify-center overflow-hidden">
             
             {/* SVG Map */}
-            <svg viewBox="0 0 800 600" className="w-full h-full max-h-[600px] drop-shadow-2xl">
+            <svg 
+              viewBox="0 0 800 600" 
+              className="w-full h-full max-h-[600px] drop-shadow-2xl"
+              role="img"
+              aria-label="Interactive Map of Bangladesh Regions"
+            >
                 {/* Connecting Lines (Abstract Roads) */}
                 <motion.path 
-                    d="M300 320 L450 310 L515 100 M300 320 L300 140 M300 320 L480 500 M300 320 L120 120"
+                    d="M420 310 L420 170 M420 310 L670 170 M420 310 L670 460 M420 310 L420 460 M420 310 L170 460 M420 310 L170 310 M420 310 L170 170"
                     fill="none" 
                     stroke="rgba(255,255,255,0.1)" 
                     strokeWidth="3"
                     initial={{ pathLength: 0 }}
                     whileInView={{ pathLength: 1 }}
                     transition={{ duration: 2, ease: "easeInOut" }}
+                    aria-hidden="true"
                 />
 
                 {regions.map((region) => (
@@ -119,11 +224,20 @@ const InteractiveMasterPlan = () => {
                         key={region.id}
                         onMouseEnter={() => setHoveredRegion(region)}
                         onMouseLeave={() => setHoveredRegion(null)}
-                        onClick={() => setActiveRegion(region)}
-                        className="cursor-pointer group"
+                        onClick={() => handleRegionClick(region)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleRegionClick(region);
+                          }
+                        }}
+                        className="cursor-pointer group outline-none focus:ring-2 focus:ring-brand-gold rounded-full"
                         initial="initial"
                         whileHover="hover"
                         whileTap="tap"
+                        role="button"
+                        aria-label={`Select ${region.name} region, currently has ${region.projectCount || 0} projects`}
+                        tabIndex={0}
                     >
                         {/* Region Path */}
                         <motion.path
@@ -160,7 +274,7 @@ const InteractiveMasterPlan = () => {
 
             {/* Hover Tooltip (Floating) */}
             <AnimatePresence>
-                {hoveredRegion && (() => {
+                {hoveredRegion && typeof window !== 'undefined' && window.innerWidth > 1024 && (() => {
                     const center = getCenter(hoveredRegion.path);
                     const isRightSide = center.x > 400;
                     
@@ -190,12 +304,7 @@ const InteractiveMasterPlan = () => {
                                 <h4 className="text-brand-gold font-cinzel font-bold text-base tracking-wider leading-tight">{hoveredRegion.name}</h4>
                                 <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 mt-1">
                                     <Building size={10} className="text-brand-gold/70" />
-                                    <span>{hoveredRegion.stats.projects} Projects</span>
-                                </div>
-                                <div className="mt-1.5 flex gap-1">
-                                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-brand-gold/10 text-brand-gold border border-brand-gold/20 font-bold uppercase tracking-tighter">
-                                        {hoveredRegion.stats.value}
-                                    </span>
+                                    <span>{hoveredRegion.projectCount || 0} Projects</span>
                                 </div>
                             </div>
                             {/* Accent Decorative Glow */}
@@ -234,63 +343,124 @@ const InteractiveMasterPlan = () => {
                     }}
                     data-lenis-prevent
                 >
-                    <div className="p-8 pb-24">
-                    <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-3xl font-cinzel text-white">{activeRegion.name}</h3>
-                        <button onClick={() => setActiveRegion(null)} className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+                    <div className="p-5 sm:p-8 pb-24">
+                    <div className="flex justify-between items-center mb-6 sm:mb-8">
+                        <h3 className="text-2xl sm:text-3xl font-cinzel text-white leading-tight">{activeRegion.name}</h3>
+                        <button 
+                            onClick={() => setActiveRegion(null)} 
+                            className="p-3 bg-white/5 hover:bg-white/10 transition-colors rounded-xl border border-white/5 active:scale-95 shadow-lg"
+                            aria-label="Close sidebar"
+                        >
                             <X size={24} />
                         </button>
                     </div>
 
-                    <div className="relative w-full h-64 rounded-2xl overflow-hidden mb-8">
+                    <div className="relative w-full aspect-video sm:h-64 rounded-2xl overflow-hidden mb-8 shadow-2xl border border-white/5">
                         <SmartImage 
                             src={activeRegion.image} 
                             alt={activeRegion.name} 
                             fill 
-                            className="object-cover"
+                            className="object-cover hover:scale-105 transition-transform duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
                             <span className="bg-brand-gold text-black px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                                {activeRegion.stats.type}
+                                {activeRegion.projectCount > 0 ? 'Active Development' : 'Future Vision'}
                             </span>
                         </div>
                     </div>
 
                     <p className="text-zinc-400 leading-relaxed mb-8 border-l-2 border-brand-gold/30 pl-4">
-                        {activeRegion.description}
+                        {activeRegion.description || 'Discover our projects in this region.'}
                     </p>
 
                     {/* Stats Grid */}
                     <div className="grid grid-cols-2 gap-4 mb-8">
                          <div className="bg-white/5 p-4 rounded-xl border border-white/5">
                             <Building className="text-brand-gold mb-2" size={24} />
-                            <div className="text-2xl font-bold text-white">{activeRegion.stats.projects}</div>
+                            <div className="text-2xl font-bold text-white">{activeRegion.projectCount || 0}</div>
                             <div className="text-xs text-zinc-500 uppercase tracking-widest">Projects</div>
                          </div>
                          <div className="bg-white/5 p-4 rounded-xl border border-white/5">
                             <TrendingUp className="text-brand-gold mb-2" size={24} />
-                            <div className="text-xl font-bold text-white">{activeRegion.stats.value}</div>
+                            <div className="text-xl font-bold text-white">
+                              {activeRegion.projectCount > 5 ? 'High' : activeRegion.projectCount > 2 ? 'Growing' : 'Emerging'}
+                            </div>
                             <div className="text-xs text-zinc-500 uppercase tracking-widest">Market Value</div>
                          </div>
                     </div>
 
+                    {/* Projects List */}
                     <div className="space-y-4 mb-8">
-                        <h4 className="font-bold text-white uppercase tracking-wider text-sm border-b border-white/10 pb-2">Recent Developments</h4>
-                        {[1, 2, 3, 4, 5, 6].map((item) => (
-                            <div key={item} className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
-                                <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center text-zinc-500 group-hover:text-brand-gold">
-                                    <Home size={18} />
-                                </div>
-                                <div className="flex-1">
-                                    <div className="text-sm font-bold text-zinc-200">Project Alpha-{item}</div>
-                                    <div className="text-xs text-zinc-500">Upcoming • Residential</div>
-                                </div>
-                                <ArrowRight size={16} className="text-zinc-600 group-hover:text-white" />
+                        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                          <h4 className="font-bold text-white uppercase tracking-wider text-sm">Linked Projects</h4>
+                          {loadingProjects && (
+                            <span className="text-xs text-zinc-500">Loading...</span>
+                          )}
+                        </div>
+                        
+                        {loadingProjects ? (
+                          // Loading skeleton
+                          [...Array(3)].map((_, i) => (
+                            <div key={i} className="flex items-center gap-4 p-2">
+                              <div className="w-16 h-16 bg-white/5 rounded-lg animate-pulse"></div>
+                              <div className="flex-1 space-y-2">
+                                <div className="h-4 bg-white/5 rounded animate-pulse w-3/4"></div>
+                                <div className="h-3 bg-white/5 rounded animate-pulse w-1/2"></div>
+                              </div>
                             </div>
-                        ))}
+                          ))
+                        ) : regionProjects[activeRegion.id]?.length > 0 ? (
+                          // Display real projects
+                          regionProjects[activeRegion.id].map((project) => (
+                            <div 
+                              key={project._id} 
+                              onClick={() => handleProjectClick(project._id)}
+                              className="flex items-center gap-4 group cursor-pointer hover:bg-white/5 p-3 rounded-xl transition-all border border-transparent hover:border-white/5 active:scale-[0.98]"
+                            >
+                                {project.image ? (
+                                  <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                    <SmartImage
+                                      src={project.image}
+                                      alt={project.title}
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="w-16 h-16 bg-white/10 rounded-lg flex items-center justify-center text-zinc-500 group-hover:text-brand-gold">
+                                    <Home size={24} />
+                                  </div>
+                                )}
+                                <div className="flex-1 min-w-0">
+                                    <div className="text-sm font-bold text-zinc-200 truncate">{project.title}</div>
+                                    <div className="text-xs text-zinc-500 truncate">{project.location}</div>
+                                    <div className="flex items-center gap-2 mt-1">
+                                      {project.isFeatured && (
+                                        <span className="px-2 py-0.5 text-[10px] bg-brand-gold/20 text-brand-gold rounded uppercase font-bold">
+                                          Featured
+                                        </span>
+                                      )}
+                                      {project.status && (
+                                        <span className="px-2 py-0.5 text-[10px] bg-blue-500/10 text-blue-500 rounded capitalize">
+                                          {project.status}
+                                        </span>
+                                      )}
+                                    </div>
+                                </div>
+                                <ArrowRight size={16} className="text-zinc-600 group-hover:text-white flex-shrink-0" />
+                            </div>
+                          ))
+                        ) : (
+                          // Empty state
+                          <div className="text-center py-8 text-zinc-500">
+                            <Building size={40} className="mx-auto mb-3 opacity-20" />
+                            <p className="text-sm">No projects linked yet</p>
+                            <p className="text-xs mt-1">Coming soon to {activeRegion.name}</p>
+                          </div>
+                        )}
                     </div>
 
-                    <LiquidButton className="w-full shadow-lg shadow-brand-gold/10">
+                    <LiquidButton className="w-full shadow-lg shadow-brand-gold/10" onClick={() => setShowFullPlan(true)}>
                         View Full Master Plan
                     </LiquidButton>
                     </div>
@@ -298,6 +468,17 @@ const InteractiveMasterPlan = () => {
             </>
         )}
       </AnimatePresence>
+
+      <MasterPlanModal 
+        isOpen={showFullPlan} 
+        onClose={() => setShowFullPlan(false)} 
+      />
+
+      <ProjectDetailsModal 
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
+        project={selectedProject}
+      />
     </section>
   );
 };
@@ -320,4 +501,15 @@ function getCenter(pathString) {
     };
 }
 
-export default InteractiveMasterPlan;
+// Wrap with Error Boundary for production safety
+const ProtectedInteractiveMasterPlan = () => (
+  <ErrorBoundary 
+    title="Unable to Load Master Plan"
+    message="We're having trouble loading the interactive map. Please try refreshing the page."
+  >
+    <InteractiveMasterPlan />
+  </ErrorBoundary>
+);
+
+export default ProtectedInteractiveMasterPlan;
+

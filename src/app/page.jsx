@@ -164,7 +164,7 @@ export default function Home() {
                   onChange={setLocation}
                   options={['All Locations', 'Dhaka', 'Chattogram', 'Sylhet']}
                   icon={<MapPin size={20} />}
-                  className="!bg-transparent !border-none !py-4 text-sm sm:text-base border-b border-white/10 md:border-none"
+                  className="!bg-transparent !border-none !py-4 text-sm sm:text-base md:border-none"
                 />
               </div>
               <LiquidButton 
@@ -198,7 +198,7 @@ export default function Home() {
           {/* Horizontal Axis Line (Desktop Only) */}
           <div className="absolute top-1/2 left-0 w-full h-px bg-brand-gold/20 hidden lg:block -translate-y-1/2"></div>
           
-          <div className="flex flex-col lg:flex-row items-stretch justify-between gap-8 sm:gap-12 lg:gap-0 relative z-10">
+          <div className="flex flex-col lg:flex-row items-stretch justify-between gap-6 sm:gap-12 lg:gap-0 relative z-10">
             {[
               { label: 'Properties Listed', value: 1250, suffix: '+', icon: <Building /> },
               { label: 'Happy Families', value: 800, suffix: '+', icon: <Users /> },

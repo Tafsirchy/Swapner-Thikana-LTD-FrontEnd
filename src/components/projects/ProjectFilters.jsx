@@ -127,25 +127,27 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="text-xs text-zinc-500 mb-1 block">Min Beds</label>
-          <select
+          <LuxurySelect
             value={filters.beds || ''}
-            onChange={(e) => handleInputChange('beds', e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
-          >
-            <option value="">Any</option>
-            {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}+</option>)}
-          </select>
+            onChange={(val) => handleInputChange('beds', val)}
+            options={[
+              { label: 'Any', value: '' },
+              ...[1,2,3,4,5].map(n => ({ label: `${n}+`, value: n.toString() }))
+            ]}
+            className="rounded-none !bg-white/5 !border-white/10 !text-sm"
+          />
         </div>
         <div>
           <label className="text-xs text-zinc-500 mb-1 block">Min Baths</label>
-          <select
+          <LuxurySelect
             value={filters.baths || ''}
-            onChange={(e) => handleInputChange('baths', e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
-          >
-            <option value="">Any</option>
-            {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}+</option>)}
-          </select>
+            onChange={(val) => handleInputChange('baths', val)}
+            options={[
+              { label: 'Any', value: '' },
+              ...[1,2,3,4,5].map(n => ({ label: `${n}+`, value: n.toString() }))
+            ]}
+            className="rounded-none !bg-white/5 !border-white/10 !text-sm"
+          />
         </div>
       </div>
       
@@ -230,32 +232,34 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
         className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
       />
       
-      <select
+      <LuxurySelect
         value={filters.facing || ''}
-        onChange={(e) => handleInputChange('facing', e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
-      >
-        <option value="">Any Facing</option>
-        <option value="South">South</option>
-        <option value="East">East</option>
-        <option value="West">West</option>
-        <option value="North">North</option>
-      </select>
+        onChange={(val) => handleInputChange('facing', val)}
+        options={[
+          { label: 'Any Facing', value: '' },
+          { label: 'South', value: 'South' },
+          { label: 'East', value: 'East' },
+          { label: 'West', value: 'West' },
+          { label: 'North', value: 'North' }
+        ]}
+        className="rounded-none"
+      />
     </div>
   );
 
   const renderAvailabilityInputs = () => (
     <div className="space-y-3 p-1">
-      <select
+      <LuxurySelect
         value={filters.handoverTime || ''}
-        onChange={(e) => handleInputChange('handoverTime', e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded-none px-3 py-2 text-sm text-zinc-100 outline-none focus:border-brand-gold/50"
-      >
-        <option value="">Any Handover Time</option>
-        <option value="1">Within 1 year</option>
-        <option value="2">1-2 years</option>
-        <option value="3">After 2027</option>
-      </select>
+        onChange={(val) => handleInputChange('handoverTime', val)}
+        options={[
+          { label: 'Any Handover Time', value: '' },
+          { label: 'Within 1 year', value: '1' },
+          { label: '1-2 years', value: '2' },
+          { label: 'After 2027', value: '3' }
+        ]}
+        className="rounded-none"
+      />
     </div>
   );
 

@@ -84,9 +84,35 @@ p, div, button, input, textarea {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Custom Scrollbar Styles for Dashboard */
+/* Global Premium Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5); /* royal-deep background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.2); /* Brand gold with low opacity */
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.4);
+}
+
+/* Firefox Support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 158, 11, 0.2) rgba(15, 23, 42, 0.5);
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -100,6 +126,14 @@ p, div, button, input, textarea {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Global Dropdown & Select Styling */

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { FileText, Save, X, Tag, Layout, Loader2 } from 'lucide-react';
+import { FileText, Save, X, Tag, Layout, Loader2, ListFilter } from 'lucide-react';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import ImgBBUpload from '@/components/shared/ImgBBUpload';
@@ -116,8 +116,8 @@ const EditBlogPage = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 space-y-6">
            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2 text-xs uppercase tracking-wider">Post Title</label>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Post Title</label>
                 <input
                   required
                   type="text"
@@ -129,8 +129,8 @@ const EditBlogPage = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-zinc-400 mb-2 text-xs uppercase tracking-wider">Category</label>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Category</label>
                   <LuxurySelect
                     value={formData.category}
                     onChange={(val) => setFormData(prev => ({ ...prev, category: val }))}
@@ -142,7 +142,7 @@ const EditBlogPage = () => {
                       { label: 'Construction', value: 'Construction' }
                     ]}
                     icon={<Layout size={18} />}
-                    className="rounded-xl !bg-white/5 !border-white/10 text-zinc-100 text-base"
+                    className="rounded-xl !bg-white/5 !border-white/10 text-zinc-100 text-base !py-3"
                   />
                 </div>
 
@@ -156,8 +156,8 @@ const EditBlogPage = () => {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2 text-xs uppercase tracking-wider">Content (HTML or Markdown)</label>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Content (HTML or Markdown)</label>
                 <textarea
                   required
                   name="content"
@@ -168,11 +168,11 @@ const EditBlogPage = () => {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-2 text-xs uppercase tracking-wider">Tags (Press Enter)</label>
-                <div className="flex flex-wrap gap-2 mb-3">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Tags (Press Enter)</label>
+                <div className="flex flex-wrap gap-2 mb-1">
                    {formData.tags.map(tag => (
-                     <span key={tag} className="flex items-center gap-1 bg-brand-gold/10 text-brand-gold px-3 py-1 rounded-full text-xs font-bold ring-1 ring-brand-gold/20">
+                     <span key={tag} className="flex items-center gap-1 bg-brand-gold/10 text-brand-gold px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ring-1 ring-brand-gold/20">
                         {tag}
                         <button type="button" onClick={() => removeTag(tag)} className="hover:text-white"><X size={12} /></button>
                      </span>
@@ -190,18 +190,21 @@ const EditBlogPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 pt-2">
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    name="isPublished"
-                    checked={formData.isPublished}
-                    onChange={handleChange}
-                    className="sr-only peer"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Publication Status</label>
+                  <LuxurySelect
+                    value={formData.isPublished ? 'published' : 'draft'}
+                    onChange={(val) => setFormData(prev => ({ ...prev, isPublished: val === 'published' }))}
+                    options={[
+                      { label: 'Published', value: 'published' },
+                      { label: 'Draft', value: 'draft' }
+                    ]}
+                    icon={<ListFilter size={18} />}
+                    className="rounded-xl !bg-white/5 !border-white/10 text-zinc-100 text-base !py-3"
                   />
-                  <div className="w-11 h-6 bg-zinc-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-                </label>
-                <span className="text-sm font-medium text-zinc-300">Published Status</span>
+                  <p className="text-[10px] text-zinc-500 font-medium ml-1">Draft posts are only visible to administrators.</p>
+                </div>
               </div>
            </div>
         </div>

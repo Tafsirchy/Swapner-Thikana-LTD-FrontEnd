@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FileText, PlusCircle, Search, Filter, Eye, Edit2, Trash2, Calendar, User, Eye as ViewIcon } from 'lucide-react';
+import { FileText, PlusCircle, Search, ListFilter, Layout, Eye, Edit2, Trash2, Calendar, User, Eye as ViewIcon } from 'lucide-react';
 import { api } from '@/lib/api';
+import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import LuxurySelect from '@/components/shared/LuxurySelect';
@@ -12,6 +13,7 @@ const AdminBlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -24,7 +26,8 @@ const AdminBlogsPage = () => {
     try {
       setLoading(true);
       const response = await api.blogs.getAll({
-        status: statusFilter,
+        status: statusFilter !== 'all' ? statusFilter : undefined,
+        category: categoryFilter || undefined,
         search: searchQuery || undefined,
         page,
         limit: 10
@@ -40,7 +43,7 @@ const AdminBlogsPage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this blog post?')) return;
+    if (!window.confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) return;
     
     try {
       await api.blogs.delete(id);
@@ -96,19 +99,41 @@ const AdminBlogsPage = () => {
             className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
           />
         </div>
-        <div className="flex items-center gap-2 mt-2 sm:mt-0">
-          <Filter size={18} className="text-zinc-400 flex-shrink-0" />
-          <LuxurySelect
-            value={statusFilter}
-            onChange={setStatusFilter}
-            options={[
-              { label: 'All Status', value: 'all' },
-              { label: 'Published', value: 'published' },
-              { label: 'Draft', value: 'draft' }
-            ]}
-            placeholder="All Status"
-            className="!py-2.5 sm:!py-3 sm:w-40"
-          />
+        <div className="flex flex-col sm:flex-row items-center gap-4 mt-2 sm:mt-0">
+          <div className="flex flex-col gap-1.5 w-full sm:w-auto">
+             <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Status</label>
+                <LuxurySelect
+                   value={statusFilter}
+                   onChange={setStatusFilter}
+                   options={[
+                     { label: 'All Status', value: 'all' },
+                     { label: 'Published', value: 'published' },
+                     { label: 'Draft', value: 'draft' }
+                   ]}
+                   placeholder="All Status"
+                   icon={<ListFilter size={18} />}
+                   className="rounded-xl !py-2.5 sm:!py-3 sm:w-44 !bg-white/5 !border-white/10"
+                 />
+          </div>
+          
+          <div className="flex flex-col gap-1.5 w-full sm:w-auto">
+             <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Category</label>
+             <LuxurySelect
+                value={categoryFilter}
+                onChange={setCategoryFilter}
+                options={[
+                  { label: 'All Categories', value: '' },
+                  { label: 'Real Estate', value: 'Real Estate' },
+                  { label: 'Lifestyle', value: 'Lifestyle' },
+                  { label: 'Investment', value: 'Investment' },
+                  { label: 'Market Trends', value: 'Market Trends' },
+                  { label: 'Construction', value: 'Construction' }
+                ]}
+                placeholder="All Categories"
+                icon={<Layout size={18} />}
+                className="rounded-xl !py-2.5 sm:!py-3 sm:w-52 !bg-white/5 !border-white/10"
+              />
+          </div>
         </div>
       </div>
 
@@ -117,9 +142,9 @@ const AdminBlogsPage = () => {
         {displayBlogs.map((blog) => (
           <div key={blog._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
             <div className="flex gap-4">
-              <div className="w-20 h-16 rounded-xl bg-zinc-800 flex-shrink-0 border border-white/5 overflow-hidden">
+              <div className="w-20 h-16 rounded-xl bg-zinc-800 flex-shrink-0 border border-white/5 overflow-hidden relative">
                 {blog.thumbnail ? (
-                  <img src={blog.thumbnail} alt="" className="w-full h-full object-cover" />
+                  <SmartImage src={blog.thumbnail} alt="" fill className="object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
                     <FileText size={24} className="text-zinc-600" />
@@ -202,9 +227,9 @@ const AdminBlogsPage = () => {
                 <tr key={blog._id} className="group hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-16 h-12 rounded-lg bg-zinc-800 flex-shrink-0 border border-white/5 overflow-hidden">
+                      <div className="w-16 h-12 rounded-lg bg-zinc-800 flex-shrink-0 border border-white/5 overflow-hidden relative">
                         {blog.thumbnail ? (
-                          <img src={blog.thumbnail} alt="" className="w-full h-full object-cover" />
+                          <SmartImage src={blog.thumbnail} alt="" fill className="object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
                             <FileText size={20} className="text-zinc-600" />

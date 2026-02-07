@@ -2,8 +2,9 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { BookOpen, Search, ChevronLeft, ChevronRight, Layout } from 'lucide-react';
 import BlogCard from '@/components/shared/BlogCard';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 import { api } from '@/lib/api';
 
 const BlogPage = () => {
@@ -69,32 +70,51 @@ const BlogPage = () => {
             Stay ahead of the market with exclusive architectural insights, real estate investment strategies, and luxury lifestyle spotlights from our concierge team.
           </p>
 
-          <div className="max-w-xl mx-auto">
-            <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 sm:gap-0 sm:relative px-4 sm:px-0">
-              {/* Search icon - Hidden on mobile, shown on desktop */}
-              <Search className="hidden sm:block sm:absolute sm:left-6 sm:top-1/2 sm:-translate-y-1/2 text-brand-gold" size={20} />
-              
-              {/* Input - Full width on mobile, inline on desktop */}
-              <label htmlFor="blog-search" className="sr-only">Search blog posts</label>
-              <input 
-                id="blog-search"
-                type="search"
-                inputMode="search"
-                placeholder="Search journals..." 
-                autoComplete="off"
-                className="w-full h-12 sm:h-auto bg-white/5 border border-white/10 rounded-xl sm:rounded-full sm:py-5 px-5 sm:pl-14 sm:pr-32 text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all"
-                value={filters.search}
-                onChange={(e) => setFilters({...filters, search: e.target.value})}
-              />
-              
-              {/* Button - Full width on mobile, inline on desktop */}
-              <button 
-                type="submit"
-                className="w-full h-12 sm:w-auto sm:absolute sm:right-2 sm:top-2 sm:bottom-2 sm:h-auto px-8 bg-brand-gold text-royal-deep font-bold text-sm rounded-xl sm:rounded-full hover:bg-brand-gold-light transition-all active:scale-95 shadow-lg shadow-brand-gold/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              >
-                Search
-              </button>
-            </form>
+          <div className="max-w-2xl mx-auto space-y-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <form onSubmit={handleSearch} className="w-full sm:max-w-lg flex flex-col sm:flex-row gap-3 sm:gap-0 sm:relative">
+                <Search className="hidden sm:block sm:absolute sm:left-6 sm:top-1/2 sm:-translate-y-1/2 text-brand-gold" size={20} />
+                <label htmlFor="blog-search" className="sr-only">Search blog posts</label>
+                <input 
+                  id="blog-search"
+                  type="search"
+                  inputMode="search"
+                  placeholder="Search journals..." 
+                  autoComplete="off"
+                  className="w-full h-12 sm:h-auto bg-white/5 border border-white/10 rounded-xl sm:rounded-full sm:py-5 px-5 sm:pl-14 sm:pr-32 text-zinc-100 placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 outline-none transition-all"
+                  value={filters.search}
+                  onChange={(e) => setFilters({...filters, search: e.target.value, page: 1})}
+                />
+                <button 
+                  type="submit"
+                  className="w-full h-12 sm:w-auto sm:absolute sm:right-2 sm:top-2 sm:bottom-2 sm:h-auto px-8 bg-brand-gold text-royal-deep font-bold text-sm rounded-xl sm:rounded-full hover:bg-brand-gold-light transition-all active:scale-95 shadow-lg shadow-brand-gold/20"
+                >
+                  Search
+                </button>
+              </form>
+
+              <div className="w-full sm:w-auto flex items-center gap-3">
+                 <div className="h-10 w-[1px] bg-white/10 hidden sm:block"></div>
+                 <div className="flex flex-col items-start gap-1.5">
+                    <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Category</label>
+                    <LuxurySelect
+                      value={filters.category}
+                      onChange={(val) => setFilters(prev => ({ ...prev, category: val, page: 1 }))}
+                      options={[
+                        { label: 'All Topics', value: '' },
+                        { label: 'Real Estate', value: 'Real Estate' },
+                        { label: 'Lifestyle', value: 'Lifestyle' },
+                        { label: 'Investment', value: 'Investment' },
+                        { label: 'Market Trends', value: 'Market Trends' },
+                        { label: 'Construction', value: 'Construction' }
+                      ]}
+                      placeholder="All Topics"
+                      icon={<Layout size={18} />}
+                      className="rounded-xl !py-3 sm:w-52 !bg-white/5 !border-white/10"
+                    />
+                 </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

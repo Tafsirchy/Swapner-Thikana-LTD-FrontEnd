@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Book, PlusCircle, Search, Edit2, Trash2, Calendar, Eye, Download } from 'lucide-react';
 import { api } from '@/lib/api';
+import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
 
@@ -98,9 +99,9 @@ const AdminMagazinesPage = () => {
               {displayMagazines.map((mag) => (
           <div key={mag._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
             <div className="flex gap-4">
-              <div className="w-16 h-20 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden">
+              <div className="w-16 h-20 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
                 {mag.coverImage ? (
-                  <img src={mag.coverImage} alt="" className="w-full h-full object-cover" />
+                  <SmartImage src={mag.coverImage} alt="" fill className="object-cover" />
                 ) : (
                   <Book size={24} className="text-zinc-600" />
                 )}
@@ -163,9 +164,9 @@ const AdminMagazinesPage = () => {
                 <tr key={mag._id} className="group hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-16 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden">
+                      <div className="w-12 h-16 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
                         {mag.coverImage ? (
-                          <img src={mag.coverImage} alt="" className="w-full h-full object-cover" />
+                          <SmartImage src={mag.coverImage} alt="" fill className="object-cover" />
                         ) : (
                           <Book size={24} className="text-zinc-600" />
                         )}

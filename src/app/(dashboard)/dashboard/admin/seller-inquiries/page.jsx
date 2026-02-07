@@ -6,6 +6,7 @@ import {
   Clock, CheckCircle, XCircle, Eye, X, ExternalLink
 } from 'lucide-react';
 import { api } from '@/lib/api';
+import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
 import LuxurySelect from '@/components/shared/LuxurySelect';
@@ -105,8 +106,8 @@ const InquiryDetailsModal = ({ inquiry, onClose, onUpdateStatus }) => {
                   <div className="grid grid-cols-2 gap-3">
                     {inquiry.images.map((img, idx) => (
                       <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 group cursor-pointer shadow-lg">
-                        <img src={img} alt={`property-${idx}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <SmartImage src={img} alt={`property-${idx}`} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10">
                           <ExternalLink size={16} className="text-white" />
                         </div>
                       </div>
@@ -344,7 +345,7 @@ const AdminSellerInquiriesPage = () => {
       </div>
 
       {/* Desktop Table View */}
-      <div className="hidden lg:block glass rounded-[2.5rem] border border-white/5 overflow-hidden shadow-2xl overflow-x-auto">
+      <div className="hidden lg:block glass rounded-[2.5rem] border border-white/5 shadow-2xl overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-white/5 bg-white/[0.03]">

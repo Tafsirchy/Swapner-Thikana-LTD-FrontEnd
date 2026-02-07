@@ -46,7 +46,7 @@ const AdminProjectsPage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this project?')) return;
+    if (!window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) return;
     
     try {
       await api.projects.delete(id);
@@ -131,9 +131,9 @@ const AdminProjectsPage = () => {
         {displayProjects.map((project) => (
           <div key={project._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
             <div className="flex gap-4">
-              <div className="w-16 h-16 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden">
+              <div className="w-16 h-16 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
                 {project.images?.[0] ? (
-                  <img src={project.images[0]} alt="" className="w-full h-full object-cover" />
+                  <SmartImage src={project.images[0]} alt="" fill className="object-cover" />
                 ) : (
                   <Building2 size={24} className="text-zinc-600" />
                 )}
@@ -184,7 +184,7 @@ const AdminProjectsPage = () => {
       </div>
 
       {/* Desktop Table View */}
-      <div className="hidden lg:block bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
+      <div className="hidden lg:block bg-white/5 border border-white/5 rounded-3xl shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm text-zinc-400">
             <thead>
@@ -202,9 +202,9 @@ const AdminProjectsPage = () => {
                 <tr key={project._id} className="group hover:bg-white/5 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5">
+                      <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
                         {project.images?.[0] ? (
-                          <img src={project.images[0]} alt="" className="w-full h-full object-cover rounded-xl" />
+                          <SmartImage src={project.images[0]} alt="" fill className="object-cover rounded-xl" />
                         ) : (
                           <Building2 size={24} className="text-zinc-600" />
                         )}
