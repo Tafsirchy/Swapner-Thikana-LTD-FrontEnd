@@ -35,7 +35,7 @@ const Navbar = () => {
 
   const rightNav = [
     { 
-      name: 'About', 
+      name: 'About Us', 
       href: '/about',
       hasDropdown: true,
       dropdownItems: {
