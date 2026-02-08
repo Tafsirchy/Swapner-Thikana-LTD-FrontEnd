@@ -14,7 +14,7 @@ import React, { useState, useEffect } from 'react';
 const COLORS = ['#D4AF37', '#8B7355', '#C0C0C0', '#708090', '#2C3E50', '#A0522D', '#696969', '#4682B4'];
 
 const StatCard = ({ title, value, change, icon: Icon, trend }) => (
-  <div className="bg-zinc-900/50 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-6 relative overflow-hidden group hover:border-brand-gold/20 transition-all">
+  <div className="bg-zinc-900/50 border border-white/5 rounded-3xl p-6 sm:p-6 relative overflow-hidden group hover:border-brand-gold/20 transition-all">
     <div className="flex justify-between items-start mb-4">
       <div className="p-3 bg-brand-gold/10 rounded-2xl text-brand-gold">
         <Icon size={24} />
@@ -85,7 +85,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         {/* Trend Chart */}
-        <div className="bg-zinc-900/50 border border-white/5 rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8">
+        <div className="bg-zinc-900/50 border border-white/5 rounded-3xl p-6 sm:p-8">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
               <Calendar size={20} className="text-brand-gold" />
@@ -128,7 +128,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
         </div>
 
         {/* Distribution Chart */}
-        <div className="bg-zinc-900/50 border border-white/5 rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8">
+        <div className="bg-zinc-900/50 border border-white/5 rounded-3xl p-6 sm:p-8">
           <h3 className="text-xl font-bold text-zinc-100 mb-8 flex items-center gap-2">
             <Building2 size={20} className="text-brand-gold" />
             {isAdmin ? 'Property Type Distribution' : 'Lead Status Breakdown'}
@@ -183,7 +183,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
 
       {/* Tables Section */}
       <div className="grid grid-cols-1 gap-8">
-        <div className="bg-zinc-900/50 border border-white/5 rounded-2xl sm:rounded-[2.5rem] overflow-hidden">
+        <div className="bg-zinc-900/50 border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
           <div className="p-5 sm:p-8 border-b border-white/5">
             <h3 className="text-xl font-bold text-zinc-100">
               {isAdmin ? 'Top Performing Properties' : 'My Listings Performance'}
@@ -231,7 +231,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
           {/* Mobile Card View */}
           <div className="lg:hidden divide-y divide-white/5">
             {(isAdmin ? data.topProperties : data.listingsPerformance)?.slice(0, 5).map((property, idx) => (
-              <div key={property._id} className="p-5 space-y-3">
+              <div key={property._id} className="p-6 space-y-4">
                 <div className="flex justify-between items-start gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="font-bold text-zinc-100 text-sm line-clamp-2">{property.title}</div>

@@ -65,10 +65,10 @@ const PropertyCard = ({ property }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="group relative bg-card border border-white/10 rounded-none overflow-hidden hover:border-brand-gold/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
+      className="group relative bg-card border border-white/10 rounded-3xl overflow-hidden hover:border-brand-gold/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
     >
       {/* Image Container - Mobile-First Responsive */}
-      <div className="relative aspect-[4/3] sm:h-64 w-full overflow-hidden">
+      <div className="relative aspect-[4/3] sm:h-64 w-full overflow-hidden rounded-t-3xl sm:m-2 sm:rounded-2xl">
         <SmartImage
           src={images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop'}
           alt={title}

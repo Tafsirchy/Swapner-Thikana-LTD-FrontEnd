@@ -8,6 +8,7 @@ import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const statusColors = {
   ongoing: 'bg-blue-500/10 text-blue-500',
@@ -83,23 +84,19 @@ const AdminProjectsPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <Building2 className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
-            Project Management
-          </h1>
-          <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg">
-            Create and manage real estate projects
-          </p>
-        </div>
-        <Link
-          href="/dashboard/admin/projects/add"
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10 text-sm sm:text-base"
-        >
-          <PlusCircle size={18} /> ADD NEW PROJECT
-        </Link>
-      </div>
+      <DashboardPageHeader 
+        title="Project Management"
+        subtitle="Create and manage real estate projects"
+        icon={<Building2 />}
+        actions={
+          <Link
+            href="/dashboard/admin/projects/add"
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10 text-sm sm:text-base"
+          >
+            <PlusCircle size={18} /> ADD NEW PROJECT
+          </Link>
+        }
+      />
 
       {/* Filters */}
       <div className="flex flex-col gap-4">

@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 import { MessageSquare, Star, Trash2, ShieldCheck, UserCheck, User, Building2 } from 'lucide-react';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const AdminReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -57,15 +58,11 @@ const AdminReviewsPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <MessageSquare size={32} className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
-            Project & Property Reviews
-          </h1>
-          <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg font-sans">Monitor and manage all user feedback in one place</p>
-        </div>
-      </div>
+      <DashboardPageHeader 
+        title="Project & Property Reviews"
+        subtitle="Monitor and manage all user feedback in one place"
+        icon={<MessageSquare />}
+      />
 
       <div className="grid grid-cols-1 gap-4">
         {reviews.map((review) => (

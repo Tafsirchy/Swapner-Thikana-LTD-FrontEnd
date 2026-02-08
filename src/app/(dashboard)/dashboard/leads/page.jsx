@@ -24,6 +24,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import ReminderForm from '@/components/dashboard/ReminderForm';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const STATUS_COLUMNS = [
   { id: 'new', title: 'New Leads', icon: <MessageSquare size={18} />, color: 'text-blue-500', bg: 'bg-blue-500/10' },
@@ -158,14 +159,14 @@ const LeadsPage = () => {
               placeholder="Search leads..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
+              className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-2.5 text-zinc-100 outline-none focus:border-brand-gold/50 text-sm"
             />
           </div>
         </div>
       </div>
 
       {/* Kanban Board */}
-      <div className="flex overflow-x-auto pb-6 -mx-4 px-4 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 gap-6 scrollbar-hide snap-x snap-mandatory">
+      <div className="flex overflow-x-auto pb-6 -mx-4 px-4 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 gap-4 sm:gap-6 scrollbar-hide snap-x snap-mandatory group/board">
         {STATUS_COLUMNS.map(column => (
           <div key={column.id} className="flex flex-col gap-4 min-w-[280px] sm:min-w-[320px] lg:min-w-0 snap-center">
             <div className="flex items-center justify-between px-3 py-2 bg-white/[0.03] border border-white/5 rounded-2xl">
@@ -202,18 +203,18 @@ const LeadsPage = () => {
                       <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-brand-gold/60 px-2 py-0.5 bg-brand-gold/5 rounded-full border border-brand-gold/10">
                         {lead.interestType || 'Inquiry'}
                       </span>
-                      <div className="flex items-center gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center gap-0.5 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
                         {column.id === 'closed' && (
                           <button 
                             onClick={(e) => handleDeleteLead(lead._id, e)}
-                            className="p-2 sm:p-1.5 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                            className="p-3 sm:p-1.5 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all"
                             title="Delete Lead"
                           >
-                            <Trash2 size={16} />
+                            <Trash2 size={18} />
                           </button>
                         )}
-                        <button className="p-2 sm:p-1.5 text-zinc-600 hover:text-zinc-300 transition-all">
-                          <MoreVertical size={16} />
+                        <button className="p-3 sm:p-1.5 text-zinc-600 hover:text-zinc-300 transition-all">
+                          <MoreVertical size={18} />
                         </button>
                       </div>
                     </div>
@@ -278,9 +279,9 @@ const LeadsPage = () => {
               {/* Close Button - More prominent on mobile */}
               <button 
                 onClick={() => setSelectedLead(null)}
-                className="absolute top-4 right-4 md:top-6 md:right-6 z-[120] p-2.5 md:p-2 rounded-full bg-black/40 md:bg-white/5 border border-white/10 text-zinc-400 hover:text-brand-gold hover:border-brand-gold/50 transition-all group backdrop-blur-md"
+                className="absolute top-4 right-4 md:top-6 md:right-6 z-[120] p-3 md:p-2 rounded-full bg-black/40 md:bg-white/5 border border-white/10 text-zinc-400 hover:text-brand-gold hover:border-brand-gold/50 transition-all group backdrop-blur-md"
               >
-                <X size={20} className="group-hover:rotate-90 transition-transform duration-300" />
+                <X size={24} className="group-hover:rotate-90 transition-transform duration-300 md:w-5 md:h-5" />
               </button>
 
               <div className="flex flex-col md:flex-row w-full h-auto md:h-full md:overflow-hidden">

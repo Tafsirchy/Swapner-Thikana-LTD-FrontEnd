@@ -8,6 +8,9 @@ import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { exportUsersCSV } from '@/utils/exportUtils';
 import LuxurySelect from '@/components/shared/LuxurySelect';
+import ProtectedRoute from '@/components/shared/ProtectedRoute';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+
 
 const roleColors = {
   admin: 'bg-purple-500/10 text-purple-500',
@@ -108,17 +111,11 @@ const AdminUsersPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <Users className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
-            User Management
-          </h1>
-          <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg">
-            Manage user roles and permissions
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
+      <DashboardPageHeader 
+        title="User Management"
+        subtitle="Manage user roles and permissions"
+        icon={<Users />}
+        actions={
           <button
             onClick={() => exportUsersCSV(users)}
             disabled={users.length === 0}
@@ -127,8 +124,8 @@ const AdminUsersPage = () => {
             <Download size={16} className="text-brand-gold" />
             Export CSV
           </button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Filters */}
       <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
@@ -387,4 +384,10 @@ const AdminUsersPage = () => {
   );
 };
 
-export default AdminUsersPage;
+const AdminUsersPageWrapper = () => (
+  <ProtectedRoute allowedRoles={['admin', 'management']}>
+    <AdminUsersPage />
+  </ProtectedRoute>
+);
+
+export default AdminUsersPageWrapper;

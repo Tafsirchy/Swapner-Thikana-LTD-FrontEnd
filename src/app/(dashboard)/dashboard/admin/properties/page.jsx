@@ -7,6 +7,9 @@ import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import ProtectedRoute from '@/components/shared/ProtectedRoute';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+
 
 const statusColors = {
   pending: 'bg-yellow-500/10 text-yellow-500',
@@ -412,4 +415,10 @@ const AdminPropertiesPage = () => {
   );
 };
 
-export default AdminPropertiesPage;
+const AdminPropertiesPageWrapper = () => (
+  <ProtectedRoute allowedRoles={['admin', 'management']}>
+    <AdminPropertiesPage />
+  </ProtectedRoute>
+);
+
+export default AdminPropertiesPageWrapper;

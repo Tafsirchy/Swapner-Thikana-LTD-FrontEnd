@@ -5,6 +5,7 @@ import { X, Save, Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const SaveSearchModal = ({ isOpen, onClose, filters }) => {
   const [searchName, setSearchName] = useState('');
@@ -55,7 +56,7 @@ const SaveSearchModal = ({ isOpen, onClose, filters }) => {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-md bg-zinc-900 border border-white/10 rounded-3xl p-8 shadow-2xl"
+          className="relative w-full max-w-md bg-zinc-900 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl"
         >
           {/* Header */}
           <div className="flex items-center justify-between mb-6">

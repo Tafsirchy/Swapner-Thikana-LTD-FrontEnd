@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const AdminMagazinesPage = () => {
   const [magazines, setMagazines] = useState([]);
@@ -64,23 +65,19 @@ const AdminMagazinesPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <Book className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
-            Magazine Management
-          </h1>
-          <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg">
-            Publish and manage digital magazines
-          </p>
-        </div>
-        <Link
-          href="/dashboard/admin/magazines/add"
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10 text-sm sm:text-base"
-        >
-          <PlusCircle size={18} /> ADD NEW ISSUE
-        </Link>
-      </div>
+      <DashboardPageHeader 
+        title="Magazine Management"
+        subtitle="Publish and manage digital magazines"
+        icon={<Book />}
+        actions={
+          <Link
+            href="/dashboard/admin/magazines/add"
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10 text-sm sm:text-base"
+          >
+            <PlusCircle size={18} /> ADD NEW ISSUE
+          </Link>
+        }
+      />
 
       {/* Search */}
       <div className="relative">

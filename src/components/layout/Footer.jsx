@@ -26,7 +26,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="flex flex-col gap-6">
             <Link href="/" className="inline-block shrink-0">
-              <Image src="/logo.png" alt="shwapner Thikana" width={120} height={80} className="h-20 w-auto object-contain" />
+              <Image src="/logo-new.png" alt="shwapner Thikana" width={120} height={80} className="h-20 w-auto object-contain" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
               Excellence in luxury real estate. We guide you to your dream address with integrity, 
@@ -79,7 +79,7 @@ const Footer = () => {
                 </div>
                 <div className="text-sm">
                   <span className="block text-zinc-100 font-medium">Head Office</span>
-                  <span className="text-zinc-400">Gulshan-1, Dhaka 1212</span>
+                  <span className="text-zinc-400">Flat #5/A, House #18, Road #02, Sector #15/A, Uttara, Dhaka-1230</span>
                 </div>
               </li>
               <li className="flex items-start gap-3 group">
@@ -88,7 +88,7 @@ const Footer = () => {
                 </div>
                 <div className="text-sm">
                   <span className="block text-zinc-100 font-medium">Phone Number</span>
-                  <a href="tel:+8801234567890" className="text-zinc-400 hover:text-brand-gold transition-colors">+880 1234 567 890</a>
+                  <a href="tel:+8801234567890" className="text-zinc-400 hover:text-brand-gold transition-colors">+880 1722550012</a>
                 </div>
               </li>
               <li className="flex items-start gap-3 group">

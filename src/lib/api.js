@@ -61,8 +61,8 @@ apiInstance.interceptors.response.use(
       return apiInstance(config);
     }
 
-    const isAuthMe401 = response?.status === 401 && config?.url?.includes('/auth/me');
-    const isVerification403 = response?.status === 403 && response?.data?.message?.toLowerCase().includes('verify');
+    const isAuthMe401 = response?.status === 401 && (config?.url?.includes('auth/me') || config?.url?.includes('/auth/me'));
+    const isVerification403 = response?.status === 403 && (response?.data?.message?.toLowerCase().includes('verify') || response?.data?.message?.toLowerCase().includes('authorized'));
     
     if (!config?.suppressErrorLogs && !isAuthMe401 && !isVerification403) {
       console.error(`[API] Error in ${config?.method?.toUpperCase()} ${config?.url}:`, {

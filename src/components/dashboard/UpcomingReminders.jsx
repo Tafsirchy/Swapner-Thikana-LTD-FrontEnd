@@ -65,13 +65,13 @@ const UpcomingReminders = () => {
   );
 
   return (
-    <div className="bg-white/5 border border-white/5 rounded-3xl p-8 sticky top-28">
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
+    <div className="bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8 sticky top-28">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <h2 className="text-lg sm:text-xl font-bold text-zinc-100 flex items-center gap-2">
           <Bell className="text-brand-gold" size={20} />
           Upcoming Follow-ups
         </h2>
-        <span className="bg-brand-gold/10 text-brand-gold text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+        <span className="bg-brand-gold/10 text-brand-gold text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider w-fit">
           {reminders.filter(r => !r.isCompleted).length} Tasks
         </span>
       </div>
@@ -87,18 +87,18 @@ const UpcomingReminders = () => {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 10 }}
-                  className={`p-4 rounded-2xl border transition-all group ${
+                  className={`p-5 rounded-3xl border transition-all group ${
                     reminder.isCompleted 
                       ? 'bg-zinc-800/20 border-white/5 opacity-50' 
                       : isOverdue 
                         ? 'bg-rose-500/5 border-rose-500/20 shadow-lg shadow-rose-500/5' 
-                        : 'bg-white/5 border-white/5 hover:border-brand-gold/30'
+                        : 'bg-white/5 border-white/5 hover:border-brand-gold/30 shadow-sm'
                   }`}
                 >
                   <div className="flex items-start gap-3">
                     <button 
                       onClick={() => handleToggleComplete(reminder._id, reminder.isCompleted)}
-                      className={`mt-1 rounded-full transition-colors ${
+                      className={`mt-1 p-2 -m-2 rounded-full transition-colors touch-manipulation ${
                         reminder.isCompleted 
                           ? 'text-emerald-500' 
                           : 'text-zinc-600 hover:text-brand-gold'
@@ -125,7 +125,7 @@ const UpcomingReminders = () => {
 
                     <button 
                       onClick={() => handleDelete(reminder._id)}
-                      className="text-zinc-600 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity p-1"
+                      className="text-zinc-600 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity p-2 -m-2 touch-manipulation"
                     >
                       <Trash2 size={14} />
                     </button>

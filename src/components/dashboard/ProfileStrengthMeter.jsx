@@ -57,7 +57,7 @@ const ProfileStrengthMeter = ({ strength }) => {
             </div>
           </div>
         ) : (
-          <div className="flex items-center gap-3 text-emerald-500 bg-emerald-500/5 p-4 rounded-2xl border border-emerald-500/10">
+          <div className="flex items-center gap-3 text-emerald-500 bg-emerald-500/5 p-4 rounded-3xl border border-emerald-500/10">
             <CheckCircle2 size={24} />
             <div>
               <p className="font-bold text-sm">Perfect Profile!</p>

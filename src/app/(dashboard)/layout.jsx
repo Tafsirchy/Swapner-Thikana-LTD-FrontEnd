@@ -12,6 +12,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const DashboardLayout = ({ children }) => {
   const { user, logout } = useAuth();
@@ -44,6 +45,8 @@ const DashboardLayout = ({ children }) => {
           { name: 'Add Property', href: '/dashboard/properties/add', icon: PlusCircle },
           { name: 'My Leads', href: '/dashboard/leads', icon: Users },
           { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
+          { name: 'Saved Searches', href: '/dashboard/saved-searches', icon: Search },
+          { name: 'Wishlist', href: '/dashboard/saved', icon: Heart },
           { name: 'Settings', href: '/dashboard/settings', icon: Settings },
         ];
       case 'admin':
@@ -66,6 +69,8 @@ const DashboardLayout = ({ children }) => {
           { name: 'Reviews', href: '/dashboard/admin/reviews', icon: MessageSquare },
           { name: 'Analytics', href: '/dashboard/admin/analytics', icon: BarChart3 },
           { name: 'Blogs', href: '/dashboard/admin/blogs', icon: FileText },
+          { name: 'Saved Searches', href: '/dashboard/saved-searches', icon: Search },
+          { name: 'Wishlist', href: '/dashboard/saved', icon: Heart },
           { name: 'Settings', href: '/dashboard/settings', icon: Settings },
         ];
       case 'management':
@@ -83,6 +88,8 @@ const DashboardLayout = ({ children }) => {
           { name: 'Master Plan', href: '/dashboard/admin/master-plan', icon: Map },
           { name: 'Leads Pipeline', href: '/dashboard/leads', icon: BarChart3 },
           { name: 'Analytics', href: '/dashboard/admin/analytics', icon: BarChart3 },
+          { name: 'Saved Searches', href: '/dashboard/saved-searches', icon: Search },
+          { name: 'Wishlist', href: '/dashboard/saved', icon: Heart },
           { name: 'Settings', href: '/dashboard/settings', icon: Settings },
         ];
       case 'customer':
@@ -256,7 +263,7 @@ const DashboardLayout = ({ children }) => {
               <Menu size={24} />
             </button>
             <Link href="/" className="flex items-center">
-              <Image src="/logo.png" alt="shwapner Thikana" width={120} height={40} className="h-8 w-auto object-contain" />
+              <Image src="/logo-new.png" alt="shwapner Thikana" width={120} height={40} className="h-8 w-auto object-contain" />
             </Link>
             <div className="w-6"></div> {/* Spacer for balance */}
           </header>
@@ -264,18 +271,11 @@ const DashboardLayout = ({ children }) => {
           <div className="p-3.5 sm:p-4 lg:p-8 relative flex-1">
             {/* Top Header (Desktop) - Only show on Overview page */}
             {pathname === '/dashboard' && (
-              <header className="hidden lg:flex items-center justify-between mb-8 pb-6 border-b border-white/5">
-                 <div>
-                    <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100">Overview</h1>
-                    <p className="text-zinc-400 text-sm sm:text-lg mt-2">Welcome back, {user?.name}</p>
-                 </div>
-                 <div className="flex items-center gap-4">
-                    <button className="p-3 rounded-full bg-white/5 border border-white/5 text-zinc-400 hover:text-brand-gold transition-colors relative">
-                       <Bell size={20} />
-                       <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-                    </button>
-                 </div>
-              </header>
+              <DashboardPageHeader 
+                title="Overview"
+                subtitle={`Welcome back, ${user?.name}`}
+                className="flex"
+              />
             )}
 
             {children}

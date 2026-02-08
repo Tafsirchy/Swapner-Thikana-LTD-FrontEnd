@@ -6,6 +6,7 @@ import { Plus, Edit2, Trash2, ScrollText, Loader2, X, Save, Eye, EyeOff, ShieldC
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
 import LuxurySelect from '@/components/shared/LuxurySelect';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const AdminHistoryPage = () => {
   const [milestones, setMilestones] = useState([]);
@@ -122,21 +123,19 @@ const AdminHistoryPage = () => {
 
   return (
     <div className="space-y-8 pb-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <ScrollText size={32} className="text-brand-gold" />
-            Manage History
-          </h2>
-          <p className="text-zinc-400 mt-2 text-lg">Chronicle the Shwapner Thikana journey through milestones.</p>
-        </div>
-        <button 
-          onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg active:scale-95 text-sm"
-        >
-          <Plus size={18} /> Add New Milestone
-        </button>
-      </div>
+      <DashboardPageHeader 
+        title="History Management"
+        subtitle="Chronicle the Shwapner Thikana journey through milestones."
+        icon={<ScrollText />}
+        actions={
+          <button 
+            onClick={() => handleOpenModal()}
+            className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg active:scale-95 text-sm"
+          >
+            <Plus size={18} /> Add New Milestone
+          </button>
+        }
+      />
 
       <div className="relative max-w-5xl mx-auto pt-8">
         {/* Timeline Center Line (Desktop) */}

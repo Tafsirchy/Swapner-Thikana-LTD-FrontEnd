@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const AdminManagementListPage = () => {
   const [members, setMembers] = useState([]);
@@ -64,23 +65,19 @@ const AdminManagementListPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <Crown className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
-            Leadership Management
-          </h1>
-          <p className="text-zinc-400 mt-2 text-lg">
-            Manage the board of directors and executive leadership
-          </p>
-        </div>
-        <Link
-          href="/dashboard/admin/management/add"
-          className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10"
-        >
-          <PlusCircle size={18} /> ADD LEADER
-        </Link>
-      </div>
+      <DashboardPageHeader 
+        title="Leadership Management"
+        subtitle="Manage the board of directors and executive leadership"
+        icon={<Crown />}
+        actions={
+          <Link
+            href="/dashboard/admin/management/add"
+            className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10"
+          >
+            <PlusCircle size={18} /> ADD LEADER
+          </Link>
+        }
+      />
 
       <div className="relative">
         <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />

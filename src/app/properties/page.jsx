@@ -331,60 +331,84 @@ const PropertiesContent = () => {
 
           {/* Search Bar */}
           <div className="relative z-20">
-            <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-4 p-4 glass rounded-none border-white/10">
-              <div className="flex-1 relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-gold" size={18} />
-                <input 
-                  type="text" 
-                  placeholder="Title, neighborhood, or keyword..."
-                  className="w-full bg-white/5 border border-white/10 rounded-none py-4 sm:py-3.5 pl-12 pr-4 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all placeholder:text-zinc-500 text-sm sm:text-base"
-                  value={filters.search}
-                  onChange={(e) => setFilters({...filters, search: e.target.value, page: 1})}
-                />
+            <form onSubmit={handleSearch} className="grid grid-cols-2 lg:flex lg:flex-row gap-4 p-4 lg:p-6 glass rounded-2xl sm:rounded-3xl border-white/10 shadow-2xl backdrop-blur-xl">
+              <div className="col-span-2 lg:flex-1 flex flex-col gap-1.5">
+                <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1 hidden lg:block">Search</label>
+                <div className="relative group flex-1">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-gold" size={18} />
+                  <input 
+                    type="text" 
+                    placeholder="Title, neighborhood, or keyword..."
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 sm:py-3.5 pl-12 pr-4 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all placeholder:text-zinc-500 text-sm sm:text-base h-[52px]"
+                    value={filters.search}
+                    onChange={(e) => setFilters({...filters, search: e.target.value, page: 1})}
+                  />
+                </div>
               </div>
-              <div className="flex flex-wrap lg:flex-nowrap gap-4">
-                <div className="flex flex-col items-start gap-1.5 min-w-[150px]">
-                  <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Listing Type</label>
+              
+              <div className="col-span-2 lg:contents grid grid-cols-2 gap-4">
+                <div className="flex flex-col items-start gap-1.5 min-w-[140px]">
+                  <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Listing</label>
                   <LuxurySelect 
                     value={filters.listingType}
                     onChange={(val) => setFilters({...filters, listingType: val, page: 1})}
                     options={[
-                      { label: 'All Types', value: '' },
-                      { label: 'For Sale', value: 'sale' },
-                      { label: 'For Rent', value: 'rent' }
+                      { label: 'All', value: '' },
+                      { label: 'Sale', value: 'sale' },
+                      { label: 'Rent', value: 'rent' }
                     ]}
                     icon={<Building2 size={16} />}
-                    className="!rounded-none !bg-zinc-900/80 !border-white/5"
+                    className="!rounded-2xl !bg-zinc-900/80 !border-white/5 h-[52px]"
                   />
                 </div>
-                <div className="flex flex-col items-start gap-1.5 min-w-[150px]">
+                
+                <div className="flex flex-col items-start gap-1.5 min-w-[140px] hidden xl:flex">
+                  <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Property Type</label>
+                  <LuxurySelect 
+                    value={filters.propertyType}
+                    onChange={(val) => setFilters({...filters, propertyType: val, page: 1})}
+                    options={[
+                      { label: 'Any Type', value: '' },
+                      { label: 'Apartment', value: 'apartment' },
+                      { label: 'Villa', value: 'villa' },
+                      { label: 'Duplex', value: 'duplex' },
+                      { label: 'Penthouse', value: 'penthouse' }
+                    ]}
+                    className="!rounded-2xl !bg-zinc-900/80 !border-white/5 h-[52px]"
+                  />
+                </div>
+                
+                <div className="flex flex-col items-start gap-1.5 min-w-[140px]">
                   <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">City</label>
                   <LuxurySelect 
                     value={filters.city}
                     onChange={(val) => setFilters({...filters, city: val, page: 1})}
                     options={[
-                      { label: 'All Cities', value: '' },
+                      { label: 'All', value: '' },
                       { label: 'Dhaka', value: 'Dhaka' },
                       { label: 'Chattogram', value: 'Chattogram' },
                       { label: 'Sylhet', value: 'Sylhet' }
                     ]}
                     icon={<Map size={16} />}
-                    className="!rounded-none !bg-zinc-900/80 !border-white/5"
+                    className="!rounded-2xl !bg-zinc-900/80 !border-white/5 h-[52px]"
                   />
                 </div>
+                
                 <button 
                   type="button"
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center justify-center gap-2 px-6 py-4 sm:py-3.5 rounded-none border transition-all ${showFilters ? 'bg-brand-gold text-royal-deep border-brand-gold' : 'border-white/10 text-zinc-100 hover:border-brand-gold/30'}`}
+                  className={`flex items-center justify-center gap-2 px-6 h-[52px] rounded-2xl border transition-all mt-auto ${showFilters ? 'bg-brand-gold text-royal-deep border-brand-gold shadow-lg shadow-brand-gold/20' : 'border-white/10 text-zinc-100 hover:border-brand-gold/30 hover:bg-white/5'}`}
                   aria-label={showFilters ? "Hide advanced filters" : "Show advanced filters"}
                 >
                   <SlidersHorizontal size={18} />
                   <span className="font-bold sm:font-normal">Filters</span>
                 </button>
+                
                 <button 
                   type="submit"
-                  className="bg-brand-emerald text-white px-8 py-4 sm:py-3.5 rounded-none font-bold hover:bg-brand-emerald-light transition-all shadow-lg shadow-brand-emerald/10"
+                  className="bg-brand-emerald text-white px-8 h-[52px] rounded-2xl font-bold hover:bg-brand-emerald-light transition-all shadow-lg shadow-brand-emerald/20 mt-auto flex items-center justify-center gap-2"
                 >
+                  <Search size={18} className="lg:hidden" />
                   Search
                 </button>
               </div>
@@ -399,7 +423,8 @@ const PropertiesContent = () => {
                   exit={{ opacity: 0, height: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="p-5 sm:p-8 mt-4 glass rounded-none border-white/10 space-y-5 sm:space-y-6">
+                  <div className="p-6 md:p-10 mt-6 glass rounded-3xl border-white/10 space-y-8 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent"></div>
                     {/* Row 1: Property Type, Bedrooms, Bathrooms */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="space-y-2">

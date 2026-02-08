@@ -64,7 +64,7 @@ const ContactPage = () => {
                 <MapPin size={28} />
               </div>
               <h3 className="text-xl font-bold text-zinc-100 mb-2">Majestic Headquarters</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed mb-4">Suite 402, Platinum Tower, Gulshan-1, Dhaka 1212, Bangladesh</p>
+              <p className="text-zinc-500 text-sm leading-relaxed mb-4">Flat #5/A, House #18, Road #02, Sector #15/A, Uttara, Dhaka-1230</p>
               <a href="#" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">View on Map</a>
             </div>
 
@@ -73,9 +73,9 @@ const ContactPage = () => {
                 <Phone size={28} />
               </div>
               <h3 className="text-xl font-bold text-zinc-100 mb-2">Direct Concierge</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed mb-1">+880 1234 567 890</p>
-              <p className="text-zinc-500 text-sm leading-relaxed mb-4">+880 1987 654 321</p>
-              <a href="tel:+8801234567890" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">Call Now</a>
+              <p className="text-zinc-500 text-sm leading-relaxed mb-1">+880 1722550012</p>
+              <p className="text-zinc-500 text-sm leading-relaxed mb-4">+880 1822335566</p>
+              <a href="tel:+8801722550012" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">Call Now</a>
             </div>
 
             <div className="p-6 sm:p-8 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all group">
@@ -83,8 +83,8 @@ const ContactPage = () => {
                 <Mail size={28} />
               </div>
               <h3 className="text-xl font-bold text-zinc-100 mb-2">Digital Inquiry</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed mb-4">concierge@shwapner-thikana.com</p>
-              <a href="mailto:concierge@shwapner-thikana.com" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">Send Email</a>
+              <p className="text-zinc-500 text-sm leading-relaxed mb-4">shwapnerthikana@gmail.com</p>
+              <a href="mailto:shwapnerthikana@gmail.com" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">Send Email</a>
             </div>
           </div>
 

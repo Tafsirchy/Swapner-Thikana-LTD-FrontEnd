@@ -9,7 +9,7 @@ const StructuredData = ({ type, data }) => {
       '@type': 'Organization',
       name: 'Shwapner Thikana Ltd',
       url: 'https://shwapner-thikana.com',
-      logo: 'https://shwapner-thikana.com/logo.png',
+      logo: 'https://shwapner-thikana.com/logo-new.png',
       sameAs: [
         'https://www.facebook.com/shwapnerthikana',
         'https://twitter.com/shwapnerthikana',

@@ -6,6 +6,7 @@ import { User, Mail, Phone, Save, Loader2, Lock, Eye, EyeOff, Shield, Calendar, 
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const SettingsPage = () => {
   const { user, updateUser, checkAuth } = useAuth();
@@ -134,13 +135,11 @@ const SettingsPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="mb-6 sm:mb-10 px-1 sm:px-0">
-        <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
-          <User size={36} className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
-          Account Settings
-        </h1>
-        <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg">Manage your personal information and security preferences.</p>
-      </div>
+      <DashboardPageHeader 
+        title="Account Settings"
+        subtitle="Manage your personal information and security preferences."
+        icon={<User />}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
@@ -223,7 +222,7 @@ const SettingsPage = () => {
         {/* Right Column: Settings Tabs & Forms */}
         <div className="lg:col-span-2 space-y-6">
            {/* Tab Navigation */}
-           <div className="flex items-center gap-1 sm:gap-2 p-1 bg-white/5 border border-white/5 rounded-2xl w-full sm:w-fit overflow-x-auto no-scrollbar">
+           <div className="flex items-center gap-1 sm:gap-2 p-1.5 bg-white/5 border border-white/5 rounded-2xl w-full sm:w-fit overflow-x-auto no-scrollbar">
               <button
                  onClick={() => setActiveTab('general')}
                  className={`flex-1 sm:flex-none px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap ${
@@ -249,7 +248,7 @@ const SettingsPage = () => {
            </div>
 
            {/* Content Area */}
-           <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 min-h-[400px] sm:min-h-[500px]">
+           <div className="bg-white/5 border border-white/5 rounded-3xl p-6 sm:p-8 min-h-[400px] sm:min-h-[500px]">
               <AnimatePresence mode="wait">
                  {activeTab === 'general' ? (
                     <motion.div
@@ -268,7 +267,7 @@ const SettingsPage = () => {
                                    type="text" 
                                    value={formData.name}
                                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
+                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                 />
                              </div>
                              <div className="space-y-2">
@@ -277,7 +276,7 @@ const SettingsPage = () => {
                                    type="text" 
                                    value={formData.phone}
                                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
+                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                 />
                              </div>
                           </div>
@@ -303,7 +302,7 @@ const SettingsPage = () => {
                                    value={formData.bio}
                                    onChange={(e) => setFormData({...formData, bio: e.target.value})}
                                    rows={4}
-                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 resize-none transition-all focus:bg-zinc-900 text-sm sm:text-base"
+                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 resize-none transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                    placeholder="Tell clients about your experience..."
                                 />
                              </div>
@@ -338,7 +337,7 @@ const SettingsPage = () => {
                                    type={showPasswords.current ? "text" : "password"}
                                    value={passwordData.currentPassword}
                                    onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
-                                   className="w-full bg-zinc-900/50 border border-white/10 rounded-xl pl-4 pr-12 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
+                                   className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl pl-4 pr-12 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                    placeholder="••••••••"
                                 />
                                 <button
@@ -359,7 +358,7 @@ const SettingsPage = () => {
                                       type={showPasswords.new ? "text" : "password"}
                                       value={passwordData.newPassword}
                                       onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
-                                      className="w-full bg-zinc-900/50 border border-white/10 rounded-xl pl-4 pr-12 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
+                                      className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl pl-4 pr-12 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                       placeholder="••••••••"
                                    />
                                    <button
@@ -379,7 +378,7 @@ const SettingsPage = () => {
                                       type={showPasswords.confirm ? "text" : "password"}
                                       value={passwordData.confirmPassword}
                                       onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
-                                      className="w-full bg-zinc-900/50 border border-white/10 rounded-xl pl-4 pr-12 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
+                                      className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl pl-4 pr-12 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
                                       placeholder="••••••••"
                                    />
                                    <button

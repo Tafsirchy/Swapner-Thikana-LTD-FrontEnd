@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import { Heart, Search, ArrowUpDown } from 'lucide-react';
+import { Heart, Search, ArrowUpDown, X } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
 import ProjectCard from '@/components/shared/ProjectCard';
 import { api } from '@/lib/api';
@@ -79,8 +79,8 @@ const SavedPropertiesPage = () => {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
-            <Heart size={32} className="text-brand-gold fill-brand-gold" />
+          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
+            <Heart size={32} className="text-brand-gold fill-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
             Saved Items
           </h1>
           <p className="text-zinc-400 mt-1">
@@ -90,7 +90,7 @@ const SavedPropertiesPage = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-4 border-b border-white/10">
+      <div className="flex gap-4 border-b border-white/10 overflow-x-auto no-scrollbar">
         <button
           onClick={() => { setActiveTab('saved'); setSelectedWishlist(null); }}
           className={`pb-4 px-2 font-bold transition-all ${
@@ -199,9 +199,9 @@ const SavedPropertiesPage = () => {
                   </div>
                   <button 
                     onClick={(e) => handleDeleteWishlist(e, wishlist._id)}
-                    className="p-2 text-zinc-500 hover:text-red-500 hover:bg-red-500/10 rounded-full transition-all"
+                    className="w-11 h-11 flex items-center justify-center text-zinc-500 hover:text-red-500 hover:bg-red-500/10 rounded-full transition-all"
                   >
-                    <Search size={16} className="rotate-45" /> {/* Use X icon ideally, reusing Search for now or import X */}
+                    <X size={20} />
                   </button>
                 </div>
                 

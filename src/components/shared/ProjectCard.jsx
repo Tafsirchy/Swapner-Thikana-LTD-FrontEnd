@@ -64,9 +64,9 @@ const ProjectCard = ({ project }) => {
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className="group relative bg-white/5 border border-white/10 rounded-none overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
+      className="group relative bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
     >
-      <div className="relative aspect-[4/3] sm:h-80 w-full">
+      <div className="relative aspect-[4/3] sm:h-80 w-full rounded-t-3xl overflow-hidden">
         <SmartImage
           src={images?.[0] || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'}
           alt={title}

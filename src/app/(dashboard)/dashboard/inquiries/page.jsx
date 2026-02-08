@@ -6,6 +6,7 @@ import { MessageSquare, Building2, Clock, Filter, Search, Download } from 'lucid
 import { api } from '@/lib/api';
 import { exportLeadsCSV } from '@/utils/exportUtils';
 import LuxurySelect from '@/components/shared/LuxurySelect';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const statusColors = {
   new: 'bg-blue-500/10 text-blue-500',
@@ -52,59 +53,57 @@ const InquiriesPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
-            <MessageSquare size={32} className="text-brand-gold" />
-            My Inquiries
-          </h1>
-          <p className="text-zinc-400 mt-1">
-            <span className="text-zinc-100 font-bold">{filteredInquiries.length}</span> {statusFilter !== 'all' ? statusFilter : 'total'} inquiries
-          </p>
-          <div className="flex items-center gap-3">
-          <button
-            onClick={() => exportLeadsCSV(inquiries)}
-            disabled={inquiries.length === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-bold hover:bg-white/10 transition-all disabled:opacity-50 text-sm"
-          >
-            <Download size={16} className="text-brand-gold" />
-            Export CSV
-          </button>
-        </div>
-      </div>
-        
-        {/* Filter Dropdown */}
-        <div className="flex items-center gap-2">
-          <Filter size={18} className="text-zinc-400" />
-          <LuxurySelect
-            value={statusFilter}
-            onChange={setStatusFilter}
-            options={[
-              { label: 'All Status', value: 'all' },
-              { label: 'New', value: 'new' },
-              { label: 'Contacted', value: 'contacted' },
-              { label: 'Converted', value: 'converted' },
-              { label: 'Closed', value: 'closed' }
-            ]}
-            placeholder="All Status"
-            className="!py-2 w-40"
-          />
-        </div>
-      </div>
+      <DashboardPageHeader 
+        title="My Inquiries"
+        subtitle="Track and manage incoming property inquiries and lead conversations"
+        icon={<MessageSquare />}
+        actions={
+          <>
+            <button
+              onClick={() => exportLeadsCSV(inquiries)}
+              disabled={inquiries.length === 0}
+              className="flex items-center justify-center gap-3 px-6 py-3.5 bg-white/5 border border-white/10 text-zinc-100 rounded-xl font-bold hover:bg-white/10 transition-all disabled:opacity-50 text-sm active:scale-95 shrink-0"
+            >
+              <Download size={18} className="text-brand-gold" />
+              Export Data (CSV)
+            </button>
+
+            <div className="h-8 w-px bg-white/5 hidden sm:block"></div>
+
+            <div className="flex items-center gap-3 bg-zinc-900/50 p-1.5 rounded-xl border border-white/10">
+              <Filter size={16} className="text-zinc-500 ml-2" />
+              <LuxurySelect
+                value={statusFilter}
+                onChange={setStatusFilter}
+                options={[
+                  { label: 'All Status', value: 'all' },
+                  { label: 'New', value: 'new' },
+                  { label: 'Contacted', value: 'contacted' },
+                  { label: 'Converted', value: 'converted' },
+                  { label: 'Closed', value: 'closed' }
+                ]}
+                placeholder="All Status"
+                className="!py-1.5 w-full sm:w-36 !bg-transparent !border-none"
+              />
+            </div>
+          </>
+        }
+        className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/5"
+      />
 
       {filteredInquiries.length > 0 ? (
         <div className="space-y-4">
           {filteredInquiries.map((lead) => (
-            <div key={lead._id} className="bg-zinc-900/40 backdrop-blur-md border border-white/5 rounded-2xl md:rounded-3xl p-5 md:p-8 hover:border-brand-gold/30 transition-all group relative overflow-hidden">
+            <div key={lead._id} className="bg-white/5 border border-white/5 rounded-3xl p-6 sm:p-8 hover:border-brand-gold/30 transition-all group relative overflow-hidden">
                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
                
-               <div className="flex flex-col md:flex-row gap-6 md:gap-8 relative z-10">
+               <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 relative z-10">
                   <div className="flex-1 space-y-4">
-                     <div className="flex items-center gap-3 md:gap-4 mb-4">
-                        <span className={`text-[9px] font-extrabold uppercase tracking-[0.2em] px-2.5 py-1 rounded-full border border-current shadow-inner ${statusColors[lead.status] || 'bg-zinc-500/10 text-zinc-500'}`}>
+                     <div className="flex items-center flex-wrap gap-3 mb-4">
+                        <span className={`text-[9px] font-extrabold uppercase tracking-[0.2em] px-2.5 py-1 rounded-full border border-current shadow-inner shrink-0 ${statusColors[lead.status] || 'bg-zinc-500/10 text-zinc-500'}`}>
                            {lead.status}
                         </span>
-                        <div className="h-4 w-px bg-white/10" />
+                        <div className="h-4 w-px bg-white/10 hidden xs:block" />
                         <span className="text-xs text-zinc-500 font-medium flex items-center gap-2">
                            <Clock size={14} className="text-zinc-600" />
                            {new Date(lead.createdAt).toLocaleDateString()}
@@ -118,23 +117,24 @@ const InquiriesPage = () => {
                      {lead.propertyName && (
                         <div className="bg-white/5 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10">
                            <Building2 size={14} className="text-brand-gold" />
-                           <span className="text-sm text-zinc-300 font-medium">{lead.propertyName}</span>
+                           <span className="text-sm text-zinc-300 font-medium truncate max-w-[200px] sm:max-w-none">{lead.propertyName}</span>
                         </div>
                      )}
                      
                      <div className="bg-black/20 p-5 rounded-2xl border border-white/5 mt-4 group">
-                        <p className="text-zinc-400 text-sm leading-relaxed italic line-clamp-3">
+                        <p className="text-zinc-400 text-sm leading-relaxed italic line-clamp-3 md:line-clamp-none">
                            &quot;{lead.message}&quot;
                         </p>
                      </div>
                   </div>
-                 <div className="flex flex-col md:items-end justify-center gap-2 border-t md:border-t-0 md:border-l border-white/5 pt-4 md:pt-0 md:pl-6 min-w-[200px]">
+                 <div className="flex flex-col lg:items-end justify-center gap-2 border-t lg:border-t-0 lg:border-l border-white/5 pt-5 lg:pt-0 lg:pl-8 min-w-[200px]">
                     <div className="text-sm text-zinc-400 flex items-center gap-2">
                        <Building2 size={14} className="text-brand-gold" />
-                       Type: <span className="text-zinc-200 capitalize">{lead.interestType}</span>
+                       <span className="text-zinc-500">Interest:</span>
+                       <span className="text-zinc-200 capitalize font-bold">{lead.interestType}</span>
                     </div>
                     {lead.assignedTo && (
-                       <div className="text-xs text-zinc-500 mt-1">
+                       <div className="bg-brand-emerald/5 border border-brand-emerald/10 px-3 py-1 rounded-full text-[10px] text-brand-emerald font-bold uppercase tracking-widest mt-1">
                           Agent Assigned
                        </div>
                     )}

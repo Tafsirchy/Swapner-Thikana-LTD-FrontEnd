@@ -11,9 +11,21 @@ import {
 import Image from 'next/image';
 import SmartImage from './SmartImage';
 import { motion, AnimatePresence } from 'framer-motion';
+import { api } from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
 
 const ProjectDetailsModal = ({ isOpen, onClose, project }) => {
+  const { user } = useAuth();
   const [activeImage, setActiveImage] = useState(0);
+
+  // Track recently viewed
+  useEffect(() => {
+    if (isOpen && project?._id && user) {
+      api.user.addRecentlyViewed(project._id).catch(err => {
+        console.error('Failed to track project view from modal:', err);
+      });
+    }
+  }, [isOpen, project?._id, user]);
 
   // Lock scroll when modal is open
   useEffect(() => {

@@ -20,15 +20,15 @@ const StatCard = ({ title, value, icon: Icon, color, trend }) => (
       <Icon size={80} />
     </div>
     <div className="relative z-10">
-      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${color} bg-white/5`}>
-        <Icon size={24} />
+      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 ${color} bg-white/5`}>
+        <Icon size={20} className="sm:size-6" />
       </div>
-      <h3 className="text-zinc-400 text-xs sm:text-sm font-medium uppercase tracking-wider mb-1">{title}</h3>
-      <div className="flex items-end gap-3">
-        <span className="text-2xl sm:text-3xl font-bold text-zinc-100">{value}</span>
+      <h3 className="text-zinc-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-1.5">{title}</h3>
+      <div className="flex items-end flex-wrap gap-1 sm:gap-3">
+        <span className="text-xl sm:text-3xl font-bold text-zinc-100 leading-tight">{value}</span>
         {trend && (
-           <span className="text-xs font-bold text-emerald-400 mb-1 flex items-center gap-1">
-             <TrendingUp size={12} /> {trend}
+           <span className="text-[10px] sm:text-xs font-bold text-emerald-400 mb-1 flex items-center gap-1">
+             <TrendingUp size={10} className="sm:size-12" /> {trend}
            </span>
         )}
       </div>
@@ -37,10 +37,11 @@ const StatCard = ({ title, value, icon: Icon, color, trend }) => (
 );
 
 const ViewAllLink = ({ href }) => (
-  <a href={href} className="text-brand-gold text-sm font-bold flex items-center gap-1 hover:underline">
+  <a href={href} className="text-brand-gold text-xs sm:text-sm font-bold flex items-center gap-1 hover:underline py-2 active:scale-95 transition-transform">
     View All <ArrowRight size={14} />
   </a>
 );
+
 
 const CustomerDashboard = () => {
   const [stats, setStats] = React.useState(null);
@@ -63,17 +64,18 @@ const CustomerDashboard = () => {
 
   if (loading) return (
      <div className="space-y-8 animate-pulse">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-           {[1,2,3].map(i => <div key={i} className="h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
-        </div>
-        <div className="h-64 bg-white/5 rounded-3xl border border-white/5"></div>
+         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1,2,3].map(i => <div key={i} className="h-28 sm:h-32 bg-white/5 rounded-2xl sm:rounded-3xl border border-white/5"></div>)}
+         </div>
+        <div className="h-64 bg-white/5 rounded-2xl sm:rounded-3xl border border-white/5"></div>
      </div>
   );
+
 
   return (
    <div className="space-y-8">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
          <StatCard title="Saved Homes" value={stats?.savedHomesCount || 0} icon={Heart} color="text-pink-500" />
          <StatCard title="Active Inquiries" value={stats?.activeInquiriesCount || 0} icon={MessageSquare} color="text-brand-gold" trend={stats?.activeInquiriesCount > 0 ? "Active" : ""} />
          <StatCard title="Saved Searches" value={stats?.savedSearchesCount || 0} icon={Search} color="text-blue-500" />
@@ -154,15 +156,16 @@ const AgentDashboard = () => {
 
   if (loading) return (
      <div className="space-y-8 animate-pulse">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-           {[...Array(4)].map((_, i) => <div key={i} className="h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+           {[...Array(4)].map((_, i) => <div key={i} className="h-28 sm:h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
            <div className="lg:col-span-2 h-64 bg-white/5 rounded-3xl"></div>
            <div className="h-64 bg-white/5 rounded-3xl"></div>
         </div>
      </div>
   );
+
 
   // Derived Stats
   const totalListings = stats?.listingsPerformance?.length || 0;
@@ -176,19 +179,20 @@ const AgentDashboard = () => {
   return (
    <div className="space-y-8 font-sans">
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
          <StatCard title="My Listings" value={totalListings} icon={Building2} color="text-brand-emerald" />
          <StatCard title="Total Leads" value={totalLeads} icon={Users} color="text-brand-gold" />
          <StatCard title="Total Views" value={totalViews} icon={Search} color="text-purple-500" />
          <StatCard title="Pending" value={pendingListings} icon={Clock} color="text-zinc-500" />
       </div>
 
+
        {/* Top Actions & Profile Strength */}
-       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           <div className="lg:col-span-2">
              <ProfileStrengthMeter strength={stats?.profileStrength} />
           </div>
-          <div className="bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
+          <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
              <div>
                 <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-2 mb-2">
                    <TrendingUp size={20} className="text-emerald-500" />
@@ -232,7 +236,7 @@ const AgentDashboard = () => {
               <div className="space-y-3 lg:hidden">
                  {stats?.recentLeads?.length > 0 ? (
                     stats.recentLeads.map((lead, i) => (
-                       <div key={i} className="p-4 bg-white/5 rounded-2xl border border-white/5">
+                       <div key={i} className="p-5 bg-white/5 rounded-3xl border border-white/5 hover:border-brand-gold/20 transition-all group">
                           <div className="flex items-center justify-between mb-2">
                              <div className="font-bold text-zinc-100 text-sm">{lead.name}</div>
                              <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
@@ -329,11 +333,12 @@ const AdminDashboard = () => {
   }, []);
 
   if (loading) return <div className="animate-pulse space-y-8">
-     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-       {[...Array(6)].map((_, i) => <div key={i} className="h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
+     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+       {[...Array(6)].map((_, i) => <div key={i} className="h-28 sm:h-32 bg-white/5 rounded-2xl sm:rounded-3xl border border-white/5"></div>)}
      </div>
-     <div className="h-64 bg-white/5 rounded-3xl border border-white/5"></div>
+     <div className="h-64 bg-white/5 rounded-2xl sm:rounded-3xl border border-white/5"></div>
   </div>;
+
 
   return (
     <div className="space-y-8">
@@ -357,7 +362,7 @@ const AdminDashboard = () => {
           <div className="space-y-4">
             {pendingProperties.length > 0 ? (
               pendingProperties.map((property) => (
-                <div key={property._id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 group">
+                <div key={property._id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-white/5 rounded-3xl border border-white/5 group">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-zinc-800 flex items-center justify-center shrink-0">
                       <Building2 size={20} className="text-zinc-600 sm:size-24" />

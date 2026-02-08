@@ -94,12 +94,12 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
         />
 
         {/* Modal Container */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="relative w-full max-w-4xl max-h-[90vh] md:max-h-[85vh] bg-royal-deep border border-white/10 shadow-2xl overflow-hidden flex flex-col"
-        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="relative w-full max-w-4xl max-h-[90vh] md:max-h-[85vh] bg-royal-deep border border-white/10 shadow-2xl rounded-3xl overflow-hidden flex flex-col"
+          >
           {/* Header */}
           <div className="p-6 md:p-8 border-b border-white/10 flex items-center justify-between bg-zinc-900/50 relative overflow-hidden">
             <div className="relative z-10">
@@ -163,7 +163,7 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
-                    className={`group relative p-5 md:p-8 transition-all duration-500 border ${
+                    className={`group relative p-5 md:p-8 transition-all duration-500 border rounded-2xl ${
                       notif.isRead 
                         ? 'bg-white/[0.01] border-white/5' 
                         : 'bg-brand-gold/[0.02] border-brand-gold/20'
@@ -193,16 +193,16 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
                           {!notif.isRead && (
                              <button 
                                onClick={() => handleMarkAsRead(notif._id)}
-                               className="text-[9px] md:text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em] flex items-center gap-2 hover:text-white transition-colors"
+                               className="text-xs font-bold text-brand-gold uppercase tracking-[0.2em] flex items-center gap-2 hover:text-white transition-colors py-2 px-3 rounded-lg hover:bg-brand-gold/10"
                              >
-                               <CheckCircle2 size={12} /> Resolve
+                               <CheckCircle2 size={14} /> Resolve
                              </button>
                           )}
                           <button 
                             onClick={() => handleDelete(notif._id)}
-                            className="text-[9px] md:text-[10px] font-bold text-red-400 uppercase tracking-[0.2em] flex items-center gap-2 hover:text-red-300 transition-colors ml-auto"
+                            className="text-xs font-bold text-red-400 uppercase tracking-[0.2em] flex items-center gap-2 hover:text-red-300 transition-colors ml-auto py-2 px-3 rounded-lg hover:bg-red-500/10"
                           >
-                            <Trash2 size={12} /> Clear
+                            <Trash2 size={14} /> Clear
                           </button>
                         </div>
                       </div>
@@ -213,20 +213,20 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
                 {/* Load More */}
                 {page < totalPages && (
                   <div className="pt-12 text-center">
-                    <button
-                      onClick={() => {
-                        const next = page + 1;
-                        setPage(next);
-                        fetchAllNotifications(next);
-                      }}
-                      disabled={loading}
-                      className="group relative px-10 py-4 bg-white/5 hover:bg-brand-gold transition-all duration-500 overflow-hidden"
-                    >
-                      <div className="absolute inset-0 bg-brand-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                      <span className="relative z-10 text-brand-gold group-hover:text-royal-deep text-xs font-bold uppercase tracking-[0.3em] transition-colors">
-                        {loading ? 'Consulting Archives...' : 'Reveal More History'}
-                      </span>
-                    </button>
+                      <button
+                        onClick={() => {
+                          const next = page + 1;
+                          setPage(next);
+                          fetchAllNotifications(next);
+                        }}
+                        disabled={loading}
+                        className="group relative px-10 py-4 bg-white/5 hover:bg-brand-gold transition-all duration-500 overflow-hidden rounded-xl"
+                      >
+                        <div className="absolute inset-0 bg-brand-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                        <span className="relative z-10 text-brand-gold group-hover:text-royal-deep text-xs font-bold uppercase tracking-[0.3em] transition-colors">
+                          {loading ? 'Consulting Archives...' : 'Reveal More History'}
+                        </span>
+                      </button>
                   </div>
                 )}
               </div>

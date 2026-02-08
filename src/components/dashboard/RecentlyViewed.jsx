@@ -7,14 +7,14 @@ import { Clock, Loader2, ArrowRight } from 'lucide-react';
 import { api } from '@/lib/api';
 
 const RecentlyViewed = () => {
-  const [properties, setProperties] = useState([]);
+  const [recentItems, setRecentItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRecent = async () => {
       try {
         const res = await api.user.getRecentlyViewed();
-        setProperties(res.data.properties);
+        setRecentItems(res.data.properties);
       } catch (err) {
         console.error('Failed to fetch recent history:', err);
       } finally {
@@ -30,13 +30,13 @@ const RecentlyViewed = () => {
     </div>
   );
 
-  if (properties.length === 0) return (
+  if (recentItems.length === 0) return (
     <div className="bg-white/5 border border-white/5 rounded-3xl p-10 text-center">
       <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
         <Clock className="text-zinc-600" size={32} />
       </div>
       <h3 className="text-zinc-300 font-bold">No history yet</h3>
-      <p className="text-zinc-500 text-sm mt-2">Properties you view will appear here for quick access.</p>
+      <p className="text-zinc-500 text-sm mt-2">Properties and projects you view will appear here for quick access.</p>
     </div>
   );
 
@@ -50,24 +50,24 @@ const RecentlyViewed = () => {
       </div>
       
       <div className="space-y-4">
-        {properties.slice(0, 5).map((property) => (
+        {recentItems.slice(0, 5).map((item) => (
           <Link 
-            key={property._id} 
-            href={property.itemType === 'project' ? `/projects/${property.slug}` : `/properties/${property.slug}`}
+            key={item._id} 
+            href={item.itemType === 'project' ? `/projects/${item.slug}` : `/properties/${item.slug}`}
             className="flex items-center gap-4 p-3 bg-white/5 rounded-2xl border border-white/5 hover:border-brand-gold/30 transition-all group"
           >
             <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
               <Image 
-                src={property.images?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop'} 
-                alt={property.title}
+                src={item.images?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop'} 
+                alt={item.title}
                 fill
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
               />
             </div>
             <div className="flex-1 min-w-0">
-              <h4 className="font-bold text-sm text-zinc-100 truncate">{property.title}</h4>
-              <p className="text-xs text-zinc-400 mt-1 truncate">{property.location?.area || property.location?.city}, {property.location?.city || ''}</p>
-              {property.price && <p className="text-xs font-bold text-brand-gold mt-1">BDT {property.price?.toLocaleString()}</p>}
+              <h4 className="font-bold text-sm text-zinc-100 truncate">{item.title}</h4>
+              <p className="text-xs text-zinc-400 mt-1 truncate">{item.location?.area || item.location?.city}, {item.location?.city || ''}</p>
+              {item.price && <p className="text-xs font-bold text-brand-gold mt-1">BDT {item.price?.toLocaleString()}</p>}
             </div>
             <ArrowRight size={16} className="text-zinc-600 group-hover:text-brand-gold transition-colors mr-2" />
           </Link>

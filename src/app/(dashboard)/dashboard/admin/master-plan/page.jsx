@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MapPin, Upload, Save, GripVertical, Star, Trash2, Plus, Search, Building2, X } from 'lucide-react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import { uploadToImgBB } from '@/lib/imgbb';
@@ -257,16 +258,11 @@ const MasterPlanAdminPage = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
-          <MapPin className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
-          Interactive Master Plan
-        </h1>
-        <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg">
-          Manage regions, images, descriptions, and project links
-        </p>
-      </div>
+      <DashboardPageHeader 
+        title="Interactive Master Plan"
+        subtitle="Manage regions, images, descriptions, and project links"
+        icon={<MapPin />}
+      />
 
       {/* Region Tabs */}
       <div className="relative border-b border-white/10 group/tabs">

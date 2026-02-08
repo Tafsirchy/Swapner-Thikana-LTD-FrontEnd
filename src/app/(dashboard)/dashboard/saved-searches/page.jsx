@@ -120,8 +120,11 @@ const SavedSearchesPage = () => {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-zinc-100 mb-2">Saved Searches</h1>
-        <p className="text-zinc-400">Manage your saved property searches and alerts</p>
+        <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 mb-2 flex items-center gap-3">
+          <Search size={32} className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
+          Saved Searches
+        </h1>
+        <p className="text-zinc-400 text-sm sm:text-base">Manage your saved property searches and alerts</p>
       </div>
 
       {/* Content */}
@@ -163,7 +166,7 @@ const SavedSearchesPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="glass border-white/5 rounded-2xl p-6 hover:border-white/10 transition-all group"
+              className="glass border-white/5 rounded-3xl p-6 hover:border-white/10 transition-all group"
             >
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div className="flex-1">
@@ -199,14 +202,14 @@ const SavedSearchesPage = () => {
                     <>
                       <button
                         onClick={() => handleStartEdit(search)}
-                        className="p-2 rounded-lg hover:bg-white/5 text-zinc-400 hover:text-zinc-100 transition-all"
+                        className="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-white/5 text-zinc-400 hover:text-zinc-100 transition-all"
                         title="Edit name"
                       >
                         <Edit2 size={18} />
                       </button>
                       <button
                         onClick={() => handleDelete(search._id)}
-                        className="p-2 rounded-lg hover:bg-red-500/10 text-zinc-400 hover:text-red-500 transition-all"
+                        className="w-11 h-11 flex items-center justify-center rounded-xl hover:bg-red-500/10 text-zinc-400 hover:text-red-500 transition-all"
                         title="Delete search"
                       >
                         <Trash2 size={18} />
@@ -216,8 +219,8 @@ const SavedSearchesPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-4 pt-4 border-t border-white/5">
-                <div className="flex items-center gap-4 text-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/5">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm">
                   <span className="flex items-center gap-2 text-zinc-400">
                     <Bell size={14} />
                     {getAlertLabel(search.alertFrequency)}
@@ -228,7 +231,7 @@ const SavedSearchesPage = () => {
                 </div>
                 <button
                   onClick={() => handleApplySearch(search)}
-                  className="flex items-center gap-2 px-4 py-2 bg-brand-gold/10 border border-brand-gold/30 text-brand-gold rounded-xl font-medium hover:bg-brand-gold/20 transition-all"
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold/10 border border-brand-gold/30 text-brand-gold rounded-xl font-bold hover:bg-brand-gold/20 transition-all w-full sm:w-auto"
                 >
                   <Play size={16} />
                   Apply Search

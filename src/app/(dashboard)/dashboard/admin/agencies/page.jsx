@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const AdminAgenciesPage = () => {
   const [agencies, setAgencies] = useState([]);
@@ -64,23 +65,19 @@ const AdminAgenciesPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <Briefcase className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
-            Agency Management
-          </h1>
-          <p className="text-zinc-400 mt-2 text-lg">
-            Manage partner real estate agencies
-          </p>
-        </div>
-        <Link
-          href="/dashboard/admin/agencies/add"
-          className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10"
-        >
-          <PlusCircle size={18} /> ADD NEW AGENCIES
-        </Link>
-      </div>
+      <DashboardPageHeader 
+        title="Agency Management"
+        subtitle="Manage partner real estate agencies"
+        icon={<Briefcase />}
+        actions={
+          <Link
+            href="/dashboard/admin/agencies/add"
+            className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10"
+          >
+            <PlusCircle size={18} /> ADD NEW AGENCIES
+          </Link>
+        }
+      />
 
       {/* Search */}
       <div className="relative">

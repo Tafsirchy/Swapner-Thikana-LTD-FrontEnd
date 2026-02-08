@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const AdminBlogsPage = () => {
@@ -69,23 +70,19 @@ const AdminBlogsPage = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-4xl font-bold text-zinc-100 flex items-center gap-3">
-            <FileText size={32} className="text-brand-gold w-8 h-8 sm:w-10 sm:h-10" />
-            Blog Management
-          </h1>
-          <p className="text-zinc-400 mt-1 sm:mt-2 text-sm sm:text-lg font-sans">
-            Publish and manage articles and news
-          </p>
-        </div>
-        <Link
-          href="/dashboard/admin/blogs/add"
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10 text-sm sm:text-base"
-        >
-          <PlusCircle size={18} /> NEW POST
-        </Link>
-      </div>
+      <DashboardPageHeader 
+        title="Blog Management"
+        subtitle="Publish and manage articles and news"
+        icon={<FileText />}
+        actions={
+          <Link
+            href="/dashboard/admin/blogs/add"
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10 text-sm sm:text-base"
+          >
+            <PlusCircle size={18} /> NEW POST
+          </Link>
+        }
+      />
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">

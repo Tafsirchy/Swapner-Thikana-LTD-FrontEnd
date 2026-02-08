@@ -14,9 +14,11 @@ import ShareButton from '../shared/ShareButton';
 import DownloadBrochure from '../shared/DownloadBrochure';
 import LuxAccordion from '../shared/LuxAccordion';
 import { api } from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
 
 const ProjectDetailClient = ({ project }) => {
+  const { user } = useAuth();
   const [inquiry, setInquiry] = useState({
     name: '',
     phone: '',
@@ -28,6 +30,15 @@ const ProjectDetailClient = ({ project }) => {
   const [submitting, setSubmitting] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [showInquiryModal, setShowInquiryModal] = useState(false);
+
+  // Track recently viewed
+  useEffect(() => {
+    if (project?._id && user) {
+      api.user.addRecentlyViewed(project._id).catch(err => {
+        console.error('Failed to track project view:', err);
+      });
+    }
+  }, [project?._id, user]);
 
   const handleInquirySubmit = async (e) => {
     e.preventDefault();

@@ -16,7 +16,7 @@ export default function NotFound() {
       {/* Dynamic Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-96 bg-brand-gold/5 blur-[120px] rounded-full"></div>
 
-      <div className="max-container px-4 py-20 relative z-10">
+      <div className="max-container px-4 py-32 relative z-10">
         <div className="flex flex-col items-center text-center">
           
           {/* 404 Animated Number */}
@@ -24,9 +24,9 @@ export default function NotFound() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="relative mb-8"
+            className="relative mb-5"
           >
-            <h1 className="text-[8rem] md:text-[12rem] font-bold font-cinzel leading-none select-none">
+            <h1 className="text-[7rem] md:text-[10rem] font-bold font-cinzel leading-none select-none">
               <span className="bg-clip-text text-transparent bg-gradient-to-b from-brand-gold via-brand-gold-light to-brand-gold/40">
                 404
               </span>

@@ -11,6 +11,7 @@ import { toast } from 'react-hot-toast';
 import { AnimatePresence, motion } from 'framer-motion';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const statusConfig = {
   pending: { label: 'Pending', color: 'bg-yellow-500/10 text-yellow-500', icon: Clock },
@@ -225,15 +226,11 @@ const AdminSellerInquiriesPage = () => {
   return (
     <div className="space-y-6 font-sans">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-3 font-cinzel italic tracking-wide">
-            <Users className="text-brand-gold w-6 h-6 sm:w-8 sm:h-8" />
-            Seller Inquiries
-          </h1>
-          <p className="text-zinc-400 text-[10px] sm:text-xs tracking-widest mt-1 opacity-70 uppercase font-medium">Manage &quot;Sell with Us&quot; form submissions</p>
-        </div>
-      </div>
+      <DashboardPageHeader 
+        title="Seller Inquiries"
+        subtitle="Manage 'Sell with Us' form submissions"
+        icon={<Users />}
+      />
 
       {/* Filters & Search */}
       <div className="glass p-5 rounded-3xl border border-white/5 flex flex-col md:flex-row gap-5 items-center justify-between">

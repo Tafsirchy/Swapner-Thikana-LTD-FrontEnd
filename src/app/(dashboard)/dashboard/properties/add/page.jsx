@@ -215,12 +215,14 @@ const AddPropertyPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-zinc-100 flex items-center gap-3">
-          <PlusCircle size={32} className="text-brand-gold" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-gold/10 flex items-center justify-center shrink-0">
+            <PlusCircle size={24} className="text-brand-gold sm:size-32" />
+          </div>
           Add New Property
         </h1>
-        <div className="text-sm text-zinc-400">
+        <div className="text-sm text-zinc-400 bg-white/5 px-4 py-2 rounded-full border border-white/5 w-fit">
            Step <span className="text-brand-gold font-bold">{currentStep}</span> of {steps.length}
         </div>
       </div>
@@ -356,15 +358,21 @@ const AddPropertyPage = () => {
                         }}
                         className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-base"
                      />
-                     {/* Hidden Coordinate Fields for Debug/Verify */}
-                     <div className="grid grid-cols-2 gap-4 mt-2">
-                        <div>
-                           <label className="block text-[10px] uppercase text-zinc-500 mb-1">Latitude</label>
-                           <input type="text" readOnly value={formData.location.latitude} className="w-full bg-black/20 text-zinc-500 text-base px-2 py-1.5 rounded border border-white/5" />
+                     {/* Coordinate Fields - Compact/Progressive */}
+                     <div className="bg-black/20 rounded-xl p-3 border border-white/5 mt-3">
+                        <div className="flex items-center justify-between mb-2">
+                           <label className="text-[10px] font-bold uppercase text-zinc-500 tracking-widest">Map Coordinates</label>
+                           <span className="text-[10px] text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded italic">Auto-calculated</span>
                         </div>
-                        <div>
-                           <label className="block text-[10px] uppercase text-zinc-500 mb-1">Longitude</label>
-                           <input type="text" readOnly value={formData.location.longitude} className="w-full bg-black/20 text-zinc-500 text-base px-2 py-1.5 rounded border border-white/5" />
+                        <div className="grid grid-cols-2 gap-3">
+                           <div className="bg-black/20 rounded px-3 py-2 border border-white/5">
+                              <span className="block text-[8px] text-zinc-500 uppercase font-black mb-0.5">Latitude</span>
+                              <span className="text-xs text-zinc-300 font-mono">{formData.location.latitude || '0.000'}</span>
+                           </div>
+                           <div className="bg-black/20 rounded px-3 py-2 border border-white/5">
+                              <span className="block text-[8px] text-zinc-500 uppercase font-black mb-0.5">Longitude</span>
+                              <span className="text-xs text-zinc-300 font-mono">{formData.location.longitude || '0.000'}</span>
+                           </div>
                         </div>
                      </div>
                   </div>
@@ -456,11 +464,11 @@ const AddPropertyPage = () => {
                className="space-y-6"
             >
                <h2 className="text-xl font-bold text-zinc-100 mb-6">Amenities & Features</h2>
-               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+               <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                   {AMENITIES_LIST.map((amenity) => (
                     <label
                       key={amenity}
-                      className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer ${
+                      className={`flex items-center gap-3 p-3.5 sm:p-4 rounded-xl border transition-all cursor-pointer ${
                         formData.amenities.includes(amenity)
                           ? 'bg-brand-gold/10 border-brand-gold text-brand-gold'
                           : 'bg-zinc-900 border-white/10 text-zinc-400 hover:border-white/20'
@@ -473,11 +481,11 @@ const AddPropertyPage = () => {
                         className="hidden"
                       />
                       {formData.amenities.includes(amenity) ? (
-                        <CheckCircle size={20} className="fill-brand-gold/20" />
+                        <CheckCircle size={18} className="fill-brand-gold/20 shrink-0" />
                       ) : (
-                        <div className="w-5 h-5 rounded-full border border-zinc-600" />
+                        <div className="w-5 h-5 rounded-full border border-zinc-600 shrink-0" />
                       )}
-                      <span className="font-medium">{amenity}</span>
+                      <span className="font-medium text-sm sm:text-base">{amenity}</span>
                     </label>
                   ))}
                </div>

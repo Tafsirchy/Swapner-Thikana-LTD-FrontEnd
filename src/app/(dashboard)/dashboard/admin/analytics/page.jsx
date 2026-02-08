@@ -3,17 +3,16 @@
 import React from 'react';
 import { BarChart3 } from 'lucide-react';
 import AnalyticsView from '@/components/dashboard/AnalyticsView';
+import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
 const AdminAnalyticsPage = () => {
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold text-zinc-100 flex items-center gap-3">
-          <BarChart3 size={32} className="text-brand-gold" />
-          Market Insights
-        </h1>
-        <p className="text-zinc-500 mt-2 text-lg font-sans">Platform-wide performance and engagement metrics</p>
-      </div>
+      <DashboardPageHeader 
+        title="Market Insights"
+        subtitle="Platform-wide performance and engagement metrics"
+        icon={<BarChart3 />}
+      />
 
       <AnalyticsView isAdmin={true} />
     </div>
