@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const cleanEnvVar = (val) => {
+  if (typeof val !== 'string') return val;
+  return val.replace(/[\s\n\r\t]/g, '').trim();
+};
+
 const apiInstance = axios.create({
-  baseURL: (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/?$/, '/'),
+  baseURL: (cleanEnvVar(process.env.NEXT_PUBLIC_API_URL) || 'http://localhost:5000/api').replace(/\/?$/, '/'),
   headers: {
     'Content-Type': 'application/json',
   },
