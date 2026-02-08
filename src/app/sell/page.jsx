@@ -91,12 +91,12 @@ const SellWithUsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-24 font-sans">
+    <div className="min-h-screen bg-royal-deep pt-24 md:pt-32 pb-16 md:pb-24 font-sans">
       <div className="max-container px-4">
         {/* Header */}
         <div className="text-center mb-16">
           <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block">List Your Property</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6 font-cinzel">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-zinc-100 mb-6 font-cinzel">
             Sell with <span className="text-brand-gold">Confidence</span>
           </h1>
           <p className="text-zinc-400 max-w-2xl mx-auto leading-relaxed">
@@ -155,7 +155,7 @@ const SellWithUsPage = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  <div className="space-y-2">
-                  <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Your Name</label>
+                <label className="text-sm font-bold text-zinc-400 uppercase tracking-widest ml-1">Your Name</label>
                   <input 
                     type="text" 
                     required
@@ -165,7 +165,7 @@ const SellWithUsPage = () => {
                   />
                 </div>
                  <div className="space-y-2">
-                  <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Phone Number</label>
+                  <label className="text-sm font-bold text-zinc-400 uppercase tracking-widest ml-1">Phone Number</label>
                   <input 
                     type="tel" 
                     required
@@ -178,7 +178,7 @@ const SellWithUsPage = () => {
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  <div className="space-y-2">
-                  <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Email Address</label>
+                  <label className="text-sm font-bold text-zinc-400 uppercase tracking-widest ml-1">Email Address</label>
                   <input 
                     type="email" 
                     required
@@ -188,7 +188,7 @@ const SellWithUsPage = () => {
                   />
                 </div>
                  <div className="space-y-2">
-                  <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Property Type</label>
+                  <label className="text-sm font-bold text-zinc-400 uppercase tracking-widest ml-1">Property Type</label>
                   <LuxurySelect
                     value={formData.propertyType}
                     onChange={(val) => setFormData({...formData, propertyType: val})}
@@ -205,7 +205,7 @@ const SellWithUsPage = () => {
               </div>
 
                <div className="space-y-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Property Address / Location</label>
+                <label className="text-sm font-bold text-zinc-400 uppercase tracking-widest ml-1">Property Address / Location</label>
                 <input 
                   type="text" 
                   required
@@ -217,7 +217,7 @@ const SellWithUsPage = () => {
 
                {/* Image Upload */}
                <div className="space-y-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1 block">Property Photos (Up to 5)</label>
+                <label className="text-sm font-bold text-zinc-400 uppercase tracking-widest ml-1 block">Property Photos (Up to 5)</label>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                   {selectedImages.map((img, idx) => (
                     <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-white/10 group">
@@ -225,7 +225,7 @@ const SellWithUsPage = () => {
                       <button 
                         type="button"
                         onClick={() => removeImage(idx)}
-                        className="absolute top-1 right-1 bg-red-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-20"
+                        className="absolute top-1 right-1 bg-red-500 rounded-full p-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity z-20"
                       >
                         <Upload className="rotate-45" size={12} />
                       </button>
@@ -248,7 +248,7 @@ const SellWithUsPage = () => {
               </div>
 
                <div className="space-y-2">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Additional Details</label>
+                <label className="text-sm font-bold text-zinc-400 uppercase tracking-widest ml-1">Additional Details</label>
                 <textarea 
                   rows="4"
                   className="w-full bg-zinc-900/50 border border-white/10 rounded-xl px-4 py-3.5 text-zinc-100 focus:border-brand-gold/50 outline-none transition-all resize-none text-base"

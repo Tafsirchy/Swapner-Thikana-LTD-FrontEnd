@@ -97,7 +97,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-royal-deep px-4 pt-40 pb-24 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-royal-deep px-4 pt-24 md:pt-40 pb-24 relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-brand-gold/5 rounded-full blur-[100px]"></div>
@@ -123,7 +123,7 @@ const RegisterPage = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Full Name</label>
+                <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider ml-1">Full Name</label>
                 <div className="relative group">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
                     <User size={18} />
@@ -140,7 +140,7 @@ const RegisterPage = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Phone Number</label>
+                <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider ml-1">Phone Number</label>
                 <div className="relative group">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
                     <Phone size={18} />
@@ -158,7 +158,7 @@ const RegisterPage = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Email Address</label>
+              <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider ml-1">Email Address</label>
               <div className="relative group">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
                   <Mail size={18} />
@@ -176,7 +176,7 @@ const RegisterPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Password</label>
+                <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider ml-1">Password</label>
                 <div className="relative group">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
                     <Lock size={18} />
@@ -215,7 +215,7 @@ const RegisterPage = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Confirm Password</label>
+                <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider ml-1">Confirm Password</label>
                 <div className="relative group">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
                     <ShieldCheck size={18} />
@@ -251,8 +251,8 @@ const RegisterPage = () => {
 
             <div className="flex items-center gap-2 ml-1 pb-2 pt-2">
               <input type="checkbox" required className="w-4 h-4 rounded border-brand-gold/20 bg-zinc-900 text-brand-gold focus:ring-brand-gold cursor-pointer" />
-              <p className="text-[11px] text-zinc-500">
-                I agree to the <Link href="#" className="text-brand-gold">Terms of Service</Link> and <Link href="#" className="text-brand-gold">Privacy Policy</Link>.
+              <p className="text-xs text-zinc-500">
+                I agree to the <Link href="/terms-of-service" className="text-brand-gold">Terms of Service</Link> and <Link href="/privacy-policy" className="text-brand-gold">Privacy Policy</Link>.
               </p>
             </div>
 

@@ -303,7 +303,7 @@ const Navbar = () => {
                         <Link
                           key={sub.name}
                           href={sub.href}
-                          className="text-sm sm:text-base font-medium text-zinc-300 hover:text-brand-gold py-2.5 flex items-center gap-2"
+                          className="text-sm sm:text-base font-medium text-zinc-300 hover:text-brand-gold py-3.5 flex items-center gap-2"
                           onClick={() => setIsOpen(false)}
                         >
                           <div className="w-1.5 h-1.5 rounded-full bg-brand-gold/50"></div>

@@ -127,7 +127,7 @@ const LuxurySelect = ({
                     key={index}
                     type="button"
                     onClick={() => handleSelect(option)}
-                    className={`w-full flex items-center justify-between px-5 py-3 text-left text-sm transition-all hover:bg-white/10 ${
+                    className={`w-full flex items-center justify-between px-5 py-3.5 text-left text-sm transition-all hover:bg-white/10 ${
                       isSelected ? 'text-brand-gold bg-brand-gold/15 font-bold' : 'text-zinc-300'
                     }`}
                   >

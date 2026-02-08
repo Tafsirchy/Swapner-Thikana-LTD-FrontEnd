@@ -176,7 +176,7 @@ const EmailVerificationModal = ({ isOpen, onClose, userEmail }) => {
                     <button
                       onClick={handleResendEmail}
                       disabled={resendCooldown > 0 || isResending}
-                      className="w-full py-2.5 bg-white/5 hover:bg-white/10 disabled:bg-white/5 disabled:opacity-50 border border-white/10 text-zinc-100 font-bold rounded-lg transition-all flex items-center justify-center gap-2 text-sm"
+                      className="w-full py-3 bg-white/5 hover:bg-white/10 disabled:bg-white/5 disabled:opacity-50 border border-white/10 text-zinc-100 font-bold rounded-lg transition-all flex items-center justify-center gap-2 text-sm"
                     >
                       {isResending ? (
                         <>

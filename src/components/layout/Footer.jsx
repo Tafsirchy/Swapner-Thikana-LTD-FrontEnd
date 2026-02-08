@@ -22,27 +22,27 @@ const Footer = () => {
       <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-brand-gold/5 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="max-container px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-16">
           {/* Company Info */}
           <div className="flex flex-col gap-6">
             <Link href="/" className="inline-block shrink-0">
-              <Image src="/logo-new.png" alt="shwapner Thikana" width={120} height={80} className="h-20 w-auto object-contain" />
+              <Image src="/logo-new.png" alt="shwapner Thikana" width={120} height={80} className="h-16 md:h-20 w-auto object-contain" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
               Excellence in luxury real estate. We guide you to your dream address with integrity, 
               sophistication, and world-class service.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Facebook">
+              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Facebook">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Instagram">
+              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Instagram">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Twitter">
+              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Twitter">
                 <Twitter size={18} />
               </a>
-              <a href="#" className="p-2 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="LinkedIn">
+              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="LinkedIn">
                 <Linkedin size={18} />
               </a>
             </div>
@@ -60,7 +60,7 @@ const Footer = () => {
                 { label: 'Contact Us', href: '/contact' }
               ].map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="text-zinc-400 hover:text-brand-gold text-sm transition-colors flex items-center group">
+                  <Link href={item.href} className="text-zinc-400 hover:text-brand-gold text-sm transition-colors flex items-center group py-1">
                     <span className="w-0 h-0.5 bg-brand-gold mr-0 transition-all duration-300 group-hover:w-2 group-hover:mr-2"></span>
                     {item.label}
                   </Link>

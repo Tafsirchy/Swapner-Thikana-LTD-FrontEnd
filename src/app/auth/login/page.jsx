@@ -58,7 +58,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-royal-deep px-4 pt-40 pb-24 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-royal-deep px-4 pt-24 md:pt-40 pb-24 relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-brand-gold/10 rounded-full blur-[120px]"></div>
@@ -82,7 +82,7 @@ const LoginPage = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Email Address</label>
+              <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider ml-1">Email Address</label>
               <div className="relative group">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
                   <Mail size={18} />
@@ -100,7 +100,7 @@ const LoginPage = () => {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center ml-1">
-                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Password</label>
+                <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">Password</label>
                 <Link href="/auth/forgot-password" size="sm" className="text-xs text-brand-gold hover:underline">
                   Forgot Password?
                 </Link>

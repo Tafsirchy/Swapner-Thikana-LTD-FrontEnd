@@ -58,7 +58,7 @@ const ForgotPasswordPage = () => {
           {!isSent ? (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider ml-1">Email Address</label>
+                <label className="text-sm font-semibold text-zinc-400 uppercase tracking-wider ml-1">Email Address</label>
                 <div className="relative group">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-brand-gold transition-colors">
                     <Mail size={18} />

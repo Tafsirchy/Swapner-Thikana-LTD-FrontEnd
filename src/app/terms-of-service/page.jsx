@@ -6,7 +6,7 @@ import { Gavel, CheckCircle, AlertCircle } from 'lucide-react';
 
 const TermsOfServicePage = () => {
   return (
-    <div className="min-h-screen bg-royal-deep pt-32 pb-24">
+    <div className="min-h-screen bg-royal-deep pt-24 md:pt-32 pb-16 md:pb-24">
       <div className="max-container px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -18,7 +18,7 @@ const TermsOfServicePage = () => {
             <Gavel size={16} />
             Legal Agreement
           </motion.div>
-          <h1 className="text-4xl md:text-5xl font-bold text-zinc-100 mb-6">
+          <h1 className="text-3xl md:text-5xl font-bold text-zinc-100 mb-6">
             Terms of <span className="text-brand-gold">Service</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-400 text-lg leading-relaxed">
@@ -27,7 +27,7 @@ const TermsOfServicePage = () => {
         </div>
 
         {/* Content */}
-        <div className="max-w-4xl mx-auto glass p-8 md:p-12 rounded-[2.5rem] border-white/10 shadow-2xl space-y-12">
+        <div className="max-w-4xl mx-auto glass p-6 md:p-12 rounded-[2rem] md:rounded-[2.5rem] border-white/10 shadow-2xl space-y-8 md:space-y-12">
           
           <section>
             <h2 className="text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-3">
