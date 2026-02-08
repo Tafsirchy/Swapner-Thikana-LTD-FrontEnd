@@ -28,8 +28,13 @@ const NotificationBell = () => {
       isFetching.current = true;
       setLoading(true);
       const response = await api.notifications.getAll({ limit: 10 });
-      setNotifications(response.data.notifications);
-      setUnreadCount(response.data.unreadCount);
+      // console.log('[NotificationBell] Response:', response);
+      
+      const notifs = response?.data?.notifications || [];
+      const count = response?.data?.unreadCount || 0;
+      
+      setNotifications(notifs);
+      setUnreadCount(count);
     } catch (error) {
       console.error('Error fetching notifications:', error);
     } finally {

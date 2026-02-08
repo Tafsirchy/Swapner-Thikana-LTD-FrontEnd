@@ -121,6 +121,15 @@ const ReviewSection = ({ propertyId }) => {
     ? (reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length).toFixed(1)
     : 0;
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Check on mount
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div className="space-y-6 md:space-y-8">
       {/* Header & Stats - Mobile First */}
@@ -169,11 +178,11 @@ const ReviewSection = ({ propertyId }) => {
             
             {/* Form Container */}
             <motion.div
-              initial={typeof window !== 'undefined' && window.innerWidth < 768 ? { y: '100%' } : { opacity: 0, height: 0 }}
-              animate={typeof window !== 'undefined' && window.innerWidth < 768 ? { y: 0 } : { opacity: 1, height: 'auto' }}
-              exit={typeof window !== 'undefined' && window.innerWidth < 768 ? { y: '100%' } : { opacity: 0, height: 0 }}
+              initial={isMobile ? { y: '100%' } : { opacity: 0, height: 0 }}
+              animate={isMobile ? { y: 0 } : { opacity: 1, height: 'auto' }}
+              exit={isMobile ? { y: '100%' } : { opacity: 0, height: 0 }}
               className={`
-                ${typeof window !== 'undefined' && window.innerWidth < 768 
+                ${isMobile 
                   ? 'fixed bottom-0 left-0 right-0 z-[1001] bg-zinc-950 rounded-t-[2.5rem] border-t border-white/10 p-8 pb-32 overflow-y-auto max-h-[90vh] custom-scrollbar' 
                   : 'overflow-hidden md:block'}
               `}

@@ -164,7 +164,7 @@ const NewsletterSection = () => {
         <div className="max-container px-4 relative z-10 w-full flex justify-center">
             <div className="w-full max-w-4xl">
                 <div 
-                    className="border border-white/10 p-6 sm:p-12 lg:p-16 text-center relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] rounded-2xl sm:rounded-3xl bg-zinc-950/40 backdrop-blur-3xl"
+                    className="border border-white/10 p-6 sm:p-12 lg:p-16 text-center relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] bg-zinc-950/40 backdrop-blur-3xl"
                 >
                     {/* Interior Lighting - Dynamic & Brighter */}
                     <motion.div 
@@ -173,8 +173,8 @@ const NewsletterSection = () => {
                     />
                     
                     {/* Decorative Corner Accents */}
-                    <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-brand-gold/30 rounded-tl-3xl rounded-none" />
-                    <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-brand-gold/30 rounded-br-3xl rounded-none" />
+                    <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-brand-gold/30" />
+                    <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-brand-gold/30" />
                     
                     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-gold/40 to-transparent" />
 
@@ -206,9 +206,9 @@ const NewsletterSection = () => {
 
                         <form onSubmit={handleSubmit} className="max-w-xl mx-auto relative group">
                             {/* Outer Glow */}
-                            <div className="absolute -inset-1 bg-gradient-to-r from-brand-gold/0 via-brand-gold/20 to-brand-gold/0 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <div className="absolute -inset-1 bg-gradient-to-r from-brand-gold/0 via-brand-gold/20 to-brand-gold/0 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                             
-                            <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-1.5 focus-within:border-brand-gold/50 transition-all shadow-inner gap-2 sm:gap-0">
+                            <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-black/40 backdrop-blur-md border border-white/10 p-1.5 focus-within:border-brand-gold/50 transition-all shadow-inner gap-2 sm:gap-0">
                                 <input 
                                     type="email" 
                                     placeholder="your@prestige.email" 
@@ -225,7 +225,7 @@ const NewsletterSection = () => {
                                      disabled={status === 'loading' || status === 'success'}
                                      baseColor={status === 'success' ? 'bg-emerald-600' : 'bg-brand-gold'}
                                      liquidColor={status === 'success' ? 'fill-white/10' : 'fill-brand-gold'}
-                                     className="!px-6 !py-3 !rounded-xl shadow-lg shadow-brand-gold/20 w-full sm:w-auto flex-shrink-0"
+                                     className="!px-6 !py-3 shadow-lg shadow-brand-gold/20 w-full sm:w-auto flex-shrink-0"
                                  >
                                      <AnimatePresence mode="wait">
                                          {status === 'loading' ? (

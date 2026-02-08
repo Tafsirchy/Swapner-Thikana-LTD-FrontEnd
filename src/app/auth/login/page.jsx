@@ -74,7 +74,7 @@ const LoginPage = () => {
           <div className="text-center mb-10">
             <div className="flex justify-center mb-8">
               <Link href="/" className="inline-block">
-                <Image src="/logo-new.png" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
+                <Image src="/logo-new.webp" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
               </Link>
             </div>
             <p className="text-zinc-400 text-sm mt-2">Enter your credentials to access your dream address.</p>

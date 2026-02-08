@@ -13,6 +13,7 @@ import NewsletterSection from '@/components/home/NewsletterSection';
 import InvestmentSection from '@/components/home/InvestmentSection';
 import LiquidButton from '@/components/shared/LiquidButton';
 import LuxurySelect from '@/components/shared/LuxurySelect';
+import ErrorBoundary from '@/components/shared/ErrorBoundary';
 import { useRouter } from 'next/navigation';
 
 // Creative Stat Item with Architectural Timeline Positioning
@@ -231,10 +232,14 @@ export default function Home() {
       <AboutSection />
 
       {/* Interactive Master Plan */}
-      <InteractiveMasterPlan />
+      <ErrorBoundary title="Master Plan Unavailable">
+        <InteractiveMasterPlan />
+      </ErrorBoundary>
 
       {/* Virtual Reality Section */}
-      <VirtualRealitySection />
+      <ErrorBoundary title="VR Experience Unavailable">
+        <VirtualRealitySection />
+      </ErrorBoundary>
 
       {/* Luxury Promo Section */}
       {/* Luxury Promo Section - Investment Highlight */}

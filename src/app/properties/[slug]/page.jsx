@@ -9,7 +9,7 @@ const PropertyDetailPage = async ({ params }) => {
   let property = null;
   let apiErrorType = null;
   
-  console.log(`[PropertyDetailPage] Fetching slug: ${slug}`);
+  // console.log(`[PropertyDetailPage] Fetching slug: ${slug}`);
 
   // Handle "undefined" slug string which can occur from broken links
   if (!slug || slug === 'undefined') {
@@ -30,7 +30,7 @@ const PropertyDetailPage = async ({ params }) => {
   try {
     // Using the same API library as the client for consistency and better error handling
     const res = await api.properties.getBySlug(slug);
-    console.log(`[PropertyDetailPage] API Success for ${slug}:`, !!res.data.property);
+    // console.log(`[PropertyDetailPage] API Success for ${slug}:`, !!res.data.property);
     property = res.data.property;
   } catch (error) {
     apiErrorType = error.response ? `HTTP ${error.response.status}` : error.message;

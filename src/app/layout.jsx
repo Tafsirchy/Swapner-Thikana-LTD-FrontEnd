@@ -10,6 +10,7 @@ import StructuredData from "@/components/seo/StructuredData";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { AuthProvider } from "@/context/AuthContext";
 import SmoothScroll from "@/components/shared/SmoothScroll";
+import ErrorBoundary from "@/components/shared/ErrorBoundary";
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -62,12 +63,14 @@ export default function RootLayout({ children }) {
             <SmoothScroll>
               <StructuredData type="Organization" />
               <StructuredData type="WebSite" />
-              <Navbar />
-              <main className="min-h-screen">
-                {children}
-              </main>
-              <Footer />
-              <CompareBar />
+              <ErrorBoundary message="We are unable to load the application. Please refresh or contact support.">
+                <Navbar />
+                <main className="min-h-screen">
+                  {children}
+                </main>
+                <Footer />
+                <CompareBar />
+              </ErrorBoundary>
             </SmoothScroll>
           </PushNotificationManager>
           <Toaster 
@@ -78,7 +81,7 @@ export default function RootLayout({ children }) {
                 background: '#0F172A',
                 color: '#F59E0B',
                 border: '1px solid rgba(245, 158, 11, 0.2)',
-                borderRadius: '12px',
+                borderRadius: '0px',
                 padding: '16px',
               },
             }}

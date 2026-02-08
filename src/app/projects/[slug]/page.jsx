@@ -8,11 +8,11 @@ const ProjectDetailPage = async ({ params }) => {
   let project = null;
   let apiErrorType = null;
   
-  console.log(`[ProjectDetailPage] Fetching slug: ${slug}`);
+  // console.log(`[ProjectDetailPage] Fetching slug: ${slug}`);
   
   try {
     const res = await api.projects.getBySlug(slug);
-    console.log(`[ProjectDetailPage] API Success for ${slug}:`, !!res.data?.project);
+    // console.log(`[ProjectDetailPage] API Success for ${slug}:`, !!res.data?.project);
     project = res.data?.project;
   } catch (error) {
     apiErrorType = error.response ? `HTTP ${error.response.status}` : error.message;

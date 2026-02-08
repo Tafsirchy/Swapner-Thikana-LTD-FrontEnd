@@ -170,7 +170,7 @@ const VirtualRealitySection = () => {
                             onClick={() => setActiveCategory(key)}
                             baseColor={activeCategory === key ? 'bg-brand-gold/20' : 'bg-white/5'}
                             liquidColor="fill-brand-gold/10"
-                            className={`!p-4 !rounded-xl border !transition-all !duration-500 !flex !justify-start !text-left ${
+                            className={`!p-4 !rounded-none border !transition-all !duration-500 !flex !justify-start !text-left ${
                                 activeCategory === key 
                                 ? 'border-brand-gold shadow-[0_0_30px_rgba(245,158,11,0.2)]' 
                                 : 'border-white/10 hover:border-white/30'
@@ -207,7 +207,7 @@ const VirtualRealitySection = () => {
                                         <motion.div 
                                             key={item.id}
                                             onClick={() => setSelectedProject(item)}
-                                            className="group cursor-pointer p-4 rounded-xl flex items-center justify-between hover:bg-white/10 transition-colors border-b border-white/5 last:border-0 active:bg-white/5"
+                                            className="group cursor-pointer p-4 flex items-center justify-between hover:bg-white/10 transition-colors border-b border-white/5 last:border-0 active:bg-white/5"
                                             whileHover={{ x: 5 }}
                                         >
                                             <div>
@@ -228,7 +228,7 @@ const VirtualRealitySection = () => {
         )}
 
         {/* 360 Viewer / Placeholder Area */}
-        <div className="flex-1 h-full relative overflow-hidden bg-zinc-950 border border-white/10 md:rounded-r-3xl rounded-none">
+        <div className="flex-1 h-full relative overflow-hidden bg-zinc-950 border border-white/10 rounded-none">
              
              <AnimatePresence mode="popLayout">
                 {selectedProject ? (

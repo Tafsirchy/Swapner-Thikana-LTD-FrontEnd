@@ -87,7 +87,7 @@ const VerifyEmailContent = () => {
         <div className="bg-white/5 backdrop-blur-2xl rounded-3xl p-10 text-center shadow-2xl">
           <div className="flex justify-center mb-10">
             <Link href="/" className="inline-block">
-              <Image src="/logo-new.png" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
+              <Image src="/logo-new.webp" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
             </Link>
           </div>
 

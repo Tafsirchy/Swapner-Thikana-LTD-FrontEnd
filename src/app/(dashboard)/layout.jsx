@@ -137,7 +137,7 @@ const DashboardLayout = ({ children }) => {
           {/* Desktop Logo (Restored since Navbar is gone) */}
           <div className="hidden lg:flex items-center gap-3 px-8 pt-6 pb-2">
              <Link href="/" className="hover:opacity-80 transition-opacity">
-                <Image src="/logo.png" alt="shwapner Thikana" width={40} height={40} className="h-8 w-auto object-contain" />
+                <Image src="/logo-new.webp" alt="shwapner Thikana" width={40} height={40} className="h-8 w-auto object-contain" />
              </Link>
              <span className="font-bold text-2xl text-zinc-100 tracking-wide font-cinzel">Dashboard</span>
           </div>
@@ -263,7 +263,7 @@ const DashboardLayout = ({ children }) => {
               <Menu size={24} />
             </button>
             <Link href="/" className="flex items-center">
-              <Image src="/logo-new.png" alt="shwapner Thikana" width={120} height={40} className="h-8 w-auto object-contain" />
+              <Image src="/logo-new.webp" alt="shwapner Thikana" width={120} height={40} className="h-8 w-auto object-contain" />
             </Link>
             <div className="w-6"></div> {/* Spacer for balance */}
           </header>

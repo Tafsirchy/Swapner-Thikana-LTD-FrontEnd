@@ -65,10 +65,10 @@ const PropertyCard = ({ property }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="group relative bg-card border border-white/10 rounded-3xl overflow-hidden hover:border-brand-gold/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
+      className="group relative bg-card border border-white/10 overflow-hidden hover:border-brand-gold/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
     >
       {/* Image Container - Mobile-First Responsive */}
-      <div className="relative aspect-[4/3] sm:h-64 w-full overflow-hidden rounded-t-3xl sm:m-2 sm:rounded-2xl">
+      <div className="relative aspect-[4/3] sm:h-64 w-full overflow-hidden sm:m-2">
         <SmartImage
           src={images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop'}
           alt={title}
@@ -85,11 +85,11 @@ const PropertyCard = ({ property }) => {
           {/* Badges */}
           <div className="flex flex-wrap gap-2">
             {featured && (
-              <span className="px-3 py-1 bg-brand-gold text-royal-deep text-xs font-bold uppercase tracking-wider rounded-full shadow-lg">
+              <span className="px-3 py-1 bg-brand-gold text-royal-deep text-xs font-bold uppercase tracking-wider shadow-lg">
                 Featured
               </span>
             )}
-            <span className="px-3 py-1 bg-royal-deep/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider rounded-full border border-white/10 shadow-lg">
+            <span className="px-3 py-1 bg-royal-deep/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/10 shadow-lg">
               {listingType === 'sale' ? 'For Sale' : 'For Rent'}
             </span>
           </div>
@@ -108,7 +108,6 @@ const PropertyCard = ({ property }) => {
               }}
               baseColor={isInCompare ? 'bg-brand-emerald' : 'bg-white/10'}
               liquidColor={isInCompare ? 'fill-white/20' : 'fill-brand-emerald/40'}
-              rounded="rounded-full"
               className={`backdrop-blur-md border shadow-lg w-11 h-11 !p-0 ${
                 isInCompare ? 'border-brand-emerald text-white' : 'border-white/20 text-white'
               }`}
@@ -120,7 +119,6 @@ const PropertyCard = ({ property }) => {
               onClick={handleToggleWishlist}
               baseColor={isSaved ? 'bg-brand-gold' : 'bg-white/10'}
               liquidColor={isSaved ? 'fill-white/30' : 'fill-brand-gold/40'}
-              rounded="rounded-full"
               className={`backdrop-blur-md border shadow-lg w-11 h-11 !p-0 ${
                 isSaved ? 'border-brand-gold text-royal-deep' : 'border-white/20 text-white'
               }`}

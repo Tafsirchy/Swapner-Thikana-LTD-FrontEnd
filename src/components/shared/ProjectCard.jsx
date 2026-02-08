@@ -64,9 +64,9 @@ const ProjectCard = ({ project }) => {
       initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
-      className="group relative bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
+      className="group relative bg-white/5 border border-white/10 overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
     >
-      <div className="relative aspect-[4/3] sm:h-80 w-full rounded-t-3xl overflow-hidden">
+      <div className="relative aspect-[4/3] sm:h-80 w-full overflow-hidden">
         <SmartImage
           src={images?.[0] || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'}
           alt={title}
@@ -77,7 +77,7 @@ const ProjectCard = ({ project }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-royal-deep/40 to-transparent"></div>
         
         <div className="absolute top-6 inset-x-6 flex items-start justify-between gap-4 z-10">
-          <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg ${statusColors[status] || 'bg-zinc-800 text-white'}`}>
+          <span className={`px-4 py-1.5 text-xs font-bold uppercase tracking-widest shadow-lg ${statusColors[status] || 'bg-zinc-800 text-white'}`}>
             {status}
           </span>
 
@@ -95,7 +95,6 @@ const ProjectCard = ({ project }) => {
               }}
               baseColor={isInCompare ? 'bg-brand-emerald' : 'bg-white/10'}
               liquidColor={isInCompare ? 'fill-white/20' : 'fill-brand-emerald/40'}
-              rounded="rounded-full"
               className={`backdrop-blur-md border shadow-lg w-11 h-11 !p-0 ${
                 isInCompare ? 'border-brand-emerald text-white' : 'border-white/20 text-white'
               }`}
@@ -107,7 +106,6 @@ const ProjectCard = ({ project }) => {
               onClick={handleToggleWishlist}
               baseColor={isSaved ? 'bg-brand-gold' : 'bg-white/10'}
               liquidColor={isSaved ? 'fill-white/30' : 'fill-brand-gold/40'}
-              rounded="rounded-full"
               className={`backdrop-blur-md border shadow-lg w-11 h-11 !p-0 ${
                 isSaved ? 'border-brand-gold text-royal-deep' : 'border-white/20 text-white'
               }`}

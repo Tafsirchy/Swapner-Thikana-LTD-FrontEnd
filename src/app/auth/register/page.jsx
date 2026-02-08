@@ -66,10 +66,10 @@ const RegisterPage = () => {
     const registerData = { ...formData };
     delete registerData.confirmPassword;
     
-    console.log('Attempting registration with data:', registerData);
+    // console.log('Attempting registration with data:', registerData);
     const result = await register(registerData);
     
-    console.log('Registration result:', result);
+    // console.log('Registration result:', result);
     
     if (result.success) {
       // Store email and show verification modal instead of redirecting
@@ -113,7 +113,7 @@ const RegisterPage = () => {
           <div className="text-center mb-8">
             <div className="flex justify-center mb-8">
               <Link href="/" className="inline-block">
-                <Image src="/logo-new.png" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
+                <Image src="/logo-new.webp" alt="shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
               </Link>
             </div>
             <h2 className="text-2xl font-bold text-zinc-100">Create Account</h2>
