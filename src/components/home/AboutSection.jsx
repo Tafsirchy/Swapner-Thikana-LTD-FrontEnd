@@ -408,7 +408,7 @@ const AboutSection = () => {
                             />
                             
                             {/* Glass Overlay on Hover */}
-                            <div className="absolute inset-x-4 bottom-4 bg-black/60 backdrop-blur-md rounded-xl p-6 translate-y-[110%] group-hover:translate-y-0 transition-transform duration-500 flex justify-between items-center border border-white/10">
+                            <div className="absolute inset-x-4 bottom-4 bg-black/80 md:bg-black/60 lg:backdrop-blur-md rounded-xl p-6 translate-y-[110%] group-hover:translate-y-0 transition-transform duration-500 flex justify-between items-center border border-white/10">
                                 <div>
                                     <h4 className="text-white text-xl font-bold mb-1">{project.title}</h4>
                                     <div className="flex items-center gap-2 text-zinc-300 text-xs uppercase tracking-wider">

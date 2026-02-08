@@ -72,6 +72,11 @@ const InteractiveMasterPlan = () => {
   const [hoveredRegion, setHoveredRegion] = useState(null);
   const [showFullPlan, setShowFullPlan] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Fetch region content on component mount
   useEffect(() => {
@@ -198,7 +203,7 @@ const InteractiveMasterPlan = () => {
         </div>
 
         {/* Map Container */}
-        <div className="relative w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] md:aspect-[2/1] bg-white/5 border border-white/10 backdrop-blur-sm p-2 sm:p-4 flex items-center justify-center overflow-hidden">
+        <div className="relative w-full max-w-4xl aspect-[4/3] sm:aspect-[16/9] md:aspect-[2/1] border border-white/10 p-2 sm:p-4 flex items-center justify-center overflow-hidden bg-white/5 backdrop-blur-xl">
             
             {/* SVG Map */}
             <svg 
@@ -274,7 +279,7 @@ const InteractiveMasterPlan = () => {
 
             {/* Hover Tooltip (Floating) */}
             <AnimatePresence>
-                {hoveredRegion && typeof window !== 'undefined' && window.innerWidth > 1024 && (() => {
+                {hoveredRegion && mounted && window.innerWidth > 1024 && (() => {
                     const center = getCenter(hoveredRegion.path);
                     const isRightSide = center.x > 400;
                     

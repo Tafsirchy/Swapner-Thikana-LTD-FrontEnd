@@ -7,6 +7,7 @@ import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import SmartImage from '@/components/shared/SmartImage';
 
 const SettingsPage = () => {
   const { user, updateUser, checkAuth } = useAuth();
@@ -157,9 +158,9 @@ const SettingsPage = () => {
                 className="w-24 h-24 rounded-3xl bg-zinc-900 border-4 border-zinc-900 mx-auto flex items-center justify-center text-3xl font-bold text-brand-gold shadow-xl relative overflow-hidden group mb-4"
               >
                  {previewImage ? (
-                    <img src={previewImage} alt="Preview" className="w-full h-full object-cover" />
+                    <SmartImage src={previewImage} alt="Preview" fill className="object-cover" />
                  ) : (user?.avatar || user?.image) ? (
-                    <img src={user.avatar || user.image} alt={user.name} className="w-full h-full object-cover" />
+                    <SmartImage src={user.avatar || user.image} alt={user.name} fill className="object-cover" />
                  ) : (
                     <User size={48} className="text-zinc-600" />
                  )}

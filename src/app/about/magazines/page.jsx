@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Download, ArrowRight, Loader2 } from 'lucide-react';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 
@@ -101,11 +101,12 @@ const MagazinesPage = () => {
                       {/* Front Cover */}
                       <div className="absolute inset-0 z-10 origin-left transition-transform duration-700 group-hover:rotate-y-[-10deg]">
                         <div className="relative h-full w-full overflow-hidden border border-white/5 shadow-2xl">
-                          <Image
+                          <SmartImage
                             src={mag.coverImage || '/placeholder-magazine.jpg'}
                             alt={mag.title}
                             fill
                             className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-transparent to-black/20"></div>
                           

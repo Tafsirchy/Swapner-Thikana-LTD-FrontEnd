@@ -26,7 +26,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="flex flex-col gap-6">
             <Link href="/" className="inline-block shrink-0">
-              <Image src="/logo-new.png" alt="shwapner Thikana" width={120} height={80} className="h-16 md:h-20 w-auto object-contain" />
+              <Image src="/logo-new.webp" alt="shwapner Thikana" width={120} height={80} className="h-16 md:h-20 w-auto object-contain" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
               Excellence in luxury real estate. We guide you to your dream address with integrity, 

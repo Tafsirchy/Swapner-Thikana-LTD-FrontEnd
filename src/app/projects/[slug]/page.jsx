@@ -64,6 +64,17 @@ export async function generateMetadata({ params }) {
     return {
       title: `${project.title} | shwapner Thikana Ltd`,
       description: project.description?.substring(0, 160) || 'Iconic architectural development by shwapner Thikana Ltd.',
+      openGraph: {
+        title: project.title,
+        description: project.description?.substring(0, 160),
+        images: project.images?.[0] ? [{ url: project.images[0], width: 1200, height: 630 }] : [],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: project.title,
+        description: project.description?.substring(0, 160),
+        images: project.images?.[0] ? [project.images[0]] : [],
+      }
     };
   } catch {
     return {

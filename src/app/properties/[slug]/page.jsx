@@ -104,7 +104,7 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title: property.title,
         description: property.description?.substring(0, 160),
-        images: property.images?.[0] ? [property.images[0]] : [],
+        images: property.images?.[0] ? [{ url: property.images[0], width: 1200, height: 630 }] : [],
       },
       twitter: {
         card: "summary_large_image",

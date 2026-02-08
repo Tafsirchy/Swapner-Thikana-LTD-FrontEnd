@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Menu, X, Heart, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import NotificationBell from './NotificationBell';
@@ -22,6 +23,7 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -166,7 +168,7 @@ const Navbar = () => {
         isDashboard ? 'py-2' : 'py-3 md:py-0'
       } ${
         isScrolled || isDashboard || isDetailsPage
-          ? 'bg-royal-deep/90 backdrop-blur-md shadow-lg'
+          ? 'bg-royal-deep/95 md:bg-royal-deep/90 md:backdrop-blur-md shadow-lg'
           : 'bg-gradient-to-b from-black/50 to-transparent'
       }`}
     >
@@ -231,7 +233,7 @@ const Navbar = () => {
              </button>
             
             <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2">
-                <Image src="/logo-new.png" alt="shwapner Thikana" width={110} height={64} className="h-12 sm:h-14 w-auto object-contain transition-all" priority />
+                <Image src="/logo-new.webp" alt="shwapner Thikana" width={110} height={64} className="h-12 sm:h-14 w-auto object-contain transition-all" priority />
             </Link>
 
             {/* Mobile Utilities */}
@@ -254,7 +256,7 @@ const Navbar = () => {
             {/* Centered Logo */}
             <div className="flex justify-center">
               <Link href="/" className="hover:scale-105 transition-transform duration-300">
-                  <Image src="/logo-new.png" alt="shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain drop-shadow-2xl" priority />
+                  <Image src="/logo-new.webp" alt="shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain drop-shadow-2xl" priority />
               </Link>
             </div>
 
@@ -269,7 +271,7 @@ const Navbar = () => {
         {/* Dashboard Logo View (Keep simple) */}
         {isDashboard && (
            <Link href="/" className="hidden md:flex items-center mr-auto">
-               <Image src="/logo-new.png" alt="shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
+               <Image src="/logo-new.webp" alt="shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
            </Link>
         )}
       </div>

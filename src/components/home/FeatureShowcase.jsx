@@ -13,9 +13,10 @@ const FeatureShowcase = () => {
   const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
 
-  const ROTATION_TIME = 2500; // 6 seconds
+  const [progress, setProgress] = useState(0);
+  const ROTATION_TIME = 6000; // 6 seconds
+  const PROGRESS_INTERVAL = 10; // Update every 10ms for smooth progress bar
 
   // Fetch Featured Properties
   useEffect(() => {
@@ -40,28 +41,30 @@ const FeatureShowcase = () => {
   const handleNext = useCallback(() => {
     if (properties.length === 0) return;
     setActiveIndex((prev) => (prev + 1) % properties.length);
-    setProgress(0);
   }, [properties.length]);
 
   const handlePrev = useCallback(() => {
     if (properties.length === 0) return;
     setActiveIndex((prev) => (prev - 1 + properties.length) % properties.length);
-    setProgress(0);
   }, [properties.length]);
 
-  // Auto-Rotation logic with Progress
+  // Auto-Rotation logic with Progress Bar
   useEffect(() => {
     let interval;
     let progressInterval;
 
     if (!isPaused && properties.length > 0) {
-      progressInterval = setInterval(() => {
-        setProgress((prev) => Math.min(prev + (100 / (ROTATION_TIME / 10)), 100));
-      }, 10);
-
       interval = setInterval(() => {
         handleNext();
+        setProgress(0);
       }, ROTATION_TIME);
+
+      progressInterval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) return 0;
+          return prev + (100 / (ROTATION_TIME / PROGRESS_INTERVAL));
+        });
+      }, PROGRESS_INTERVAL);
     }
 
     return () => {

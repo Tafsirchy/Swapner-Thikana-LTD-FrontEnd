@@ -164,7 +164,7 @@ const NewsletterSection = () => {
         <div className="max-container px-4 relative z-10 w-full flex justify-center">
             <div className="w-full max-w-4xl">
                 <div 
-                    className="bg-zinc-950/40 border border-white/10 backdrop-blur-3xl p-6 sm:p-12 lg:p-16 text-center relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] rounded-2xl sm:rounded-3xl"
+                    className="border border-white/10 p-6 sm:p-12 lg:p-16 text-center relative overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] rounded-2xl sm:rounded-3xl bg-zinc-950/40 backdrop-blur-3xl"
                 >
                     {/* Interior Lighting - Dynamic & Brighter */}
                     <motion.div 

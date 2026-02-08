@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion, useInView } from 'framer-motion';
+import Image from 'next/image';
+import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import SmartImage from '@/components/shared/SmartImage';
 import { Search, MapPin, Building, Users, Star } from 'lucide-react';
 import FeatureShowcase from '@/components/home/FeatureShowcase';
@@ -18,22 +19,28 @@ import { useRouter } from 'next/navigation';
 const StatItem = ({ stat, index }) => {
   const [count, setCount] = React.useState(0);
   const ref = React.useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
   
   React.useEffect(() => {
-    if (!isInView) return;
-    let start = 0;
-    const end = stat.value;
-    if (start === end) return;
-    let totalMilisecondDuraton = 2000;
-    let incrementTime = (totalMilisecondDuraton / end) * 5;
-    let timer = setInterval(() => {
-      start += 5;
-      setCount(Math.min(start, end));
-      if (start >= end) clearInterval(timer);
-    }, incrementTime);
-    return () => clearInterval(timer);
-  }, [stat.value, isInView]);
+    if (isInView) {
+      const duration = 2000; // 2 seconds animation
+      const steps = 60;
+      const stepValue = stat.value / steps;
+      let current = 0;
+      
+      const timer = setInterval(() => {
+        current += stepValue;
+        if (current >= stat.value) {
+          setCount(stat.value);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(current));
+        }
+      }, duration / steps); // ~33ms per step
+      
+      return () => clearInterval(timer);
+    }
+  }, [isInView, stat.value]);
 
   const isEven = index % 2 === 0;
 
@@ -104,22 +111,28 @@ export default function Home() {
       <section className="relative min-h-[90vh] flex items-center justify-center">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 overflow-hidden">
-          <motion.div 
-            className="absolute inset-0 z-0 bg-cover bg-center"
-            style={{ 
-              backgroundImage: "url('/luxury_home_hero.png')",
+          <motion.div
+            animate={{ 
+              scale: [1, 1.1, 1],
             }}
-            initial={{ scale: 1 }}
-            animate={{ scale: 1.1 }}
-            transition={{ 
-              duration: 5, 
-              repeat: Infinity, 
-              repeatType: "reverse", 
-              ease: "linear" 
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut"
             }}
+            className="absolute inset-0"
           >
-            <div className="absolute inset-0 bg-gradient-to-b from-royal-deep/80 via-royal-deep/40 to-royal-deep/90"></div>
+            <Image
+              src="/luxury_home_hero.webp"
+              alt="Luxury Home Hero"
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+              quality={75}
+            />
           </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-b from-royal-deep/80 via-royal-deep/40 to-royal-deep/90"></div>
         </div>
 
         <div className="max-container px-4 pt-32 md:pt-32 relative z-10 text-center text-zinc-100">

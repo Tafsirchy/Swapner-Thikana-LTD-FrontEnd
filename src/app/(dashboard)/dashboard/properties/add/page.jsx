@@ -138,7 +138,7 @@ const AddPropertyPage = () => {
         
         // 1. Compression
         const compressedFile = await imageCompression(file, {
-          maxSizeMB: 1,
+          maxSizeMB: 0.5,
           maxWidthOrHeight: 1920,
           useWebWorker: true
         });

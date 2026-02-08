@@ -39,7 +39,7 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
       const toastId = toast.loading('Starting image optimization...');
       
       const options = {
-        maxSizeMB: 1,         // Compress to max 1MB
+        maxSizeMB: 0.5,         // Compress to max 500KB
         maxWidthOrHeight: 1920, // Max 1920px
         useWebWorker: true,
         onProgress: (p) => {
