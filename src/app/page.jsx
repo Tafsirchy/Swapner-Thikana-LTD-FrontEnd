@@ -14,6 +14,7 @@ import InvestmentSection from '@/components/home/InvestmentSection';
 import LiquidButton from '@/components/shared/LiquidButton';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import ErrorBoundary from '@/components/shared/ErrorBoundary';
+import BackToTop from '@/components/shared/BackToTop';
 import { useRouter } from 'next/navigation';
 
 // Creative Stat Item with Architectural Timeline Positioning
@@ -247,6 +248,9 @@ export default function Home() {
 
       {/* Newsletter Section */}
       <NewsletterSection />
+
+      {/* Back To Top Button */}
+      <BackToTop />
     </div>
   );
 }

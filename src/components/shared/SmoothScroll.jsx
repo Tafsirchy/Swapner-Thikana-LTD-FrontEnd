@@ -7,8 +7,9 @@ export default function SmoothScroll({ children }) {
     <ReactLenis root options={{ 
       lerp: 0.1, 
       duration: 1.5, 
+      smoothTouch: false, // Disable smooth scroll on touch devices for native momentum
+      smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
     }}>
       {children}
     </ReactLenis>

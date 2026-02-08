@@ -60,11 +60,31 @@ const NewsletterSection = () => {
   const bgTranslateX = useTransform(mouseXSpring, [-0.5, 0.5], [-30, 30]);
   const bgTranslateY = useTransform(mouseYSpring, [-0.5, 0.5], [-30, 30]);
 
+  // Optimize layout: Cache dimensions to avoid getBoundingClientRect on every move
+  const rectRef = useRef(null);
+
+  React.useEffect(() => {
+    const updateRect = () => {
+      if (containerRef.current) {
+        rectRef.current = containerRef.current.getBoundingClientRect();
+      }
+    };
+
+    updateRect();
+    window.addEventListener('resize', updateRect);
+    return () => window.removeEventListener('resize', updateRect);
+  }, []);
+
   const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
+    if (!rectRef.current) return;
+    
+    // Use cached rect
+    const rect = rectRef.current;
+    
+    // Calculate relative to the cached rect
     const xPct = (e.clientX - rect.left) / rect.width - 0.5;
     const yPct = (e.clientY - rect.top) / rect.height - 0.5;
+    
     mouseX.set(xPct);
     mouseY.set(yPct);
   };
