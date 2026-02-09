@@ -135,16 +135,14 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
                  {uploading ? <Loader2 size={20} className="animate-spin" /> : <Pencil size={20} />}
                </button>
                
-               {!required && (
-                 <button
-                   type="button"
-                   onClick={handleRemove}
-                   className="p-3.5 bg-red-500/10 text-red-500 rounded-full hover:bg-red-500 hover:text-white border border-red-500/20 transition-all transform hover:scale-110 active:scale-95 shadow-lg"
-                   title="Delete Image"
-                 >
-                   <X size={20} />
-                 </button>
-               )}
+               <button
+                 type="button"
+                 onClick={handleRemove}
+                 className="p-3.5 bg-red-500/10 text-red-500 rounded-full hover:bg-red-500 hover:text-white border border-red-500/20 transition-all transform hover:scale-110 active:scale-95 shadow-lg"
+                 title="Delete Image"
+               >
+                 <X size={20} />
+               </button>
             </div>
             
             {/* Success Indicator */}
