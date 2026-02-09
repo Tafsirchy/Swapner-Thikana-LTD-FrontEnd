@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Clock, Loader2, ArrowRight } from 'lucide-react';
 import { api } from '@/lib/api';
 import SmartImage from '@/components/shared/SmartImage';

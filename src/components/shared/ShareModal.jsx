@@ -4,7 +4,6 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Copy, Check, Twitter, Facebook, MessageSquare, Linkedin, Mail } from 'lucide-react';
 import logger from '@/utils/logger';
-import logger from '@/utils/logger';
 import SmartImage from './SmartImage';
 import { toast } from 'react-hot-toast';
 

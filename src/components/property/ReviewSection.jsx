@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Star, MessageSquare, Send, Loader2, User, X, Edit2, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { motion, AnimatePresence } from 'framer-motion';
 import SmartImage from '@/components/shared/SmartImage';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
