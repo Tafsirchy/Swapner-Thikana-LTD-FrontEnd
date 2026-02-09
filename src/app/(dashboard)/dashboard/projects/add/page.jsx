@@ -519,9 +519,9 @@ const AddProjectPage = () => {
                  <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest font-sans italic mb-3">
                     Gallery Images
                  </label>
-                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {formData.images.map((img, index) => (
-                       img ? (
+                       (typeof img === 'string' && img.trim() !== '') ? (
                        <div key={index} className="relative group rounded-xl overflow-hidden aspect-video bg-zinc-900 border border-white/5">
                           <Image src={img} alt={`Gallery image ${index + 1}`} fill className="object-cover" />
                           <button 

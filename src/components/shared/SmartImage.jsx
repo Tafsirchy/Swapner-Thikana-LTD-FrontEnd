@@ -18,13 +18,13 @@ const SmartImage = ({
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   // Handle both string and structured object sources
-  const imageUrl = typeof src === 'object' && src !== null 
+  const imageUrl = (typeof src === 'object' && src !== null 
     ? (
         width < 450 && src.thumbnail ? src.thumbnail :
         width < 900 && src.medium ? src.medium :
         src.original || src.url
       )
-    : src;
+    : src) || fallbackSrc;
 
   const [lastSrc, setLastSrc] = useState(imageUrl);
   const [isChanging, setIsChanging] = useState(false);
