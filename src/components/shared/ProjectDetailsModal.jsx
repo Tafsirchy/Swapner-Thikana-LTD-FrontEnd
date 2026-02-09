@@ -235,7 +235,12 @@ const ProjectDetailsModal = ({ isOpen, onClose, project }) => {
                           className="relative aspect-video rounded-2xl overflow-hidden cursor-pointer bg-white/5 border border-white/5"
                           onClick={() => setActiveImage(idx)}
                        >
-                          <Image src={img} alt="" fill className="object-cover" />
+                           <SmartImage 
+                              src={img} 
+                              alt="" 
+                              fill 
+                              className="object-cover" 
+                           />
                        </motion.div>
                     ))}
                  </div>

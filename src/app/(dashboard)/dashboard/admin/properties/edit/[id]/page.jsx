@@ -544,21 +544,24 @@ const EditPropertyPage = () => {
                   </div>
                </div>
 
-               {images.length > 0 && (
-                  <div className="grid grid-cols-3 gap-4">
-                     {images.map((img, i) => (
-                        <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group border border-white/5">
-                           <Image src={img} alt="" fill className="object-cover" />
-                           <button 
-                              onClick={() => removeImage(i)}
-                              className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all"
-                           >
-                              <X size={16} />
-                           </button>
-                        </div>
-                     ))}
-                  </div>
-               )}
+                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {images.filter(img => typeof img === 'string' && img.length > 0).map((img, i) => (
+                         <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group border border-white/5">
+                            <SmartImage 
+                               src={img} 
+                               alt={`Property ${i + 1}`} 
+                               fill 
+                               className="object-cover" 
+                            />
+                            <button 
+                               onClick={() => removeImage(i)}
+                               className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all z-10 font-bold"
+                            >
+                               <X size={16} />
+                            </button>
+                         </div>
+                      ))}
+                   </div>
             </motion.div>
           )}
         </AnimatePresence>

@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { MessageSquare, Star, Trash2, ShieldCheck, UserCheck, User, Building2 } from 'lucide-react';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import SmartImage from '@/components/shared/SmartImage';
 
 const AdminReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -71,8 +72,8 @@ const AdminReviewsPage = () => {
               {/* User Info */}
               <div className="flex items-start gap-4 md:w-64 flex-shrink-0">
                 <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center border border-white/5 overflow-hidden relative">
-                  {review.userPhoto ? (
-                    <Image src={review.userPhoto} alt="" fill className="object-cover" />
+                  {review.userPhoto && typeof review.userPhoto === 'string' ? (
+                    <SmartImage src={review.userPhoto} alt="" fill className="object-cover" />
                   ) : (
                     <User size={24} className="text-zinc-600" />
                   )}

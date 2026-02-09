@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { Clock, Loader2, ArrowRight } from 'lucide-react';
 import { api } from '@/lib/api';
+import SmartImage from '@/components/shared/SmartImage';
 
 const RecentlyViewed = () => {
   const [recentItems, setRecentItems] = useState([]);
@@ -57,7 +56,7 @@ const RecentlyViewed = () => {
             className="flex items-center gap-4 p-3 bg-white/5 rounded-2xl border border-white/5 hover:border-brand-gold/30 transition-all group"
           >
             <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
-              <Image 
+              <SmartImage 
                 src={item.images?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop'} 
                 alt={item.title}
                 fill

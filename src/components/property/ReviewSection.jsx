@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Star, MessageSquare, Send, Loader2, User, X, Edit2, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import SmartImage from '@/components/shared/SmartImage';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@/hooks/useAuth';
@@ -278,8 +279,8 @@ const ReviewSection = ({ propertyId }) => {
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3 md:gap-4">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center text-brand-gold overflow-hidden shrink-0">
-                    {review.userPhoto ? (
-                      <Image src={review.userPhoto} alt={review.userName} width={48} height={48} className="w-full h-full object-cover" />
+                    {review.userPhoto && typeof review.userPhoto === 'string' ? (
+                      <SmartImage src={review.userPhoto} alt={review.userName} width={48} height={48} className="w-full h-full object-cover" />
                     ) : (
                       <User size={20} className="md:size-[24px]" />
                     )}

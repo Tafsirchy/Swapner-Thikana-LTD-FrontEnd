@@ -415,7 +415,6 @@ const EditProjectPage = () => {
                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Units / Floor</label>
                 <input
                   type="text"
-                  name="Units / Floor"
                   name="unitsPerFloor"
                   value={formData.unitsPerFloor}
                   onChange={handleChange}
@@ -593,18 +592,20 @@ const EditProjectPage = () => {
                     Gallery Images
                  </label>
                  <div className="grid grid-cols-2 gap-4">
-                    {formData.images.map((img, index) => (
-                       <div key={index} className="relative group rounded-xl overflow-hidden aspect-video bg-zinc-900 border border-white/5">
-                          <Image src={img} alt="" fill className="object-cover" />
-                          <button 
-                             type="button"
-                             onClick={() => setFormData(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }))}
-                             className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                             <X size={14} />
-                          </button>
-                       </div>
-                    ))}
+                     {formData.images.map((img, index) => (
+                        (typeof img === 'string' && img.trim() !== '') ? (
+                        <div key={index} className="relative group rounded-xl overflow-hidden aspect-video bg-zinc-900 border border-white/5">
+                           <Image src={img} alt="" fill className="object-cover" />
+                           <button 
+                              type="button"
+                              onClick={() => setFormData(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }))}
+                              className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                           >
+                              <X size={14} />
+                           </button>
+                        </div>
+                        ) : null
+                     ))}
                   <div className={`relative aspect-video rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center hover:border-brand-gold/30 hover:bg-white/5 transition-all text-zinc-600 hover:text-brand-gold ${galleryUploading ? 'opacity-50 pointer-events-none' : ''}`}>
                        <input 
                           type="file" 

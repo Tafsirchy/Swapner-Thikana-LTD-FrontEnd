@@ -4,7 +4,8 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Copy, Check, Twitter, Facebook, MessageSquare, Linkedin, Mail } from 'lucide-react';
 import logger from '@/utils/logger';
-import Image from 'next/image';
+import logger from '@/utils/logger';
+import SmartImage from './SmartImage';
 import { toast } from 'react-hot-toast';
 
 const ShareModal = ({ isOpen, onClose, data }) => {
@@ -106,7 +107,7 @@ const ShareModal = ({ isOpen, onClose, data }) => {
             {/* Context Card - High Contrast Dark */}
             <div className="p-5 bg-white/[0.03] rounded-3xl border border-white/10 flex gap-5 mb-10 group/card transition-all hover:bg-white/[0.05]">
                <div className="relative w-24 h-24 rounded-2xl overflow-hidden shrink-0 shadow-2xl border border-white/10">
-                  <Image 
+                  <SmartImage 
                     src={data.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'} 
                     alt={data.title}
                     fill
