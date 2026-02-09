@@ -7,12 +7,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LayoutDashboard, Heart, Search, Settings, 
   Menu, X, Building2, PlusCircle, Users, FileText, 
-  BarChart3, Bell, MessageSquare, ChevronDown, ChevronUp, Info, LogOut, Home, Map
+  BarChart3, Bell, MessageSquare, ChevronDown, ChevronUp, Info, LogOut, Home, Map, User
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import Image from 'next/image';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import SmartImage from '@/components/shared/SmartImage';
 
 const DashboardLayout = ({ children }) => {
   const { user, logout } = useAuth();
@@ -40,9 +41,11 @@ const DashboardLayout = ({ children }) => {
     switch (user?.role) {
       case 'agent':
         return [
-          { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-          { name: 'My Listings', href: '/dashboard/properties', icon: Building2 },
+          { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
           { name: 'Add Property', href: '/dashboard/properties/add', icon: PlusCircle },
+          { name: 'Add Project', href: '/dashboard/projects/add', icon: PlusCircle },
+          { name: 'My Projects', href: '/dashboard/projects', icon: Building2 },
+          { name: 'My Properties', href: '/dashboard/properties', icon: Building2 },
           { name: 'My Leads', href: '/dashboard/leads', icon: Users },
           { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
           { name: 'Saved Searches', href: '/dashboard/saved-searches', icon: Search },
@@ -134,23 +137,48 @@ const DashboardLayout = ({ children }) => {
             </button>
           </div>
 
-          {/* Desktop Logo (Restored since Navbar is gone) */}
-          <div className="hidden lg:flex items-center gap-3 px-8 pt-6 pb-2">
-             <Link href="/" className="hover:opacity-80 transition-opacity">
-                <Image src="/logo-new.webp" alt="shwapner Thikana" width={40} height={40} className="h-8 w-auto object-contain" />
+          <div className="hidden lg:flex items-center gap-4 px-8 pt-8 pb-2">
+             <Link href="/" className="hover:opacity-80 transition-opacity shrink-0">
+                <div className="w-10 h-10 relative">
+                   <SmartImage 
+                      src="/logo-new.webp" 
+                      alt="shwapner Thikana" 
+                      fill 
+                      priority 
+                      className="object-contain" 
+                   />
+                </div>
              </Link>
-             <span className="font-bold text-2xl text-zinc-100 tracking-wide font-cinzel">Dashboard</span>
+             <span className="font-bold text-xl text-zinc-100 tracking-widest font-cinzel uppercase border-l border-white/10 pl-4 py-1">Dashboard</span>
           </div>
 
           <div className="flex flex-col h-full">
-            <div className="px-3 sm:px-4 pt-6 pb-2 flex-1 overflow-y-auto min-h-0 custom-scrollbar" data-lenis-prevent>
-              <div className="flex items-center gap-3 px-3 py-3 sm:px-4 sm:py-4 mb-4 sm:mb-8 bg-white/5 rounded-2xl border border-white/5 mt-2">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-gold flex items-center justify-center text-royal-deep font-bold text-base sm:text-lg">
-                  {user?.name?.[0] || 'U'}
+            <div className="px-3 sm:px-4 pt-2 pb-2 flex-1 overflow-y-auto min-h-0 custom-scrollbar" data-lenis-prevent>
+              <div className="flex items-center gap-4 px-4 py-4 mb-6 bg-gradient-to-br from-white/10 to-transparent backdrop-blur-md rounded-2xl border border-white/10 shadow-xl group hover:border-brand-gold/30 transition-all duration-300">
+                <div className="relative shrink-0">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-gold flex items-center justify-center text-royal-deep font-bold text-lg sm:text-xl shadow-lg shadow-brand-gold/20 group-hover:scale-105 transition-transform overflow-hidden relative">
+                    {user?.avatar || user?.image ? (
+                      <SmartImage 
+                        src={user.avatar || user.image} 
+                        alt={user.name} 
+                        fill 
+                        className="object-cover" 
+                      />
+                    ) : (
+                      <User size={24} />
+                    )}
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-zinc-900 rounded-full" />
                 </div>
-                <div className="flex-1 overflow-hidden">
-                  <h4 className="text-xs sm:text-sm font-bold truncate">{user?.name}</h4>
-                  <span className="text-[10px] text-brand-gold uppercase tracking-wider font-bold">{user?.role}</span>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-sm font-bold text-zinc-100 font-cinzel tracking-wider uppercase leading-tight truncate-two-lines" title={user?.name}>
+                    {user?.name}
+                  </h4>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-[10px] text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded-full uppercase tracking-widest font-bold border border-brand-gold/20">
+                      {user?.role}
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -254,18 +282,27 @@ const DashboardLayout = ({ children }) => {
         {/* Main Content - Converted to Window Scroll */}
         <main className="flex-1 flex flex-col min-w-0 min-h-screen lg:ml-72 pt-0">
           {/* Topbar (Mobile Only) */}
-          <header className="lg:hidden h-16 border-b border-white/5 bg-zinc-900/50 flex items-center justify-between px-4">
+          <header className="lg:hidden h-20 border-b border-white/5 bg-zinc-900/50 flex items-center justify-between px-6 backdrop-blur-md sticky top-0 z-50">
             <button 
               onClick={toggleSidebar} 
-              className="text-zinc-400"
+              className="text-zinc-400 hover:text-white transition-colors"
               aria-label="Open Sidebar"
             >
-              <Menu size={24} />
+              <Menu size={26} />
             </button>
-            <Link href="/" className="flex items-center">
-              <Image src="/logo-new.webp" alt="shwapner Thikana" width={120} height={40} className="h-8 w-auto object-contain" />
+            <Link href="/" className="flex items-center gap-3">
+              <div className="w-10 h-10 relative">
+                <SmartImage 
+                   src="/logo-new.webp" 
+                   alt="shwapner Thikana" 
+                   fill 
+                   priority 
+                   className="object-contain" 
+                />
+              </div>
+              <span className="font-bold text-lg text-zinc-100 font-cinzel tracking-widest uppercase">Dashboard</span>
             </Link>
-            <div className="w-6"></div> {/* Spacer for balance */}
+            <div className="w-6"></div>
           </header>
 
           <div className="p-3.5 sm:p-4 lg:p-8 relative flex-1">

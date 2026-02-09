@@ -11,16 +11,16 @@ const ProfileStrengthMeter = ({ strength }) => {
   const { score, missingFields } = strength;
 
   return (
-    <div className="bg-white/5 border border-white/5 rounded-3xl p-8 relative overflow-hidden group">
+    <div className="bg-white/5 border border-white/5 rounded-3xl p-8 relative overflow-hidden group h-full flex flex-col">
       <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-10 transition-opacity">
         <CheckCircle2 size={100} className="text-brand-gold" />
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col h-full">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
+          <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-3 font-cinzel tracking-widest uppercase">
             Profile Strength
-            <span className={`text-xs px-2 py-0.5 rounded-full ${
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-sans tracking-normal lowercase ${
               score === 100 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-brand-gold/10 text-brand-gold'
             }`}>
               {score}% Complete
@@ -43,9 +43,10 @@ const ProfileStrengthMeter = ({ strength }) => {
           />
         </div>
 
-        {/* Missing Fields List */}
-        {missingFields.length > 0 ? (
-          <div className="space-y-3">
+        {/* Missing Fields List & Success Message container */}
+        <div className="mt-auto">
+          {missingFields.length > 0 ? (
+            <div className="space-y-3">
             <p className="text-xs text-zinc-500 uppercase font-bold tracking-widest">To reach 100%:</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {missingFields.map((field) => (
@@ -67,7 +68,8 @@ const ProfileStrengthMeter = ({ strength }) => {
         )}
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default ProfileStrengthMeter;

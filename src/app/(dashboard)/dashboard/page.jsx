@@ -134,6 +134,7 @@ const CustomerDashboard = () => {
 };
 
 import ProfileStrengthMeter from '@/components/dashboard/ProfileStrengthMeter';
+import RejectionModal from '@/components/shared/RejectionModal';
 
 const AgentDashboard = () => {
   const [stats, setStats] = React.useState(null);
@@ -194,9 +195,9 @@ const AgentDashboard = () => {
           </div>
           <div className="bg-white/5 border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
              <div>
-                <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-2 mb-2">
+                <h3 className="text-xl font-bold text-zinc-100 flex items-center gap-3 mb-2 font-cinzel tracking-widest uppercase">
                    <TrendingUp size={20} className="text-emerald-500" />
-                   Top Property
+                   Top Listing
                 </h3>
                 {topProperty ? (
                    <div className="mt-4">
@@ -208,7 +209,7 @@ const AgentDashboard = () => {
                          }`}>
                             {topProperty.status}
                          </span>
-                         <Link href={`/dashboard/properties`} className="text-brand-gold text-xs font-bold hover:underline">
+                         <Link href={topProperty.type === 'project' ? '/dashboard/projects' : '/dashboard/properties'} className="text-brand-gold text-xs font-bold hover:underline">
                             Details
                          </Link>
                       </div>
@@ -217,9 +218,14 @@ const AgentDashboard = () => {
                    <p className="text-zinc-500 text-sm italic mt-4">No listings active yet</p>
                 )}
              </div>
-             <Link href="/dashboard/properties/add" className="mt-8 flex items-center justify-center gap-2 px-6 py-3.5 sm:py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95 shadow-xl shadow-brand-gold/20 text-sm sm:text-base">
-                <PlusCircle size={18} /> Add New Listing
-             </Link>
+             <div className="mt-8 grid grid-cols-2 gap-3">
+                <Link href="/dashboard/properties/add" className="flex items-center justify-center gap-2 px-4 py-3.5 sm:py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95 shadow-xl shadow-brand-gold/20 text-xs sm:text-sm">
+                   <PlusCircle size={18} /> Add Property
+                </Link>
+                <Link href="/dashboard/projects/add" className="flex items-center justify-center gap-2 px-4 py-3.5 sm:py-4 bg-white/10 text-zinc-100 font-bold rounded-xl hover:bg-white/20 transition-all active:scale-95 text-xs sm:text-sm">
+                   <PlusCircle size={18} /> Add Project
+                </Link>
+             </div>
           </div>
        </div>
 
@@ -228,7 +234,7 @@ const AgentDashboard = () => {
           <div className="lg:col-span-3 bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8">
              <div className="flex items-center justify-between mb-8">
                 <div>
-                   <h2 className="text-xl font-bold text-zinc-100">Recent Prospects</h2>
+                   <h2 className="text-xl font-bold text-zinc-100 font-cinzel tracking-widest uppercase">Recent Prospects</h2>
                    <p className="text-zinc-500 text-xs mt-1">Your 5 most recent property inquiries</p>
                 </div>
                 <ViewAllLink href="/dashboard/leads" />
@@ -312,6 +318,7 @@ const AdminDashboard = () => {
   const [stats, setStats] = React.useState(null);
   const [pendingProperties, setPendingProperties] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [rejectionModal, setRejectionModal] = React.useState({ isOpen: false, propertyId: null });
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -331,6 +338,18 @@ const AdminDashboard = () => {
     };
     fetchData();
   }, []);
+
+  const handleRejectConfirm = async (reason) => {
+    try {
+      if (!rejectionModal.propertyId) return;
+      await api.admin.rejectProperty(rejectionModal.propertyId, reason);
+      setPendingProperties(prev => prev.filter(p => p._id !== rejectionModal.propertyId));
+      toast.success('Property rejected successfully');
+    } catch (error) {
+      console.error('Rejection failed:', error);
+      toast.error('Failed to reject property');
+    }
+  };
 
   if (loading) return <div className="animate-pulse space-y-8">
      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -363,11 +382,11 @@ const AdminDashboard = () => {
             {pendingProperties.length > 0 ? (
               pendingProperties.map((property) => (
                 <div key={property._id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-white/5 rounded-3xl border border-white/5 group">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 min-w-0 flex-1">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-zinc-800 flex items-center justify-center shrink-0">
                       <Building2 size={20} className="text-zinc-600 sm:size-24" />
                     </div>
-                    <div className="overflow-hidden">
+                    <div className="min-w-0 flex-1">
                       <h4 className="font-bold text-sm text-zinc-100 truncate">{property.title}</h4>
                       <p className="text-[10px] sm:text-xs text-zinc-400 mt-1 truncate">By {property.agent?.name || 'Unknown'}</p>
                     </div>
@@ -389,17 +408,7 @@ const AdminDashboard = () => {
                       <CheckCircle size={18} />
                     </button>
                     <button 
-                      onClick={async () => {
-                        try {
-                          const reason = prompt('Reason for rejection?');
-                          if (reason === null) return;
-                          await api.admin.rejectProperty(property._id, reason);
-                          setPendingProperties(prev => prev.filter(p => p._id !== property._id));
-                          toast.success('Property rejected');
-                        } catch {
-                          toast.error('Failed to reject property');
-                        }
-                      }}
+                      onClick={() => setRejectionModal({ isOpen: true, propertyId: property._id })}
                       className="flex-1 sm:flex-none p-3 sm:p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center"
                       aria-label="Reject"
                     >
@@ -466,6 +475,13 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+
+      <RejectionModal
+        isOpen={rejectionModal.isOpen}
+        onClose={() => setRejectionModal({ isOpen: false, propertyId: null })}
+        onConfirm={handleRejectConfirm}
+        title="Reject Property Listing"
+      />
     </div>
   );
 };

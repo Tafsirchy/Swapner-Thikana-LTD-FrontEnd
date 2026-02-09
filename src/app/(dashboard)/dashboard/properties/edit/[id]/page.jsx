@@ -14,6 +14,7 @@ import { toast } from 'react-hot-toast';
 import imageCompression from 'browser-image-compression';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 import LuxurySelect from '@/components/shared/LuxurySelect';
+import SmartImage from '@/components/shared/SmartImage';
 
 const EditPropertyPage = () => {
   const router = useRouter();
@@ -157,35 +158,44 @@ const EditPropertyPage = () => {
     const toastId = toast.loading('Processing images...');
     
     try {
-      const uploadFormData = new FormData();
-      
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        toast.loading(`Optimizing image ${i + 1}/${files.length}...`, { id: toastId });
-        
-        const compressedFile = await imageCompression(file, {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true
-        });
-        
-        uploadFormData.append('images', compressedFile);
-      }
+      // Parallelize compression and upload
+      const uploadPromises = files.map(async (file, index) => {
+        try {
+          // 1. Compression
+          const compressedFile = await imageCompression(file, {
+            maxSizeMB: 0.5,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true
+          });
 
-      toast.loading('Uploading to server...', { id: toastId });
+          // 2. Upload via Backend
+          const uploadFormData = new FormData();
+          uploadFormData.append('images', compressedFile);
+          
+          const response = await api.properties.uploadImages(id, uploadFormData);
+          
+          if (response.success && response.data?.images) {
+            return response.data.images;
+          }
+          return null;
+        } catch (err) {
+          console.error(`Failed to upload image ${index + 1}:`, err);
+          return null;
+        }
+      });
+
+      const results = await Promise.all(uploadPromises);
+      const newImages = results.filter(res => res !== null).flat();
       
-      const response = await api.properties.uploadImages(id, uploadFormData);
-      
-      if (response.success && response.data.images) {
-        setImages(prev => [...prev, ...response.data.images]);
-        toast.success(`${response.data.images.length} images uploaded successfully`, { id: toastId });
+      if (newImages.length > 0) {
+        setImages(prev => [...prev, ...newImages]);
+        toast.success(`${newImages.length} images uploaded successfully`, { id: toastId });
       } else {
-        throw new Error('Upload failed');
+        toast.error('Failed to upload any images', { id: toastId });
       }
-
     } catch (error) {
-      console.error('Image upload failed:', error);
-      toast.error('Failed to upload images', { id: toastId });
+      console.error('Batch image upload failed:', error);
+      toast.error('Image upload failed', { id: toastId });
     } finally {
       setSaving(false);
       e.target.value = '';
@@ -484,12 +494,17 @@ const EditPropertyPage = () => {
 
                {images.length > 0 && (
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                     {images.map((img, i) => (
+                     {images.filter(img => typeof img === 'string' && img.length > 0).map((img, i) => (
                         <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group border border-white/5">
-                           <Image src={img} alt="" fill className="object-cover" />
+                           <SmartImage 
+                              src={img} 
+                              alt={`Property ${i + 1}`} 
+                              fill 
+                              className="object-cover" 
+                           />
                            <button 
                               onClick={() => removeImage(i)}
-                              className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all font-bold"
+                              className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all font-bold z-10"
                            >
                               <X size={16} />
                            </button>

@@ -13,6 +13,7 @@ import { toast } from 'react-hot-toast';
 import imageCompression from 'browser-image-compression';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 import LuxurySelect from '@/components/shared/LuxurySelect';
+import SmartImage from '@/components/shared/SmartImage';
 
 const AddPropertyPage = () => {
   const router = useRouter();
@@ -127,45 +128,52 @@ const AddPropertyPage = () => {
     if (files.length === 0) return;
 
     setIsLoading(true);
-    const toastId = toast.loading('Starting image optimization...');
-    
-    const uploadedUrls = [];
+    const toastId = toast.loading('Starting image processing...');
     
     try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        toast.loading(`Optimizing image ${i + 1}/${files.length}...`, { id: toastId });
-        
-        // 1. Compression
-        const compressedFile = await imageCompression(file, {
-          maxSizeMB: 0.5,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true
-        });
+      // Parallelize compression and upload
+      const uploadPromises = files.map(async (file, index) => {
+        try {
+          // 1. Compression
+          const compressedFile = await imageCompression(file, {
+            maxSizeMB: 0.5,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true
+          });
 
-        // 2. Upload via Backend
-        toast.loading(`Uploading image ${i + 1}/${files.length}...`, { id: toastId });
-        const formData = new FormData();
-        formData.append('image', compressedFile);
-        
-        // Use the centralized API helper which correctly points to backend
-        const response = await api.uploads.upload(formData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        
-        if (response.success && response.data.url) {
-          uploadedUrls.push(response.data.url);
+          // 2. Upload via Backend
+          const formData = new FormData();
+          formData.append('image', compressedFile);
+          
+          const response = await api.uploads.upload(formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+          
+          if (response.success && response.data?.url) {
+            return response.data.url;
+          }
+          return null;
+        } catch (err) {
+          console.error(`Failed to upload image ${index + 1}:`, err);
+          return null;
         }
-      }
+      });
+
+      const results = await Promise.all(uploadPromises);
+      const validUrls = results.filter(url => typeof url === 'string' && url.length > 0);
       
-      setImages(prev => [...prev, ...uploadedUrls]);
-      toast.success(`${uploadedUrls.length} images processed successfully`, { id: toastId });
+      if (validUrls.length > 0) {
+        setImages(prev => [...prev, ...validUrls]);
+        toast.success(`${validUrls.length} images processed successfully`, { id: toastId });
+      } else {
+        toast.error('Failed to process any images', { id: toastId });
+      }
     } catch (error) {
-      console.error('Image processing failed:', error);
-      toast.error('Some images failed to upload', { id: toastId });
+      console.error('Batch image processing failed:', error);
+      toast.error('Image processing failed', { id: toastId });
     } finally {
       setIsLoading(false);
-      e.target.value = ''; // Reset
+      e.target.value = ''; // Reset input
     }
   };
 
@@ -215,10 +223,10 @@ const AddPropertyPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-3">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-gold/10 flex items-center justify-center shrink-0">
-            <PlusCircle size={24} className="text-brand-gold sm:size-32" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 flex items-center gap-4 font-cinzel">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-gold/10 flex items-center justify-center shrink-0 border border-brand-gold/20">
+            <PlusCircle size={24} className="text-brand-gold" />
           </div>
           Add New Property
         </h1>
@@ -243,7 +251,7 @@ const AddPropertyPage = () => {
               }`}
            >
               {currentStep > i + 1 ? <CheckCircle size={18} /> : <step.icon size={18} />}
-              <span className="hidden md:inline">{step.title}</span>
+              <span className="hidden sm:inline text-xs sm:text-sm">{step.title}</span>
            </div>
         ))}
       </div>
@@ -518,13 +526,18 @@ const AddPropertyPage = () => {
                </div>
 
                {images.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                     {images.map((img, i) => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                     {images.filter(img => typeof img === 'string' && img.length > 0).map((img, i) => (
                         <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group">
-                           <Image src={img} alt="" fill className="object-cover" />
+                           <SmartImage 
+                              src={img} 
+                              alt={`Property ${i + 1}`} 
+                              fill 
+                              className="object-cover" 
+                           />
                            <button 
                               onClick={() => removeImage(i)}
-                              className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white transition-all"
+                              className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white transition-all z-10"
                            >
                               <X size={16} />
                            </button>

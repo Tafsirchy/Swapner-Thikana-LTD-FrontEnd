@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { User, Mail, Phone, Save, Loader2, Lock, Eye, EyeOff, Shield, Calendar, Camera, Trash2 } from 'lucide-react';
 import { api } from '@/lib/api';
@@ -26,6 +26,8 @@ const SettingsPage = () => {
     name: user?.name || '',
     phone: user?.phone || '',
     bio: user?.bio || '',
+    specialization: user?.specialization || '',
+    experience: user?.experience || '',
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -33,6 +35,19 @@ const SettingsPage = () => {
     newPassword: '',
     confirmPassword: ''
   });
+  
+  // Sync form data with user context when it loads/changes
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        phone: user.phone || '',
+        bio: user.bio || '',
+        specialization: user.specialization || '',
+        experience: user.experience || '',
+      });
+    }
+  }, [user]);
 
   // Corrected handleDeleteImage to use checkAuth instead of reload
   const handleDeleteImage = async (e) => {
@@ -75,6 +90,8 @@ const SettingsPage = () => {
       data.append('name', formData.name);
       data.append('phone', formData.phone);
       if (formData.bio) data.append('bio', formData.bio);
+      if (formData.specialization) data.append('specialization', formData.specialization);
+      if (formData.experience) data.append('experience', formData.experience);
       if (formData.avatar) data.append('avatar', formData.avatar);
 
       // Use context method to update state immediately
@@ -297,16 +314,41 @@ const SettingsPage = () => {
                           </div>
 
                           {user?.role === 'agent' && (
-                             <div className="space-y-2">
-                                <label className="text-xs font-bold uppercase text-zinc-500 tracking-wider">Bio / About Me</label>
-                                <textarea 
-                                   value={formData.bio}
-                                   onChange={(e) => setFormData({...formData, bio: e.target.value})}
-                                   rows={4}
-                                    className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 resize-none transition-all focus:bg-zinc-900 text-sm sm:text-base"
-                                   placeholder="Tell clients about your experience..."
-                                />
-                             </div>
+                             <>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                   <div className="space-y-2">
+                                      <label className="text-xs font-bold uppercase text-zinc-500 tracking-wider">Specialization</label>
+                                      <input 
+                                         type="text" 
+                                         value={formData.specialization}
+                                         onChange={(e) => setFormData({...formData, specialization: e.target.value})}
+                                         className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
+                                         placeholder="e.g. Luxury Villas, Commercial, Apartments"
+                                      />
+                                   </div>
+                                   <div className="space-y-2">
+                                      <label className="text-xs font-bold uppercase text-zinc-500 tracking-wider">Years of Experience</label>
+                                      <input 
+                                         type="text" 
+                                         value={formData.experience}
+                                         onChange={(e) => setFormData({...formData, experience: e.target.value})}
+                                         className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 transition-all focus:bg-zinc-900 text-sm sm:text-base"
+                                         placeholder="e.g. 5 Years"
+                                      />
+                                   </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                   <label className="text-xs font-bold uppercase text-zinc-500 tracking-wider">Bio / About Me</label>
+                                   <textarea 
+                                      value={formData.bio}
+                                      onChange={(e) => setFormData({...formData, bio: e.target.value})}
+                                      rows={4}
+                                       className="w-full bg-zinc-900/50 border border-white/10 rounded-2xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100 resize-none transition-all focus:bg-zinc-900 text-sm sm:text-base"
+                                      placeholder="Tell clients about your experience..."
+                                   />
+                                </div>
+                             </>
                           )}
 
                           <div className="pt-4 flex justify-end">

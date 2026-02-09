@@ -23,6 +23,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '@/hooks/useAuth';
 import ReminderForm from '@/components/dashboard/ReminderForm';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 
@@ -34,6 +35,7 @@ const STATUS_COLUMNS = [
 ];
 
 const LeadsPage = () => {
+  const { user } = useAuth();
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState(null);
@@ -66,6 +68,7 @@ const LeadsPage = () => {
   };
 
   const handleStatusChange = async (leadId, newStatus) => {
+    if (user?.role === 'agent') return;
     try {
       await api.leads.updateStatus(leadId, newStatus);
       setLeads(leads.map(l => l._id === leadId ? { ...l, status: newStatus } : l));
@@ -80,6 +83,7 @@ const LeadsPage = () => {
 
   const handleDeleteLead = async (leadId, e) => {
     if (e) e.stopPropagation();
+    if (user?.role === 'agent') return;
     if (!window.confirm('Are you sure you want to delete this lead? This action cannot be undone.')) return;
 
     try {
@@ -183,8 +187,9 @@ const LeadsPage = () => {
 
             <div 
               className="flex-1 flex flex-col gap-4 min-h-[200px] bg-white/[0.02] border border-white/5 rounded-3xl p-3"
-              onDragOver={(e) => e.preventDefault()}
+              onDragOver={(e) => user?.role !== 'agent' && e.preventDefault()}
               onDrop={(e) => {
+                if (user?.role === 'agent') return;
                 const leadId = e.dataTransfer.getData('leadId');
                 handleStatusChange(leadId, column.id);
               }}
@@ -194,7 +199,7 @@ const LeadsPage = () => {
                   <motion.div
                     key={lead._id}
                     layoutId={lead._id}
-                    draggable
+                    draggable={user?.role !== 'agent'}
                     onDragStart={(e) => e.dataTransfer.setData('leadId', lead._id)}
                     onClick={() => setSelectedLead(lead)}
                     className="bg-zinc-900/40 backdrop-blur-md border border-white/5 p-5 rounded-3xl hover:border-brand-gold/40 transition-all cursor-pointer group shadow-xl hover:shadow-brand-gold/5"
@@ -204,7 +209,7 @@ const LeadsPage = () => {
                         {lead.interestType || 'Inquiry'}
                       </span>
                       <div className="flex items-center gap-0.5 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
-                        {column.id === 'closed' && (
+                        {column.id === 'closed' && user?.role !== 'agent' && (
                           <button 
                             onClick={(e) => handleDeleteLead(lead._id, e)}
                             className="p-3 sm:p-1.5 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all"
@@ -353,7 +358,9 @@ const LeadsPage = () => {
                     </div>
 
                     <div className="pt-4 space-y-4">
-                      <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Quick Move Status</p>
+                      {user?.role !== 'agent' && (
+                        <>
+                          <p className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-3">Quick Move Status</p>
                       <div className="grid grid-cols-2 gap-2">
                         {STATUS_COLUMNS.map(col => (
                           <button
@@ -379,6 +386,8 @@ const LeadsPage = () => {
                             <Trash2 size={16} /> Delete Lead Permanent
                           </button>
                         </div>
+                      )}
+                        </>
                       )}
                     </div>
                   </div>

@@ -51,30 +51,30 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
 
       const compressedFile = await imageCompression(file, options);
       
-      // 2. Upload
-      toast.loading('Uploading quality image...', { id: toastId });
+      // 2. Direct Client-Side Upload (Zero Server Load)
+      toast.loading('Uploading directly to cloud...', { id: toastId });
+      
       const formData = new FormData();
       formData.append('image', compressedFile);
+      
+      const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+      if (!apiKey) {
+        throw new Error('Missing NEXT_PUBLIC_IMGBB_API_KEY');
+      }
 
-      const response = await api.uploads.upload(formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress: (progressEvent) => {
-          const uploadPercent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setProgress(50 + Math.round(uploadPercent / 2)); // Final 50% for network transfer
-          toast.loading(`Uploading quality image... ${uploadPercent}%`, { id: toastId });
-        }
+      // Direct upload to ImgBB API
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+        method: 'POST',
+        body: formData,
       });
+
+      const data = await response.json();
 
       // Backend returns { success: true, message: '...', data: { url: '...' } }
       // api interceptor returns response.data
       
-      if (response && response.success) {
-        // response.data from backend contains { url: ... }
-        // Wait, my backend returns: { success: true, message: ..., data: { url: ... } }
-        // api.js interceptor returns `response.data`.
-        // So `response` here IS `response.data` from axios (which is the backend JSON body).
-        
-        const url = response.data.url;
+      if (data && data.success) {
+        const url = data.data.url;
         setPreview(url);
         onUpload(url);
         toast.success('Professional upload complete', { id: toastId });

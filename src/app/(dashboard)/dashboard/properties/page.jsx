@@ -62,7 +62,7 @@ const AgentPropertiesPage = () => {
   return (
     <div className="space-y-8">
       <DashboardPageHeader 
-        title="My Listings"
+        title="My Properties"
         subtitle="Manage your active and pending property listings with real-time analytics"
         icon={<Building2 />}
         iconBg="bg-brand-emerald/10"
@@ -129,7 +129,7 @@ const AgentPropertiesPage = () => {
             {properties.map((property) => (
               <div key={property._id} className="bg-white/5 border border-white/5 rounded-3xl p-6 space-y-6">
                 <div className="flex gap-5">
-                  <div className="w-20 h-20 rounded-2xl bg-zinc-800 shrink-0 overflow-hidden relative border border-white/5">
+                  <div className="w-24 h-24 sm:w-20 sm:h-20 rounded-2xl bg-zinc-800 shrink-0 overflow-hidden relative border border-white/5">
                     {property.images?.[0] ? (
                       <SmartImage src={property.images[0]} alt="" fill className="object-cover" />
                     ) : (
@@ -140,16 +140,16 @@ const AgentPropertiesPage = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-bold text-zinc-100 text-base line-clamp-1">{property.title}</h4>
-                    <p className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1.5 font-medium">{property.location?.area}, {property.location?.city}</p>
+                    <p className="text-xs text-zinc-500 uppercase tracking-wide mt-1.5 font-medium">{property.location?.area}, {property.location?.city}</p>
                     <div className="flex items-center gap-2 mt-4">
-                      <span className={`px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-widest border border-current shadow-inner ${
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-extrabold uppercase tracking-wider border border-current shadow-inner ${
                         property.status === 'published' ? 'bg-emerald-500/10 text-emerald-500' :
                         property.status === 'pending' ? 'bg-yellow-500/15 text-yellow-400 border-yellow-400/20' :
                         'bg-red-500/10 text-red-500'
                       }`}>
                         {property.status}
                       </span>
-                      <div className="flex items-center gap-1.5 text-[10px] text-zinc-500 font-bold">
+                      <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-bold">
                         <Eye size={12} className="text-zinc-600" /> {property.views} views
                       </div>
                     </div>
