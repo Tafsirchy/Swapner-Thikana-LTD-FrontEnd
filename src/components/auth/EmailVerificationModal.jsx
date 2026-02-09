@@ -7,7 +7,7 @@ import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
 import logger from '@/utils/logger';
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner'; // Assuming toast is imported from sonner or similar library
+import { toast } from 'react-hot-toast';
 
 const EmailVerificationModal = ({ isOpen, onClose, userEmail }) => {
   const [resendCooldown, setResendCooldown] = useState(0);
