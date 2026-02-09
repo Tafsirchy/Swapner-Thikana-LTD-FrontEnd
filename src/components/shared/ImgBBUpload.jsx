@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Upload, X, Loader2 } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Upload, X, Loader2, Pencil } from 'lucide-react';
 import Image from 'next/image';
 import SmartImage from './SmartImage';
 import { toast } from 'react-hot-toast';
@@ -13,6 +13,7 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(defaultImage || '');
   const [progress, setProgress] = useState(0);
+  const fileInputRef = useRef(null);
 
   // Update preview if defaultImage changes (e.g. when loading data in edit mode)
   useEffect(() => {
@@ -70,16 +71,13 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
 
       const data = await response.json();
 
-      // Backend returns { success: true, message: '...', data: { url: '...' } }
-      // api interceptor returns response.data
-      
       if (data && data.success) {
         const url = data.data.url;
         setPreview(url);
         onUpload(url);
         toast.success('Professional upload complete', { id: toastId });
       } else {
-        throw new Error(response?.message || 'Upload failed');
+        throw new Error(data?.message || 'Upload failed');
       }
     } catch (error) {
       console.error('Upload Error:', error);
@@ -96,6 +94,10 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
     onUpload('');
   };
 
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <div className="space-y-3">
       <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest font-sans italic">
@@ -103,8 +105,17 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
       </label>
       
       <div className="relative group">
+        <input 
+          ref={fileInputRef}
+          type="file" 
+          className="hidden" 
+          accept="image/*"
+          onChange={handleFileChange}
+          disabled={uploading}
+        />
+
         {preview ? (
-          <div className="relative w-full h-64 bg-zinc-900 rounded-2xl overflow-hidden border border-white/10 group-hover:border-brand-gold/50 transition-all">
+          <div className="relative w-full h-64 bg-zinc-900 rounded-2xl overflow-hidden border border-white/10 group-hover:border-brand-gold/50 transition-all shadow-2xl">
             <SmartImage 
               src={preview} 
               alt="Preview" 
@@ -112,45 +123,57 @@ const ImgBBUpload = ({ onUpload, defaultImage, label = "Upload Image", required 
               className="object-cover"
               unoptimized
             />
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 backdrop-blur-sm">
+            
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-4 backdrop-blur-[2px]">
                <button
                  type="button"
-                 onClick={handleRemove}
-                 className="p-3 bg-red-500/10 text-red-500 rounded-full hover:bg-red-500 hover:text-white border border-red-500/20 transition-all"
+                 onClick={triggerFileInput}
+                 disabled={uploading}
+                 className="p-3.5 bg-brand-gold/10 text-brand-gold rounded-full hover:bg-brand-gold hover:text-royal-deep border border-brand-gold/20 transition-all transform hover:scale-110 active:scale-95 shadow-lg"
+                 title="Replace Image"
                >
-                 <X size={20} />
+                 {uploading ? <Loader2 size={20} className="animate-spin" /> : <Pencil size={20} />}
                </button>
+               
+               {!required && (
+                 <button
+                   type="button"
+                   onClick={handleRemove}
+                   className="p-3.5 bg-red-500/10 text-red-500 rounded-full hover:bg-red-500 hover:text-white border border-red-500/20 transition-all transform hover:scale-110 active:scale-95 shadow-lg"
+                   title="Delete Image"
+                 >
+                   <X size={20} />
+                 </button>
+               )}
             </div>
             
             {/* Success Indicator */}
-            <div className="absolute top-4 right-4 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-              Uploaded
+            <div className="absolute top-4 right-4 bg-emerald-500/90 backdrop-blur-sm text-white text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-lg border border-emerald-400/30">
+              SAVED
             </div>
           </div>
         ) : (
-          <label className="relative w-full h-48 flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:border-brand-gold/50 hover:bg-white/5 transition-all group">
-            <div className="flex flex-col items-center justify-center pt-5 pb-6 text-zinc-400 group-hover:text-brand-gold transition-colors">
+          <div 
+            onClick={triggerFileInput}
+            className={`relative w-full h-48 flex flex-col items-center justify-center border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:border-brand-gold/50 hover:bg-white/5 transition-all group ${uploading ? 'opacity-50 pointer-events-none' : ''}`}
+          >
+            <div className="flex flex-col items-center justify-center pt-5 pb-6 text-zinc-400 group-hover:text-brand-gold transition-colors text-center px-4">
               {uploading ? (
                 <>
-                  <Loader2 size={40} className="animate-spin mb-4" />
+                  <Loader2 size={40} className="animate-spin mb-4 text-brand-gold" />
                   <p className="text-sm font-bold text-brand-gold">{progress}% Uploading...</p>
                 </>
               ) : (
                 <>
-                  <Upload size={40} className="mb-4" />
+                  <div className="p-4 bg-white/5 rounded-full mb-4 group-hover:bg-brand-gold/10 transition-colors">
+                    <Upload size={32} />
+                  </div>
                   <p className="mb-2 text-sm font-bold"><span className="underline">Click to upload</span> or drag and drop</p>
-                  <p className="text-xs opacity-60">SVG, PNG, JPG or GIF (MAX. 5MB)</p>
+                  <p className="text-[10px] uppercase tracking-widest opacity-40">JPG, PNG, WebP (MAX. 5MB)</p>
                 </>
               )}
             </div>
-            <input 
-              type="file" 
-              className="hidden" 
-              accept="image/*"
-              onChange={handleFileChange}
-              disabled={uploading}
-            />
-          </label>
+          </div>
         )}
       </div>
     </div>
