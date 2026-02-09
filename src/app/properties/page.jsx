@@ -12,6 +12,7 @@ import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
+import StructuredData from '@/components/seo/StructuredData';
 
 // Dynamic import for map view
 const PropertiesMapView = dynamic(() => import('@/components/map/PropertiesMapView'), {
@@ -266,6 +267,16 @@ const PropertiesContent = () => {
 
   return (
     <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24">
+      <StructuredData 
+        type="ItemList" 
+        data={{
+          type: 'properties',
+          items: allProperties.slice(0, 10).map(p => ({
+            name: p.title,
+            slug: p.slug
+          }))
+        }} 
+      />
       {/* Search & Header Section */}
       <section className="mb-12">
         <div className="max-container px-4">

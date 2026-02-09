@@ -196,7 +196,7 @@ const Navbar = () => {
                onClick={logout}
                baseColor="bg-red-500/10"
                liquidColor="fill-red-500/20"
-               className="!px-4 !py-1.5 border border-red-500/30 !text-red-400 !text-xs !font-semibold uppercase tracking-wider"
+               className="!px-4 !py-1.5 border border-red-500/30 !text-red-400 !text-xs !font-semibold uppercase tracking-wider min-w-[44px] min-h-[44px] flex items-center justify-center"
                rounded="rounded-full"
             >
                <User size={14} />
@@ -224,7 +224,7 @@ const Navbar = () => {
         {!isDashboard && (
           <div className="md:hidden w-full flex justify-between items-center">
              <button
-               className="text-brand-gold p-2 hover:bg-white/5 rounded-full transition-colors"
+               className="text-brand-gold p-2 hover:bg-white/5 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                onClick={() => setIsOpen(!isOpen)}
                aria-label={isOpen ? "Close Menu" : "Open Menu"}
                aria-expanded={isOpen}

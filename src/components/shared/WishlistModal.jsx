@@ -127,7 +127,7 @@ const WishlistModal = ({ propertyId, propertyTitle, onClose, onUpdate }) => {
             </h2>
             <p className="text-zinc-500 text-xs mt-1 truncate max-w-[200px]">{propertyTitle}</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+          <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full transition-colors" aria-label="Close modal">
             <X size={20} className="text-zinc-400" />
           </button>
         </div>
@@ -238,8 +238,7 @@ const WishlistModal = ({ propertyId, propertyTitle, onClose, onUpdate }) => {
         </div>
       </motion.div>
 
-      <style jsx>{`
-      `}</style>
+
     </div>
   );
 };

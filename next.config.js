@@ -36,15 +36,31 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    unoptimized: false,
   },
+  experimental: {
+    // reactCompiler has been moved to root
+  },
+  reactCompiler: true,
   async headers() {
     return [
       {
-        source: '/(.*)',
+        // Cache static assets (images, fonts, etc.)
+        source: '/(.*)\\.(jpg|jpeg|png|webp|avif|ico|svg|woff2)',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Default for other routes (HTML, JSON data) - revalidate
+        source: '/((?!api|_next/static|_next/image|favicon.ico).*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
           },
         ],
       },
@@ -70,4 +86,10 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+export default withBundleAnalyzer(nextConfig);

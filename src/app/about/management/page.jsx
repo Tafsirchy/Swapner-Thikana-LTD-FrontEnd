@@ -134,7 +134,7 @@ const ManagementPage = () => {
                           sizes="100vw"
                           className="object-cover grayscale contrast-125" 
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent flex items-end justify-center gap-4 pb-8">
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent flex items-end justify-center gap-4 pb-8 z-20">
                            {leader.email && (
                              <a href={`mailto:${leader.email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white">
                                <Mail size={18} />
@@ -183,7 +183,7 @@ const ManagementPage = () => {
                           className="object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110" 
                         />
                         {/* Social Icons - Visible on SM, Hover on LG */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-8">
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-8 z-20">
                            {leaders[1].email && (
                              <a href={`mailto:${leaders[1].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform">
                                <Mail size={18} />
@@ -248,10 +248,10 @@ const ManagementPage = () => {
                           sizes="(max-width: 768px) 100vw, 600px"
                           className="object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-[2s] group-hover:scale-105" 
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
                         
                         {/* Social Icons - Visible on SM, Hover on LG */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-6 pb-4">
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-6 pb-4 z-20">
                            {leaders[0].email && (
                              <a href={`mailto:${leaders[0].email}`} className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform">
                                <Mail size={22} />
@@ -265,7 +265,7 @@ const ManagementPage = () => {
                         </div>
                       </div>
 
-                        <div className="mt-8 flex justify-between items-start pb-4 px-4">
+                        <div className="mt-8 flex justify-between items-start pb-4 px-4 relative z-20">
                           <div className="space-y-1">
                             <p className="text-brand-gold font-cinzel text-[10px] uppercase tracking-[0.3em] font-black italic mb-2">{leaders[0].role}</p>
                             <h3 className="text-2xl sm:text-4xl font-cinzel font-bold text-white tracking-widest leading-none">{leaders[0].name}</h3>
@@ -298,10 +298,10 @@ const ManagementPage = () => {
                           sizes="(max-width: 768px) 100vw, 800px"
                           className="object-cover grayscale contrast-125 group-hover:grayscale-0 transition-transform duration-[2s] group-hover:scale-110" 
                         />
-                        <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
+                        <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-1000 z-10"></div>
                         
                         {/* Social Icons - Visible on SM, Hover on LG */}
-                        <div className="absolute inset-0 bg-royal-deep/40 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4">
+                        <div className="absolute inset-0 bg-royal-deep/40 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4 z-20">
                            {leaders[3].email && (
                              <a href={`mailto:${leaders[3].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform">
                                <Mail size={18} />
@@ -314,7 +314,7 @@ const ManagementPage = () => {
                            )}
                         </div>
                       </div>
-                      <div className="mt-8 flex items-center justify-between">
+                      <div className="mt-8 flex items-center justify-between relative z-20">
                         <div className="space-y-1">
                           <h4 className="text-xl sm:text-2xl font-cinzel font-bold text-white tracking-widest">{leaders[3].name}</h4>
                           <p className="text-[10px] text-brand-gold font-black uppercase tracking-[0.4em] italic leading-none">{leaders[3].role}</p>
@@ -351,7 +351,7 @@ const ManagementPage = () => {
                         <div className="absolute inset-0 bg-brand-gold/5 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-1000"></div>
                         
                         {/* Social Icons - Visible on SM, Hover on LG */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4">
+                        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-royal-deep/20 to-transparent opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center gap-4 pb-4 z-20">
                            {leaders[2].email && (
                              <a href={`mailto:${leaders[2].email}`} className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 sm:transform sm:translate-y-4 sm:group-hover:translate-y-0 transition-transform">
                                <Mail size={18} />
@@ -364,7 +364,7 @@ const ManagementPage = () => {
                            )}
                         </div>
                       </div>
-                      <div className="absolute sm:-left-8 bottom-0 sm:bottom-16 p-5 sm:p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-6 sm:gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50 w-full sm:w-auto">
+                      <div className="absolute sm:-left-8 bottom-0 sm:bottom-16 p-5 sm:p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-6 sm:gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50 w-full sm:w-auto z-20">
                       <div className="flex-shrink-0 text-brand-gold/40 group-hover:text-brand-gold transition-colors duration-500">
                          {getRoleIcon(leaders[2].role)}
                       </div>

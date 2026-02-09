@@ -1,4 +1,5 @@
 import axios from 'axios';
+import logger from '@/utils/logger';
 
 const cleanEnvVar = (val) => {
   if (typeof val !== 'string') return val;
@@ -25,8 +26,8 @@ const apiInstance = axios.create({
   withCredentials: true,
 });
 
-// Diagnostic check for production baseURL
-if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+// Diagnostic check for production baseURL (development only)
+if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
   const currentBaseURL = apiInstance.defaults.baseURL;
   const envValue = process.env.NEXT_PUBLIC_API_URL;
   
@@ -41,12 +42,16 @@ if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
   }
 }
 
-// Request interceptor to add token
+// Request interceptor to add token and throttle requests
+import pThrottle from 'p-throttle';
+
+const throttle = pThrottle({ limit: 10, interval: 1000 });
+
 apiInstance.interceptors.request.use(
-  (config) => {
+  throttle(async (config) => {
     // Token is handled by cookies automatically with withCredentials: true
     return config;
-  },
+  }),
   (error) => Promise.reject(error)
 );
 
@@ -56,14 +61,20 @@ apiInstance.interceptors.response.use(
   async (error) => {
     const { config, response } = error;
     
-    // Add retry logic
-    const MAX_RETRIES = 3;
+    // Configurable retry logic - can be disabled per request
+    // Usage: api.method(data, { retry: false }) or { retry: { maxRetries: 2 } }
+    const retryConfig = config.retry !== undefined ? config.retry : { enabled: true, maxRetries: 3 };
+    
+    // Normalize retry config
+    const retryEnabled = retryConfig === true || (typeof retryConfig === 'object' && retryConfig.enabled !== false);
+    const MAX_RETRIES = typeof retryConfig === 'object' ? (retryConfig.maxRetries || 3) : 3;
+    
     config.retryCount = config.retryCount || 0;
     
     // Only retry on network errors or 5xx server errors
     const shouldRetry = !response || (response.status >= 500 && response.status <= 599);
     
-    if (shouldRetry && config.retryCount < MAX_RETRIES) {
+    if (retryEnabled && shouldRetry && config.retryCount < MAX_RETRIES) {
       config.retryCount += 1;
       const delay = Math.pow(2, config.retryCount) * 1000; // Exponential backoff
       
@@ -77,7 +88,7 @@ apiInstance.interceptors.response.use(
     const isVerification403 = response?.status === 403 && (response?.data?.message?.toLowerCase().includes('verify') || response?.data?.message?.toLowerCase().includes('authorized'));
     
     if (!config?.suppressErrorLogs && !isAuthMe401 && !isVerification403) {
-      console.error(`[API] Error in ${config?.method?.toUpperCase()} ${config?.url}:`, {
+      logger.error(`API Error in ${config?.method?.toUpperCase()} ${config?.url}`, {
         message: error.message,
         status: response?.status,
         data: response?.data,
@@ -85,7 +96,7 @@ apiInstance.interceptors.response.use(
       });
       
       if (response?.status === 404) {
-        console.warn('[API] 404 detected. This could be a routing mismatch between frontend and backend, or Vercel not mapping the path.');
+        logger.warn('[API] 404 detected. This could be a routing mismatch between frontend and backend, or Vercel not mapping the path.');
       }
     }
     
@@ -95,7 +106,10 @@ apiInstance.interceptors.response.use(
     // 3. NOT already on auth pages
     // 4. User is on a protected route (dashboard, etc.)
     if (response?.status === 401 && !isAuthMe401) {
+      // Notify AuthContext to clear state regardless of current page
       if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('auth-user-logout'));
+        
         const currentPath = window.location.pathname;
         const isProtectedRoute = currentPath.startsWith('/dashboard') || 
                                  currentPath.startsWith('/profile') ||
@@ -123,9 +137,8 @@ export const api = {
     forgotPassword: (email) => apiInstance.post('auth/forgot-password', { email }),
     resetPassword: (token, password) => apiInstance.post('auth/reset-password', { token, password }),
     logout: async () => {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('token');
-      }
+      // Auth handled via httpOnly cookies with withCredentials: true
+      // No localStorage token management needed
       return apiInstance.post('auth/logout');
     }
   },
@@ -134,7 +147,8 @@ export const api = {
     updateProfile: (data) => {
       const isFormData = data instanceof FormData;
       return apiInstance.put('users/profile', data, {
-        headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : undefined
+        headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : undefined,
+        retry: isFormData ? false : undefined // No retry for file uploads
       });
     },
     deleteProfileImage: () => apiInstance.delete('users/profile/image'),
@@ -155,7 +169,8 @@ export const api = {
     delete: (id) => apiInstance.delete(`properties/${id}`),
     toggleSave: (id) => apiInstance.post(`properties/${id}/save`),
     uploadImages: (id, data) => apiInstance.post(`properties/${id}/images`, data, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' },
+      retry: false // No retry for image uploads to prevent duplicates
     }),
   },
   public: {
@@ -279,8 +294,8 @@ export const api = {
     delete: (id) => apiInstance.delete(`magazines/${id}`),
   },
   uploads: {
-    upload: (data, config) => apiInstance.post('upload', data, config),
-    uploadPublic: (data, config) => apiInstance.post('upload/public', data, config),
+    upload: (data, config) => apiInstance.post('upload', data, { ...config, retry: false }),
+    uploadPublic: (data, config) => apiInstance.post('upload/public', data, { ...config, retry: false }),
   },
   history: {
     getPublic: () => apiInstance.get('history'),

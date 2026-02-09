@@ -8,6 +8,7 @@ import ProjectFilters from '@/components/projects/ProjectFilters';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import { api } from '@/lib/api';
 import { useSearchParams } from 'next/navigation';
+import StructuredData from '@/components/seo/StructuredData';
 
 const SORT_OPTIONS = [
   { label: "Newest Project", value: "newest" },
@@ -152,6 +153,17 @@ const ProjectsContent = () => {
           </p>
         </div>
       </section>
+
+      <StructuredData 
+        type="ItemList" 
+        data={{
+          type: 'projects',
+          items: projects.slice(0, 10).map(p => ({
+            name: p.title,
+            slug: p.slug
+          }))
+        }} 
+      />
 
       <section className="max-container px-4">
         {/* Filters Top Bar */}

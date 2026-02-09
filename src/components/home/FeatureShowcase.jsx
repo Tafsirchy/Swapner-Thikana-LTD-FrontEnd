@@ -94,20 +94,15 @@ const FeatureShowcase = () => {
       <div className="max-container px-4 relative z-10">
         
         <div className="mb-10 md:mb-16 text-center">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-            >
-                <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
-                    Exclusive Listings
-                </span>
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-cinzel font-semibold text-white mb-6">
-                    Featured <span className="text-brand-gold">Properties</span>
-                </h2>
-                <div className="w-24 h-1 bg-gradient-to-r from-transparent via-brand-gold to-transparent mx-auto" />
-            </motion.div>
+        <div className="mb-10 md:mb-16 text-center animate-slide-in-up">
+            <span className="text-brand-gold font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
+                Exclusive Listings
+            </span>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-cinzel font-semibold text-white mb-6">
+                Featured <span className="text-brand-gold">Properties</span>
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-brand-gold to-transparent mx-auto" />
+        </div>
         </div>
 
         <div className="h-[500px] md:h-[600px] lg:h-[700px]">

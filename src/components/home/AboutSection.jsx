@@ -263,11 +263,11 @@ const AboutSection = () => {
                         />
                         
                         {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent pointer-events-none" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent pointer-events-none z-10" />
 
                         {/* Content Overlay */}
                         <div className={`
-                          absolute bottom-0 left-0 w-full p-8 md:p-10 transition-all duration-700
+                          absolute bottom-0 left-0 w-full p-8 md:p-10 transition-all duration-700 z-20
                           ${position === 'center' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
                         `}>
                           <div className="space-y-2">
@@ -324,7 +324,7 @@ const AboutSection = () => {
           {!leadersLoading && leaders.length > 1 && (
             <>
               {/* Sideways Arrows for Desktop */}
-              <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between items-center z-20 pointer-events-none px-4 md:px-8">
+              <div className="hidden lg:flex absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between items-center z-30 pointer-events-none px-4 md:px-8">
                 <button 
                   onClick={prevSlide}
                   className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-brand-gold hover:text-brand-gold hover:bg-brand-gold/10 transition-all group active:scale-95 pointer-events-auto backdrop-blur-sm"
@@ -343,7 +343,7 @@ const AboutSection = () => {
               </div>
 
               {/* Bottom Controls for Mobile & Dots for all */}
-              <div className="absolute bottom-0 lg:bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-8 z-30">
+              <div className="absolute bottom-0 lg:bottom-12 left-1/2 -translate-x-1/2 flex items-center gap-8 z-40">
                 <button 
                   onClick={prevSlide}
                   className="lg:hidden w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white active:scale-95 backdrop-blur-md bg-black/20"
@@ -408,7 +408,7 @@ const AboutSection = () => {
                             />
                             
                             {/* Glass Overlay on Hover */}
-                            <div className="absolute inset-x-4 bottom-4 bg-black/80 md:bg-black/60 lg:backdrop-blur-md rounded-xl p-6 translate-y-[110%] group-hover:translate-y-0 transition-transform duration-500 flex justify-between items-center border border-white/10">
+                            <div className="absolute inset-x-4 bottom-4 bg-black/80 md:bg-black/60 lg:backdrop-blur-md rounded-xl p-6 translate-y-[110%] group-hover:translate-y-0 transition-transform duration-500 flex justify-between items-center border border-white/10 z-20">
                                 <div>
                                     <h4 className="text-white text-xl font-bold mb-1">{project.title}</h4>
                                     <div className="flex items-center gap-2 text-zinc-300 text-xs uppercase tracking-wider">

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Trash2, CheckCircle2, Inbox, Calendar } from 'lucide-react';
 import { api } from '@/lib/api';
+import logger from '@/utils/logger';
 
 const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
   const [notifications, setNotifications] = useState([]);
@@ -29,7 +30,7 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
       
       setTotalPages(response.data.totalPages || 1);
     } catch (error) {
-      console.error('Error fetching all notifications:', error);
+      logger.error('Error in notifications modal action', error);
     } finally {
       setLoading(false);
     }
@@ -138,7 +139,7 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
           </div>
 
           {/* Content Area */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar" data-lenis-prevent>
             {loading && page === 1 ? (
               <div className="h-64 flex flex-col items-center justify-center gap-6">
                 <div className="w-16 h-16 border border-brand-gold/20 flex items-center justify-center relative">

@@ -11,9 +11,10 @@ import {
 import DownloadBrochure from '@/components/shared/DownloadBrochure';
 import ShareButton from '@/components/shared/ShareButton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
+import logger from '@/utils/logger';
+import { sanitize } from '@/utils/dompurify';
 const MortgageCalculator = dynamic(() => import('@/components/tools/MortgageCalculator'), { ssr: false });
 const NearbyPlaces = dynamic(() => import('@/components/shared/NearbyPlaces'), { ssr: false });
 import ReviewSection from '@/components/property/ReviewSection';
@@ -65,7 +66,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
       setShowInquiryModal(false);
     } catch (err) {
       toast.error('Failed to send inquiry. Please try again.');
-      console.error('Inquiry error:', err);
+      logger.error('Inquiry submission failed', err);
     } finally {
       setSubmitting(false);
     }
@@ -96,7 +97,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
           </motion.div>
         </AnimatePresence>
         
-        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-transparent to-transparent opacity-60 md:opacity-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-transparent to-transparent opacity-60 md:opacity-100 z-10"></div>
         
         {/* Featured Actions (Top Right) */}
         <div className="absolute top-8 right-4 md:right-8 z-50 flex items-center gap-3 md:gap-4">
@@ -111,7 +112,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
         </div>
 
         {/* Navigation Overlays (Hidden on smallest mobile, use swipe/dots) */}
-        <div className="hidden md:flex absolute inset-x-0 top-1/2 -translate-y-1/2 justify-between px-8 z-20">
+        <div className="hidden md:flex absolute inset-x-0 top-1/2 -translate-y-1/2 justify-between px-8 z-40">
           <button 
             onClick={() => setActiveImage(prev => (prev === 0 ? property.images.length - 1 : prev - 1))}
             className="p-4 rounded-full glass border-white/20 text-white hover:bg-brand-gold hover:text-royal-deep transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
@@ -131,14 +132,14 @@ const PropertyDetailClient = ({ initialProperty }) => {
         </div>
 
         {/* Image Indicators / Counter (Mobile First) */}
-        <div className="absolute bottom-6 right-6 z-20 md:hidden flex items-center gap-2 px-3 py-1.5 glass rounded-full border-white/10 text-xs text-white">
+        <div className="absolute bottom-6 right-6 z-40 md:hidden flex items-center gap-2 px-3 py-1.5 glass rounded-full border-white/10 text-xs text-white">
           <span className="font-bold">{activeImage + 1}</span>
           <span className="opacity-40">/</span>
           <span className="opacity-40">{property.images?.length || 0}</span>
         </div>
 
         {/* Thumbnail Strip (Desktop only for scroll efficiency) */}
-        <div className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 gap-4 p-2 glass rounded-2xl border-white/10 overflow-x-auto max-w-[90vw] z-20">
+        <div className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 gap-4 p-2 glass rounded-2xl border-white/10 overflow-x-auto max-w-[90vw] z-40">
           {property.images?.map((img, idx) => (
             <button 
               key={idx}
@@ -214,7 +215,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
               <h2 className="text-xl md:text-2xl font-bold text-zinc-100 mb-4 md:mb-6 pb-3 md:pb-4 border-b border-white/10">About This Residence</h2>
               <div className="text-zinc-400 text-sm md:text-base leading-relaxed space-y-4">
                 {property.description?.split('\n').filter(p => p).slice(0, 3).map((para, i) => (
-                  <p key={i}>{para}</p>
+                  <div key={i} dangerouslySetInnerHTML={{ __html: sanitize(para) }} />
                 ))}
                 
                 {/* Collapsible Content for SM */}
@@ -225,7 +226,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
                       className="space-y-4"
                     >
                       {property.description?.split('\n').filter(p => p).slice(3).map((para, i) => (
-                        <p key={i + 3}>{para}</p>
+                        <div key={i + 3} dangerouslySetInnerHTML={{ __html: sanitize(para) }} />
                       ))}
                     </motion.div>
                   )}
@@ -510,8 +511,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
         )}
       </AnimatePresence>
 
-      <style jsx>{`
-      `}</style>
+
     </div>
   );
 };

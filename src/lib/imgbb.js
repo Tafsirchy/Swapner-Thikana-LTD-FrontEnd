@@ -1,4 +1,5 @@
 import imageCompression from 'browser-image-compression';
+import logger from './logger';
 
 // ImgBB Upload Utility for Client-Side
 const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY || '3b910fac635158436c2ae4e967564ef2'; // Fallback to current valid key
@@ -44,7 +45,7 @@ export const uploadToImgBB = async (file, signal) => {
       throw new Error(data.error?.message || 'Upload failed');
     }
   } catch (error) {
-    console.error('ImgBB upload error:', error);
+    logger.error('ImgBB upload failed', error);
     throw error;
   }
 };

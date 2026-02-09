@@ -8,6 +8,7 @@ import '@photo-sphere-viewer/core/index.css';
 import '@photo-sphere-viewer/markers-plugin/index.css';
 import { Compass, Move, X, ChevronRight, Box } from 'lucide-react';
 import api from '@/lib/api';
+import logger from '@/utils/logger';
 import LiquidButton from '@/components/shared/LiquidButton';
 
 const DEFAULT_PANO = 'https://photo-sphere-viewer-data.netlify.app/assets/sphere.jpg';
@@ -37,7 +38,7 @@ const VirtualRealitySection = () => {
         
         // Robust extraction finding the first array in the response
         const extractArray = (res, key) => {
-            console.log(`Extracting ${key}:`, res);
+            logger.log(`Extracting ${key}:`, res);
             if (!res) return [];
             
             // Handle Axios response structure
@@ -58,7 +59,7 @@ const VirtualRealitySection = () => {
         const propertiesData = extractArray(propertiesRes, 'properties');
         const projectsData = extractArray(projectsRes, 'projects');
         
-        console.log('Extracted Data:', { propertiesData, projectsData });
+        logger.log('Extracted Data:', { propertiesData, projectsData });
 
         const formatItems = (items) => items.map(p => ({
              id: p._id || p.id,
@@ -70,7 +71,7 @@ const VirtualRealitySection = () => {
         const propertyItems = formatItems(propertiesData);
         const projectItems = formatItems(projectsData);
         
-        console.log('Formatted Items:', { propertyItems, projectItems });
+        logger.log('Formatted Items:', { propertyItems, projectItems });
 
         // FALLBACK: If API returns empty, show demo items so section isn't empty
         const finalPropertyItems = propertyItems.length > 0 ? propertyItems : [
@@ -87,9 +88,9 @@ const VirtualRealitySection = () => {
             properties: { label: 'Properties', items: finalPropertyItems },
             projects: { label: 'Projects', items: finalProjectItems }
         });
-      } catch (error) {
-        console.error("Failed to fetch VR data:", error);
-         // Fallback on error
+      } catch (err) {
+      logger.error('VR view failed to load', err);
+     // Fallback on error
          setCategories({
             properties: { label: 'Properties', items: [{ id: 'err1', name: 'Demo Property', location: 'Dhaka', pano: DEFAULT_PANO }] },
             projects: { label: 'Projects', items: [{ id: 'err2', name: 'Demo Project', location: 'Dhaka', pano: DEFAULT_PANO }] }
@@ -188,10 +189,9 @@ const VirtualRealitySection = () => {
                     className="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar"
                     data-lenis-prevent
                 >
-                    <style jsx>{`
-                    `}</style>
+
                     {loading ? (
-                        <div className="text-zinc-500 text-sm animate-pulse">Loading data...</div>
+                        <div className="text-zinc-400 text-sm animate-pulse">Loading data...</div>
                     ) : (
                         <AnimatePresence mode='wait'>
                             <motion.div 
@@ -212,13 +212,13 @@ const VirtualRealitySection = () => {
                                         >
                                             <div>
                                                 <div className="text-zinc-200 font-bold font-cinzel text-lg group-hover:text-brand-gold transition-colors">{item.name}</div>
-                                                <div className="text-xs text-zinc-500 uppercase tracking-widest">{item.location}</div>
+                                                <div className="text-xs text-zinc-400 uppercase tracking-widest">{item.location}</div>
                                             </div>
                                             <ChevronRight className="text-zinc-600 group-hover:text-brand-gold opacity-0 group-hover:opacity-100 transition-all" size={16} />
                                         </motion.div>
                                     ))
                                 ) : (
-                                    <div className="text-zinc-500 text-sm italic">No items found.</div>
+                                    <div className="text-zinc-400 text-sm italic">No items found.</div>
                                 )}
                             </motion.div>
                         </AnimatePresence>
@@ -280,8 +280,8 @@ const VirtualRealitySection = () => {
                          className="absolute inset-0 flex items-center justify-center"
                     >
                         <div className="text-center opacity-30">
-                            <Box size={64} className="mx-auto mb-4 text-zinc-500" strokeWidth={1} />
-                            <p className="text-zinc-500 uppercase tracking-[0.2em] text-sm">Select a project to enter hyperspace</p>
+                            <Box size={64} className="mx-auto mb-4 text-zinc-400" strokeWidth={1} />
+                            <p className="text-zinc-400 uppercase tracking-[0.2em] text-sm">Select a project to enter hyperspace</p>
                         </div>
                          {/* Static grid background effect */}
                          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>

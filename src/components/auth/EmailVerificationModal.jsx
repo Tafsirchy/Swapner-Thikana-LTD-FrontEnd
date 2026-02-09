@@ -4,7 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Clock, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
 import { api } from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
+import logger from '@/utils/logger';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner'; // Assuming toast is imported from sonner or similar library
 
 const EmailVerificationModal = ({ isOpen, onClose, userEmail }) => {
   const [resendCooldown, setResendCooldown] = useState(0);
@@ -54,15 +57,14 @@ const EmailVerificationModal = ({ isOpen, onClose, userEmail }) => {
 
     setIsResending(true);
     try {
-      console.log('Resending verification email to:', userEmail);
+      logger.log('Resending verification email to:', userEmail);
       await api.auth.resendVerification({ email: userEmail });
       setResendCooldown(60); // 60 seconds cooldown
       setMessage('Verification email sent! Please check your inbox.');
       setTimeout(() => setMessage(''), 3000);
-    } catch (error) {
-      console.error('Resend verification error:', error.response?.data);
-      setMessage(error.response?.data?.message || 'Failed to resend email. Please try again.');
-      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      logger.error('Email verification failed', err);
+      toast.error(err.response?.data?.message || 'Failed to resend verification email');
     } finally {
       setIsResending(false);
     }

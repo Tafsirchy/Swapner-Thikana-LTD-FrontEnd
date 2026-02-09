@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import logger from '@/utils/logger';
 import AllNotificationsModal from './AllNotificationsModal';
 
 const NotificationBell = () => {
@@ -36,7 +37,7 @@ const NotificationBell = () => {
       setNotifications(notifs);
       setUnreadCount(count);
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      logger.error('Error in notification action', error);
     } finally {
       setLoading(false);
       isFetching.current = false;

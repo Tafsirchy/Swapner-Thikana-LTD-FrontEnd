@@ -124,7 +124,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-brand-gold/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-zinc-500">
+        <div className="pt-8 border-t border-brand-gold/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-zinc-400">
           <p>© {currentYear} shwapner Thikana Ltd. All Rights Reserved.</p>
           <div className="flex items-center gap-8">
             <Link href="/privacy-policy" className="hover:text-brand-gold transition-colors">Privacy Policy</Link>

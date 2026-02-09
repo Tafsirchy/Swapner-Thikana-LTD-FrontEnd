@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { api } from '@/lib/api';
+import logger from '@/utils/logger';
 
 const AuthContext = createContext(null);
 
@@ -13,6 +14,14 @@ export const AuthProvider = ({ children }) => {
   // Check if user is logged in on mount
   useEffect(() => {
     checkAuth();
+
+    // Listen for global 401 errors to clear state
+    const handleLogout = () => {
+      setUser(null);
+    };
+
+    window.addEventListener('auth-user-logout', handleLogout);
+    return () => window.removeEventListener('auth-user-logout', handleLogout);
   }, []);
 
   const checkAuth = async () => {
@@ -52,7 +61,7 @@ export const AuthProvider = ({ children }) => {
         emailSent: response.data.emailSent !== false // Default to true if not specified
       };
     } catch (error) {
-      console.error('Registration error:', error.response?.data);
+      logger.error('Registration error', error.response?.data);
       const errorMessage = error.response?.data?.message || 'Registration failed';
       setError(errorMessage);
       return { success: false, error: errorMessage };
@@ -68,7 +77,7 @@ export const AuthProvider = ({ children }) => {
         window.location.href = '/';
       }
     } catch (error) {
-      console.error('Logout error:', error);
+      logger.error('Logout error', error);
     }
   };
 

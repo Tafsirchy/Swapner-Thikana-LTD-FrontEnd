@@ -39,6 +39,33 @@ const StructuredData = ({ type, data }) => {
         'query-input': 'required name=search_term_string'
       }
     };
+  } else if (type === 'Article') {
+    schema = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: data.title,
+      description: data.description,
+      image: data.images,
+      author: {
+        '@type': 'Person',
+        name: data.author?.name || 'Admin',
+        url: 'https://shwapner-thikana.com'
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Shwapner Thikana Ltd',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://shwapner-thikana.com/logo-new.webp'
+        }
+      },
+      datePublished: data.publishedAt || data.createdAt,
+      dateModified: data.updatedAt || data.createdAt,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `https://shwapner-thikana.com/blog/${data.slug}`
+      }
+    };
   } else if (type === 'RealEstateListing') {
     schema = {
       '@context': 'https://schema.org',
@@ -87,6 +114,16 @@ const StructuredData = ({ type, data }) => {
         position: index + 1,
         name: item.name,
         item: `https://shwapner-thikana.com${item.path}`
+      }))
+    };
+  } else if (type === 'ItemList') {
+    schema = {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: data.items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `https://shwapner-thikana.com/${data.type}/${item.slug}`
       }))
     };
   }

@@ -42,6 +42,9 @@ const SmartImage = ({
     }
   }, [imageUrl, lastSrc]);
 
+  // Calculate standard sizes if not provided
+  const imageSizes = sizes || (fill ? '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw' : undefined);
+
   return (
     <div 
       className={`relative overflow-hidden bg-zinc-900/50 ${fill ? 'w-full h-full' : ''}`}
@@ -58,6 +61,7 @@ const SmartImage = ({
             height={!fill ? height : undefined}
             className={`object-cover ${className}`}
             priority={priority}
+            sizes={imageSizes}
           />
         </div>
       )}
@@ -83,7 +87,7 @@ const SmartImage = ({
         fill={fill}
         width={!fill ? width : undefined}
         height={!fill ? height : undefined}
-        sizes={sizes}
+        sizes={imageSizes}
         className={`transition-all duration-700 ease-out z-[5] ${loading ? 'opacity-0 scale-105' : 'opacity-100 scale-100'} ${className}`}
         onLoad={() => {
           setLoading(false);
@@ -96,6 +100,7 @@ const SmartImage = ({
            setIsChanging(false);
         }}
         priority={priority}
+        loading={priority ? undefined : 'lazy'}
       />
 
       {error && (

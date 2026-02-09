@@ -53,6 +53,7 @@ const CompareBar = () => {
                   <button
                     onClick={() => removeFromCompare(item._id)}
                     className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white"
+                    aria-label={`Remove ${item.title || 'item'} from compare`}
                   >
                     <X size={14} />
                   </button>
@@ -74,6 +75,7 @@ const CompareBar = () => {
               onClick={clearCompare}
               className="p-3.5 md:px-6 md:py-3.5 rounded-xl md:rounded-2xl border border-red-500/20 text-red-500/70 font-bold hover:bg-red-500/10 transition-all text-xs flex items-center gap-2 hover:text-red-400 shadow-lg shadow-red-500/5"
               title="Clear All"
+              aria-label="Clear all comparison items"
             >
               <Trash2 size={16} />
               <span className="hidden md:inline">Clear All</span>

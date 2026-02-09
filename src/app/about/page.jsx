@@ -340,10 +340,10 @@ const AboutPage = () => {
                       <div className="relative group overflow-hidden bg-zinc-950 p-3 ring-1 ring-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]">
                         <div className="relative aspect-[4/5] overflow-hidden">
                           <Image src={leaders[0].image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1200'} alt={leaders[0].name} fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-[2s] group-hover:scale-105" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
                         </div>
 
-                          <div className="mt-8 flex justify-between items-start pb-4 px-4">
+                          <div className="mt-8 flex justify-between items-start pb-4 px-4 relative z-20">
                             <div className="space-y-1">
                               <p className="text-brand-gold font-cinzel text-[10px] uppercase tracking-[0.3em] font-black italic mb-2">{leaders[0].role}</p>
                               <h3 className="text-4xl font-cinzel font-bold text-white tracking-widest leading-none">{leaders[0].name}</h3>
@@ -370,9 +370,9 @@ const AboutPage = () => {
                       <div className="relative group overflow-hidden bg-zinc-950 p-6 shadow-2xl border border-white/5">
                         <div className="relative aspect-[16/9] overflow-hidden rounded-sm">
                           <Image src={leaders[3].image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1200'} alt={leaders[3].name} fill className="object-cover grayscale group-hover:grayscale-0 transition-transform duration-[2s] group-hover:scale-110" />
-                          <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-1000"></div>
+                          <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-1000 z-10"></div>
                         </div>
-                        <div className="mt-8 flex items-center justify-between">
+                        <div className="mt-8 flex items-center justify-between relative z-20">
                           <div className="space-y-1">
                             <h4 className="text-2xl font-cinzel font-bold text-white tracking-widest">{leaders[3].name}</h4>
                             <p className="text-[10px] text-brand-gold font-black uppercase tracking-[0.4em] italic leading-none">{leaders[3].role}</p>
@@ -402,7 +402,7 @@ const AboutPage = () => {
                           <Image src={leaders[2].image || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200'} alt={leaders[2].name} fill className="object-cover scale-110 group-hover:scale-100 transition-all duration-[1.2s]" />
                           <div className="absolute inset-0 bg-brand-gold/10 mix-blend-overlay"></div>
                         </div>
-                        <div className="absolute left-0 sm:-left-8 bottom-16 p-4 sm:p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-6 sm:gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50">
+                        <div className="absolute left-0 sm:-left-8 bottom-16 p-4 sm:p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-6 sm:gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50 z-20">
                         <div className="flex-shrink-0 text-brand-gold/40 group-hover:text-brand-gold transition-colors duration-500">
                            {getRoleIcon(leaders[2].role)}
                         </div>

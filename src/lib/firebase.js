@@ -1,5 +1,7 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getAnalytics } from "firebase/analytics";
+import logger from "@/utils/logger";
 
 // Aggressive cleaning function for environment variables
 const cleanEnvVar = (val) => {
@@ -29,6 +31,7 @@ try {
 
   if (isConfigValid) {
     app = initializeApp(firebaseConfig);
+    const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
     
     // Messaging service
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
@@ -47,7 +50,7 @@ try {
     }
   }
 } catch (error) {
-  console.error('[Firebase] Initialization error:', error);
+  logger.error('Firebase initialization failed', error);
 }
 
 export { messaging };

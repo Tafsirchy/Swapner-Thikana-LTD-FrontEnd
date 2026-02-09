@@ -37,10 +37,10 @@ const BlogCard = ({ post }) => {
           fill
           className="object-cover transition-all duration-[1.5s] ease-out group-hover:scale-110 group-hover:rotate-1"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a] via-[#0a0f1a]/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a] via-[#0a0f1a]/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700 z-10"></div>
         
         {/* Floating Category Badge */}
-        <div className="absolute top-6 left-6">
+        <div className="absolute top-6 left-6 z-20">
           <span className="px-4 py-2 sm:px-5 bg-brand-gold text-royal-deep text-[10px] sm:text-[9px] font-black uppercase tracking-wider sm:tracking-[0.3em] shadow-[0_10px_20px_-5px_rgba(212,175,55,0.4)] transition-transform duration-500 group-hover:-translate-y-1">
             {category || 'Lifestyle'}
           </span>
@@ -50,7 +50,7 @@ const BlogCard = ({ post }) => {
       {/* Metadata Panel - Floating & Overlapping */}
       <div className="relative px-8 pb-10 pt-12 flex-1 flex flex-col">
         {/* Date/Author Glass Panel */}
-        <div className="absolute -top-5 left-4 right-4 sm:left-8 sm:right-8 bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 text-[10px] sm:text-[9px] font-black uppercase tracking-wider sm:tracking-[0.2em] text-zinc-500 shadow-2xl transition-transform duration-700 group-hover:-translate-y-2">
+        <div className="absolute -top-5 left-4 right-4 sm:left-8 sm:right-8 bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 text-[10px] sm:text-[9px] font-black uppercase tracking-wider sm:tracking-[0.2em] text-zinc-500 shadow-2xl transition-transform duration-700 group-hover:-translate-y-2 z-20">
           <div className="flex items-center gap-3">
             <Calendar size={12} className="text-brand-gold" />
             <span className="opacity-80">{new Date(createdAt).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' })}</span>

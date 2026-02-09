@@ -1,6 +1,7 @@
 import api from '@/lib/api';
 import ProjectDetailClient from '@/components/project/ProjectDetailClient';
 import Link from 'next/link';
+import StructuredData from '@/components/seo/StructuredData';
 
 // This is a Server Component
 const ProjectDetailPage = async ({ params }) => {
@@ -44,7 +45,25 @@ const ProjectDetailPage = async ({ params }) => {
   }
 
   return (
-    <ProjectDetailClient project={project} />
+    <>
+      <StructuredData 
+        type="RealEstateListing" 
+        data={{
+          title: project.title,
+          description: project.description,
+          images: project.images,
+          slug: `projects/${project.slug}`, // Adjusted path
+          createdAt: project.createdAt,
+          price: project.price || 0,
+          location: project.location,
+          extra: {
+            '@type': 'Accommodation', // Or specialized type for projects
+            numberOfRooms: project.units || 0
+          }
+        }} 
+      />
+      <ProjectDetailClient project={project} />
+    </>
   );
 };
 
@@ -74,6 +93,9 @@ export async function generateMetadata({ params }) {
         title: project.title,
         description: project.description?.substring(0, 160),
         images: project.images?.[0] ? [project.images[0]] : [],
+      },
+      alternates: {
+        canonical: `https://shwapner-thikana.com/projects/${slug}`,
       }
     };
   } catch {

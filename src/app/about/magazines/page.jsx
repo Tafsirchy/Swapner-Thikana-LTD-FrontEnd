@@ -108,14 +108,14 @@ const MagazinesPage = () => {
                             className="object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-transparent to-black/20"></div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-royal-deep/80 via-transparent to-black/20 z-10"></div>
                           
                           {/* Interactive Badge */}
-                          <div className="absolute top-6 left-6 px-3 py-1 bg-brand-gold text-royal-deep text-[10px] sm:text-[8px] font-black uppercase tracking-widest">
+                          <div className="absolute top-6 left-6 px-3 py-1 bg-brand-gold text-royal-deep text-[10px] sm:text-[8px] font-black uppercase tracking-widest z-20">
                             Collectors Edition
                           </div>
 
-                          <div className="absolute bottom-8 left-8 right-8 text-white">
+                          <div className="absolute bottom-8 left-8 right-8 text-white z-20">
                             <span className="text-brand-gold text-xs sm:text-[10px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] mb-3 sm:mb-4 block italic">
                               {mag.publisher || 'STLTD Media'}
                             </span>

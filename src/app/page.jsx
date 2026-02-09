@@ -69,7 +69,7 @@ const StatItem = ({ stat, index }) => {
         {/* Glow Effect */}
         <div className="absolute -inset-24 bg-brand-gold/5 blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
         
-        <div className="relative z-10 flex flex-col items-center">
+        <div className="relative flex flex-col items-center">
           <div className="w-12 h-12 bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-6 transition-transform duration-700 group-hover:rotate-[360deg]">
             {React.cloneElement(stat.icon, { size: 24, strokeWidth: 1 })}
           </div>
@@ -160,7 +160,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-none shadow-2xl relative z-50 mb-8 sm:mb-0"
+            className="max-w-4xl mx-auto bg-white/5 backdrop-blur-2xl p-2 rounded-none shadow-2xl relative z-20 mb-8 sm:mb-0"
           >
             <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-center gap-2">
               <div className="flex-1 w-full flex items-center px-4 gap-3 bg-white/5 rounded-none border border-white/5 focus-within:border-brand-gold/30 transition-all">

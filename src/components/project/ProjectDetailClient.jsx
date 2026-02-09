@@ -16,6 +16,8 @@ import LuxAccordion from '../shared/LuxAccordion';
 import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
+import logger from '@/utils/logger';
+import { sanitize } from '@/utils/dompurify';
 
 const ProjectDetailClient = ({ project }) => {
   const { user } = useAuth();
@@ -49,7 +51,7 @@ const ProjectDetailClient = ({ project }) => {
       setInquiry({ ...inquiry, name: '', phone: '', email: '', message: '' });
       setShowInquiryModal(false);
     } catch (err) {
-      console.error('Inquiry error:', err);
+      logger.error('Inquiry submission failed', err);
       toast.error('Failed to send inquiry. Please try again.');
     } finally {
       setSubmitting(false);
@@ -83,11 +85,11 @@ const ProjectDetailClient = ({ project }) => {
         </AnimatePresence>
 
         {/* Dynamic Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-transparent to-transparent"></div>
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-royal-deep to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-transparent to-transparent z-10"></div>
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-royal-deep to-transparent z-10"></div>
 
         {/* Desktop Controls */}
-        <div className="hidden md:flex absolute inset-x-0 top-1/2 -translate-y-1/2 justify-between px-8 z-30">
+        <div className="hidden md:flex absolute inset-x-0 top-1/2 -translate-y-1/2 justify-between px-8 z-40">
           <button 
             onClick={() => setActiveImage(prev => (prev === 0 ? project.images.length - 1 : prev - 1))}
             className="p-4 rounded-full bg-black/20 backdrop-blur-md border border-white/10 text-white hover:bg-brand-gold hover:text-royal-deep transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
@@ -119,7 +121,7 @@ const ProjectDetailClient = ({ project }) => {
         </div>
 
         {/* Mobile Swipe Indicators */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-1.5 z-30">
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-1.5 z-40">
           {project.images?.map((_, idx) => (
             <button
               key={idx}
@@ -195,9 +197,10 @@ const ProjectDetailClient = ({ project }) => {
               </LuxAccordion>
 
               <LuxAccordion title="Project Overview" icon={ListChecks}>
-                <div className="text-zinc-400 text-sm leading-relaxed pt-2">
-                   {project.description}
-                </div>
+                <div 
+                  className="text-zinc-400 text-sm leading-relaxed pt-2"
+                  dangerouslySetInnerHTML={{ __html: sanitize(project.description) }}
+                />
               </LuxAccordion>
             </div>
 
@@ -218,7 +221,10 @@ const ProjectDetailClient = ({ project }) => {
                      ))}
                   </div>
                   <div className="border-t border-white/10 pt-8">
-                     <h3 className="text-xl font-bold text-white mb-4 italic leading-relaxed">{project.description}</h3>
+                     <h3 
+                        className="text-xl font-bold text-white mb-4 italic leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: sanitize(project.description) }}
+                     />
                      <div className="grid grid-cols-2 gap-8 mt-10">
                         <div className="space-y-2">
                            <span className="text-brand-gold font-bold uppercase text-xs tracking-widest">Configuration</span>

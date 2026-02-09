@@ -14,6 +14,7 @@ import Image from 'next/image';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 import SmartImage from '@/components/shared/SmartImage';
+import ErrorBoundary from '@/components/shared/ErrorBoundary';
 
 const DashboardLayout = ({ children }) => {
   const { user, logout } = useAuth();
@@ -122,15 +123,15 @@ const DashboardLayout = ({ children }) => {
 
         {/* Sidebar */}
         <aside className={`
-          fixed top-0 left-0 bottom-0 w-72 bg-zinc-900 border-r border-white/5 
-          z-40 transform transition-transform duration-300 ease-in-out
+          fixed top-0 left-0 bottom-0 w-[85vw] sm:w-72 bg-zinc-900 border-r border-white/5 
+          z-50 transform transition-transform duration-300 ease-in-out
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}>
           <div className="lg:hidden px-6 pt-6 pb-2 flex items-center justify-between">
             <span className="font-bold text-xl text-zinc-100">Dashboard</span>
             <button 
               onClick={toggleSidebar} 
-              className="text-zinc-400 p-2 hover:bg-white/5 rounded-full transition-colors"
+              className="text-zinc-400 p-2 hover:bg-white/5 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Close Sidebar"
             >
               <X size={24} />
@@ -168,7 +169,7 @@ const DashboardLayout = ({ children }) => {
                       <User size={24} />
                     )}
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-zinc-900 rounded-full" />
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-zinc-900 rounded-full z-10" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm font-bold text-zinc-100 font-cinzel tracking-wider uppercase leading-tight truncate-two-lines" title={user?.name}>
@@ -200,7 +201,7 @@ const DashboardLayout = ({ children }) => {
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <link.icon size={18} className={isAnySubActive ? 'text-brand-gold' : 'text-zinc-500 group-hover:text-zinc-300'} />
+                            <link.icon size={18} className={isAnySubActive ? 'text-brand-gold' : 'text-zinc-400 group-hover:text-zinc-300'} />
                             {link.name}
                           </div>
                           {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -224,7 +225,7 @@ const DashboardLayout = ({ children }) => {
                                     className={`flex items-center px-4 py-2 rounded-lg transition-all text-sm ${
                                       isSubActive 
                                         ? 'text-brand-gold font-bold' 
-                                        : 'text-zinc-500 hover:text-zinc-300'
+                                        : 'text-zinc-400 hover:text-zinc-300'
                                     }`}
                                   >
                                     {sub.name}
@@ -250,7 +251,7 @@ const DashboardLayout = ({ children }) => {
                           : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
                       }`}
                     >
-                      <link.icon size={18} className={isActive ? 'text-royal-deep' : 'text-zinc-500 group-hover:text-zinc-300'} />
+                      <link.icon size={18} className={isActive ? 'text-royal-deep' : 'text-zinc-400 group-hover:text-zinc-300'} />
                       {link.name}
                     </Link>
                   );
@@ -264,7 +265,7 @@ const DashboardLayout = ({ children }) => {
                 onClick={() => logout?.()}
                 className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium text-sm text-zinc-400 hover:bg-red-500/10 hover:text-red-500 group"
               >
-                <LogOut size={18} className="text-zinc-500 group-hover:text-red-500" />
+                <LogOut size={18} className="text-zinc-400 group-hover:text-red-500" />
                 Logout
               </button>
 
@@ -272,7 +273,7 @@ const DashboardLayout = ({ children }) => {
                 href="/"
                 className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-medium text-sm text-zinc-400 hover:bg-white/5 hover:text-zinc-100 group"
               >
-                <Home size={18} className="text-zinc-500 group-hover:text-zinc-300" />
+                <Home size={18} className="text-zinc-400 group-hover:text-zinc-300" />
                 Back to Home
               </Link>
             </div>
@@ -285,7 +286,7 @@ const DashboardLayout = ({ children }) => {
           <header className="lg:hidden h-20 border-b border-white/5 bg-zinc-900/50 flex items-center justify-between px-6 backdrop-blur-md sticky top-0 z-50">
             <button 
               onClick={toggleSidebar} 
-              className="text-zinc-400 hover:text-white transition-colors"
+              className="text-zinc-400 hover:text-white transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Open Sidebar"
             >
               <Menu size={26} />
@@ -305,23 +306,28 @@ const DashboardLayout = ({ children }) => {
             <div className="w-6"></div>
           </header>
 
-          <div className="p-3.5 sm:p-4 lg:p-8 relative flex-1">
-            {/* Top Header (Desktop) - Only show on Overview page */}
-            {pathname === '/dashboard' && (
-              <DashboardPageHeader 
-                title="Overview"
-                subtitle={`Welcome back, ${user?.name}`}
-                className="flex"
-              />
-            )}
+          <ErrorBoundary 
+            title="Dashboard Error"
+            message="We encountered an error loading this dashboard page. Please try refreshing or contact support if the problem persists."
+          >
+            <div className="p-3.5 sm:p-4 lg:p-8 relative flex-1">
+              {/* Top Header (Desktop) - Only show on Overview page */}
+              {pathname === '/dashboard' && (
+                <DashboardPageHeader 
+                  title="Overview"
+                  subtitle={`Welcome back, ${user?.name}`}
+                  className="flex"
+                />
+              )}
 
-            {children}
-          </div>
+              {children}
+            </div>
 
-          {/* Dashboard Copyright Footer */}
-          <div className="py-6 text-center text-xs text-zinc-600 border-t border-white/5">
-              &copy; 2026 shwapner Thikana Ltd.
-          </div>
+            {/* Dashboard Copyright Footer */}
+            <div className="py-6 text-center text-xs text-zinc-600 border-t border-white/5">
+                &copy; 2026 shwapner Thikana Ltd.
+            </div>
+          </ErrorBoundary>
         </main>
       </div>
     </ProtectedRoute>

@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { sanitize } from '@/utils/dompurify';
 
 const ReviewSection = ({ propertyId }) => {
   const { user } = useAuth();
@@ -198,6 +199,7 @@ const ReviewSection = ({ propertyId }) => {
                 <button 
                   onClick={() => setShowForm(false)}
                   className="p-2 bg-white/5 rounded-full text-zinc-400"
+                  aria-label="Close review form"
                 >
                   <X size={20} />
                 </button>
@@ -213,6 +215,7 @@ const ReviewSection = ({ propertyId }) => {
                         type="button"
                         onClick={() => setNewReview({ ...newReview, rating: star })}
                         className="transition-transform active:scale-90"
+                        aria-label={`Rate ${star} out of 5 stars`}
                       >
                         <Star 
                           size={36} 
@@ -305,6 +308,7 @@ const ReviewSection = ({ propertyId }) => {
                         onClick={() => handleEdit(review)}
                         className="p-2 bg-white/5 md:bg-white/10 text-zinc-400 hover:text-brand-gold hover:bg-brand-gold/10 rounded-lg transition-all"
                         title="Edit Review"
+                        aria-label="Edit review"
                       >
                         <Edit2 size={14} />
                       </button>
@@ -312,6 +316,7 @@ const ReviewSection = ({ propertyId }) => {
                         onClick={() => handleDelete(review._id)}
                         className="p-2 bg-white/5 md:bg-white/10 text-zinc-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
                         title="Delete Review"
+                        aria-label="Delete review"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -360,15 +365,17 @@ const ReviewSection = ({ propertyId }) => {
                   </div>
                 </form>
               ) : (
-                <p className="text-zinc-300 text-sm md:text-base leading-relaxed italic">&ldquo;{review.comment}&rdquo;</p>
+                <div 
+                  className="text-zinc-300 text-sm md:text-base leading-relaxed italic"
+                  dangerouslySetInnerHTML={{ __html: `&ldquo;${sanitize(review.comment)}&rdquo;` }}
+                />
               )}
             </div>
           ))
         )}
       </div>
 
-      <style jsx>{`
-      `}</style>
+
     </div>
   );
 };

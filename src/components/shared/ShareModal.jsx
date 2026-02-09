@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  X, Copy, Check, MessageCircle, 
-  Facebook, Share2, ExternalLink
-} from 'lucide-react';
+import { X, Copy, Check, Twitter, Facebook, MessageSquare, Linkedin, Mail } from 'lucide-react';
+import logger from '@/utils/logger';
 import Image from 'next/image';
 import { toast } from 'react-hot-toast';
 
@@ -27,7 +25,7 @@ const ShareModal = ({ isOpen, onClose, data }) => {
   const shareOptions = [
     {
       name: 'WhatsApp',
-      icon: MessageCircle,
+      icon: MessageSquare,
       color: 'bg-[#25D366]',
       action: () => window.open(`https://wa.me/?text=${encodeURIComponent(data.title + ' ' + shareUrl)}`, '_blank')
     },
@@ -39,13 +37,13 @@ const ShareModal = ({ isOpen, onClose, data }) => {
     },
     {
       name: 'Messenger',
-      icon: MessageCircle,
+      icon: MessageSquare,
       color: 'bg-[#0084FF]',
       action: () => window.open(`fb-messenger://share/?link=${encodeURIComponent(shareUrl)}`, '_blank')
     },
     {
       name: 'More',
-      icon: Share2,
+      icon: Mail,
       color: 'bg-zinc-700',
       action: async () => {
         if (navigator.share) {
@@ -56,7 +54,7 @@ const ShareModal = ({ isOpen, onClose, data }) => {
               url: shareUrl
             });
           } catch (err) {
-            console.log('Share error:', err);
+            logger.error('Share error:', err);
           }
         } else {
             handleCopy();
