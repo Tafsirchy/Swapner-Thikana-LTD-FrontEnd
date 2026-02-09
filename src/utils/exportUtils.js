@@ -56,10 +56,13 @@ export const exportComparisonPDF = (properties) => {
     },
     styles: {
       fontSize: 9,
-      cellPadding: 3
+      cellPadding: 3,
+      overflow: 'linebreak'
     },
     columnStyles: {
-      0: { fontStyle: 'bold', fillColor: [245, 245, 245] }
+      0: { fontStyle: 'bold', fillColor: [245, 245, 245], cellWidth: 40 },
+      1: { cellWidth: 'auto' },
+      2: { cellWidth: 'auto' }
     }
   });
   
@@ -224,7 +227,7 @@ export const exportProjectPDF = (project) => {
     startY: yPos + 5,
     body: specs,
     theme: 'striped',
-    styles: { fontSize: 10, cellPadding: 5 },
+    styles: { fontSize: 10, cellPadding: 5, overflow: 'linebreak' },
     columnStyles: { 0: { fontStyle: 'bold', cellWidth: 50 }, 1: { cellWidth: 'auto' } },
     margin: { left: margin, right: margin }
   });
@@ -233,15 +236,26 @@ export const exportProjectPDF = (project) => {
   
   // Description/Overview
   if (project.description) {
-    doc.setFontSize(14);
-    doc.setTextColor(212, 175, 55);
-    doc.text('OVERVIEW', margin, yPos);
-    
-    doc.setFontSize(10);
-    doc.setTextColor(60);
-    const splitDesc = doc.splitTextToSize(project.description, pageWidth - (margin * 2));
-    doc.text(splitDesc, margin, yPos + 8);
-    yPos += 15 + (splitDesc.length * 5);
+    autoTable(doc, {
+      startY: yPos,
+      head: [['OVERVIEW']],
+      body: [[project.description]],
+      theme: 'plain',
+      headStyles: { 
+        fontSize: 14, 
+        textColor: [212, 175, 55], 
+        fontStyle: 'bold',
+        cellPadding: { bottom: 5 } 
+      },
+      styles: { 
+        fontSize: 10, 
+        textColor: [60, 60, 60], 
+        cellPadding: 0,
+        overflow: 'linebreak'
+      },
+      margin: { left: margin, right: margin }
+    });
+    yPos = doc.lastAutoTable.finalY + 15;
   }
   
   // Features List
@@ -345,7 +359,7 @@ export const exportPropertyPDF = (property) => {
     startY: yPos + 5,
     body: details,
     theme: 'plain',
-    styles: { fontSize: 10, cellPadding: 4 },
+    styles: { fontSize: 10, cellPadding: 4, overflow: 'linebreak' },
     columnStyles: { 0: { fontStyle: 'bold', cellWidth: 50 }, 1: { cellWidth: 'auto' } },
     margin: { left: margin, right: margin }
   });
@@ -354,15 +368,26 @@ export const exportPropertyPDF = (property) => {
   
   // Description
   if (property.description) {
-    doc.setFontSize(14);
-    doc.setTextColor(212, 175, 55);
-    doc.text('ABOUT THIS PROPERTY', margin, yPos);
-    
-    doc.setFontSize(10);
-    doc.setTextColor(60);
-    const splitDesc = doc.splitTextToSize(property.description, pageWidth - (margin * 2));
-    doc.text(splitDesc, margin, yPos + 8);
-    yPos += 15 + (splitDesc.length * 5);
+    autoTable(doc, {
+      startY: yPos,
+      head: [['ABOUT THIS PROPERTY']],
+      body: [[property.description]],
+      theme: 'plain',
+      headStyles: { 
+        fontSize: 14, 
+        textColor: [212, 175, 55], 
+        fontStyle: 'bold',
+        cellPadding: { bottom: 5 } 
+      },
+      styles: { 
+        fontSize: 10, 
+        textColor: [60, 60, 60], 
+        cellPadding: 0,
+        overflow: 'linebreak'
+      },
+      margin: { left: margin, right: margin }
+    });
+    yPos = doc.lastAutoTable.finalY + 15;
   }
   
   // Amenities

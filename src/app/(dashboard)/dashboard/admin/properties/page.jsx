@@ -9,6 +9,7 @@ import LuxurySelect from '@/components/shared/LuxurySelect';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import RejectionModal from '@/components/shared/RejectionModal';
 
 
 const statusColors = {
@@ -27,6 +28,8 @@ const AdminPropertiesPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [rejectingId, setRejectingId] = useState(null);
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
 
   const fetchProperties = useCallback(async (page = 1) => {
     try {
@@ -92,15 +95,21 @@ const AdminPropertiesPage = () => {
   };
 
   const handleReject = async (propertyId) => {
+    setRejectingId(propertyId);
+    setIsRejectModalOpen(true);
+  };
+
+  const confirmReject = async (reason) => {
     try {
-      const reason = prompt('Reason for rejection (optional):');
-      await api.admin.rejectProperty(propertyId, reason);
+      await api.admin.rejectProperty(rejectingId, reason);
       setProperties(properties.map(p => 
-        p._id === propertyId ? { ...p, status: 'rejected' } : p
+        p._id === rejectingId ? { ...p, status: 'rejected' } : p
       ));
       toast.success('Property rejected');
     } catch {
       toast.error('Failed to reject property');
+    } finally {
+      setRejectingId(null);
     }
   };
 
@@ -410,6 +419,12 @@ const AdminPropertiesPage = () => {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
+      />
+
+      <RejectionModal 
+        isOpen={isRejectModalOpen}
+        onClose={() => setIsRejectModalOpen(false)}
+        onConfirm={confirmReject}
       />
     </div>
   );

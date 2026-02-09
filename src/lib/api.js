@@ -5,8 +5,20 @@ const cleanEnvVar = (val) => {
   return val.replace(/[\s\n\r\t]/g, '').trim();
 };
 
+const getBaseURL = () => {
+  const envUrl = cleanEnvVar(process.env.NEXT_PUBLIC_API_URL);
+  if (process.env.NODE_ENV === 'production') {
+    if (!envUrl) {
+      console.error('[API] CRITICAL: NEXT_PUBLIC_API_URL is missing in production!');
+      return '/api/'; // Absolute path for Vercel internal mapping
+    }
+    return envUrl.replace(/\/?$/, '/');
+  }
+  return (envUrl || 'http://localhost:5000/api').replace(/\/?$/, '/');
+};
+
 const apiInstance = axios.create({
-  baseURL: (cleanEnvVar(process.env.NEXT_PUBLIC_API_URL) || 'http://localhost:5000/api').replace(/\/?$/, '/'),
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
