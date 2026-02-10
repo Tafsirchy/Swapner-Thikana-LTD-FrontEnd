@@ -79,11 +79,17 @@ const PropertyMap = ({ property, height = '400px' }) => {
   return (
     <div className="rounded-2xl overflow-hidden border border-white/10 isolation-auto" style={{ height }}>
       <MapContainer
-        key={`map-${property._id}-${lat}-${lng}`}
+        key={`map-${property._id}-${isMounted ? Date.now() : 'loading'}`}
         center={[lat, lng]}
         zoom={property.coordinates?.lat ? 15 : 12}
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={false}
+        whenReady={(map) => {
+          // Force map invalidation to prevent container reuse issues
+          setTimeout(() => {
+            map.target.invalidateSize();
+          }, 100);
+        }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

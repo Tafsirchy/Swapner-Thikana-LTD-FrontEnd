@@ -145,7 +145,7 @@ const AddProjectPage = () => {
         </div>
         <button 
           onClick={() => router.back()}
-          className="p-3 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
+          className="p-4 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
         >
           <X size={24} />
         </button>
@@ -620,7 +620,7 @@ const AddProjectPage = () => {
                    <button 
                      type="button"
                      onClick={() => removeFeature(index)}
-                     className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shrink-0"
+                     className="p-4 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shrink-0"
                    >
                      <Trash2 size={18} />
                    </button>

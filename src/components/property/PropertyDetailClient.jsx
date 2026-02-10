@@ -12,6 +12,7 @@ import DownloadBrochure from '@/components/shared/DownloadBrochure';
 import ShareButton from '@/components/shared/ShareButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
+import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import logger from '@/utils/logger';
 import { sanitize } from '@/utils/dompurify';

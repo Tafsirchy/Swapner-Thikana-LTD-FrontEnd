@@ -96,7 +96,7 @@ const Navbar = () => {
                 transition={{ duration: 0.2 }}
                 className="absolute left-1/2 -translate-x-1/2 top-full pt-2"
               >
-                <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-none p-8 shadow-2xl min-w-[500px] flex gap-12 overflow-hidden relative">
+                <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-none p-8 shadow-2xl min-w-[calc(100vw-2rem)] lg:min-w-[500px] flex gap-12 overflow-hidden relative">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl"></div>
                   
                   {/* Left Column */}
@@ -165,7 +165,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isDashboard ? 'py-2' : 'py-3 md:py-0'
+        isDashboard ? 'py-2' : 'py-3 md:py-3 lg:py-0'
       } ${
         isScrolled || isDashboard || isDetailsPage
           ? 'bg-royal-deep/95 md:bg-royal-deep/90 md:backdrop-blur-md shadow-lg'
@@ -174,7 +174,7 @@ const Navbar = () => {
     >
       {/* Utility Bar - Absolute Top Right */}
       {!isDashboard && (
-        <div className="absolute top-5 right-4 z-50 hidden md:flex items-center gap-4">
+        <div className="absolute top-5 right-4 z-50 hidden lg:flex items-center gap-4">
            {/* Utility Icons */}
            {/* Utility Icons */}
 
@@ -222,7 +222,7 @@ const Navbar = () => {
         
         {/* Mobile: Logo Centered, Menu Icon Left */}
         {!isDashboard && (
-          <div className="md:hidden w-full flex justify-between items-center">
+          <div className="lg:hidden w-full flex justify-between items-center">
              <button
                className="text-brand-gold p-2 hover:bg-white/5 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
                onClick={() => setIsOpen(!isOpen)}
@@ -246,7 +246,7 @@ const Navbar = () => {
 
         {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
-          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] py-2 items-end w-full">
+          <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] py-2 items-end w-full">
             
             {/* Left Nav - Aligned Left */}
             <div className="flex items-center gap-8 justify-start">
@@ -270,7 +270,7 @@ const Navbar = () => {
 
         {/* Dashboard Logo View (Keep simple) */}
         {isDashboard && (
-           <Link href="/" className="hidden md:flex items-center mr-auto">
+           <Link href="/" className="hidden lg:flex items-center mr-auto">
                <Image src="/logo-new.webp" alt="shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
            </Link>
         )}
@@ -284,7 +284,8 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-full left-0 w-full h-[calc(100dvh-100%)] bg-royal-deep/98 z-40 md:hidden flex flex-col p-6 sm:p-8 gap-5 sm:gap-6 backdrop-blur-xl overflow-y-auto border-t border-white/5"
+            className="absolute top-full left-0 w-full h-[calc(100dvh-100%)] bg-royal-deep/98 z-40 lg:hidden flex flex-col p-6 sm:p-8 gap-5 sm:gap-6 backdrop-blur-xl overflow-y-auto border-t border-white/5 custom-scrollbar"
+            data-lenis-prevent
           >
             {[...leftNav, ...rightNav].map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href));

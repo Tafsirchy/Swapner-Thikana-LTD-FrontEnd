@@ -30,7 +30,7 @@ const BlogCard = ({ post }) => {
       <div className="absolute inset-0 bg-gradient-to-br from-brand-gold/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
       {/* Image Section */}
-      <div className="relative aspect-video overflow-hidden shrink-0">
+      <div className="relative aspect-[4/3] overflow-hidden shrink-0">
         <SmartImage
           src={thumbnail || image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop'}
           alt={title}
@@ -48,7 +48,7 @@ const BlogCard = ({ post }) => {
       </div>
 
       {/* Metadata Panel - Floating & Overlapping */}
-      <div className="relative px-8 pb-10 pt-12 flex-1 flex flex-col">
+      <div className="relative px-8 pb-5 pt-8 flex-1 flex flex-col">
         {/* Date/Author Glass Panel */}
         <div className="absolute -top-5 left-4 right-4 sm:left-8 sm:right-8 bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 text-[10px] sm:text-[9px] font-black uppercase tracking-wider sm:tracking-[0.2em] text-zinc-500 shadow-2xl transition-transform duration-700 group-hover:-translate-y-2 z-20">
           <div className="flex items-center gap-3">
@@ -64,19 +64,19 @@ const BlogCard = ({ post }) => {
 
         {/* Content Container */}
         <div className="flex flex-col flex-1">
-          <Link href={`/blog/${slug}`} className="block relative group/title mb-6">
-            <h3 className="text-2xl font-cinzel font-bold text-zinc-100 min-h-[4.5rem] flex items-center leading-[1.2] transition-colors duration-500 group-hover:text-brand-gold">
+          <Link href={`/blog/${slug}`} className="block relative group/title mb-2">
+            <h3 className="text-2xl font-cinzel font-bold text-zinc-100 min-h-[2.8rem] flex items-center leading-[1.2] transition-colors duration-500 group-hover:text-brand-gold">
               {title}
             </h3>
             {/* Animated Accent Line */}
             <div className="absolute -bottom-2 left-0 w-12 h-[1px] bg-brand-gold/30 transition-all duration-700 group-hover:w-full group-hover:bg-brand-gold"></div>
           </Link>
 
-          <p className="text-zinc-400 text-sm leading-relaxed font-serif italic mb-8 line-clamp-3 opacity-70 group-hover:opacity-100 transition-opacity duration-700">
+          <p className="text-zinc-400 text-sm leading-relaxed font-serif italic mb-3 line-clamp-2 opacity-70 group-hover:opacity-100 transition-opacity duration-700">
             {excerpt}
           </p>
 
-          <div className="mt-auto pt-4 border-t border-white/5">
+          <div className="mt-auto pt-3 border-t border-white/5">
             <Link 
               href={`/blog/${slug}`}
               className="inline-flex items-center gap-4 text-brand-gold font-black text-xs sm:text-[10px] uppercase tracking-wider sm:tracking-[0.4em] group/link py-3 -mx-2 px-2 rounded-lg hover:bg-white/5 transition-all"

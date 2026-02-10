@@ -131,7 +131,7 @@ const MagazinesPage = () => {
                 </motion.div>
 
                 {/* Info & CTA Overlay - Revealed as parent lifts */}
-                <div className="absolute inset-x-0 bottom-0 z-10 transition-all duration-700 opacity-0 group-hover:opacity-100 flex flex-col justify-end h-full pointer-events-none group-hover:pointer-events-auto">
+                <div className="absolute inset-x-0 bottom-0 z-30 transition-all duration-700 opacity-0 group-hover:opacity-100 flex flex-col justify-end h-full pointer-events-none group-hover:pointer-events-auto">
                    <div className="space-y-4 p-6 bg-zinc-950 border-t border-white/5 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
                       <div className="flex items-center justify-between text-zinc-500 text-[10px] sm:text-[9px] font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] mb-2 opacity-60">
                          <span>Issue {i + 1}</span>

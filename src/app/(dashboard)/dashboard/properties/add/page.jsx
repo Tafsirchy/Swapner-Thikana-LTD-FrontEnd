@@ -472,7 +472,7 @@ const AddPropertyPage = () => {
                className="space-y-6"
             >
                <h2 className="text-xl font-bold text-zinc-100 mb-6">Amenities & Features</h2>
-               <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                   {AMENITIES_LIST.map((amenity) => (
                     <label
                       key={amenity}
@@ -533,11 +533,12 @@ const AddPropertyPage = () => {
                               src={img} 
                               alt={`Property ${i + 1}`} 
                               fill 
-                              className="object-cover" 
+                               className="object-cover"
+                               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                            />
                            <button 
                               onClick={() => removeImage(i)}
-                              className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white transition-all z-10"
+                              className="absolute top-2 right-2 w-11 h-11 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white transition-all z-10"
                            >
                               <X size={16} />
                            </button>

@@ -84,16 +84,16 @@ const ShareModal = ({ isOpen, onClose, data }) => {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="relative w-full max-w-lg bg-zinc-950 border-t md:border border-white/10 rounded-t-[2.5rem] md:rounded-[3rem] p-8 pb-12 md:pb-8 shadow-[0_-20px_50px_rgba(0,0,0,0.5)] z-[1001] outline-none"
+            className="relative w-full max-w-lg bg-zinc-950 border-t md:border border-white/10 rounded-t-[2rem] md:rounded-[2rem] p-6 pb-10 md:pb-6 shadow-[0_-20px_50px_rgba(0,0,0,0.5)] z-[1001] outline-none"
           >
             {/* Elegant Handle for SM */}
-            <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8 md:hidden" />
+            <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-5 md:hidden" />
 
             {/* Header Content */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-5">
               <div>
-                <h3 className="text-2xl font-bold text-white tracking-tight">Share Experience</h3>
-                <p className="text-zinc-500 text-xs mt-1 uppercase tracking-widest font-medium">Shwapner Thikana Exclusive</p>
+                <h3 className="text-xl font-bold text-white tracking-tight">Share Experience</h3>
+                <p className="text-zinc-500 text-[10px] mt-0.5 uppercase tracking-widest font-medium">Shwapner Thikana Exclusive</p>
               </div>
               <button 
                 onClick={onClose}
@@ -104,8 +104,8 @@ const ShareModal = ({ isOpen, onClose, data }) => {
             </div>
 
             {/* Context Card - High Contrast Dark */}
-            <div className="p-5 bg-white/[0.03] rounded-3xl border border-white/10 flex gap-5 mb-10 group/card transition-all hover:bg-white/[0.05]">
-               <div className="relative w-24 h-24 rounded-2xl overflow-hidden shrink-0 shadow-2xl border border-white/10">
+            <div className="p-4 bg-white/[0.03] rounded-2xl border border-white/10 flex gap-4 mb-6 group/card transition-all hover:bg-white/[0.05]">
+               <div className="relative w-20 h-20 rounded-xl overflow-hidden shrink-0 shadow-2xl border border-white/10">
                   <SmartImage 
                     src={data.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop'} 
                     alt={data.title}
@@ -114,9 +114,9 @@ const ShareModal = ({ isOpen, onClose, data }) => {
                   />
                </div>
                <div className="flex flex-col justify-center min-w-0 flex-1">
-                  <span className="text-brand-gold font-bold text-[10px] uppercase tracking-[0.2em] mb-1">Featured Listing</span>
-                  <h4 className="text-zinc-100 font-bold text-lg truncate leading-tight mb-2 uppercase">{data.title}</h4>
-                  <div className="bg-zinc-900/50 self-start px-3 py-1 rounded-lg border border-white/5">
+                  <span className="text-brand-gold font-bold text-[9px] uppercase tracking-[0.2em] mb-0.5">Featured Listing</span>
+                  <h4 className="text-zinc-100 font-bold text-base truncate leading-tight mb-1.5 uppercase">{data.title}</h4>
+                  <div className="bg-zinc-900/50 self-start px-2.5 py-0.5 rounded-lg border border-white/5">
                     <p className="text-brand-gold font-bold text-sm">
                       {data.price || data.location}
                     </p>
@@ -125,17 +125,17 @@ const ShareModal = ({ isOpen, onClose, data }) => {
             </div>
 
             {/* Premium Share Grid */}
-            <div className="grid grid-cols-4 gap-6 mb-10 px-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5 mb-6 px-2">
               {shareOptions.map((option, i) => (
                 <button
                   key={i}
                   onClick={option.action}
                   className="flex flex-col items-center gap-3 group/option"
                 >
-                  <div className={`w-16 h-16 ${option.color} rounded-[1.5rem] flex items-center justify-center text-white shadow-xl transition-all duration-500 group-hover/option:-translate-y-2 group-active/option:scale-90 group-hover/option:shadow-2xl`}>
-                    <option.icon size={28} />
+                  <div className={`w-14 h-14 ${option.color} rounded-xl flex items-center justify-center text-white shadow-xl transition-all duration-500 group-hover/option:-translate-y-1 group-active/option:scale-90 group-hover/option:shadow-2xl`}>
+                    <option.icon size={24} />
                   </div>
-                  <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest group-hover/option:text-zinc-300 transition-colors">{option.name}</span>
+                  <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider group-hover/option:text-zinc-300 transition-colors">{option.name}</span>
                 </button>
               ))}
             </div>
@@ -163,7 +163,7 @@ const ShareModal = ({ isOpen, onClose, data }) => {
                </button>
             </div>
 
-            <div className="mt-10 pt-6 border-t border-white/5 text-center">
+            <div className="mt-6 pt-4 border-t border-white/5 text-center">
               <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-2">
                 <span className="w-8 h-[1px] bg-white/10" />
                 Build Your Legacy

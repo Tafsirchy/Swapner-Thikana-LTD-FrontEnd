@@ -207,7 +207,7 @@ const ProjectDetailClient = ({ project }) => {
             {/* Desktop-Only Layout (Preserving original richness) */}
             <div className="hidden md:block space-y-12">
                <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 space-y-8">
-                  <div className="grid grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                      {[
                        { label: "Land Size", value: project.landSize },
                        { label: "Floors", value: project.floorConfiguration },

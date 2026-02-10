@@ -141,7 +141,7 @@ const AddProjectPage = () => {
         </div>
         <button 
           onClick={() => router.back()}
-          className="p-3 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
+          className="p-4 hover:bg-white/5 rounded-full text-zinc-400 transition-colors shrink-0"
         >
           <X size={24} />
         </button>
@@ -301,7 +301,7 @@ const AddProjectPage = () => {
              <Building2 size={20} className="text-brand-gold" />
              Technical Specifications
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
              <div>
                 <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Land Size</label>
                 <input
@@ -403,7 +403,7 @@ const AddProjectPage = () => {
                </div>
                <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Room Counts</label>
-                   <div className="grid grid-cols-3 gap-3">
+                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                        <input type="text" name="bedroomCount" value={formData.bedroomCount} onChange={handleChange} placeholder="Bed (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
                        <input type="text" name="bathroomCount" value={formData.bathroomCount} onChange={handleChange} placeholder="Bath (3/4)" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
                        <input type="text" name="balconyCount" value={formData.balconyCount} onChange={handleChange} placeholder="Balcony" className="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-base sm:text-xs" />
@@ -411,14 +411,14 @@ const AddProjectPage = () => {
                </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                <div><label className="text-xs text-zinc-500 block mb-1">Drawing Room</label><input type="text" name="unitDetails.drawingRoom" value={formData.unitDetails.drawingRoom} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="Yes/No"/></div>
                <div><label className="text-xs text-zinc-500 block mb-1">Living Room</label><input type="text" name="unitDetails.livingRoom" value={formData.unitDetails.livingRoom} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="Yes/No"/></div>
                <div><label className="text-xs text-zinc-500 block mb-1">Dining</label><input type="text" name="unitDetails.dining" value={formData.unitDetails.dining} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="Yes/No"/></div>
                <div><label className="text-xs text-zinc-500 block mb-1">Kitchen</label><input type="text" name="unitDetails.kitchen" value={formData.unitDetails.kitchen} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="Yes/No"/></div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                <div><label className="text-xs text-zinc-500 block mb-1">Parking</label><input type="text" name="parking" value={formData.parking} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="e.g. 1 per Flat"/></div>
                <div><label className="text-xs text-zinc-500 block mb-1">Lift</label><input type="text" name="lift" value={formData.lift} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="e.g. 1 Lift"/></div>
                <div><label className="text-xs text-zinc-500 block mb-1">Stair</label><input type="text" name="stair" value={formData.stair} onChange={handleChange} className="w-full bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white" placeholder="e.g. Yes"/></div>
@@ -515,7 +515,7 @@ const AddProjectPage = () => {
                  <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest font-sans italic mb-3">
                     Gallery Images
                  </label>
-                 <div className="grid grid-cols-2 gap-4">
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {formData.images.map((img, index) => (
                        (typeof img === 'string' && img.trim() !== '') ? (
                        <div key={index} className="relative group rounded-xl overflow-hidden aspect-video bg-zinc-900 border border-white/5">
@@ -616,7 +616,7 @@ const AddProjectPage = () => {
                    <button 
                      type="button"
                      onClick={() => removeFeature(index)}
-                     className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shrink-0"
+                     className="p-4 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all shrink-0"
                    >
                      <Trash2 size={18} />
                    </button>
