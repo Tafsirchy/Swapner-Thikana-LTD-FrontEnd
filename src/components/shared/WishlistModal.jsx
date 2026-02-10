@@ -125,7 +125,7 @@ const WishlistModal = ({ propertyId, propertyTitle, onClose, onUpdate }) => {
               <FolderHeart className="text-brand-gold" size={24} />
               Save to Collection
             </h2>
-            <p className="text-zinc-500 text-xs mt-1 truncate max-w-[200px]">{propertyTitle}</p>
+            <p className="text-zinc-500 text-xs mt-1 line-clamp-1">{propertyTitle}</p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full transition-colors" aria-label="Close modal">
             <X size={20} className="text-zinc-400" />

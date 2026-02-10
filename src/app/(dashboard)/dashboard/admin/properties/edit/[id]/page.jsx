@@ -296,7 +296,7 @@ const EditPropertyPage = () => {
                         className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 resize-none text-base"
                      />
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                      <div>
                         <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">Listing Type</label>
                         <LuxurySelect
@@ -497,7 +497,7 @@ const EditPropertyPage = () => {
                className="space-y-6"
             >
                <h2 className="text-xl font-bold text-zinc-100 mb-6">Amenities & Features</h2>
-               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {AMENITIES_LIST.map((amenity) => (
                     <label
                       key={amenity}
@@ -544,7 +544,7 @@ const EditPropertyPage = () => {
                   </div>
                </div>
 
-                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                       {images.filter(img => typeof img === 'string' && img.length > 0).map((img, i) => (
                          <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group border border-white/5">
                             <SmartImage 

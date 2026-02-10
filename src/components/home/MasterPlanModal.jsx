@@ -208,7 +208,7 @@ const MasterPlanModal = ({ isOpen, onClose }) => {
                             className="bg-white/5 rounded-xl overflow-hidden border border-white/10 hover:border-brand-gold/50 transition-all h-full"
                           >
                             {/* Project Image */}
-                            <div className="relative aspect-video sm:h-48 bg-zinc-800">
+                            <div className="relative aspect-video bg-zinc-800">
                               {project.image ? (
                                 <SmartImage
                                   src={project.image}

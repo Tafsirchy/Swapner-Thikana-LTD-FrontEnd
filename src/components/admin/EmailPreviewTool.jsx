@@ -55,7 +55,7 @@ const EmailPreviewTool = () => {
   }, [fetchPreview]);
 
   return (
-    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       
       {/* Controls Panel */}
       <div className="bg-zinc-900 border border-white/10 rounded-3xl p-6 h-fit space-y-8">

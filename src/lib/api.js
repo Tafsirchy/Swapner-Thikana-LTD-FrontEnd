@@ -26,19 +26,18 @@ const apiInstance = axios.create({
   withCredentials: true,
 });
 
-// Diagnostic check for production baseURL (development only)
-if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
+// Diagnostic check for API connection
+if (typeof window !== 'undefined') {
   const currentBaseURL = apiInstance.defaults.baseURL;
-  const envValue = process.env.NEXT_PUBLIC_API_URL;
-  
-  if (!envValue || currentBaseURL.includes('localhost')) {
-    console.warn('[API] CRITICAL: Incorrect NEXT_PUBLIC_API_URL in production!', {
-      envValue,
-      currentBaseURL,
-      expectedToNotBeLocal: true
+  const isLocal = currentBaseURL.includes('localhost') || currentBaseURL.includes('127.0.0.1');
+  const isProd = process.env.NODE_ENV === 'production';
+
+  if (isProd && isLocal) {
+    console.warn('[API] WARNING: Production build is using a LOCALHOST API URL. This will not work for external users.', {
+      baseURL: currentBaseURL
     });
-  } else {
-    console.log('[API] Initialized in production with:', currentBaseURL);
+  } else if (!isProd) {
+    console.log(`[API] Initialized in ${process.env.NODE_ENV || 'development'} mode pointing to:`, currentBaseURL);
   }
 }
 

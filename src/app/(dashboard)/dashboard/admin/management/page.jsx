@@ -8,6 +8,7 @@ import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import ResponsiveTable from '@/components/shared/ResponsiveTable';
 
 const AdminManagementListPage = () => {
   const [members, setMembers] = useState([]);
@@ -90,10 +91,68 @@ const AdminManagementListPage = () => {
         />
       </div>
 
-      {/* Mobile Card View */}
-      <div className="md:hidden space-y-4">
-        {displayMembers.map((member) => (
-          <div key={member._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+      <ResponsiveTable
+        columns={[
+          {
+            key: 'profile',
+            label: 'Leader Profile',
+            renderCell: (member) => (
+              <div className="flex items-center gap-4 text-sans">
+                <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
+                  {member.image ? (
+                    <SmartImage src={member.image} alt="" fill className="object-cover" />
+                  ) : (
+                    <Users size={24} className="text-zinc-600" />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="font-bold text-zinc-100 truncate max-w-[150px] xl:max-w-none">{member.name}</div>
+                  <div className="text-xs text-zinc-500 truncate">{member.email}</div>
+                </div>
+              </div>
+            )
+          },
+          {
+            key: 'role',
+            label: 'Role',
+            renderCell: (member) => <span className="text-sm text-zinc-400">{member.role}</span>
+          },
+          {
+            key: 'order',
+            label: 'Order',
+            renderCell: (member) => <span className="text-xs font-mono text-zinc-500">{member.order || 0}</span>
+          },
+          {
+            key: 'actions',
+            label: 'Actions',
+            headerClassName: 'text-right',
+            renderCell: (member) => (
+              <div className="flex items-center justify-end gap-2">
+                 <Link
+                  href={`/dashboard/admin/management/edit/${member._id}`}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
+                  title="Edit Leader"
+                >
+                  <Edit2 size={18} />
+                </Link>
+                <button
+                  onClick={() => handleDelete(member._id)}
+                  className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
+                  title="Delete Leader"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            )
+          }
+        ]}
+        data={displayMembers}
+        loading={loading}
+        icon={Users}
+        emptyMessage="No Leaders Found"
+        breakpoint="md"
+        renderCard={(member) => (
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4 font-sans">
             <div className="flex gap-4">
               <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
                 {member.image ? (
@@ -127,69 +186,8 @@ const AdminManagementListPage = () => {
               </button>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Desktop Table View */}
-      <div className="hidden md:block bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-zinc-400">
-            <thead>
-              <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Leader Profile</th>
-                <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Role</th>
-                <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest">Order</th>
-                <th className="px-6 py-4 text-xs font-bold text-brand-gold uppercase tracking-widest text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {displayMembers.map((member) => (
-                <tr key={member._id} className="group hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
-                        {member.image ? (
-                          <SmartImage src={member.image} alt="" fill className="object-cover" />
-                        ) : (
-                          <Users size={24} className="text-zinc-600" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-bold text-zinc-100 truncate">{member.name}</div>
-                        <div className="text-xs text-zinc-500 truncate">{member.email}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="text-sm text-zinc-400">{member.role}</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="text-xs font-mono text-zinc-500">{member.order || 0}</span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                       <Link
-                        href={`/dashboard/admin/management/edit/${member._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
-                        title="Edit Leader"
-                      >
-                        <Edit2 size={18} />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(member._id)}
-                        className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
-                        title="Delete Leader"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+        )}
+      />
 
       {displayMembers.length === 0 && (
         <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">

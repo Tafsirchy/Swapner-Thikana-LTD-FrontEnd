@@ -155,7 +155,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
       </section>
 
       <div className="max-container px-4 -mt-10 md:-mt-20 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
           
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6 md:space-y-10">
@@ -191,7 +191,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
               </div>
 
               {/* Quick Features (Scannable Grid) */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mt-8 md:mt-12 pt-8 md:pt-10 border-t border-white/5">
+              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mt-8 md:mt-12 pt-8 md:pt-10 border-t border-white/5">
                 {[
                   { icon: <Bed size={22} />, label: 'Beds', value: property.bedrooms },
                   { icon: <Bath size={22} />, label: 'Baths', value: property.bathrooms },

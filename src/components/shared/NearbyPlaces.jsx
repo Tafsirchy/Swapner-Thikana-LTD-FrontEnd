@@ -200,7 +200,7 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
   return (
     <div className="space-y-8">
       {/* Category Selection - Mobile First Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-wrap gap-3">
+      <div className="grid grid-cols-1 min-[400px]:grid-cols-2 min-[640px]:grid-cols-3 md:grid-cols-4 lg:flex lg:flex-wrap gap-3">
         {CATEGORIES.map(cat => (
           <button
             key={cat.id}
@@ -219,7 +219,7 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
          {/* List View - Optimized for scannability */}
          <div className="lg:col-span-1 space-y-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-2" data-lenis-prevent>
             {error ? (
@@ -244,7 +244,7 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
                     className="group flex items-center justify-between p-4 bg-zinc-950/40 border border-white/5 rounded-2xl hover:border-brand-gold/40 hover:bg-zinc-900 transition-all cursor-default"
                   >
                     <div className="space-y-1">
-                      <h4 className="font-bold text-zinc-200 text-sm group-hover:text-brand-gold transition-colors line-clamp-1">{place.name}</h4>
+                      <h4 className="font-bold text-zinc-200 text-sm group-hover:text-brand-gold transition-colors line-clamp-2">{place.name}</h4>
                       <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-tighter italic">
                         {place.type.replace(/_/g, ' ')}
                       </p>

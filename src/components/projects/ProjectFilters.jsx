@@ -124,7 +124,7 @@ const ProjectFilters = ({ filters, onChange, onClear }) => {
         </div>
       </div>
       
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4">
         <div>
           <label className="text-xs text-zinc-500 mb-1 block">Min Beds</label>
           <LuxurySelect

@@ -56,7 +56,7 @@ const ContactPage = () => {
           </p>
         </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
           {/* Contact Details Cards */}
           <div className="space-y-4">
             <div className="p-6 sm:p-8 glass rounded-none border-white/10 hover:border-brand-gold/30 transition-all group">

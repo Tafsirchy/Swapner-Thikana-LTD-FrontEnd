@@ -8,6 +8,7 @@ import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import ResponsiveTable from '@/components/shared/ResponsiveTable';
 
 const AdminAgentsListPage = () => {
   const [agents, setAgents] = useState([]);
@@ -90,10 +91,85 @@ const AdminAgentsListPage = () => {
         />
       </div>
 
-      {/* Mobile Card View */}
-      <div className="md:hidden space-y-4">
-        {displayAgents.map((agent) => (
-          <div key={agent._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+      <ResponsiveTable
+        columns={[
+          {
+            key: 'agent',
+            label: 'Agent Info',
+            renderCell: (agent) => (
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
+                  {agent.image ? (
+                    <SmartImage src={agent.image} alt="" fill className="object-cover" />
+                  ) : (
+                    <Users size={24} className="text-zinc-600" />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="font-bold text-zinc-100 truncate max-w-[150px] xl:max-w-none font-sans">{agent.name}</div>
+                  <div className="text-xs text-zinc-500 truncate font-sans">{agent.email}</div>
+                </div>
+              </div>
+            )
+          },
+          {
+            key: 'specialty',
+            label: 'Specialty',
+            renderCell: (agent) => (
+              <div className="font-sans">
+                <div className="text-zinc-300 font-medium">{agent.specialty || 'General'}</div>
+                <div className="text-[10px] text-zinc-500">{agent.experience || 'No info'} exp.</div>
+              </div>
+            )
+          },
+          {
+            key: 'status',
+            label: 'Status',
+            renderCell: (agent) => (
+              <div className="flex items-center gap-2">
+                <span className={`px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider font-sans ${agent.status === 'Verified' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}`}>
+                  {agent.status || 'Pending'}
+                </span>
+                {agent.rating > 0 && (
+                  <div className="flex items-center gap-1 text-brand-gold text-xs font-bold font-sans">
+                     <Star size={10} fill="currentColor" />
+                     {agent.rating}
+                  </div>
+                )}
+              </div>
+            )
+          },
+          {
+            key: 'actions',
+            label: 'Actions',
+            headerClassName: 'text-right',
+            renderCell: (agent) => (
+              <div className="flex items-center justify-end gap-2">
+                 <Link
+                  href={`/dashboard/admin/agents/edit/${agent._id}`}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
+                  title="Edit Agent"
+                >
+                  <Edit2 size={18} />
+                </Link>
+                <button
+                  onClick={() => handleDelete(agent._id)}
+                  className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
+                  title="Delete Agent"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            )
+          }
+        ]}
+        data={displayAgents}
+        loading={loading}
+        icon={Users}
+        emptyMessage="No Agents Found"
+        breakpoint="md"
+        renderCard={(agent) => (
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4 font-sans">
             <div className="flex gap-4">
               <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
                 {agent.image ? (
@@ -103,14 +179,14 @@ const AdminAgentsListPage = () => {
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <div className="font-bold text-zinc-100 truncate font-sans">{agent.name}</div>
-                <div className="text-xs text-zinc-500 truncate font-sans">{agent.email}</div>
+                <div className="font-bold text-zinc-100 truncate">{agent.name}</div>
+                <div className="text-xs text-zinc-500 truncate">{agent.email}</div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wider font-sans ${agent.status === 'Verified' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}`}>
+                  <span className={`px-2 py-0.5 rounded-full font-bold text-[10px] uppercase tracking-wider ${agent.status === 'Verified' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}`}>
                     {agent.status || 'Pending'}
                   </span>
                   {agent.rating > 0 && (
-                    <div className="flex items-center gap-1 text-brand-gold text-xs font-bold font-sans">
+                    <div className="flex items-center gap-1 text-brand-gold text-xs font-bold">
                        <Star size={10} fill="currentColor" />
                        {agent.rating}
                     </div>
@@ -119,7 +195,7 @@ const AdminAgentsListPage = () => {
               </div>
             </div>
 
-            <div className="pt-3 border-t border-white/5 font-sans">
+            <div className="pt-3 border-t border-white/5">
                <div className="text-zinc-300 font-medium text-sm">{agent.specialty || 'General'}</div>
                <div className="text-xs text-zinc-500">{agent.experience || 'No info'} experience</div>
             </div>
@@ -127,94 +203,20 @@ const AdminAgentsListPage = () => {
             <div className="flex items-center gap-2 pt-2 border-t border-white/5">
               <Link
                 href={`/dashboard/admin/agents/edit/${agent._id}`}
-                className="flex-1 py-2 bg-white/5 hover:bg-brand-gold hover:text-royal-deep rounded-lg transition-all text-brand-gold flex items-center justify-center gap-2 font-medium text-xs font-sans"
+                className="flex-1 py-2 bg-white/5 hover:bg-brand-gold hover:text-royal-deep rounded-lg transition-all text-brand-gold flex items-center justify-center gap-2 font-medium text-xs"
               >
                 <Edit2 size={14} /> Edit
               </Link>
               <button
                 onClick={() => handleDelete(agent._id)}
-                className="flex-1 py-2 bg-white/5 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-all text-zinc-400 flex items-center justify-center gap-2 font-medium text-xs font-sans"
+                className="flex-1 py-2 bg-white/5 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-all text-zinc-400 flex items-center justify-center gap-2 font-medium text-xs"
               >
                 <Trash2 size={14} /> Delete
               </button>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Desktop Table View */}
-      <div className="hidden md:block bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-zinc-400">
-            <thead>
-              <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs font-sans italic">Agent Info</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs font-sans italic">Specialty</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs font-sans italic">Status</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs font-sans italic text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {displayAgents.map((agent) => (
-                <tr key={agent._id} className="group hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
-                        {agent.image ? (
-                          <SmartImage src={agent.image} alt="" fill className="object-cover" />
-                        ) : (
-                          <Users size={24} className="text-zinc-600" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-bold text-zinc-100 truncate font-sans">{agent.name}</div>
-                        <div className="text-xs text-zinc-500 truncate font-sans">{agent.email}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="font-sans">
-                      <div className="text-zinc-300 font-medium">{agent.specialty || 'General'}</div>
-                      <div className="text-[10px] text-zinc-500">{agent.experience || 'No info'} exp.</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <span className={`px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider font-sans ${agent.status === 'Verified' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-amber-500/10 text-amber-500'}`}>
-                        {agent.status || 'Pending'}
-                      </span>
-                      {agent.rating > 0 && (
-                        <div className="flex items-center gap-1 text-brand-gold text-xs font-bold font-sans">
-                           <Star size={10} fill="currentColor" />
-                           {agent.rating}
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                       <Link
-                        href={`/dashboard/admin/agents/edit/${agent._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
-                        title="Edit Agent"
-                      >
-                        <Edit2 size={18} />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(agent._id)}
-                        className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
-                        title="Delete Agent"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+        )}
+      />
 
       {displayAgents.length === 0 && (
         <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">

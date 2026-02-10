@@ -9,12 +9,11 @@ const ProjectDetailPage = async ({ params }) => {
   let project = null;
   let apiErrorType = null;
   
-  // console.log(`[ProjectDetailPage] Fetching slug: ${slug}`);
-  
   try {
+    console.log(`[ProjectDetailPage] Fetching slug: ${slug}`);
     const res = await api.projects.getBySlug(slug);
-    // console.log(`[ProjectDetailPage] API Success for ${slug}:`, !!res.data?.project);
     project = res.data?.project;
+    console.log(`[ProjectDetailPage] Found project:`, !!project);
   } catch (error) {
     apiErrorType = error.response ? `HTTP ${error.response.status}` : error.message;
     console.error(`[ProjectDetailPage] API Error for ${slug}:`, error.message);
@@ -44,6 +43,11 @@ const ProjectDetailPage = async ({ params }) => {
     );
   }
 
+  // Normalize image data to ensure they are strings for metadata/structured data
+  const normalizedImages = (project.images || []).map(img => 
+    typeof img === 'object' ? (img.url || img.original || img.thumbnail) : img
+  ).filter(Boolean);
+
   return (
     <>
       <StructuredData 
@@ -51,13 +55,13 @@ const ProjectDetailPage = async ({ params }) => {
         data={{
           title: project.title,
           description: project.description,
-          images: project.images,
-          slug: `projects/${project.slug}`, // Adjusted path
+          images: normalizedImages,
+          slug: `projects/${project.slug}`,
           createdAt: project.createdAt,
           price: project.price || 0,
           location: project.location,
           extra: {
-            '@type': 'Accommodation', // Or specialized type for projects
+            '@type': 'Accommodation',
             numberOfRooms: project.units || 0
           }
         }} 
@@ -75,10 +79,13 @@ export async function generateMetadata({ params }) {
     const project = res.data.project;
 
     if (!project) {
-        return {
-            title: 'Project Not Found | shwapner Thikana Ltd',
-        }
+        return { title: 'Project Not Found | shwapner Thikana Ltd' }
     }
+
+    // Normalize thumbnail
+    const ogImage = typeof project.images?.[0] === 'object' 
+      ? (project.images[0].url || project.images[0].original) 
+      : project.images?.[0];
 
     return {
       title: `${project.title} | shwapner Thikana Ltd`,
@@ -86,23 +93,23 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title: project.title,
         description: project.description?.substring(0, 160),
-        images: project.images?.[0] ? [{ url: project.images[0], width: 1200, height: 630 }] : [],
+        images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
       },
       twitter: {
         card: "summary_large_image",
         title: project.title,
         description: project.description?.substring(0, 160),
-        images: project.images?.[0] ? [project.images[0]] : [],
+        images: ogImage ? [ogImage] : [],
       },
       alternates: {
         canonical: `https://shwapner-thikana.com/projects/${slug}`,
       }
     };
-  } catch {
-    return {
-      title: 'shwapner Thikana Ltd - Luxury Real Estate',
-    };
+  } catch (error) {
+    console.error('[ProjectDetailPage] Metadata error:', error.message);
+    return { title: 'shwapner Thikana Ltd - Luxury Real Estate' };
   }
 }
+
 
 export default ProjectDetailPage;

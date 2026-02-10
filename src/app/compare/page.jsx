@@ -9,6 +9,7 @@ import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
 import { exportComparisonPDF, exportPropertiesCSV } from '@/utils/exportUtils';
 import SocialShare from '@/components/shared/SocialShare';
+import SmartImage from '@/components/shared/SmartImage';
 
 function CompareContent() {
   const searchParams = useSearchParams();
@@ -105,25 +106,27 @@ function CompareContent() {
             </div>
             {properties.length >= 2 && (
               <div className="flex flex-wrap items-center gap-2 md:gap-3">
-                <SocialShare 
-                  url={typeof window !== 'undefined' ? window.location.href : ''} 
-                  title={`Compare: ${properties.map(p => p.title).join(' vs ')}`}
-                />
+                <div className="flex-1 sm:flex-none">
+                  <SocialShare 
+                    url={typeof window !== 'undefined' ? window.location.href : ''} 
+                    title={`Compare: ${properties.map(p => p.title).join(' vs ')}`}
+                  />
+                </div>
                 <button
                   onClick={() => exportPropertiesCSV(properties)}
-                  className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-medium hover:bg-white/10 transition-all text-xs md:text-sm"
+                  className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2.5 md:px-4 md:py-2.5 bg-white/5 border border-white/10 text-zinc-300 rounded-xl font-medium hover:bg-white/10 transition-all text-xs md:text-sm"
                 >
                   <FileSpreadsheet size={16} className="text-brand-gold md:w-[18px] md:h-[18px]" />
-                  <span className="hidden sm:inline">Export CSV</span>
-                  <span className="sm:hidden">CSV</span>
+                  <span className="hidden sm:inline tracking-widest uppercase text-[10px] md:text-xs">Export CSV</span>
+                  <span className="sm:hidden font-bold uppercase text-[10px]">CSV</span>
                 </button>
                 <button
                   onClick={() => exportComparisonPDF(properties)}
-                  className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-brand-gold/10 border border-brand-gold/30 text-brand-gold rounded-xl font-medium hover:bg-brand-gold/20 transition-all text-xs md:text-sm"
+                  className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2.5 md:px-4 md:py-2.5 bg-brand-gold/10 border border-brand-gold/30 text-brand-gold rounded-xl font-medium hover:bg-brand-gold/20 transition-all text-xs md:text-sm"
                 >
                   <Download size={16} className="md:w-[18px] md:h-[18px]" />
-                  <span className="hidden sm:inline">Export PDF</span>
-                  <span className="sm:hidden">PDF</span>
+                  <span className="hidden sm:inline tracking-widest uppercase text-[10px] md:text-xs">Export PDF</span>
+                  <span className="sm:hidden font-bold uppercase text-[10px]">PDF</span>
                 </button>
               </div>
             )}
@@ -131,30 +134,32 @@ function CompareContent() {
         </div>
 
         {/* Comparison Table */}
-        <div className="overflow-x-auto pb-4">
+        <div className="overflow-x-auto pb-4 snap-x snap-mandatory">
           <div className="inline-block min-w-full align-middle">
             <div className="glass rounded-2xl md:rounded-3xl border border-white/10 overflow-hidden">
               <table className="min-w-full divide-y divide-white/10">
                 {/* Property Images & Titles */}
                 <thead>
                   <tr>
-                    <th className="sticky left-0 z-20 bg-royal-deep px-3 py-3 md:px-6 md:py-4 text-left border-r border-white/5 min-w-[120px] md:min-w-[150px]">
-                      <span className="text-[10px] md:text-xs font-bold uppercase text-zinc-400 tracking-wider">Features</span>
+                    <th className="sticky left-0 z-20 bg-royal-deep px-3 py-3 md:px-6 md:py-4 text-left border-r border-white/5 min-w-[85px] sm:min-w-[120px] md:min-w-[150px] snap-start">
+                      <span className="text-xs font-bold uppercase text-zinc-400 tracking-wider">Features</span>
                     </th>
                     {properties.map((property) => (
-                      <th key={property._id} className="px-3 py-3 md:px-6 md:py-4 min-w-[200px] md:min-w-[280px]">
+                      <th key={property._id} className="px-3 py-3 md:px-6 md:py-4 min-w-[145px] sm:min-w-[200px] md:min-w-[280px] snap-start">
                         <div className="relative">
                           <button
                             onClick={() => removeProperty(property._id)}
-                            className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-red-500 rounded-full transition-colors z-10"
+                            className="absolute top-2 right-2 p-3 bg-black/60 hover:bg-red-500 rounded-full transition-colors z-20 shadow-lg"
+                            aria-label="Remove from comparison"
                           >
-                            <X size={14} className="text-white md:w-4 md:h-4" />
+                            <X size={18} className="text-white" />
                           </button>
-                          <div className="relative h-28 md:h-40 rounded-xl overflow-hidden mb-3 md:mb-4">
-                            <Image
-                              src={property.images?.[0] || '/placeholder.jpg'}
+                          <div className="relative h-28 md:h-40 rounded-xl overflow-hidden mb-3 md:mb-4 border border-white/5">
+                            <SmartImage
+                              src={property.images?.[0]}
                               alt={property.title}
                               fill
+                              sizes="(max-width: 768px) 160px, 280px"
                               className="object-cover"
                             />
                           </div>
@@ -183,8 +188,10 @@ function CompareContent() {
                         const formattedValue = row.format ? row.format(value, property) : value;
                         
                         return (
-                          <td key={property._id} className="px-3 py-3 md:px-6 md:py-4 text-xs md:text-sm text-zinc-100 font-medium whitespace-nowrap md:whitespace-normal">
-                            {formattedValue || '-'}
+                          <td key={property._id} className="px-3 py-3 md:px-6 md:py-4 text-xs md:text-sm text-zinc-100 font-medium whitespace-normal md:whitespace-normal">
+                            <div className="min-w-0 break-words">
+                              {formattedValue || '-'}
+                            </div>
                           </td>
                         );
                       })}

@@ -8,6 +8,7 @@ import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import ResponsiveTable from '@/components/shared/ResponsiveTable';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 
 const AdminBlogsPage = () => {
@@ -134,10 +135,105 @@ const AdminBlogsPage = () => {
         </div>
       </div>
 
-      {/* Mobile Card View */}
-      <div className="lg:hidden space-y-4">
-        {displayBlogs.map((blog) => (
-          <div key={blog._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+      <ResponsiveTable
+        columns={[
+          {
+            key: 'article',
+            label: 'Article',
+            renderCell: (blog) => (
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-12 rounded-lg bg-zinc-800 flex-shrink-0 border border-white/5 overflow-hidden relative">
+                  {blog.thumbnail ? (
+                    <SmartImage src={blog.thumbnail} alt="" fill className="object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <FileText size={20} className="text-zinc-600" />
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="font-bold text-zinc-100 truncate max-w-[250px] xl:max-w-none">{blog.title}</div>
+                  <div className="flex items-center gap-2 text-xs text-zinc-500">
+                     <User size={12} className="text-brand-gold" />
+                     <span>{blog.author?.name || 'Admin'}</span>
+                  </div>
+                </div>
+              </div>
+            )
+          },
+          {
+            key: 'category',
+            label: 'Category',
+            renderCell: (blog) => (
+              <span className="bg-white/5 px-2 py-1 rounded-md text-xs">{blog.category || 'General'}</span>
+            )
+          },
+          {
+            key: 'status',
+            label: 'Status',
+            renderCell: (blog) => (
+              <span className={`${blog.isPublished ? 'bg-emerald-500/10 text-emerald-500' : 'bg-zinc-500/10 text-zinc-500'} px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider`}>
+                {blog.isPublished ? 'Published' : 'Draft'}
+              </span>
+            )
+          },
+          {
+            key: 'views',
+            label: 'Views',
+            renderCell: (blog) => (
+              <div className="flex items-center gap-1 text-zinc-400">
+                 <ViewIcon size={14} className="text-zinc-500" />
+                 {blog.views || 0}
+              </div>
+            )
+          },
+          {
+            key: 'date',
+            label: 'Date',
+            renderCell: (blog) => (
+              <div className="flex items-center gap-2 text-xs text-zinc-400">
+                <Calendar size={14} className="text-zinc-500" />
+                {new Date(blog.createdAt).toLocaleDateString()}
+              </div>
+            )
+          },
+          {
+            key: 'actions',
+            label: 'Actions',
+            headerClassName: 'text-right',
+            renderCell: (blog) => (
+              <div className="flex items-center justify-end gap-2">
+                 <Link
+                  href={`/blog/${blog.slug || blog._id}`}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
+                  title="View Public Post"
+                >
+                  <Eye size={18} />
+                </Link>
+                <Link
+                  href={`/dashboard/admin/blogs/edit/${blog._id}`}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
+                  title="Edit Post"
+                >
+                  <Edit2 size={18} />
+                </Link>
+                <button
+                  onClick={() => handleDelete(blog._id)}
+                  className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
+                  title="Delete Post"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            )
+          }
+        ]}
+        data={displayBlogs}
+        loading={loading}
+        icon={FileText}
+        emptyMessage="No Articles Found"
+        renderCard={(blog) => (
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
             <div className="flex gap-4">
               <div className="w-20 h-16 rounded-xl bg-zinc-800 flex-shrink-0 border border-white/5 overflow-hidden relative">
                 {blog.thumbnail ? (
@@ -182,125 +278,28 @@ const AdminBlogsPage = () => {
               <Link
                 href={`/blog/${blog.slug || blog._id}`}
                 className="p-2.5 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white"
-                title="View"
+                aria-label="View"
               >
                 <Eye size={18} />
               </Link>
               <Link
                 href={`/dashboard/admin/blogs/edit/${blog._id}`}
                 className="p-2.5 bg-white/5 hover:bg-brand-gold hover:text-royal-deep rounded-xl transition-all text-brand-gold"
-                title="Edit"
+                aria-label="Edit"
               >
                 <Edit2 size={18} />
               </Link>
               <button
                 onClick={() => handleDelete(blog._id)}
                 className="p-2.5 bg-white/5 hover:bg-red-500/10 rounded-xl transition-colors text-zinc-400 hover:text-red-500"
-                title="Delete"
+                aria-label="Delete"
               >
                 <Trash2 size={18} />
               </button>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Blogs Table (Desktop) */}
-      <div className="hidden lg:block bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-zinc-400">
-            <thead>
-              <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Article</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Category</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Status</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Views</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Date</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {displayBlogs.map((blog) => (
-                <tr key={blog._id} className="group hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-16 h-12 rounded-lg bg-zinc-800 flex-shrink-0 border border-white/5 overflow-hidden relative">
-                        {blog.thumbnail ? (
-                          <SmartImage src={blog.thumbnail} alt="" fill className="object-cover" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <FileText size={20} className="text-zinc-600" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-bold text-zinc-100 truncate max-w-[300px]">{blog.title}</div>
-                        <div className="flex items-center gap-2 text-xs text-zinc-500">
-                           <User size={12} />
-                           <span>{blog.author?.name || 'Admin'}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="bg-white/5 px-2 py-1 rounded-md text-xs">{blog.category || 'General'}</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`${blog.isPublished ? 'bg-emerald-500/10 text-emerald-500' : 'bg-zinc-500/10 text-zinc-500'} px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider`}>
-                      {blog.isPublished ? 'Published' : 'Draft'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-1">
-                       <ViewIcon size={14} />
-                       {blog.views || 0}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-xs">
-                      <Calendar size={14} />
-                      {new Date(blog.createdAt).toLocaleDateString()}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                       <Link
-                        href={`/blog/${blog.slug || blog._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
-                        title="View Public Post"
-                      >
-                        <Eye size={18} />
-                      </Link>
-                      <Link
-                        href={`/dashboard/admin/blogs/edit/${blog._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
-                        title="Edit Post"
-                      >
-                        <Edit2 size={18} />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(blog._id)}
-                        className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
-                        title="Delete Post"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {displayBlogs.length === 0 && (
-        <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">
-          <FileText size={48} className="mx-auto text-zinc-700 mb-4" />
-          <h3 className="text-lg font-bold text-zinc-300">No Articles Found</h3>
-          <p className="text-zinc-500 max-w-xs mx-auto mt-1">Ready to share some knowledge? Create your first blog post today.</p>
-        </div>
-      )}
+        )}
+      />
 
       <LuxuryPagination 
         currentPage={currentPage}

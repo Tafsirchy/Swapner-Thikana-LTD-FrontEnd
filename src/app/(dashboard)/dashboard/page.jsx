@@ -13,6 +13,7 @@ import {
 import RecentlyViewed from '@/components/dashboard/RecentlyViewed';
 import UpcomingReminders from '@/components/dashboard/UpcomingReminders';
 import SmartImage from '@/components/shared/SmartImage';
+import ResponsiveTable from '@/components/shared/ResponsiveTable';
 
 const StatCard = ({ title, value, icon: Icon, color, trend }) => (
   <div className="bg-white/5 border border-white/5 p-4 sm:p-6 rounded-3xl relative overflow-hidden group hover:border-white/10 transition-all">
@@ -82,7 +83,7 @@ const CustomerDashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
          <div className="bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8">
             <div className="flex items-center justify-between mb-6">
                <h2 className="text-xl font-bold text-zinc-100">Recent Inquiries</h2>
@@ -160,7 +161,7 @@ const AgentDashboard = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
            {[...Array(4)].map((_, i) => <div key={i} className="h-28 sm:h-32 bg-white/5 rounded-3xl border border-white/5"></div>)}
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
            <div className="lg:col-span-2 h-64 bg-white/5 rounded-3xl"></div>
            <div className="h-64 bg-white/5 rounded-3xl"></div>
         </div>
@@ -189,7 +190,7 @@ const AgentDashboard = () => {
 
 
        {/* Top Actions & Profile Strength */}
-       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           <div className="lg:col-span-2">
              <ProfileStrengthMeter strength={stats?.profileStrength} />
           </div>
@@ -230,7 +231,7 @@ const AgentDashboard = () => {
        </div>
 
        {/* Recent Leads & Reminders */}
-       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
+       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
           <div className="lg:col-span-3 bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8">
              <div className="flex items-center justify-between mb-8">
                 <div>
@@ -239,71 +240,69 @@ const AgentDashboard = () => {
                 </div>
                 <ViewAllLink href="/dashboard/leads" />
               </div>
-              <div className="space-y-3 lg:hidden">
-                 {stats?.recentLeads?.length > 0 ? (
-                    stats.recentLeads.map((lead, i) => (
-                       <div key={i} className="p-5 bg-white/5 rounded-3xl border border-white/5 hover:border-brand-gold/20 transition-all group">
-                          <div className="flex items-center justify-between mb-2">
-                             <div className="font-bold text-zinc-100 text-sm">{lead.name}</div>
-                             <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                                lead.status === 'new' ? 'bg-blue-500/10 text-blue-500' :
-                                lead.status === 'contacted' ? 'bg-yellow-500/10 text-yellow-500' :
-                                'bg-emerald-500/10 text-emerald-500'
-                             }`}>
-                                {lead.status}
-                             </span>
-                          </div>
-                          <div className="text-zinc-400 text-xs mb-1 truncate">
-                             {lead.property?.title || lead.interestType}
-                          </div>
-                          <div className="text-[10px] text-zinc-500">
-                             {new Date(lead.createdAt).toLocaleDateString()}
-                          </div>
-                       </div>
-                    ))
-                 ) : (
-                    <div className="text-center py-6 text-zinc-500 italic text-sm">No recent inquiries</div>
-                 )}
-              </div>
-              <div className="hidden lg:block overflow-x-auto">
-                 <table className="w-full text-left">
-                    <thead>
-                       <tr className="border-b border-white/10">
-                          <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Client</th>
-                          <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Interest</th>
-                          <th className="pb-4 font-bold uppercase tracking-widest text-[10px] text-zinc-500 px-2">Status</th>
-                       </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5">
-                       {stats?.recentLeads?.length > 0 ? (
-                          stats.recentLeads.map((lead, i) => (
-                             <tr key={i} className="group hover:bg-white/[0.02] transition-colors">
-                                <td className="py-4 px-2">
-                                   <div className="font-bold text-zinc-200 text-sm">{lead.name}</div>
-                                   <div className="text-[10px] text-zinc-500">{new Date(lead.createdAt).toLocaleDateString()}</div>
-                                </td>
-                                <td className="py-4 px-2">
-                                   <div className="text-zinc-300 text-xs truncate max-w-[150px]">
-                                      {lead.property?.title || lead.interestType}
-                                   </div>
-                                </td>
-                                <td className="py-4 px-2">
-                                   <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                                      lead.status === 'new' ? 'bg-blue-500/10 text-blue-500' :
-                                      lead.status === 'contacted' ? 'bg-yellow-500/10 text-yellow-500' :
-                                      'bg-emerald-500/10 text-emerald-500'
-                                   }`}>
-                                      {lead.status}
-                                   </span>
-                                </td>
-                             </tr>
-                          ))
-                       ) : (
-                          <tr><td colSpan="3" className="py-10 text-center text-zinc-500 italic text-sm">No recent inquiries to display</td></tr>
-                       )}
-                    </tbody>
-                 </table>
-              </div>
+              <ResponsiveTable
+                columns={[
+                  {
+                    key: 'client',
+                    label: 'Client',
+                    renderCell: (lead) => (
+                      <div className="px-2">
+                        <div className="font-bold text-zinc-200 text-sm">{lead.name}</div>
+                        <div className="text-[10px] text-zinc-500">{new Date(lead.createdAt).toLocaleDateString()}</div>
+                      </div>
+                    )
+                  },
+                  {
+                    key: 'interest',
+                    label: 'Interest',
+                    renderCell: (lead) => (
+                      <div className="px-2 text-zinc-300 text-xs truncate max-w-[250px]">
+                        {lead.property?.title || lead.interestType}
+                      </div>
+                    )
+                  },
+                  {
+                    key: 'status',
+                    label: 'Status',
+                    renderCell: (lead) => (
+                      <div className="px-2">
+                        <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                          lead.status === 'new' ? 'bg-blue-500/10 text-blue-500' :
+                          lead.status === 'contacted' ? 'bg-yellow-500/10 text-yellow-500' :
+                          'bg-emerald-500/10 text-emerald-500'
+                        }`}>
+                          {lead.status}
+                        </span>
+                      </div>
+                    )
+                  }
+                ]}
+                data={stats?.recentLeads || []}
+                loading={loading}
+                emptyMessage="No recent inquiries"
+                breakpoint="lg"
+                tableClassName="!bg-transparent"
+                renderCard={(lead) => (
+                  <div className="p-5 bg-white/5 rounded-3xl border border-white/5 hover:border-brand-gold/20 transition-all group">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="font-bold text-zinc-100 text-sm">{lead.name}</div>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                        lead.status === 'new' ? 'bg-blue-500/10 text-blue-500' :
+                        lead.status === 'contacted' ? 'bg-yellow-500/10 text-yellow-500' :
+                        'bg-emerald-500/10 text-emerald-500'
+                      }`}>
+                        {lead.status}
+                      </span>
+                    </div>
+                    <div className="text-zinc-400 text-xs mb-1 truncate">
+                      {lead.property?.title || lead.interestType}
+                    </div>
+                    <div className="text-[10px] text-zinc-500">
+                      {new Date(lead.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                )}
+              />
           </div>
 
           <div className="lg:col-span-2">
@@ -371,7 +370,7 @@ const AdminDashboard = () => {
         <StatCard title="Management Users" value={stats?.managementUsers || 0} icon={Users} color="text-purple-500" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
         {/* Approvals Queue */}
         <div className="bg-white/5 border border-white/5 rounded-3xl p-5 sm:p-8">
           <div className="flex items-center justify-between mb-6">

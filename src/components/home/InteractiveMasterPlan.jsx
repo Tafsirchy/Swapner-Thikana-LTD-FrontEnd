@@ -360,7 +360,7 @@ const InteractiveMasterPlan = () => {
                         </button>
                     </div>
 
-                    <div className="relative w-full aspect-video sm:h-64 rounded-2xl overflow-hidden mb-8 shadow-2xl border border-white/5">
+                    <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-2xl border border-white/5">
                         <SmartImage 
                             src={activeRegion.image} 
                             alt={activeRegion.name} 

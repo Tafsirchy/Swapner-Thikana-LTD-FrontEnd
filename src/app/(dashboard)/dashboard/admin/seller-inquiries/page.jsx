@@ -12,6 +12,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import ResponsiveTable from '@/components/shared/ResponsiveTable';
 
 const statusConfig = {
   pending: { label: 'Pending', color: 'bg-yellow-500/10 text-yellow-500', icon: Clock },
@@ -263,37 +264,30 @@ const AdminSellerInquiriesPage = () => {
         </div>
       </div>
 
-      {/* Mobile Card View */}
-      <div className="lg:hidden space-y-4">
-        {loading ? (
-          <div className="py-20 text-center text-zinc-500 bg-white/5 rounded-3xl border border-white/5">
-            <div className="flex flex-col items-center justify-center gap-4">
-              <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-              <span className="text-xs font-bold uppercase tracking-widest opacity-50">Retriving inquiries...</span>
-            </div>
-          </div>
-        ) : filteredInquiries.length === 0 ? (
-          <div className="py-20 text-center text-zinc-600 italic bg-white/5 rounded-3xl border border-white/5">
-            No inquiries found matching your criteria.
-          </div>
-        ) : (
-          filteredInquiries.map((inquiry) => (
-            <div key={inquiry._id} className="bg-white/5 border border-white/5 rounded-2xl p-5 space-y-4">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex flex-col gap-1 min-w-0">
-                  <span className="font-bold text-zinc-100 text-base truncate">{inquiry.name}</span>
-                  <div className="flex items-center gap-2 text-[10px] text-zinc-500 truncate">
-                    <Mail size={12} className="text-brand-gold/60" />
-                    {inquiry.email}
-                  </div>
+      <ResponsiveTable
+        columns={[
+          {
+            key: 'name',
+            label: 'Seller Details',
+            renderCell: (inquiry) => (
+              <div className="flex flex-col gap-1.5 font-sans">
+                <span className="font-bold text-zinc-100 text-base">{inquiry.name}</span>
+                <div className="flex items-center gap-3 text-xs text-zinc-400 opacity-70 group-hover:opacity-100 transition-opacity">
+                  <Mail size={14} className="text-brand-gold/60" />
+                  {inquiry.email}
                 </div>
-                <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase inline-flex items-center gap-1 border border-white/5 flex-shrink-0 ${statusConfig[inquiry.status]?.color}`}>
-                  {React.createElement(statusConfig[inquiry.status]?.icon || Clock, { size: 10 })}
-                  {statusConfig[inquiry.status]?.label}
-                </span>
+                <div className="flex items-center gap-3 text-xs text-zinc-400 opacity-70 group-hover:opacity-100 transition-opacity">
+                  <Phone size={14} className="text-brand-gold/60" />
+                  {inquiry.phone}
+                </div>
               </div>
-
-              <div className="space-y-2 py-3 border-y border-white/5">
+            )
+          },
+          {
+            key: 'propertyInfo',
+            label: 'Property Info',
+            renderCell: (inquiry) => (
+              <div className="max-w-xs space-y-2 font-sans">
                 <div className="flex items-center gap-2">
                   <span className="px-2 py-0.5 bg-brand-gold/10 text-brand-gold text-[9px] font-black uppercase rounded tracking-widest leading-none">
                     {inquiry.propertyType}
@@ -304,139 +298,118 @@ const AdminSellerInquiriesPage = () => {
                     </span>
                   )}
                 </div>
-                <div className="flex items-start gap-2 text-[11px] text-zinc-400 italic">
-                  <MapPin size={12} className="text-brand-gold mt-0.5 shrink-0" />
-                  <span className="line-clamp-1">{inquiry.address}</span>
+                <div className="flex items-start gap-3 text-xs text-zinc-400 line-clamp-1 italic opacity-60">
+                  <MapPin size={14} className="text-brand-gold mt-0.5 flex-shrink-0" />
+                  {inquiry.address}
                 </div>
               </div>
+            )
+          },
+          {
+            key: 'status',
+            label: 'Status',
+            renderCell: (inquiry) => (
+              <span className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase inline-flex items-center gap-2 border border-white/5 ${statusConfig[inquiry.status]?.color} font-sans`}>
+                {React.createElement(statusConfig[inquiry.status]?.icon || Clock, { size: 12 })}
+                {statusConfig[inquiry.status]?.label}
+              </span>
+            )
+          },
+          {
+            key: 'actions',
+            label: 'Actions',
+            headerClassName: 'text-right',
+            renderCell: (inquiry) => (
+              <div className="flex items-center justify-end gap-3 font-sans">
+                <button 
+                  onClick={() => setSelectedInquiry(inquiry)}
+                  className="p-2.5 bg-white/5 rounded-xl text-zinc-400 hover:text-brand-gold hover:bg-brand-gold/10 transition-all border border-white/5"
+                  title="View Details"
+                >
+                  <Eye size={18} />
+                </button>
+                <LuxurySelect 
+                  value={inquiry.status}
+                  disabled={updatingId === inquiry._id}
+                  onChange={(val) => handleUpdateStatus(inquiry._id, val)}
+                  options={[
+                    { label: 'Pending', value: 'pending' },
+                    { label: 'Contacted', value: 'contacted' },
+                    { label: 'Approved', value: 'approved' },
+                    { label: 'Rejected', value: 'rejected' }
+                  ]}
+                  className="!py-2 !px-3 !rounded-xl text-[10px] font-bold uppercase tracking-widest w-[160px]"
+                />
+              </div>
+            )
+          }
+        ]}
+        data={filteredInquiries}
+        loading={loading}
+        icon={Users}
+        emptyMessage="No inquiries found matching your criteria"
+        renderCard={(inquiry) => (
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-5 space-y-4 font-sans">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col gap-1 min-w-0">
+                <span className="font-bold text-zinc-100 text-base truncate">{inquiry.name}</span>
+                <div className="flex items-center gap-2 text-[10px] text-zinc-500 truncate">
+                  <Mail size={12} className="text-brand-gold/60" />
+                  {inquiry.email}
+                </div>
+              </div>
+              <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase inline-flex items-center gap-1 border border-white/5 flex-shrink-0 ${statusConfig[inquiry.status]?.color}`}>
+                {React.createElement(statusConfig[inquiry.status]?.icon || Clock, { size: 10 })}
+                {statusConfig[inquiry.status]?.label}
+              </span>
+            </div>
 
-              <div className="flex items-center justify-between gap-3 pt-1">
-                <div className="flex items-center gap-2">
-                  <button 
-                    onClick={() => setSelectedInquiry(inquiry)}
-                    className="p-2.5 bg-white/5 rounded-xl text-zinc-400 hover:text-brand-gold transition-all border border-white/5"
-                  >
-                    <Eye size={18} />
-                  </button>
-                  <a href={`tel:${inquiry.phone}`} className="p-2.5 bg-white/5 rounded-xl text-zinc-400 hover:text-brand-gold transition-all border border-white/5">
-                    <Phone size={18} />
-                  </a>
-                </div>
-                <div className="w-[140px]">
-                  <LuxurySelect 
-                    value={inquiry.status}
-                    onChange={(val) => handleUpdateStatus(inquiry._id, val)}
-                    options={[
-                      { label: 'Pending', value: 'pending' },
-                      { label: 'Contacted', value: 'contacted' },
-                      { label: 'Approved', value: 'approved' },
-                      { label: 'Rejected', value: 'rejected' }
-                    ]}
-                    className="!py-2 !px-3 !rounded-xl text-[10px] font-bold uppercase tracking-widest"
-                  />
-                </div>
+            <div className="space-y-2 py-3 border-y border-white/5">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 bg-brand-gold/10 text-brand-gold text-[9px] font-black uppercase rounded tracking-widest leading-none">
+                  {inquiry.propertyType}
+                </span>
+                {inquiry.images?.length > 0 && (
+                  <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[9px] font-black uppercase rounded tracking-widest leading-none">
+                    {inquiry.images.length} Photos
+                  </span>
+                )}
+              </div>
+              <div className="flex items-start gap-2 text-[11px] text-zinc-400 italic">
+                <MapPin size={12} className="text-brand-gold mt-0.5 shrink-0" />
+                <span className="line-clamp-1">{inquiry.address}</span>
               </div>
             </div>
-          ))
-        )}
-      </div>
 
-      {/* Desktop Table View */}
-      <div className="hidden lg:block glass rounded-[2.5rem] border border-white/5 shadow-2xl overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="border-b border-white/5 bg-white/[0.03]">
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Seller Details</th>
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Property Info</th>
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Status</th>
-              <th className="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5">
-            {loading ? (
-              <tr>
-                <td colSpan="4" className="px-8 py-20 text-center text-zinc-500">
-                  <div className="flex flex-col items-center justify-center gap-4">
-                    <div className="w-8 h-8 border-2 border-brand-gold border-t-transparent rounded-full animate-spin"></div>
-                    <span className="text-xs font-bold uppercase tracking-widest opacity-50">Retriving inquiries...</span>
-                  </div>
-                </td>
-              </tr>
-            ) : filteredInquiries.length === 0 ? (
-              <tr>
-                <td colSpan="4" className="px-8 py-20 text-center text-zinc-600 italic">
-                  No inquiries found matching your criteria.
-                </td>
-              </tr>
-            ) : (
-              filteredInquiries.map((inquiry) => (
-                <tr key={inquiry._id} className="hover:bg-white/[0.02] transition-colors group">
-                  <td className="px-8 py-7">
-                    <div className="flex flex-col gap-1.5">
-                      <span className="font-bold text-zinc-100 text-base">{inquiry.name}</span>
-                      <div className="flex items-center gap-3 text-xs text-zinc-400 opacity-70 group-hover:opacity-100 transition-opacity">
-                        <Mail size={14} className="text-brand-gold/60" />
-                        {inquiry.email}
-                      </div>
-                      <div className="flex items-center gap-3 text-xs text-zinc-400 opacity-70 group-hover:opacity-100 transition-opacity">
-                        <Phone size={14} className="text-brand-gold/60" />
-                        {inquiry.phone}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-8 py-7">
-                    <div className="max-w-xs space-y-2">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 bg-brand-gold/10 text-brand-gold text-[9px] font-black uppercase rounded tracking-widest leading-none">
-                          {inquiry.propertyType}
-                        </span>
-                        {inquiry.images?.length > 0 && (
-                          <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[9px] font-black uppercase rounded tracking-widest leading-none">
-                            {inquiry.images.length} Photos
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-start gap-3 text-xs text-zinc-400 line-clamp-1 italic opacity-60">
-                        <MapPin size={14} className="text-brand-gold mt-0.5 flex-shrink-0" />
-                        {inquiry.address}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-8 py-7">
-                    <span className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase inline-flex items-center gap-2 border border-white/5 ${statusConfig[inquiry.status]?.color}`}>
-                      {React.createElement(statusConfig[inquiry.status]?.icon || Clock, { size: 12 })}
-                      {statusConfig[inquiry.status]?.label}
-                    </span>
-                  </td>
-                  <td className="px-8 py-7 text-right">
-                    <div className="flex items-center justify-end gap-3">
-                      <button 
-                        onClick={() => setSelectedInquiry(inquiry)}
-                        className="p-2.5 bg-white/5 rounded-xl text-zinc-400 hover:text-brand-gold hover:bg-brand-gold/10 transition-all border border-white/5"
-                        title="View Details"
-                      >
-                        <Eye size={18} />
-                      </button>
-                      <LuxurySelect 
-                        value={inquiry.status}
-                        disabled={updatingId === inquiry._id}
-                        onChange={(val) => handleUpdateStatus(inquiry._id, val)}
-                        options={[
-                          { label: 'Pending', value: 'pending' },
-                          { label: 'Contacted', value: 'contacted' },
-                          { label: 'Approved', value: 'approved' },
-                          { label: 'Rejected', value: 'rejected' }
-                        ]}
-                        className="!py-2 !px-3 !rounded-xl text-[10px] font-bold uppercase tracking-widest w-[160px]"
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+            <div className="flex items-center justify-between gap-3 pt-1">
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={() => setSelectedInquiry(inquiry)}
+                  className="p-2.5 bg-white/5 rounded-xl text-zinc-400 hover:text-brand-gold transition-all border border-white/5"
+                >
+                  <Eye size={18} />
+                </button>
+                <a href={`tel:${inquiry.phone}`} className="p-2.5 bg-white/5 rounded-xl text-zinc-400 hover:text-brand-gold transition-all border border-white/5">
+                  <Phone size={18} />
+                </a>
+              </div>
+              <div className="w-[140px]">
+                <LuxurySelect 
+                  value={inquiry.status}
+                  onChange={(val) => handleUpdateStatus(inquiry._id, val)}
+                  options={[
+                    { label: 'Pending', value: 'pending' },
+                    { label: 'Contacted', value: 'contacted' },
+                    { label: 'Approved', value: 'approved' },
+                    { label: 'Rejected', value: 'rejected' }
+                  ]}
+                  className="!py-2 !px-3 !rounded-xl text-[10px] font-bold uppercase tracking-widest"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      />
 
       {/* Details Modal */}
       <AnimatePresence>

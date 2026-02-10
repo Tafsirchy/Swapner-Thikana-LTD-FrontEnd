@@ -125,7 +125,7 @@ const ShareModal = ({ isOpen, onClose, data }) => {
             </div>
 
             {/* Premium Share Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5 mb-6 px-2">
+            <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5 mb-6 px-2">
               {shareOptions.map((option, i) => (
                 <button
                   key={i}

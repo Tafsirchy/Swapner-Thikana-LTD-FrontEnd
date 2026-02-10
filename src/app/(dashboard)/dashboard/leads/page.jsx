@@ -169,10 +169,9 @@ const LeadsPage = () => {
         </div>
       </div>
 
-      {/* Kanban Board */}
       <div className="flex overflow-x-auto pb-6 -mx-4 px-4 lg:mx-0 lg:px-0 lg:grid lg:grid-cols-4 gap-4 sm:gap-6 scrollbar-hide snap-x snap-mandatory group/board">
         {STATUS_COLUMNS.map(column => (
-          <div key={column.id} className="flex flex-col gap-4 min-w-[280px] sm:min-w-[320px] lg:min-w-0 snap-center">
+          <div key={column.id} className="flex flex-col gap-4 min-w-[240px] min-[375px]:min-w-[300px] sm:min-w-[320px] lg:min-w-0 snap-center">
             <div className="flex items-center justify-between px-3 py-2 bg-white/[0.03] border border-white/5 rounded-2xl">
               <div className="flex items-center gap-3">
                 <span className={`${column.color} ${column.bg} p-2 rounded-xl border border-white/5 shadow-inner`}>

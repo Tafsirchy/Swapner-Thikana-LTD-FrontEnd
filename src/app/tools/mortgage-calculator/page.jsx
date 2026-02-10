@@ -46,7 +46,7 @@ export default function MortgageCalculatorPage() {
         transition={{ delay: 0.2 }}
         className="max-w-6xl mx-auto mt-16"
       >
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <div className="glass border-white/10 rounded-2xl p-6">
             <div className="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center mb-4">
               <Home className="text-brand-gold" size={24} />

@@ -127,7 +127,7 @@ const ProjectDetailsModal = ({ isOpen, onClose, project }) => {
             </div>
 
             {/* Apartment Details Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
                <div className="bg-white/5 rounded-3xl p-6 sm:p-8 border border-white/5">
                   <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2 underline decoration-brand-gold/30 underline-offset-8">
                     <Layout size={20} className="text-brand-gold" />
@@ -138,13 +138,13 @@ const ProjectDetailsModal = ({ isOpen, onClose, project }) => {
                         <span className="text-zinc-400">Unit Sizes</span>
                         <span className="text-zinc-100 font-medium">{project.flatSize || 'N/A'}</span>
                      </div>
-                     <div className="grid grid-cols-2 gap-4">
+                     <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-4">
                         <RoomSpec label="Drawing" value={project.unitDetails?.drawingRoom} />
                         <RoomSpec label="Living" value={project.unitDetails?.livingRoom} />
                         <RoomSpec label="Dining" value={project.unitDetails?.dining} />
                         <RoomSpec label="Kitchen" value={project.unitDetails?.kitchen} />
                      </div>
-                     <div className="grid grid-cols-2 xs:grid-cols-3 gap-3 pt-2">
+                     <div className="grid grid-cols-1 xs:grid-cols-2 min-[480px]:grid-cols-3 gap-3 pt-2">
                         <div className="text-center p-3 bg-white/5 rounded-2xl border border-white/5">
                            <div className="text-brand-gold font-bold">{project.bedroomCount || '0'}</div>
                            <div className="text-[10px] uppercase text-zinc-500 font-bold">Bedrooms</div>

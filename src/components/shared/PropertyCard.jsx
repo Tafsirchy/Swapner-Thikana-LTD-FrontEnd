@@ -68,7 +68,7 @@ const PropertyCard = ({ property }) => {
       className="group relative bg-card border border-white/10 overflow-hidden hover:border-brand-gold/30 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-gold/5"
     >
       {/* Image Container - Mobile-First Responsive */}
-      <div className="relative aspect-[4/3] sm:h-64 w-full overflow-hidden sm:m-2">
+      <div className="relative aspect-[4/3] w-full overflow-hidden sm:m-2">
         <SmartImage
           src={images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop'}
           alt={title}
@@ -151,7 +151,7 @@ const PropertyCard = ({ property }) => {
           
           <div className="flex items-center gap-1.5 text-zinc-400 text-sm mb-6">
             <MapPin size={14} className="text-brand-gold" />
-            <span className="truncate">{location.area}, {location.city}</span>
+            <span className="line-clamp-2">{location.area}, {location.city}</span>
           </div>
 
           {/* Features */}

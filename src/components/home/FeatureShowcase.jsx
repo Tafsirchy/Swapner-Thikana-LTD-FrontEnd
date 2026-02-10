@@ -229,7 +229,7 @@ const FeatureShowcase = () => {
                   </div>
                   
                   <div className="h-[auto] flex flex-col justify-center items-center py-2">
-                    <h4 className="font-cinzel text-lg text-white mb-2 uppercase tracking-widest group-hover:text-brand-gold transition-colors line-clamp-1 px-2">
+                    <h4 className="font-cinzel text-lg text-white mb-2 uppercase tracking-widest group-hover:text-brand-gold transition-colors line-clamp-2 px-2">
                         {property.title || 'Property'}
                     </h4>
                     

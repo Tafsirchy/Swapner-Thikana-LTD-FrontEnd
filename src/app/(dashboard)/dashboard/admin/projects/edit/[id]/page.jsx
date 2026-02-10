@@ -267,7 +267,7 @@ const EditProjectPage = () => {
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                 />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-zinc-400 mb-2">Project Type</label>
                   <LuxurySelect
@@ -576,7 +576,7 @@ const EditProjectPage = () => {
               Project Portfolio (Images)
            </h3>
 
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               <div className="md:col-span-1">
                  <ImgBBUpload 
                     label="Main Thumbnail" 

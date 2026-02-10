@@ -45,11 +45,17 @@ const CompareBar = () => {
                   className="relative w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl border-2 md:border-4 border-royal-deep overflow-hidden shadow-lg group"
                 >
                   <Image
-                    src={item.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop'}
-                    alt={item.title}
+                    src={(() => {
+                      const img = item.images?.[0];
+                      if (!img) return 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop';
+                      if (typeof img === 'object') return img.url || img.original || img.thumbnail || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop';
+                      return img;
+                    })()}
+                    alt={item.title || 'Property'}
                     fill
                     className="object-cover"
                   />
+
                   <button
                     onClick={() => removeFromCompare(item._id)}
                     className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white"

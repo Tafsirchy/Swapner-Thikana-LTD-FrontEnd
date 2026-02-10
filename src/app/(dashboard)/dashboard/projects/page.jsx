@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import ResponsiveTable from '@/components/shared/ResponsiveTable';
 import { useAuth } from '@/hooks/useAuth';
 
 const statusColors = {
@@ -129,10 +130,98 @@ const MyProjectsPage = () => {
         </div>
       </div>
 
-      {/* Mobile Card View */}
-      <div className="lg:hidden space-y-4">
-        {displayProjects.map((project) => (
-          <div key={project._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+      <ResponsiveTable
+        columns={[
+          {
+            key: 'title',
+            label: 'Project Info',
+            renderCell: (project) => (
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
+                  {project.images?.[0] ? (
+                    <SmartImage src={project.images[0]} alt="" fill className="object-cover rounded-xl" />
+                  ) : (
+                    <Building2 size={24} className="text-zinc-600" />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="font-bold text-zinc-100 truncate max-w-[200px] xl:max-w-none">{project.title}</div>
+                  <div className="text-xs text-zinc-500 uppercase tracking-tight">{project.slug}</div>
+                </div>
+              </div>
+            )
+          },
+          {
+            key: 'location',
+            label: 'Location',
+            renderCell: (project) => (
+              <div className="flex items-center gap-2">
+                <MapPin size={14} className="text-brand-gold" />
+                <span className="truncate max-w-[300px]">{project.location?.city}, {project.location?.address}</span>
+              </div>
+            )
+          },
+          {
+            key: 'type',
+            label: 'Type',
+            renderCell: (project) => <span className="capitalize">{project.type}</span>
+          },
+          {
+            key: 'status',
+            label: 'Status',
+            renderCell: (project) => (
+              <span className={`${statusColors[project.status] || 'bg-zinc-500/10 text-zinc-500'} px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider`}>
+                {project.status}
+              </span>
+            )
+          },
+          {
+            key: 'completionDate',
+            label: 'Date',
+            renderCell: (project) => (
+              <div className="flex items-center gap-2 text-xs">
+                <Calendar size={14} />
+                {project.completionDate ? new Date(project.completionDate).toLocaleDateString() : 'N/A'}
+              </div>
+            )
+          },
+          {
+            key: 'actions',
+            label: 'Actions',
+            headerClassName: 'text-right',
+            renderCell: (project) => (
+              <div className="flex items-center justify-end gap-2">
+                <Link
+                  href={`/projects/${project._id}`}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
+                  title="View Public Page"
+                >
+                  <Eye size={18} />
+                </Link>
+                <Link
+                  href={`/dashboard/projects/edit/${project._id}`}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
+                  title="Edit Project"
+                >
+                  <Edit2 size={18} />
+                </Link>
+                <button
+                  onClick={() => handleDelete(project._id)}
+                  className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
+                  title="Delete Project"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            )
+          }
+        ]}
+        data={displayProjects}
+        loading={loading}
+        icon={Building2}
+        emptyMessage="No Projects Found"
+        renderCard={(project) => (
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
             <div className="flex gap-4">
               <div className="w-20 h-20 sm:w-16 sm:h-16 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
                 {project.images?.[0] ? (
@@ -162,121 +251,29 @@ const MyProjectsPage = () => {
             <div className="flex items-center justify-end gap-2 pt-2 border-t border-white/5">
               <Link
                 href={`/projects/${project._id}`}
-                className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white"
+                className="p-3 bg-white/5 rounded-xl text-zinc-400 hover:text-white transition-all shadow-inner"
                 title="View"
               >
                 <Eye size={18} />
               </Link>
               <Link
                 href={`/dashboard/projects/edit/${project._id}`}
-                className="p-3 bg-white/5 hover:bg-brand-gold hover:text-royal-deep rounded-xl transition-all text-brand-gold"
+                className="p-3 bg-white/5 rounded-xl text-zinc-400 hover:text-brand-gold transition-all shadow-inner"
                 title="Edit"
               >
                 <Edit2 size={18} />
               </Link>
               <button
                 onClick={() => handleDelete(project._id)}
-                className="p-3 bg-white/5 hover:bg-red-500/10 rounded-xl transition-colors text-zinc-400 hover:text-red-500"
+                className="p-3 bg-white/5 rounded-xl text-zinc-400 hover:text-red-500 transition-all shadow-inner"
                 title="Delete"
               >
                 <Trash2 size={18} />
               </button>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Desktop Table View */}
-      <div className="hidden lg:block bg-white/5 border border-white/5 rounded-3xl shadow-xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-zinc-400">
-            <thead>
-              <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Project Info</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Location</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Type</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Status</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Date</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-            {displayProjects.map((project) => (
-                <tr key={project._id} className="group hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
-                        {project.images?.[0] ? (
-                          <SmartImage src={project.images[0]} alt="" fill className="object-cover rounded-xl" />
-                        ) : (
-                          <Building2 size={24} className="text-zinc-600" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-bold text-zinc-100 truncate">{project.title}</div>
-                        <div className="text-xs text-zinc-500 uppercase tracking-tight">{project.slug}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                       <MapPin size={14} className="text-brand-gold" />
-                       <span className="truncate max-w-[200px]">{project.location?.city}, {project.location?.address}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="capitalize">{project.type}</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`${statusColors[project.status] || 'bg-zinc-500/10 text-zinc-500'} px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider`}>
-                      {project.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-xs">
-                      <Calendar size={14} />
-                      {project.completionDate ? new Date(project.completionDate).toLocaleDateString() : 'N/A'}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={`/projects/${project._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
-                        title="View Public Page"
-                      >
-                        <Eye size={18} />
-                      </Link>
-                      <Link
-                        href={`/dashboard/projects/edit/${project._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
-                        title="Edit Project"
-                      >
-                        <Edit2 size={18} />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(project._id)}
-                        className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
-                        title="Delete Project"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {displayProjects.length === 0 && !loading && (
-        <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">
-          <Building2 size={48} className="mx-auto text-zinc-700 mb-4" />
-          <h3 className="text-lg font-bold text-zinc-300">No Projects Found</h3>
-          <p className="text-zinc-500 max-w-xs mx-auto mt-1">You haven&apos;t added any projects yet. Click above to create one!</p>
-        </div>
-      )}
+        )}
+      />
 
       <LuxuryPagination 
         currentPage={currentPage}

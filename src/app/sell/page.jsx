@@ -106,7 +106,7 @@ const SellWithUsPage = () => {
         </div>
 
         {/* Features - Value Prop */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-20">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -218,7 +218,7 @@ const SellWithUsPage = () => {
                {/* Image Upload */}
                <div className="space-y-2">
                 <label className="text-sm font-bold text-zinc-400 uppercase tracking-widest ml-1 block">Property Photos (Up to 5)</label>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                <div className="grid grid-cols-1 min-[350px]:grid-cols-2 min-[480px]:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
                   {selectedImages.map((img, idx) => (
                     <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-white/10 group">
                       <SmartImage src={img.preview} alt="preview" fill className="object-cover" />

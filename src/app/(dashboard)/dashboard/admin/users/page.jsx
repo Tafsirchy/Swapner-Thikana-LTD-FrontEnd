@@ -10,6 +10,7 @@ import { exportUsersCSV } from '@/utils/exportUtils';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import ResponsiveTable from '@/components/shared/ResponsiveTable';
 
 
 const roleColors = {
@@ -158,12 +159,119 @@ const AdminUsersPage = () => {
         </div>
       </div>
 
-      {/* Users List (Mobile Card View) */}
-      <div className="lg:hidden space-y-4">
-        {users.map((user) => {
+      <ResponsiveTable
+        columns={[
+          {
+            key: 'name',
+            label: 'User',
+            renderCell: (user) => (
+              <div>
+                <div className="font-bold text-zinc-100">{user.name}</div>
+                <div className="text-xs text-zinc-500">{user.email}</div>
+              </div>
+            )
+          },
+          {
+            key: 'role',
+            label: 'Role',
+            renderCell: (user) => {
+              const isSelf = currentUser?.id === user._id || currentUser?._id === user._id;
+              return (
+                <div className="flex items-center gap-2 max-w-[140px]">
+                  <LuxurySelect
+                    value={user.role}
+                    onChange={(val) => handleRoleChange(user._id, val)}
+                    disabled={isSelf}
+                    options={[
+                      { label: 'Customer', value: 'customer' },
+                      { label: 'Agent', value: 'agent' },
+                      { label: 'Management', value: 'management' },
+                      { label: 'Admin', value: 'admin' },
+                    ]}
+                    className={`!py-1 px-3 rounded-full font-bold text-[10px] uppercase border-0 ${roleColors[user.role]}`}
+                  />
+                  {isSelf && <Lock size={12} className="text-zinc-600" title="Cannot change your own role" />}
+                </div>
+              );
+            }
+          },
+          {
+            key: 'status',
+            label: 'Status',
+            renderCell: (user) => {
+              const isSelf = currentUser?.id === user._id || currentUser?._id === user._id;
+              return (
+                <div className="flex items-center gap-2 max-w-[120px]">
+                  <LuxurySelect
+                    value={user.status}
+                    onChange={(val) => handleStatusChange(user._id, val)}
+                    disabled={isSelf}
+                    options={[
+                      { label: 'Active', value: 'active' },
+                      { label: 'Inactive', value: 'inactive' },
+                    ]}
+                    className={`!py-1 px-3 rounded-full font-bold text-[10px] uppercase border-0 ${statusColors[user.status]}`}
+                  />
+                  {isSelf && <Lock size={12} className="text-zinc-600" title="Cannot change your own status" />}
+                </div>
+              );
+            }
+          },
+          {
+            key: 'createdAt',
+            label: 'Joined',
+            renderCell: (user) => new Date(user.createdAt).toLocaleDateString()
+          },
+          {
+            key: 'actions',
+            label: 'Actions',
+            renderCell: (user) => {
+              const isSelf = currentUser?.id === user._id || currentUser?._id === user._id;
+              if (isSelf) return null;
+              return (
+                <div className="relative">
+                  <button 
+                    onClick={() => setActiveMenu(activeMenu === user._id ? null : user._id)}
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  >
+                    <MoreVertical size={18} />
+                  </button>
+                  <AnimatePresence>
+                    {activeMenu === user._id && (
+                      <>
+                        <div className="fixed inset-0 z-10" onClick={() => setActiveMenu(null)} />
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                          className="absolute right-0 mt-2 w-48 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl z-20 overflow-hidden"
+                        >
+                          <div className="p-2">
+                            <button
+                              onClick={() => handleDeleteUser(user._id)}
+                              className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                            >
+                              <Trash2 size={16} />
+                              Delete User
+                            </button>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            }
+          }
+        ]}
+        data={users}
+        loading={loading}
+        icon={Users}
+        emptyMessage="No users found"
+        renderCard={(user) => {
           const isSelf = currentUser?.id === user._id || currentUser?._id === user._id;
           return (
-            <div key={user._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+            <div className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
               <div className="flex justify-between items-start">
                 <div>
                   <div className="font-bold text-zinc-100">{user.name}</div>
@@ -239,121 +347,8 @@ const AdminUsersPage = () => {
               </div>
             </div>
           );
-        })}
-      </div>
-
-      {/* Users Table (Desktop View) */}
-      <div className="hidden lg:block bg-white/5 border border-white/5 rounded-3xl min-h-[400px]">
-        <div className="overflow-x-auto min-h-[400px]">
-          <table className="w-full text-left text-sm text-zinc-400">
-            <thead>
-              <tr className="border-b border-white/10">
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">User</th>
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Role</th>
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Status</th>
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Joined</th>
-                <th className="px-6 py-4 font-bold uppercase tracking-wider text-xs">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {users.map((user) => {
-                const isSelf = currentUser?.id === user._id || currentUser?._id === user._id;
-                
-                return (
-                  <tr key={user._id} className="group hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
-                    <div>
-                      <div className="font-bold text-zinc-100">{user.name}</div>
-                      <div className="text-xs text-zinc-500">{user.email}</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 max-w-[140px]">
-                      <LuxurySelect
-                        value={user.role}
-                        onChange={(val) => handleRoleChange(user._id, val)}
-                        disabled={isSelf}
-                        options={[
-                          { label: 'Customer', value: 'customer' },
-                          { label: 'Agent', value: 'agent' },
-                          { label: 'Management', value: 'management' },
-                          { label: 'Admin', value: 'admin' },
-                        ]}
-                        className={`!py-1 px-3 rounded-full font-bold text-[10px] uppercase border-0 ${roleColors[user.role]}`}
-                      />
-                      {isSelf && <Lock size={12} className="text-zinc-600" title="Cannot change your own role" />}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 max-w-[120px]">
-                      <LuxurySelect
-                        value={user.status}
-                        onChange={(val) => handleStatusChange(user._id, val)}
-                        disabled={isSelf}
-                        options={[
-                          { label: 'Active', value: 'active' },
-                          { label: 'Inactive', value: 'inactive' },
-                        ]}
-                        className={`!py-1 px-3 rounded-full font-bold text-[10px] uppercase border-0 ${statusColors[user.status]}`}
-                      />
-                      {isSelf && <Lock size={12} className="text-zinc-600" title="Cannot change your own status" />}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4">
-                    {!isSelf && (
-                      <div className="relative">
-                        <button 
-                          onClick={() => setActiveMenu(activeMenu === user._id ? null : user._id)}
-                          className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                        >
-                          <MoreVertical size={18} />
-                        </button>
-
-                        <AnimatePresence>
-                          {activeMenu === user._id && (
-                            <>
-                              <div 
-                                className="fixed inset-0 z-10" 
-                                onClick={() => setActiveMenu(null)}
-                              />
-                              <motion.div
-                                initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                                animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                                className="absolute right-0 mt-2 w-48 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl z-20 overflow-hidden"
-                              >
-                                <div className="p-2">
-                                  <button
-                                    onClick={() => handleDeleteUser(user._id)}
-                                    className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
-                                  >
-                                    <Trash2 size={16} />
-                                    Delete User
-                                  </button>
-                                </div>
-                              </motion.div>
-                            </>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-            </tbody>
-          </table>
-        </div>
-        {!loading && users.length === 0 && (
-          <div className="p-12 text-center">
-            <Users size={48} className="mx-auto text-zinc-700 mb-4" />
-            <div className="text-zinc-400">No users found</div>
-          </div>
-        )}
-      </div>
+        }}
+      />
 
       {/* Pagination */}
       {totalPages > 1 && (

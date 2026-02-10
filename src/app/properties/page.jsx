@@ -342,8 +342,8 @@ const PropertiesContent = () => {
 
           {/* Search Bar */}
           <div className="relative z-20">
-            <form onSubmit={handleSearch} className="grid grid-cols-2 lg:flex lg:flex-row gap-4 p-4 lg:p-6 glass rounded-2xl sm:rounded-3xl border-white/10 shadow-2xl backdrop-blur-xl">
-              <div className="col-span-2 lg:flex-1 flex flex-col gap-1.5">
+            <form onSubmit={handleSearch} className="flex flex-col gap-4 p-4 lg:p-6 glass rounded-2xl sm:rounded-3xl border-white/10 shadow-2xl backdrop-blur-xl">
+              <div className="flex-1 flex flex-col gap-1.5">
                 <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1 hidden lg:block">Search</label>
                 <div className="relative group flex-1">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-gold" size={18} />
@@ -357,8 +357,8 @@ const PropertiesContent = () => {
                 </div>
               </div>
               
-              <div className="col-span-2 lg:contents grid grid-cols-2 gap-4">
-                <div className="flex flex-col items-start gap-1.5 min-w-[140px]">
+              <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-row gap-4">
+                <div className="flex flex-col items-start gap-1.5 min-w-0 flex-1">
                   <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Listing</label>
                   <LuxurySelect 
                     value={filters.listingType}
@@ -373,7 +373,7 @@ const PropertiesContent = () => {
                   />
                 </div>
                 
-                <div className="flex flex-col items-start gap-1.5 min-w-[140px] hidden xl:flex">
+                <div className="flex flex-col items-start gap-1.5 min-w-0 flex-1 hidden sm:flex">
                   <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Property Type</label>
                   <LuxurySelect 
                     value={filters.propertyType}
@@ -389,7 +389,7 @@ const PropertiesContent = () => {
                   />
                 </div>
                 
-                <div className="flex flex-col items-start gap-1.5 min-w-[140px]">
+                <div className="flex flex-col items-start gap-1.5 min-w-0 flex-1">
                   <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">City</label>
                   <LuxurySelect 
                     value={filters.city}
@@ -408,7 +408,7 @@ const PropertiesContent = () => {
                 <button 
                   type="button"
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`flex items-center justify-center gap-2 px-6 h-[52px] rounded-2xl border transition-all mt-auto ${showFilters ? 'bg-brand-gold text-royal-deep border-brand-gold shadow-lg shadow-brand-gold/20' : 'border-white/10 text-zinc-100 hover:border-brand-gold/30 hover:bg-white/5'}`}
+                  className={`flex items-center justify-center gap-2 px-6 h-[52px] rounded-2xl border transition-all ${showFilters ? 'bg-brand-gold text-royal-deep border-brand-gold shadow-lg shadow-brand-gold/20' : 'border-white/10 text-zinc-100 hover:border-brand-gold/30 hover:bg-white/5'}`}
                   aria-label={showFilters ? "Hide advanced filters" : "Show advanced filters"}
                 >
                   <SlidersHorizontal size={18} />
@@ -417,7 +417,7 @@ const PropertiesContent = () => {
                 
                 <button 
                   type="submit"
-                  className="bg-brand-emerald text-white px-8 h-[52px] rounded-2xl font-bold hover:bg-brand-emerald-light transition-all shadow-lg shadow-brand-emerald/20 mt-auto flex items-center justify-center gap-2"
+                  className="bg-brand-emerald text-white px-8 h-[52px] rounded-2xl font-bold hover:bg-brand-emerald-light transition-all shadow-lg shadow-brand-emerald/20 flex items-center justify-center gap-2 col-span-2 sm:col-span-1"
                 >
                   <Search size={18} className="lg:hidden" />
                   Search
@@ -437,7 +437,7 @@ const PropertiesContent = () => {
                   <div className="p-6 md:p-10 mt-6 glass rounded-3xl border-white/10 space-y-8 relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent"></div>
                     {/* Row 1: Property Type, Bedrooms, Bathrooms */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                       <div className="space-y-2">
                         <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Property Type</label>
                         <LuxurySelect 
@@ -543,7 +543,7 @@ const PropertiesContent = () => {
                     {/* Row 4: Amenities */}
                     <div className="space-y-3">
                       <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">Amenities</label>
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                         {AMENITIES.map((amenity) => (
                           <label
                             key={amenity}

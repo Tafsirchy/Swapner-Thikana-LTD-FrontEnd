@@ -52,15 +52,56 @@ const SocialShare = ({ url, title }) => {
       <AnimatePresence>
         {isOpen && (
           <>
-            <div 
-              className="fixed inset-0 z-40" 
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm" 
               onClick={() => setIsOpen(false)}
             />
+
+            {/* Mobile Bottom Sheet */}
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed bottom-0 left-0 right-0 z-[101] bg-zinc-900 border-t border-white/10 rounded-t-[2rem] p-6 pb-10 sm:hidden"
+            >
+              <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-6" />
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-white uppercase tracking-wider">Share Experience</h3>
+                <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-white/5 rounded-full">
+                  <X size={24} className="text-zinc-400" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-4">
+                {shareOptions.map((option) => (
+                  <button
+                    key={option.name}
+                    onClick={() => {
+                      option.action();
+                      if (option.name !== 'Copy Link') setIsOpen(false);
+                    }}
+                    className={`flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/5 transition-all active:scale-95 ${option.color.replace('hover:', '').replace('bg-', 'text-')}`}
+                  >
+                    <div className="p-3 bg-white/5 rounded-xl">
+                      {option.icon}
+                    </div>
+                    <span className="text-xs font-bold uppercase tracking-widest text-zinc-300">{option.name}</span>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Desktop Dropdown */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="absolute right-0 mt-2 w-56 bg-zinc-900 border border-white/10 rounded-2xl p-2 shadow-2xl z-50 overflow-hidden"
+              className="absolute right-0 mt-2 w-56 bg-zinc-900 border border-white/10 rounded-2xl p-2 shadow-2xl z-[101] overflow-hidden hidden sm:block"
             >
               <div className="flex items-center justify-between px-3 py-2 border-b border-white/5 mb-1">
                 <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Share This</span>
@@ -86,6 +127,7 @@ const SocialShare = ({ url, title }) => {
           </>
         )}
       </AnimatePresence>
+
     </div>
   );
 };

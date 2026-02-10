@@ -70,7 +70,7 @@ const MortgageCalculator = ({ defaultPrice = 0 }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="order-1 lg:order-2 w-full lg:w-[400px] xl:w-[450px] space-y-4 md:space-y-6"
+          className="order-1 lg:order-2 w-full lg:w-[400px] xl:w-[450px] max-w-full space-y-4 md:space-y-6"
         >
           {/* Monthly Payment - Highlight */}
           <div className="glass border-brand-gold/30 rounded-[2rem] p-6 md:p-8 bg-gradient-to-br from-brand-gold/10 via-transparent to-transparent">
@@ -173,7 +173,7 @@ const MortgageCalculator = ({ defaultPrice = 0 }) => {
             </div>
 
             {/* Range Selectors - Unified Styling */}
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8 md:gap-12">
               {/* Down Payment */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -231,7 +231,7 @@ const MortgageCalculator = ({ defaultPrice = 0 }) => {
               <label className="block text-[10px] font-bold uppercase text-zinc-500 tracking-wider mb-5">
                 Loan Duration (Years)
               </label>
-              <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+              <div className="grid grid-cols-2 min-[480px]:grid-cols-3 md:grid-cols-6 gap-3">
                 {[5, 10, 15, 20, 25, 30].map((years) => (
                   <button
                     key={years}

@@ -58,7 +58,7 @@ const BlogCard = ({ post }) => {
           <div className="hidden sm:block w-px h-3 bg-white/10"></div>
           <div className="flex items-center gap-3">
             <User size={12} className="text-brand-gold" />
-            <span className="truncate max-w-[140px] sm:max-w-[100px]">By {author || 'Admin'}</span>
+            <span className="truncate max-w-[120px] sm:max-w-[160px]">By {author || 'Admin'}</span>
           </div>
         </div>
 

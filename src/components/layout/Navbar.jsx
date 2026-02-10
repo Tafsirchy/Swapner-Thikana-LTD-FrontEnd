@@ -96,7 +96,7 @@ const Navbar = () => {
                 transition={{ duration: 0.2 }}
                 className="absolute left-1/2 -translate-x-1/2 top-full pt-2"
               >
-                <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-none p-8 shadow-2xl min-w-[calc(100vw-2rem)] lg:min-w-[500px] flex gap-12 overflow-hidden relative">
+                <div className="bg-royal-deep/95 backdrop-blur-xl border border-white/10 rounded-none p-8 shadow-2xl min-w-[calc(100vw-2rem)] lg:min-w-[500px] max-w-[calc(100vw-2rem)] flex gap-12 overflow-hidden relative">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/5 rounded-full blur-3xl"></div>
                   
                   {/* Left Column */}
@@ -246,7 +246,7 @@ const Navbar = () => {
 
         {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
-          <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] py-2 items-end w-full">
+          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] py-2 items-end w-full">
             
             {/* Left Nav - Aligned Left */}
             <div className="flex items-center gap-8 justify-start">

@@ -83,7 +83,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8">
         {/* Trend Chart */}
         <div className="bg-zinc-900/50 border border-white/5 rounded-3xl p-6 sm:p-8">
           <div className="flex items-center justify-between mb-8">
@@ -166,7 +166,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-3 w-full lg:w-48">
+            <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-3 w-full lg:w-48">
               {(isAdmin ? data.typeDistribution : data.leadStats).map((entry, index) => (
                 <div key={entry._id} className="flex items-center justify-between gap-3 bg-white/5 px-4 py-2.5 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
                   <div className="flex items-center gap-2 min-w-0">

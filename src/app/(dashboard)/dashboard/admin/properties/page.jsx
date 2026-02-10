@@ -10,6 +10,7 @@ import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 import RejectionModal from '@/components/shared/RejectionModal';
+import ResponsiveTable from '@/components/shared/ResponsiveTable';
 
 
 const statusColors = {
@@ -232,10 +233,108 @@ const AdminPropertiesPage = () => {
         </div>
       </div>
 
-      {/* Mobile Card View */}
-      <div className="lg:hidden space-y-4">
-        {displayProperties.map((property) => (
-          <div key={property._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+      <ResponsiveTable
+        columns={[
+          {
+            key: 'title',
+            label: 'Property',
+            renderCell: (property) => (
+              <div>
+                <div className="font-bold text-zinc-100 truncate max-w-[200px] xl:max-w-none">{property.title}</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-tight mt-0.5">{property.location.area}</div>
+              </div>
+            )
+          },
+          {
+            key: 'agent',
+            label: 'Agent',
+            renderCell: (property) => <div className="text-xs">{property.agent?.name || 'Unknown'}</div>
+          },
+          {
+            key: 'price',
+            label: 'Price',
+            renderCell: (property) => <span className="font-bold text-zinc-100">৳{(property.price / 10000000).toFixed(2)}Cr</span>
+          },
+          {
+            key: 'status',
+            label: 'Status',
+            renderCell: (property) => (
+              <span className={`${statusColors[property.status]} px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider`}>
+                {property.status}
+              </span>
+            )
+          },
+          {
+            key: 'featured',
+            label: 'Featured',
+            renderCell: (property) => (
+              <button
+                onClick={() => handleToggleFeatured(property._id, property.featured)}
+                className={`p-2 rounded-lg transition-all ${
+                  property.featured 
+                    ? 'bg-yellow-500/20 text-yellow-500' 
+                    : 'bg-white/5 text-zinc-500 hover:bg-white/10'
+                }`}
+              >
+                <Star size={16} fill={property.featured ? 'currentColor' : 'none'} />
+              </button>
+            )
+          },
+          {
+            key: 'actions',
+            label: 'Actions',
+            renderCell: (property) => (
+              <div className="flex items-center justify-end gap-2">
+                <Link
+                  href={`/properties/${property.slug || property._id}`}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
+                  title="View"
+                >
+                  <Eye size={18} />
+                </Link>
+                <Link
+                  href={`/dashboard/admin/properties/edit/${property._id}`}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
+                  title="Edit"
+                >
+                  <Building2 size={18} />
+                </Link>
+                <button
+                  onClick={() => handleDelete(property._id)}
+                  className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
+                  title="Delete"
+                >
+                  <Trash2 size={18} />
+                </button>
+        
+                {property.status === 'pending' && (
+                  <>
+                    <button
+                      onClick={() => handleApprove(property._id)}
+                      className="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-lg shadow-emerald-500/10"
+                      title="Approve"
+                    >
+                      <CheckCircle size={18} />
+                    </button>
+                    <button
+                      onClick={() => handleReject(property._id)}
+                      className="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg shadow-red-500/10"
+                      title="Reject"
+                    >
+                      <XCircle size={18} />
+                    </button>
+                  </>
+                )}
+              </div>
+            )
+          }
+        ]}
+        data={displayProperties}
+        loading={loading}
+        icon={Building2}
+        emptyMessage="No properties found matching your criteria"
+        renderCard={(property) => (
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
             <div className="flex justify-between items-start gap-4">
               <div className="min-w-0 flex-1">
                 <div className="font-bold text-zinc-100 line-clamp-2">{property.title}</div>
@@ -309,111 +408,8 @@ const AdminPropertiesPage = () => {
               )}
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Desktop Table View */}
-      <div className="hidden lg:block bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-zinc-400">
-            <thead>
-              <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Property</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Agent</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Price</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Status</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Featured</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {displayProperties.map((property) => (
-                <tr key={property._id} className="group hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
-                    <div>
-                      <div className="font-bold text-zinc-100">{property.title}</div>
-                      <div className="text-xs text-zinc-500 uppercase tracking-tight mt-0.5">{property.location.area}</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-xs">{property.agent?.name || 'Unknown'}</div>
-                  </td>
-                  <td className="px-6 py-4 font-bold text-zinc-100">
-                    ৳{(property.price / 10000000).toFixed(2)}Cr
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`${statusColors[property.status]} px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider`}>
-                      {property.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => handleToggleFeatured(property._id, property.featured)}
-                      className={`p-2 rounded-lg transition-all ${
-                        property.featured 
-                          ? 'bg-yellow-500/20 text-yellow-500' 
-                          : 'bg-white/5 text-zinc-500 hover:bg-white/10'
-                      }`}
-                    >
-                      <Star size={16} fill={property.featured ? 'currentColor' : 'none'} />
-                    </button>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={`/properties/${property.slug || property._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
-                        title="View"
-                      >
-                        <Eye size={18} />
-                      </Link>
-                      <Link
-                        href={`/dashboard/admin/properties/edit/${property._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
-                        title="Edit"
-                      >
-                        <Building2 size={18} />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(property._id)}
-                        className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
-                        title="Delete"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-
-                      {property.status === 'pending' && (
-                        <>
-                          <button
-                            onClick={() => handleApprove(property._id)}
-                            className="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-lg shadow-emerald-500/10"
-                            title="Approve"
-                          >
-                            <CheckCircle size={18} />
-                          </button>
-                          <button
-                            onClick={() => handleReject(property._id)}
-                            className="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg shadow-red-500/10"
-                            title="Reject"
-                          >
-                            <XCircle size={18} />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {displayProperties.length === 0 && (
-        <div className="text-center py-12 text-zinc-500">
-          No properties found matching your criteria
-        </div>
-      )}
+        )}
+      />
 
       <LuxuryPagination 
         currentPage={currentPage}

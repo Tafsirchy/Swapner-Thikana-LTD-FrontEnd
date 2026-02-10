@@ -398,7 +398,7 @@ const MasterPlanAdminPage = () => {
       </div>
 
       {/* Project Linking Interface */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {/* Available Projects */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
           <div className="space-y-4">

@@ -157,7 +157,7 @@ const ProjectDetailClient = ({ project }) => {
             {/* Quick Metrics (SM Accordion / LG Grid) */}
             <div className="md:hidden">
               <LuxAccordion title="Technical Overview" icon={Info} defaultOpen={true}>
-                <div className="grid grid-cols-2 gap-3 mt-2">
+                <div className="grid grid-cols-1 min-[390px]:grid-cols-2 gap-3 mt-2">
                   {[
                     { label: "Land Size", value: project.landSize },
                     { label: "Height", value: project.floorConfiguration },
@@ -184,7 +184,7 @@ const ProjectDetailClient = ({ project }) => {
                   </div>
                   <div className="space-y-4">
                     <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest border-b border-zinc-800 pb-2">Apartment Features</h4>
-                    <div className="grid grid-cols-2 gap-y-3">
+                    <div className="grid grid-cols-1 min-[390px]:grid-cols-2 gap-y-3">
                       {['Bedroom', 'Bathroom', 'Drawing', 'Dining', 'Kitchen', 'Balcony'].map((f, i) => (
                         <div key={i} className="flex items-center gap-2 text-xs text-zinc-400">
                           <CheckCircle2 size={12} className="text-brand-gold/60" />
@@ -207,7 +207,7 @@ const ProjectDetailClient = ({ project }) => {
             {/* Desktop-Only Layout (Preserving original richness) */}
             <div className="hidden md:block space-y-12">
                <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 space-y-8">
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 min-[480px]:grid-cols-3 sm:grid-cols-4 gap-4">
                      {[
                        { label: "Land Size", value: project.landSize },
                        { label: "Floors", value: project.floorConfiguration },
@@ -225,7 +225,7 @@ const ProjectDetailClient = ({ project }) => {
                         className="text-xl font-bold text-white mb-4 italic leading-relaxed"
                         dangerouslySetInnerHTML={{ __html: sanitize(project.description) }}
                      />
-                     <div className="grid grid-cols-2 gap-8 mt-10">
+                     <div className="grid grid-cols-1 min-[540px]:grid-cols-2 gap-8 mt-10">
                         <div className="space-y-2">
                            <span className="text-brand-gold font-bold uppercase text-xs tracking-widest">Configuration</span>
                            <p className="text-zinc-400 text-sm leading-relaxed">{project.flatSize}</p>

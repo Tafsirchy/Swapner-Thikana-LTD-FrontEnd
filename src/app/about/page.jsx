@@ -41,7 +41,7 @@ const AboutPage = () => {
       {/* Hero Section */}
       <section className="mb-16 sm:mb-32">
         <div className="max-container px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}

@@ -7,7 +7,9 @@ import { api } from '@/lib/api';
 import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
+import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
+import ResponsiveTable from '@/components/shared/ResponsiveTable';
 
 const AdminMagazinesPage = () => {
   const [magazines, setMagazines] = useState([]);
@@ -91,10 +93,85 @@ const AdminMagazinesPage = () => {
         />
       </div>
 
-      {/* Mobile Card View */}
-      <div className="lg:hidden space-y-4">
-              {displayMagazines.map((mag) => (
-          <div key={mag._id} className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
+      <ResponsiveTable
+        columns={[
+          {
+            key: 'info',
+            label: 'Magazine Info',
+            renderCell: (mag) => (
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-16 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
+                  {mag.coverImage ? (
+                    <SmartImage src={mag.coverImage} alt="" fill className="object-cover" />
+                  ) : (
+                    <Book size={24} className="text-zinc-600" />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="font-bold text-zinc-100 truncate max-w-[200px] xl:max-w-none">{mag.title}</div>
+                  <div className="text-xs text-zinc-500 uppercase tracking-tight truncate max-w-[150px]">{mag.publisher}</div>
+                </div>
+              </div>
+            )
+          },
+          {
+            key: 'date',
+            label: 'Publication Date',
+            renderCell: (mag) => (
+              <div className="flex items-center gap-2 text-xs text-zinc-400">
+                <Calendar size={14} className="text-brand-gold" />
+                {new Date(mag.publicationDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long' })}
+              </div>
+            )
+          },
+          {
+            key: 'status',
+            label: 'Status',
+            renderCell: (mag) => (
+              <span className={`px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider ${mag.isPublished ? 'bg-emerald-500/10 text-emerald-500' : 'bg-zinc-500/10 text-zinc-500'}`}>
+                {mag.isPublished ? 'Published' : 'Draft'}
+              </span>
+            )
+          },
+          {
+            key: 'actions',
+            label: 'Actions',
+            headerClassName: 'text-right',
+            renderCell: (mag) => (
+              <div className="flex items-center justify-end gap-2">
+                <a
+                  href={mag.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
+                  title="Download/View PDF"
+                >
+                  <Download size={18} />
+                </a>
+                <Link
+                  href={`/dashboard/admin/magazines/edit/${mag._id}`}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
+                  title="Edit Magazine"
+                >
+                  <Edit2 size={18} />
+                </Link>
+                <button
+                  onClick={() => handleDelete(mag._id)}
+                  className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
+                  title="Delete Magazine"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            )
+          }
+        ]}
+        data={displayMagazines}
+        loading={loading}
+        icon={Book}
+        emptyMessage="No Magazines Found"
+        renderCard={(mag) => (
+          <div className="bg-white/5 border border-white/5 rounded-2xl p-4 space-y-4">
             <div className="flex gap-4">
               <div className="w-16 h-20 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
                 {mag.coverImage ? (
@@ -110,9 +187,9 @@ const AdminMagazinesPage = () => {
                     {mag.isPublished ? 'Published' : 'Draft'}
                   </span>
                 </div>
-                <div className="text-xs text-zinc-500 uppercase tracking-tight mt-1">{mag.publisher}</div>
+                <div className="text-xs text-zinc-500 uppercase tracking-tight mt-1 truncate">{mag.publisher}</div>
                 <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-2">
-                  <Calendar size={12} />
+                  <Calendar size={12} className="text-brand-gold" />
                   {new Date(mag.publicationDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}
                 </div>
               </div>
@@ -136,96 +213,14 @@ const AdminMagazinesPage = () => {
               <button
                 onClick={() => handleDelete(mag._id)}
                 className="p-2.5 bg-white/5 hover:bg-red-500/10 rounded-xl transition-colors text-red-500"
+                aria-label="Delete"
               >
                 <Trash2 size={18} />
               </button>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Desktop Table View */}
-      <div className="hidden lg:block bg-white/5 border border-white/5 rounded-3xl overflow-hidden shadow-xl text-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-zinc-400">
-            <thead>
-              <tr className="border-b border-white/10 bg-white/[0.02]">
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Magazine Info</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Publication Date</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Status</th>
-                <th className="px-6 py-5 font-bold uppercase tracking-wider text-xs">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-                    {displayMagazines.map((mag) => (
-                <tr key={mag._id} className="group hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-16 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 border border-white/5 overflow-hidden relative">
-                        {mag.coverImage ? (
-                          <SmartImage src={mag.coverImage} alt="" fill className="object-cover" />
-                        ) : (
-                          <Book size={24} className="text-zinc-600" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-bold text-zinc-100 truncate">{mag.title}</div>
-                        <div className="text-xs text-zinc-500 uppercase tracking-tight truncate max-w-[200px]">{mag.publisher}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-xs">
-                      <Calendar size={14} />
-                      {new Date(mag.publicationDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long' })}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider ${mag.isPublished ? 'bg-emerald-500/10 text-emerald-500' : 'bg-zinc-500/10 text-zinc-500'}`}>
-                      {mag.isPublished ? 'Published' : 'Draft'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <a
-                        href={mag.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
-                        title="Download/View PDF"
-                      >
-                        <Download size={18} />
-                      </a>
-                      <Link
-                        href={`/dashboard/admin/magazines/edit/${mag._id}`}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
-                        title="Edit Magazine"
-                      >
-                        <Edit2 size={18} />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(mag._id)}
-                        className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
-                        title="Delete Magazine"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {displayMagazines.length === 0 && (
-        <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/5 border-dashed">
-          <Book size={48} className="mx-auto text-zinc-700 mb-4" />
-          <h3 className="text-lg font-bold text-zinc-300">No Magazines Found</h3>
-          <p className="text-zinc-500 max-w-xs mx-auto mt-1">Try adjusting your search to find what you're looking for.</p>
-        </div>
-      )}
+        )}
+      />
 
       <LuxuryPagination 
         currentPage={currentPage}
