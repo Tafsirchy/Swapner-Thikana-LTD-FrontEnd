@@ -94,12 +94,12 @@ export async function generateMetadata({ params }) {
 
     if (!property) {
         return {
-            title: 'Property Not Found | shwapner Thikana Ltd',
+            title: 'Property Not Found | Shwapner Thikana Ltd',
         }
     }
 
     return {
-      title: `${property.title} | shwapner Thikana Ltd`,
+      title: `${property.title} | Shwapner Thikana Ltd`,
       description: property.description?.substring(0, 160) || 'Luxury property for sale in Dhaka.',
       openGraph: {
         title: property.title,
@@ -118,7 +118,7 @@ export async function generateMetadata({ params }) {
     };
   } catch {
     return {
-      title: 'shwapner Thikana Ltd - Luxury Real Estate',
+      title: 'Shwapner Thikana Ltd - Luxury Real Estate',
     };
   }
 }

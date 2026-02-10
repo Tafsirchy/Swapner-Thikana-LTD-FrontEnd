@@ -25,13 +25,13 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "shwapner Thikana Ltd - Your Dream Address",
-  description: "Excellence in luxury real estate. Find your dream home with shwapner Thikana Ltd.",
+  title: "Shwapner Thikana Ltd - Your Dream Address",
+  description: "Excellence in luxury real estate. Find your dream home with Shwapner Thikana Ltd.",
   openGraph: {
-    title: "shwapner Thikana Ltd",
+    title: "Shwapner Thikana Ltd",
     description: "Excellence in luxury real estate.",
     url: "https://shwapner-thikana.com",
-    siteName: "shwapner Thikana Ltd",
+    siteName: "Shwapner Thikana Ltd",
     images: [
       {
         url: "https://shwapner-thikana.com/og-image.jpg",
@@ -44,7 +44,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "shwapner Thikana Ltd",
+    title: "Shwapner Thikana Ltd",
     description: "Excellence in luxury real estate.",
     images: ["https://shwapner-thikana.com/twitter-image.jpg"],
   },

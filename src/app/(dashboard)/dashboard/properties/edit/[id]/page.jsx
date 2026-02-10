@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -22,7 +22,9 @@ const EditPropertyPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [images, setImages] = useState([]);
+  const sessionImagesRef = useRef(new Set()); // Track IDs uploaded for cleanup
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -104,6 +106,21 @@ const EditPropertyPage = () => {
     if (id) fetchProperty();
   }, [id]);
 
+  // Property Images Cleanup on Unmount
+  useEffect(() => {
+    return () => {
+      // If we uploaded something in this session and it wasn't 'saved' to DB
+      if (!isSubmitted && sessionImagesRef.current.size > 0) {
+        console.log('[EditProperty] Cleaning up unsaved property images:', sessionImagesRef.current.size);
+        sessionImagesRef.current.forEach(id => {
+          api.uploads.delete(id).catch(err => {
+            console.error('[EditProperty] Property cleanup failed on unmount:', err);
+          });
+        });
+      }
+    };
+  }, [isSubmitted]);
+
   const validateStep = (step) => {
     switch (step) {
       case 1:
@@ -175,7 +192,12 @@ const EditPropertyPage = () => {
           const response = await api.properties.uploadImages(id, uploadFormData);
           
           if (response.success && response.data?.images) {
-            return response.data.images;
+            const uploadedImgs = Array.isArray(response.data.images) ? response.data.images : [response.data.images];
+            uploadedImgs.forEach(img => {
+              const imageId = typeof img === 'object' ? img.id : null;
+              if (imageId) sessionImagesRef.current.add(imageId);
+            });
+            return uploadedImgs;
           }
           return null;
         } catch (err) {
@@ -202,7 +224,17 @@ const EditPropertyPage = () => {
     }
   };
 
-  const removeImage = (index) => {
+  const removeImage = async (index) => {
+    const target = images[index];
+    if (target && typeof target === 'object' && target.id) {
+       try {
+          toast.loading('Removing from cloud...');
+          await api.uploads.delete(target.id);
+          toast.success('Removed from storage');
+       } catch (err) {
+          console.error('Property image cleanup failed:', err);
+       }
+    }
     setImages(prev => prev.filter((_, i) => i !== index));
   };
 
@@ -219,6 +251,7 @@ const EditPropertyPage = () => {
       };
 
       await api.properties.update(id, propertyData);
+      setIsSubmitted(true); // Prevent unmount cleanup
       
       toast.success('Property updated successfully!');
       router.push('/dashboard/properties');
@@ -492,15 +525,18 @@ const EditPropertyPage = () => {
                   </div>
                </div>
 
-               {images.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                     {images.filter(img => typeof img === 'string' && img.length > 0).map((img, i) => (
+                {images.length > 0 && (
+                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {images.map((img, i) => {
+                         const imageUrl = typeof img === 'string' ? img : (img.url || img.original);
+                         if (!imageUrl) return null;
+                         return (
                         <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group border border-white/5">
                            <SmartImage 
-                              src={img} 
-                              alt={`Property ${i + 1}`} 
-                              fill 
-                              className="object-cover" 
+                               src={imageUrl} 
+                               alt={`Property ${i + 1}`} 
+                               fill 
+                               className="object-cover" 
                            />
                            <button 
                               onClick={() => removeImage(i)}
@@ -508,10 +544,11 @@ const EditPropertyPage = () => {
                            >
                               <X size={16} />
                            </button>
-                        </div>
-                     ))}
-                  </div>
-               )}
+                         </div>
+                        );
+                      })}
+                   </div>
+                )}
             </motion.div>
           )}
         </AnimatePresence>

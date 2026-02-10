@@ -7,17 +7,24 @@ import SmartImage from '@/components/shared/SmartImage';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 
+import LuxuryPagination from '@/components/shared/LuxuryPagination';
 
 const MagazinesPage = () => {
   const [magazines, setMagazines] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchMagazines = async () => {
       try {
         setLoading(true);
-        const response = await api.magazines.getAll();
+        const response = await api.magazines.getAll({
+          page: currentPage,
+          limit: 6
+        });
         setMagazines(response.data.magazines || []);
+        setTotalPages(response.data.pagination?.pages || 1);
       } catch (error) {
         console.error('Error fetching magazines:', error);
       } finally {
@@ -26,7 +33,7 @@ const MagazinesPage = () => {
     };
 
     fetchMagazines();
-  }, []);
+  }, [currentPage]);
 
   if (loading) {
     return (
@@ -131,8 +138,8 @@ const MagazinesPage = () => {
                 </motion.div>
 
                 {/* Info & CTA Overlay - Revealed as parent lifts */}
-                <div className="absolute inset-x-0 bottom-0 z-30 transition-all duration-700 opacity-0 group-hover:opacity-100 flex flex-col justify-end h-full pointer-events-none group-hover:pointer-events-auto">
-                   <div className="space-y-4 p-6 bg-zinc-950 border-t border-white/5 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-700">
+                <div className="absolute inset-x-0 bottom-0 z-10 transition-all duration-700 flex flex-col justify-end h-full pointer-events-none group-hover:pointer-events-auto">
+                   <div className="space-y-4 p-6 bg-zinc-950 border-t border-white/5 transition-transform duration-700">
                       <div className="flex items-center justify-between text-zinc-500 text-[10px] sm:text-[9px] font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] mb-2 opacity-60">
                          <span>Issue {i + 1}</span>
                          <span className="italic">{mag.publicationDate ? new Date(mag.publicationDate).getFullYear() : '2024'} Edition</span>
@@ -159,6 +166,17 @@ const MagazinesPage = () => {
             </div>
           )}
         </div>
+
+        {/* Pagination */}
+        {magazines.length > 0 && (
+          <div className="mt-16 sm:mt-24">
+            <LuxuryPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        )}
 
         {/* Subscription Section - Luxury Redesign */}
         <div className="mt-24 sm:mt-48 relative isolate overflow-hidden">

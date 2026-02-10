@@ -12,6 +12,7 @@ const EditLeaderPage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     role: '',
@@ -59,6 +60,7 @@ const EditLeaderPage = () => {
     try {
       setSaving(true);
       await api.management.update(id, formData);
+      setIsSubmitted(true);
       toast.success('Leader updated successfully');
       router.push('/dashboard/admin/management');
     } catch (error) {
@@ -172,6 +174,7 @@ const EditLeaderPage = () => {
                   defaultImage={formData.image}
                   onUpload={(url) => setFormData(prev => ({ ...prev, image: url }))}
                   required
+                  isSaved={isSubmitted}
                 />
               </div>
            </div>

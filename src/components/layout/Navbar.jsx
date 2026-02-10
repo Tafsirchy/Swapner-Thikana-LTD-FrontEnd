@@ -233,7 +233,7 @@ const Navbar = () => {
              </button>
             
             <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2">
-                <Image src="/logo-new.webp" alt="shwapner Thikana" width={110} height={64} className="h-12 sm:h-14 w-auto object-contain transition-all" priority />
+                <Image src="/logo-new.webp" alt="Shwapner Thikana" width={110} height={64} className="h-12 sm:h-14 w-auto object-contain transition-all" priority />
             </Link>
 
             {/* Mobile Utilities */}
@@ -246,7 +246,7 @@ const Navbar = () => {
 
         {/* Desktop: Centered Split Navigation */}
         {!isDashboard && (
-          <div className="hidden md:grid grid-cols-[1fr_auto_1fr] py-2 items-end w-full">
+          <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] py-2 items-end w-full">
             
             {/* Left Nav - Aligned Left */}
             <div className="flex items-center gap-8 justify-start">
@@ -256,7 +256,7 @@ const Navbar = () => {
             {/* Centered Logo */}
             <div className="flex justify-center">
               <Link href="/" className="hover:scale-105 transition-transform duration-300">
-                  <Image src="/logo-new.webp" alt="shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain drop-shadow-2xl" priority />
+                  <Image src="/logo-new.webp" alt="Shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain" priority />
               </Link>
             </div>
 
@@ -271,7 +271,7 @@ const Navbar = () => {
         {/* Dashboard Logo View (Keep simple) */}
         {isDashboard && (
            <Link href="/" className="hidden lg:flex items-center mr-auto">
-               <Image src="/logo-new.webp" alt="shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
+               <Image src="/logo-new.webp" alt="Shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
            </Link>
         )}
       </div>

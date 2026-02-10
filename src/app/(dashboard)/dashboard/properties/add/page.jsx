@@ -1,24 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, MapPin, DollarSign, Image as ImageIcon, 
-  CheckCircle, ArrowRight, ArrowLeft, Upload, X, PlusCircle, Star 
+  CheckCircle, ArrowRight, ArrowLeft, PlusCircle, Star 
 } from 'lucide-react';
-import Image from 'next/image';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
-import imageCompression from 'browser-image-compression';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 import LuxurySelect from '@/components/shared/LuxurySelect';
-import SmartImage from '@/components/shared/SmartImage';
+import MultiImgBBUpload from '@/components/shared/MultiImgBBUpload';
 
 const AddPropertyPage = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [images, setImages] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
@@ -55,7 +54,7 @@ const AddPropertyPage = () => {
     'Garden', 'Balcony', 'Elevator', 'Power Backup', 
     'Wi-Fi', 'Fire Safety', 'CCTV', 'Community Hall'
   ];
-
+  
   // Validation function
   const validateStep = (step) => {
     switch (step) {
@@ -123,64 +122,6 @@ const AddPropertyPage = () => {
     });
   };
 
-  const handleImageUpload = async (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length === 0) return;
-
-    setIsLoading(true);
-    const toastId = toast.loading('Starting image processing...');
-    
-    try {
-      // Parallelize compression and upload
-      const uploadPromises = files.map(async (file, index) => {
-        try {
-          // 1. Compression
-          const compressedFile = await imageCompression(file, {
-            maxSizeMB: 0.5,
-            maxWidthOrHeight: 1920,
-            useWebWorker: true
-          });
-
-          // 2. Upload via Backend
-          const formData = new FormData();
-          formData.append('image', compressedFile);
-          
-          const response = await api.uploads.upload(formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          });
-          
-          if (response.success && response.data?.url) {
-            return response.data.url;
-          }
-          return null;
-        } catch (err) {
-          console.error(`Failed to upload image ${index + 1}:`, err);
-          return null;
-        }
-      });
-
-      const results = await Promise.all(uploadPromises);
-      const validUrls = results.filter(url => typeof url === 'string' && url.length > 0);
-      
-      if (validUrls.length > 0) {
-        setImages(prev => [...prev, ...validUrls]);
-        toast.success(`${validUrls.length} images processed successfully`, { id: toastId });
-      } else {
-        toast.error('Failed to process any images', { id: toastId });
-      }
-    } catch (error) {
-      console.error('Batch image processing failed:', error);
-      toast.error('Image processing failed', { id: toastId });
-    } finally {
-      setIsLoading(false);
-      e.target.value = ''; // Reset input
-    }
-  };
-
-  const removeImage = (index) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
@@ -191,20 +132,14 @@ const AddPropertyPage = () => {
         bedrooms: Number(formData.bedrooms),
         bathrooms: Number(formData.bathrooms),
         area: Number(formData.area),
-        images: images // Send the array of URLs
+        images: images // Send the array of URLs from MultiImgBBUpload
       };
 
       const result = await api.properties.create(propertyData);
+      setIsSubmitted(true); // Prevent unmount cleanup
       
-      if (!result.success && !result.data?.property?._id) {
-         // Some APIs return success:true or the object directly. 
-         // Assuming api.js interceptor returns response.data directly (which is the body).
-         // If body is { success: true, data: { ... } }
-         // Let's rely on api success or catch block.
-      }
-
       toast.success('Property created successfully!');
-      router.push('/dashboard/properties');
+      router.push('/dashboard/admin/properties');
     } catch (error) {
       console.error('Error creating property:', error);
       
@@ -325,9 +260,9 @@ const AddPropertyPage = () => {
                            type="button"
                            onClick={() => handleInputChange('featured', !formData.featured)}
                            className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition-all ${
-                              formData.featured 
-                                 ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-500' 
-                                 : 'bg-white/5 border-white/10 text-zinc-500 hover:border-white/20'
+                               formData.featured 
+                                  ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-500' 
+                                  : 'bg-white/5 border-white/10 text-zinc-500 hover:border-white/20'
                            }`}
                         >
                            <Star size={18} fill={formData.featured ? 'currentColor' : 'none'} />
@@ -507,45 +442,12 @@ const AddPropertyPage = () => {
                className="space-y-6"
             >
                <h2 className="text-xl font-bold text-zinc-100 mb-6">Upload Images</h2>
-               
-               <div className="border-2 border-dashed border-white/10 rounded-3xl p-8 text-center hover:border-brand-gold/50 transition-colors bg-white/5 cursor-pointer relative">
-                  <input 
-                     type="file" 
-                     multiple 
-                     accept="image/*"
-                     onChange={handleImageUpload}
-                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  />
-                  <div className="flex flex-col items-center gap-3 pointer-events-none">
-                     <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-zinc-400">
-                        <Upload size={32} />
-                     </div>
-                     <p className="text-zinc-300 font-bold">Click to upload or drag images here</p>
-                     <p className="text-zinc-500 text-sm">JPG, PNG or WEBP (Max 5MB each)</p>
-                  </div>
-               </div>
-
-               {images.length > 0 && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                     {images.filter(img => typeof img === 'string' && img.length > 0).map((img, i) => (
-                        <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group">
-                           <SmartImage 
-                              src={img} 
-                              alt={`Property ${i + 1}`} 
-                              fill 
-                               className="object-cover"
-                               sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                           />
-                           <button 
-                              onClick={() => removeImage(i)}
-                              className="absolute top-2 right-2 w-11 h-11 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white transition-all z-10"
-                           >
-                              <X size={16} />
-                           </button>
-                        </div>
-                     ))}
-                  </div>
-               )}
+               <MultiImgBBUpload
+                 onImagesChange={setImages}
+                 isSaved={isSubmitted}
+                 maxFiles={12}
+                 required={true}
+               />
             </motion.div>
           )}
         </AnimatePresence>
@@ -575,7 +477,7 @@ const AddPropertyPage = () => {
          ) : (
             <button 
                onClick={handleSubmit}
-               disabled={isLoading}
+               disabled={isLoading || images.length === 0}
                className="flex items-center gap-2 px-8 py-3.5 bg-emerald-500 text-white font-bold rounded-xl hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
             >
                {isLoading ? 'Creating Property...' : 'Submit Property'}

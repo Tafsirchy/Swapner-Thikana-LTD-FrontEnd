@@ -129,7 +129,7 @@ const AgenciesPage = () => {
                         <div className="w-10 h-10 border border-brand-gold/20 flex items-center justify-center text-brand-gold group-hover/item:bg-brand-gold group-hover/item:text-royal-deep transition-all">
                           <Mail size={18} />
                         </div>
-                        <span className="text-zinc-300 font-medium tracking-widest text-sm uppercase lowercase">{agency.contactInfo?.email || agency.email || "info@shwapnerthikana.com"}</span>
+                        <span className="text-zinc-300 font-medium tracking-widest text-sm uppercase lowercase">{agency.contactInfo?.email || agency.email || "info@Shwapnerthikana.com"}</span>
                       </div>
                     </div>
 

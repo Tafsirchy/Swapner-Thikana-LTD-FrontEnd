@@ -10,6 +10,7 @@ import ImgBBUpload from '@/components/shared/ImgBBUpload';
 const AddMagazinePage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -34,6 +35,7 @@ const AddMagazinePage = () => {
     try {
       setLoading(true);
       await api.magazines.create(formData);
+      setIsSubmitted(true);
       toast.success('Magazine published successfully');
       router.push('/dashboard/admin/magazines');
     } catch (error) {
@@ -117,6 +119,7 @@ const AddMagazinePage = () => {
                   defaultImage={formData.coverImage}
                   onUpload={(url) => setFormData(prev => ({ ...prev, coverImage: url }))}
                   required
+                  isSaved={isSubmitted}
                 />
               </div>
 

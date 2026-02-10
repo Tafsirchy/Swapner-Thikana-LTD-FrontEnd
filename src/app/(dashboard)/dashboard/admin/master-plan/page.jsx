@@ -315,7 +315,7 @@ const MasterPlanAdminPage = () => {
                 />
                 <button 
                   onClick={() => handleRemoveImage(activeTab)}
-                  className="absolute top-3 right-3 p-2.5 bg-red-500/90 backdrop-blur-md text-white rounded-xl lg:opacity-0 group-hover/img:opacity-100 transition-all hover:bg-red-600 shadow-2xl"
+                  className="absolute top-3 right-3 p-2.5 bg-red-500/90 backdrop-blur-md text-white rounded-xl lg:opacity-0 group-hover/img:opacity-100 transition-all hover:bg-red-600 shadow-2xl z-20"
                   title="Remove Image"
                 >
                   <Trash2 size={18} />

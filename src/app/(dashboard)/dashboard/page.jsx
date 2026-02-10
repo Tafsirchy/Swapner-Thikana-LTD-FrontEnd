@@ -44,6 +44,15 @@ const ViewAllLink = ({ href }) => (
 );
 
 
+const safeExtractStats = (response) => {
+  if (!response) return null;
+  // Handle case where interceptor returns response.data
+  if (response.stats) return response.stats;
+  // Handle case where interceptor returns full response or nested data
+  if (response.data?.stats) return response.data.stats;
+  return response.data || response;
+};
+
 const CustomerDashboard = () => {
   const [stats, setStats] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
@@ -53,7 +62,7 @@ const CustomerDashboard = () => {
       try {
         setLoading(true);
         const response = await api.analytics.getCustomer();
-        setStats(response.data);
+        setStats(safeExtractStats(response));
       } catch (error) {
          console.error('Error fetching customer analytics:', error);
       } finally {
@@ -146,7 +155,7 @@ const AgentDashboard = () => {
       try {
         setLoading(true);
         const response = await api.analytics.getAgent();
-        setStats(response.data);
+        setStats(safeExtractStats(response));
       } catch (error) {
          console.error('Error fetching agent analytics:', error);
       } finally {
@@ -327,8 +336,8 @@ const AdminDashboard = () => {
           api.admin.getDashboard(),
           api.admin.getProperties({ status: 'pending' })
         ]);
-        setStats(statsRes.data.stats);
-        setPendingProperties(propsRes.data.properties.slice(0, 3));
+        setStats(safeExtractStats(statsRes));
+        setPendingProperties((propsRes?.data?.properties || propsRes?.properties || []).slice(0, 3));
       } catch (error) {
         console.error('Error fetching admin dashboard data:', error);
       } finally {

@@ -17,7 +17,10 @@ const EditProjectPage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [galleryUploading, setGalleryUploading] = useState(false);
+  const sessionGalleryIds = React.useRef(new Set());
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -178,6 +181,7 @@ const EditProjectPage = () => {
       };
 
       await api.projects.update(id, payload);
+      setIsSubmitted(true);
       toast.success('Project updated successfully');
       router.push('/dashboard/admin/projects');
     } catch (error) {
@@ -197,6 +201,19 @@ const EditProjectPage = () => {
       setSaving(false);
     }
   };
+
+  // Cleanup on Unmount
+  useEffect(() => {
+    return () => {
+      if (!isSubmitted && sessionGalleryIds.current.size > 0) {
+        console.log('[EditProject] Cleaning up unsaved gallery items:', sessionGalleryIds.current.size);
+        sessionGalleryIds.current.forEach(id => {
+          api.uploads.delete(id).catch(err => console.error('Edit cleanup failed:', err));
+        });
+      }
+    };
+  }, [isSubmitted]);
+
 
   if (loading) {
     return (
@@ -583,6 +600,7 @@ const EditProjectPage = () => {
                     defaultImage={formData.thumbnail}
                     onUpload={(url) => setFormData(prev => ({ ...prev, thumbnail: url }))}
                     required
+                    isSaved={isSubmitted}
                  />
                  <p className="text-[10px] text-zinc-500 mt-2 uppercase tracking-tight">Used in project cards and primary headers.</p>
               </div>
@@ -592,20 +610,34 @@ const EditProjectPage = () => {
                     Gallery Images
                  </label>
                  <div className="grid grid-cols-2 gap-4">
-                     {formData.images.map((img, index) => (
-                        (typeof img === 'string' && img.trim() !== '') ? (
+                    {formData.images.map((img, index) => {
+                       const imageUrl = typeof img === 'string' ? img : (img.url || img.original);
+                       if (!imageUrl) return null;
+
+                       return (
                         <div key={index} className="relative group rounded-xl overflow-hidden aspect-video bg-zinc-900 border border-white/5">
-                           <Image src={img} alt="" fill className="object-cover" />
-                           <button 
-                              type="button"
-                              onClick={() => setFormData(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }))}
-                              className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                           >
-                              <X size={14} />
-                           </button>
+                           <Image src={imageUrl} alt="" fill className="object-cover" />
+                            <button 
+                               type="button"
+                               onClick={async () => {
+                                  if (img && typeof img === 'object' && img.id) {
+                                     try {
+                                        toast.loading('Removing from cloud...');
+                                        await api.uploads.delete(img.id);
+                                        toast.success('Removed from storage');
+                                     } catch (err) {
+                                        console.error('Failed to delete image:', err);
+                                     }
+                                  }
+                                  setFormData(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
+                               }}
+                               className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full lg:opacity-0 group-hover:opacity-100 transition-all z-20 shadow-lg"
+                            >
+                               <X size={14} />
+                            </button>
                         </div>
-                        ) : null
-                     ))}
+                       );
+                    })}
                   <div className={`relative aspect-video rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center hover:border-brand-gold/30 hover:bg-white/5 transition-all text-zinc-600 hover:text-brand-gold ${galleryUploading ? 'opacity-50 pointer-events-none' : ''}`}>
                        <input 
                           type="file" 
@@ -618,33 +650,49 @@ const EditProjectPage = () => {
                              
                              try {
                                 setGalleryUploading(true);
-                                const toastId = toast.loading('Starting optimization...');
+                                const toastId = toast.loading('Processing images...');
                                 
-                                for (let i = 0; i < files.length; i++) {
-                                   const file = files[i];
-                                   toast.loading(`Optimizing image ${i + 1}/${files.length}...`, { id: toastId });
-                                   
-                                   // 1. Compression
-                                   const compressedFile = await imageCompression(file, {
-                                      maxSizeMB: 1,
-                                      maxWidthOrHeight: 1920,
-                                      useWebWorker: true
-                                   });
+                                const uploadPromises = files.map(async (file, index) => {
+                                   try {
+                                      // 1. Compression
+                                      const compressedFile = await imageCompression(file, {
+                                         maxSizeMB: 1,
+                                         maxWidthOrHeight: 1920,
+                                         useWebWorker: true,
+                                         fileType: 'image/webp'
+                                      });
    
-                                   toast.loading(`Uploading image ${i + 1}/${files.length}...`, { id: toastId });
-                                   const fData = new FormData();
-                                   fData.append('image', compressedFile);
-                                   
-                                   const res = await api.uploads.upload(fData, {
-                                      headers: { 'Content-Type': 'multipart/form-data' }
-                                   });
-                                   if(res.success) {
-                                      setFormData(prev => ({ ...prev, images: [...prev.images, res.data.url] }));
-                                   } else {
-                                      toast.error(`Failed to upload image ${i+1}`);
+                                      // 2. Upload
+                                      const fData = new FormData();
+                                      fData.append('image', compressedFile);
+                                      
+                                      const res = await api.uploads.upload(fData, {
+                                         headers: { 'Content-Type': 'multipart/form-data' }
+                                      });
+
+                                      if(res.success) {
+                                         const url = res.data.url;
+                                         if (typeof url === 'object' && url.id) {
+                                            sessionGalleryIds.current.add(url.id);
+                                         }
+                                         return url;
+                                      }
+                                      return null;
+                                   } catch (err) {
+                                      console.error(`Failed to upload image ${index}:`, err);
+                                      return null;
                                    }
+                                });
+
+                                const results = await Promise.all(uploadPromises);
+                                const validUrls = results.filter(url => url);
+                                
+                                if (validUrls.length > 0) {
+                                   setFormData(prev => ({ ...prev, images: [...prev.images, ...validUrls] }));
+                                   toast.success(`Successfully added ${validUrls.length} images`, { id: toastId });
+                                } else {
+                                   toast.error('Failed to upload images', { id: toastId });
                                 }
-                                toast.success('Gallery updated successfully', { id: toastId });
                              } catch (err) {
                                 console.error('Gallery upload error:', err);
                                 toast.error('Gallery upload failed');

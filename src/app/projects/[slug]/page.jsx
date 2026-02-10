@@ -79,7 +79,7 @@ export async function generateMetadata({ params }) {
     const project = res.data.project;
 
     if (!project) {
-        return { title: 'Project Not Found | shwapner Thikana Ltd' }
+        return { title: 'Project Not Found | Shwapner Thikana Ltd' }
     }
 
     // Normalize thumbnail
@@ -88,8 +88,8 @@ export async function generateMetadata({ params }) {
       : project.images?.[0];
 
     return {
-      title: `${project.title} | shwapner Thikana Ltd`,
-      description: project.description?.substring(0, 160) || 'Iconic architectural development by shwapner Thikana Ltd.',
+      title: `${project.title} | Shwapner Thikana Ltd`,
+      description: project.description?.substring(0, 160) || 'Iconic architectural development by Shwapner Thikana Ltd.',
       openGraph: {
         title: project.title,
         description: project.description?.substring(0, 160),
@@ -107,7 +107,7 @@ export async function generateMetadata({ params }) {
     };
   } catch (error) {
     console.error('[ProjectDetailPage] Metadata error:', error.message);
-    return { title: 'shwapner Thikana Ltd - Luxury Real Estate' };
+    return { title: 'Shwapner Thikana Ltd - Luxury Real Estate' };
   }
 }
 

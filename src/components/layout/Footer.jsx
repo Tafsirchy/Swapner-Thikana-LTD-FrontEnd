@@ -26,7 +26,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="flex flex-col gap-6">
             <Link href="/" className="inline-block shrink-0">
-              <Image src="/logo-new.webp" alt="shwapner Thikana" width={120} height={80} className="h-16 md:h-20 w-auto object-contain" />
+              <Image src="/logo-new.webp" alt="Shwapner Thikana" width={120} height={80} className="h-16 md:h-20 w-auto object-contain" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
               Excellence in luxury real estate. We guide you to your dream address with integrity, 
@@ -125,7 +125,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-brand-gold/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-zinc-400">
-          <p>© {currentYear} shwapner Thikana Ltd. All Rights Reserved.</p>
+          <p>© {currentYear} Shwapner Thikana Ltd. All Rights Reserved.</p>
           <div className="flex items-center gap-8">
             <Link href="/privacy-policy" className="hover:text-brand-gold transition-colors">Privacy Policy</Link>
             <Link href="/terms-of-service" className="hover:text-brand-gold transition-colors">Terms of Service</Link>

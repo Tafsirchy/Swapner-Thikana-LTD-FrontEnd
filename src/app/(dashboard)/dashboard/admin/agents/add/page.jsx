@@ -11,6 +11,7 @@ import LuxurySelect from '@/components/shared/LuxurySelect';
 const OnboardAgentPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     specialty: '',
@@ -36,6 +37,7 @@ const OnboardAgentPage = () => {
     try {
       setLoading(true);
       await api.agents.create(formData);
+      setIsSubmitted(true);
       toast.success('Agent onboarded successfully');
       router.push('/dashboard/admin/agents');
     } catch (error) {
@@ -162,6 +164,7 @@ const OnboardAgentPage = () => {
                   defaultImage={formData.image}
                   onUpload={(url) => setFormData(prev => ({ ...prev, image: url }))}
                   required
+                  isSaved={isSubmitted}
                 />
               </div>
 

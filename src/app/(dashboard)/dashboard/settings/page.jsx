@@ -184,7 +184,7 @@ const SettingsPage = () => {
                  
                  {/* Upload & Actions Overlay */}
                  <div 
-                    className="absolute inset-0 bg-black/50 flex lg:hidden group-hover:flex items-center justify-center gap-3 transition-all z-10 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/50 flex lg:hidden group-hover:flex items-center justify-center gap-3 transition-all z-20 backdrop-blur-sm"
                  >
                     {/* Upload Button */}
                     <button
@@ -354,8 +354,29 @@ const SettingsPage = () => {
                           <div className="pt-4 flex justify-end">
                              <button 
                                 type="submit" 
-                                disabled={isLoading}
-                                className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 sm:py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-white hover:text-royal-deep transition-all shadow-lg active:scale-95 disabled:opacity-70 text-sm sm:text-base"
+                                disabled={isLoading || (() => {
+                                  if (!user) return true;
+                                  const currentValues = {
+                                    name: user.name || '',
+                                    phone: user.phone || '',
+                                    bio: user.bio || '',
+                                    specialization: user.specialization || '',
+                                    experience: user.experience || '',
+                                  };
+                                  const formValues = {
+                                    name: formData.name || '',
+                                    phone: formData.phone || '',
+                                    bio: formData.bio || '',
+                                    specialization: formData.specialization || '',
+                                    experience: formData.experience || '',
+                                  };
+                                  
+                                  const isChanged = JSON.stringify(currentValues) !== JSON.stringify(formValues);
+                                  const hasImageChange = !!formData.avatar;
+                                  
+                                  return !isChanged && !hasImageChange;
+                                })()}
+                                className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3.5 sm:py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-white hover:text-royal-deep transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-white/5 disabled:text-zinc-500 disabled:shadow-none text-sm sm:text-base"
                              >
                                 {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
                                 Save Changes

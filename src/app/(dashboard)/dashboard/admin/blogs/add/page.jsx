@@ -11,6 +11,7 @@ import LuxurySelect from '@/components/shared/LuxurySelect';
 const AddBlogPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -48,6 +49,7 @@ const AddBlogPage = () => {
     try {
       setLoading(true);
       await api.blogs.create(formData);
+      setIsSubmitted(true);
       toast.success('Blog post created successfully');
       router.push('/dashboard/admin/blogs');
     } catch (error) {
@@ -116,6 +118,7 @@ const AddBlogPage = () => {
                      defaultImage={formData.thumbnail}
                      onUpload={(url) => setFormData(prev => ({ ...prev, thumbnail: url }))}
                      required
+                     isSaved={isSubmitted}
                    />
                 </div>
               </div>

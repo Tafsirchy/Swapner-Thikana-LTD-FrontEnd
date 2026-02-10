@@ -54,18 +54,21 @@ const InquiryDetailsModal = ({ inquiry, onClose, onUpdateStatus }) => {
         </div>
 
         {/* Modal Content */}
-        <div className="flex-1 overflow-y-auto p-5 sm:p-8 space-y-6 sm:space-y-8 custom-scrollbar">
+        <div 
+          className="flex-1 overflow-y-auto p-5 sm:p-8 space-y-6 sm:space-y-8 custom-scrollbar"
+          data-lenis-prevent
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Left Column: Seller & Property Info */}
             <div className="space-y-6">
               <section className="space-y-4">
-                <h3 className="text-xs font-bold text-brand-gold uppercase tracking-[0.2em]">Seller Information</h3>
+                <h3 className="text-xs sm:text-sm font-bold text-brand-gold uppercase tracking-[0.2em]">Seller Information</h3>
                 <div className="glass p-5 rounded-2xl border-white/5 space-y-3">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center text-brand-gold">
                       <Users size={16} />
                     </div>
-                    <span className="font-bold text-zinc-100">{inquiry.name}</span>
+                    <span className="font-bold text-zinc-100 text-sm sm:text-base">{inquiry.name}</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm text-zinc-400 hover:text-brand-gold transition-colors cursor-pointer">
                     <Mail size={16} className="text-brand-gold/50" />
@@ -79,10 +82,10 @@ const InquiryDetailsModal = ({ inquiry, onClose, onUpdateStatus }) => {
               </section>
 
               <section className="space-y-4">
-                <h3 className="text-xs font-bold text-brand-gold uppercase tracking-[0.2em]">Property Details</h3>
+                <h3 className="text-xs sm:text-sm font-bold text-brand-gold uppercase tracking-[0.2em]">Property Details</h3>
                 <div className="glass p-5 rounded-2xl border-white/5 space-y-4">
                   <div className="flex items-center gap-2">
-                    <span className="px-3 py-1 bg-brand-gold/10 text-brand-gold text-[10px] font-bold uppercase rounded-md tracking-widest leading-none">
+                    <span className="px-3 py-1 bg-brand-gold/10 text-brand-gold text-[10px] sm:text-xs font-bold uppercase rounded-md tracking-widest leading-none">
                       {inquiry.propertyType}
                     </span>
                   </div>
@@ -103,11 +106,11 @@ const InquiryDetailsModal = ({ inquiry, onClose, onUpdateStatus }) => {
             {/* Right Column: Photos & Status */}
             <div className="space-y-6">
               <section className="space-y-4">
-                <h3 className="text-xs font-bold text-brand-gold uppercase tracking-[0.2em]">Property Photos</h3>
+                <h3 className="text-xs sm:text-sm font-bold text-brand-gold uppercase tracking-[0.2em]">Property Photos</h3>
                 {inquiry.images && inquiry.images.length > 0 ? (
                   <div className="grid grid-cols-2 gap-3">
                     {inquiry.images.map((img, idx) => (
-                      <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 group cursor-pointer shadow-lg">
+                      <div key={idx} className="relative aspect-video sm:aspect-square rounded-2xl overflow-hidden border border-white/10 group cursor-pointer shadow-lg">
                         <SmartImage src={img} alt={`property-${idx}`} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10">
                           <ExternalLink size={16} className="text-white" />
@@ -123,12 +126,12 @@ const InquiryDetailsModal = ({ inquiry, onClose, onUpdateStatus }) => {
               </section>
 
               <section className="space-y-4">
-                <h3 className="text-xs font-bold text-brand-gold uppercase tracking-[0.2em]">Management</h3>
+                <h3 className="text-xs sm:text-sm font-bold text-brand-gold uppercase tracking-[0.2em]">Management</h3>
                 <div className="glass p-5 rounded-2xl border-white/5 space-y-4">
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Current Status</label>
                     <div className="flex items-center gap-3">
-                      <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase inline-flex items-center gap-1.5 ${statusConfig[inquiry.status]?.color}`}>
+                      <span className={`px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase inline-flex items-center gap-1.5 ${statusConfig[inquiry.status]?.color}`}>
                         {React.createElement(statusConfig[inquiry.status]?.icon || Clock, { size: 14 })}
                         {statusConfig[inquiry.status]?.label}
                       </span>
@@ -142,10 +145,10 @@ const InquiryDetailsModal = ({ inquiry, onClose, onUpdateStatus }) => {
                           key={status}
                           onClick={() => onUpdateStatus(inquiry._id, status)}
                           disabled={inquiry.status === status}
-                          className={`px-3 py-2 rounded-xl text-[10px] font-bold uppercase transition-all border ${
+                          className={`px-3 py-3 rounded-xl text-[10px] sm:text-xs font-bold uppercase transition-all border ${
                             inquiry.status === status
                             ? 'bg-white/5 border-white/10 text-zinc-500 cursor-not-allowed'
-                            : 'bg-zinc-800 border-white/5 text-zinc-400 hover:border-brand-gold/50 hover:text-brand-gold'
+                            : 'bg-zinc-800 border-white/5 text-zinc-400 hover:border-brand-gold/50 hover:text-brand-gold active:scale-95'
                           }`}
                         >
                           {status}

@@ -1,4 +1,4 @@
-# shwapner Thikana LTD - Frontend
+# Shwapner Thikana LTD - Frontend
 
 🏗️ **Premium Real Estate Development Platform** - Frontend Application
 
@@ -117,7 +117,7 @@ vercel --prod
 
 ## 👥 Company
 
-**shwapner Thikana Ltd** (স্বপ্নের ঠিকানা)  
+**Shwapner Thikana Ltd** (স্বপ্নের ঠিকানা)  
 *Building Dreams, Creating Addresses*
 
 Premium Real Estate Development Company  
@@ -126,7 +126,7 @@ Location: Dhaka, Bangladesh
 
 ## 📄 License
 
-Private - © 2026 shwapner Thikana Ltd
+Private - © 2026 Shwapner Thikana Ltd
 
 ---
 

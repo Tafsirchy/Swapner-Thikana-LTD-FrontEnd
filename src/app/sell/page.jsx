@@ -45,6 +45,7 @@ const SellWithUsPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const uploadedImageIds = []; // Track IDs for cleanup if submission fails
     
     try {
       let imageUrls = [];
@@ -56,10 +57,19 @@ const SellWithUsPage = () => {
           const data = new FormData();
           data.append('image', img.file);
           const response = await api.uploads.uploadPublic(data);
-          return response.data.url;
+          
+          // Extract URL and ID from response
+          const urlData = response.data?.url;
+          const urlStr = typeof urlData === 'object' ? urlData.url : urlData;
+          const imageId = typeof urlData === 'object' ? urlData.id : null;
+          
+          if (imageId) uploadedImageIds.push(imageId);
+          return urlStr;
         });
         
         imageUrls = await Promise.all(uploadPromises);
+        // Filter out any failed uploads
+        imageUrls = imageUrls.filter(url => !!url);
         setIsUploading(false);
       }
 
@@ -84,6 +94,14 @@ const SellWithUsPage = () => {
     } catch (error) {
       console.error('Error submitting inquiry:', error);
       toast.error(error.response?.data?.message || 'Failed to submit inquiry. Please try again.');
+      
+      // Cleanup uploaded images if submission failed
+      if (uploadedImageIds.length > 0) {
+        console.log('[SellWithUs] Cleaning up images after submission failure:', uploadedImageIds.length);
+        uploadedImageIds.forEach(id => {
+          api.uploads.delete(id).catch(err => console.error('[SellWithUs] Cleanup failed:', err));
+        });
+      }
     } finally {
       setLoading(false);
       setIsUploading(false);
@@ -100,7 +118,7 @@ const SellWithUsPage = () => {
             Sell with <span className="text-brand-gold">Confidence</span>
           </h1>
           <p className="text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Partner with shwapner Thikana Ltd to fetch the best value for your real estate assets. 
+            Partner with Shwapner Thikana Ltd to fetch the best value for your real estate assets. 
             We provide expert valuation, premium marketing, and access to an exclusive network of buyers.
           </p>
         </div>

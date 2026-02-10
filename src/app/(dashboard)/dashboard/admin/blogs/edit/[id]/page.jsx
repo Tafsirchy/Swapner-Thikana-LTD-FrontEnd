@@ -13,6 +13,7 @@ const EditBlogPage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -76,6 +77,7 @@ const EditBlogPage = () => {
     try {
       setSaving(true);
       await api.blogs.update(id, formData);
+      setIsSubmitted(true);
       toast.success('Blog post updated successfully');
       router.push('/dashboard/admin/blogs');
     } catch (error) {
@@ -152,6 +154,7 @@ const EditBlogPage = () => {
                      defaultImage={formData.thumbnail}
                      onUpload={(url) => setFormData(prev => ({ ...prev, thumbnail: url }))}
                      required
+                     isSaved={isSubmitted}
                    />
                 </div>
               </div>

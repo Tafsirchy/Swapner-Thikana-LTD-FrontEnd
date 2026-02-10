@@ -13,6 +13,7 @@ const EditAgentPage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     specialty: '',
@@ -66,6 +67,7 @@ const EditAgentPage = () => {
     try {
       setSaving(true);
       await api.agents.update(id, formData);
+      setIsSubmitted(true);
       toast.success('Agent profile updated successfully');
       router.push('/dashboard/admin/agents');
     } catch (error) {
@@ -195,6 +197,7 @@ const EditAgentPage = () => {
                   defaultImage={formData.image}
                   onUpload={(url) => setFormData(prev => ({ ...prev, image: url }))}
                   required
+                  isSaved={isSubmitted}
                 />
               </div>
 

@@ -83,8 +83,8 @@ const ContactPage = () => {
                 <Mail size={28} />
               </div>
               <h3 className="text-xl font-bold text-zinc-100 mb-2">Digital Inquiry</h3>
-              <p className="text-zinc-500 text-sm leading-relaxed mb-4">shwapnerthikana@gmail.com</p>
-              <a href="mailto:shwapnerthikana@gmail.com" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">Send Email</a>
+              <p className="text-zinc-500 text-sm leading-relaxed mb-4">Shwapnerthikana@gmail.com</p>
+              <a href="mailto:Shwapnerthikana@gmail.com" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">Send Email</a>
             </div>
           </div>
 

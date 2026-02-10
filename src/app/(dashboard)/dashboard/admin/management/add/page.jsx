@@ -10,6 +10,7 @@ import ImgBBUpload from '@/components/shared/ImgBBUpload';
 const AddLeaderPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     role: '',
@@ -32,6 +33,7 @@ const AddLeaderPage = () => {
     try {
       setLoading(true);
       await api.management.create(formData);
+      setIsSubmitted(true);
       toast.success('Leader added successfully');
       router.push('/dashboard/admin/management');
     } catch (error) {
@@ -141,6 +143,7 @@ const AddLeaderPage = () => {
                   defaultImage={formData.image}
                   onUpload={(url) => setFormData(prev => ({ ...prev, image: url }))}
                   required
+                  isSaved={isSubmitted}
                 />
               </div>
            </div>

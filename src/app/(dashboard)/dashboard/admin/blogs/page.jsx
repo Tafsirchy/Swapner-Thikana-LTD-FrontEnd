@@ -87,15 +87,18 @@ const AdminBlogsPage = () => {
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1 relative text-sm sm:text-base">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search blogs..."
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
-          />
+        <div className="flex-1 relative text-sm sm:text-base flex flex-col gap-1.5">
+          <label className="text-[10px] text-zinc-500 font-black uppercase tracking-widest ml-1">Search</label>
+          <div className="relative">
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search blogs..."
+              className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-zinc-100"
+            />
+          </div>
         </div>
         <div className="flex flex-col sm:flex-row items-center gap-4 mt-2 sm:mt-0">
           <div className="flex flex-col gap-1.5 w-full sm:w-auto">

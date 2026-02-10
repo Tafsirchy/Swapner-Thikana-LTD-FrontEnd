@@ -13,6 +13,7 @@ const SmartImage = ({
   sizes,
   className = '', 
   priority = false,
+  noBg = false,
   fallbackSrc = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200' 
 }) => {
   const [error, setError] = useState(false);
@@ -47,7 +48,7 @@ const SmartImage = ({
 
   return (
     <div 
-      className={`relative overflow-hidden bg-zinc-900/50 ${fill ? 'w-full h-full' : ''}`}
+      className={`relative overflow-hidden ${!noBg ? 'bg-zinc-900/50' : ''} ${fill ? 'w-full h-full' : ''}`}
       style={!fill ? { width, height } : undefined}
     >
       {/* Previous Image (Loading Guard) */}

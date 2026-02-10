@@ -55,12 +55,12 @@ export async function generateMetadata({ params }) {
 
     if (!post) {
         return {
-            title: 'Article Not Found | shwapner Thikana Ltd',
+            title: 'Article Not Found | Shwapner Thikana Ltd',
         }
     }
 
     return {
-      title: `${post.title} | shwapner Thikana Ltd`,
+      title: `${post.title} | Shwapner Thikana Ltd`,
       description: post.content?.substring(0, 160) || 'Luxury real estate insights.',
       openGraph: {
         title: post.title,
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }) {
         images: post.thumbnail ? [{ url: post.thumbnail, width: 1200, height: 630 }] : [],
         type: 'article',
         publishedTime: post.publishedAt || post.createdAt,
-        authors: [post.author?.name || 'shwapner Thikana'],
+        authors: [post.author?.name || 'Shwapner Thikana'],
       },
       twitter: {
         card: "summary_large_image",
@@ -82,7 +82,7 @@ export async function generateMetadata({ params }) {
     };
   } catch {
     return {
-      title: 'shwapner Thikana Ltd - Luxury Journal',
+      title: 'Shwapner Thikana Ltd - Luxury Journal',
     };
   }
 }

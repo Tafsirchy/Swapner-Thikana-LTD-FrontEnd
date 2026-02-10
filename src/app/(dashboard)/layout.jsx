@@ -143,7 +143,7 @@ const DashboardLayout = ({ children }) => {
                 <div className="w-10 h-10 relative">
                    <SmartImage 
                       src="/logo-new.webp" 
-                      alt="shwapner Thikana" 
+                      alt="Shwapner Thikana" 
                       fill 
                       priority 
                       className="object-contain" 
@@ -295,9 +295,10 @@ const DashboardLayout = ({ children }) => {
               <div className="w-10 h-10 relative">
                 <SmartImage 
                    src="/logo-new.webp" 
-                   alt="shwapner Thikana" 
+                   alt="Shwapner Thikana" 
                    fill 
                    priority 
+                   noBg
                    className="object-contain" 
                 />
               </div>
@@ -325,7 +326,7 @@ const DashboardLayout = ({ children }) => {
 
             {/* Dashboard Copyright Footer */}
             <div className="py-6 text-center text-xs text-zinc-600 border-t border-white/5">
-                &copy; 2026 shwapner Thikana Ltd.
+                &copy; 2026 Shwapner Thikana Ltd.
             </div>
           </ErrorBoundary>
         </main>

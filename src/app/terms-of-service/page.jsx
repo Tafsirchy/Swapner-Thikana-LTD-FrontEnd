@@ -35,14 +35,14 @@ const TermsOfServicePage = () => {
               1. Acceptance of Terms
             </h2>
             <p className="text-zinc-400 leading-relaxed">
-              By accessing and using the shwapner Thikana Ltd website and services, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services.
+              By accessing and using the Shwapner Thikana Ltd website and services, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-zinc-100 mb-4">2. Description of Service</h2>
             <p className="text-zinc-400 leading-relaxed">
-              shwapner Thikana Ltd provides users with access to a rich collection of resources, including various communications tools, search services, and personalized content through its network of properties. You understand and agree that the Service may include advertisements and that these advertisements are necessary for shwapner Thikana Ltd to provide the Service.
+              Shwapner Thikana Ltd provides users with access to a rich collection of resources, including various communications tools, search services, and personalized content through its network of properties. You understand and agree that the Service may include advertisements and that these advertisements are necessary for Shwapner Thikana Ltd to provide the Service.
             </p>
           </section>
 
@@ -64,14 +64,14 @@ const TermsOfServicePage = () => {
               4. Disclaimer of Warranties
             </h2>
             <p className="text-zinc-400 leading-relaxed">
-              You expressly understand and agree that your use of the Service is at your sole risk. The Service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. shwapner Thikana Ltd expressly disclaims all warranties of any kind, whether express or implied.
+              You expressly understand and agree that your use of the Service is at your sole risk. The Service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. Shwapner Thikana Ltd expressly disclaims all warranties of any kind, whether express or implied.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-zinc-100 mb-4">5. Limitation of Liability</h2>
             <p className="text-zinc-400 leading-relaxed">
-              In no event shall shwapner Thikana Ltd be liable for any direct, indirect, incidental, special, consequential or exemplary damages, including but not limited to, damages for loss of profits, goodwill, use, data or other intangible losses.
+              In no event shall Shwapner Thikana Ltd be liable for any direct, indirect, incidental, special, consequential or exemplary damages, including but not limited to, damages for loss of profits, goodwill, use, data or other intangible losses.
             </p>
           </section>
 

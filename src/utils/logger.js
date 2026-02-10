@@ -34,7 +34,7 @@ export const logger = {
       console.error(`[Error] ${message}`);
     } else {
       // In development, log everything
-      if (technicalDetails) {
+      if (technicalDetails && Object.keys(technicalDetails).length > 0) {
         console.error(`[Error] ${message}`, technicalDetails);
       } else {
         console.error(`[Error] ${message}`);

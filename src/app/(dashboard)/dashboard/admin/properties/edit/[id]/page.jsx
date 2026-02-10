@@ -5,15 +5,16 @@ import { useRouter, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, MapPin, DollarSign, Image as ImageIcon, 
-  CheckCircle, ArrowRight, ArrowLeft, Upload, X, Save, Loader2, Star 
+  CheckCircle, ArrowRight, ArrowLeft, Save, Loader2, Star 
 } from 'lucide-react';
-import Image from 'next/image';
+// import Image from 'next/image'; // Unused
+import SmartImage from '@/components/shared/SmartImage';
 
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
-import imageCompression from 'browser-image-compression';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 import LuxurySelect from '@/components/shared/LuxurySelect';
+import MultiImgBBUpload from '@/components/shared/MultiImgBBUpload';
 
 const EditPropertyPage = () => {
   const router = useRouter();
@@ -21,7 +22,10 @@ const EditPropertyPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [images, setImages] = useState([]);
+  const [initialImages, setInitialImages] = useState([]);
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -40,7 +44,6 @@ const EditPropertyPage = () => {
     bathrooms: '',
     area: '',
     amenities: [],
-    features: [],
     features: [],
     featured: false,
     brochureUrl: ''
@@ -86,13 +89,13 @@ const EditPropertyPage = () => {
           area: property.area || '',
           amenities: property.amenities || [],
           features: property.features || [],
-          features: property.features || [],
           featured: property.featured || false,
           brochureUrl: property.brochureUrl || ''
         });
 
         if (property.images) {
            setImages(property.images);
+           setInitialImages(property.images);
         }
       } catch (error) {
         console.error('Error fetching property:', error);
@@ -151,55 +154,6 @@ const EditPropertyPage = () => {
     });
   };
 
-  const handleImageUpload = async (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length === 0) return;
-
-    setSaving(true);
-    const toastId = toast.loading('Processing images...');
-    
-    try {
-      const formData = new FormData();
-      
-      // Compress and append all files
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        toast.loading(`Optimizing image ${i + 1}/${files.length}...`, { id: toastId });
-        
-        const compressedFile = await imageCompression(file, {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true
-        });
-        
-        formData.append('images', compressedFile); // Note: field name must match backend middleware 'images'
-      }
-
-      toast.loading('Uploading to server...', { id: toastId });
-      
-      // Send to backend
-      const response = await api.properties.uploadImages(id, formData);
-      
-      if (response.success && response.data.images) {
-        // Add new URLs to local state
-        setImages(prev => [...prev, ...response.data.images]);
-        toast.success(`${response.data.images.length} images uploaded successfully`, { id: toastId });
-      } else {
-        throw new Error('Upload failed');
-      }
-
-    } catch (error) {
-      console.error('Image upload failed:', error);
-      toast.error('Failed to upload images. check constraints.', { id: toastId });
-    } finally {
-      setSaving(false);
-      e.target.value = ''; // Reset
-    }
-  };
-
-  const removeImage = (index) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
-  };
 
   const handleSubmit = async () => {
     try {
@@ -213,19 +167,23 @@ const EditPropertyPage = () => {
         images: images // Send array of URLs
       };
 
-      await api.properties.update(id, propertyData);
+      const response = await api.properties.update(id, propertyData);
       
       // Note: Image upload logic would go here if backend supports separate endpoint
-      
-      toast.success('Property updated successfully!');
-      router.push('/dashboard/admin/properties');
+      if (response.success) {
+        setIsSubmitted(true);
+        toast.success('Property updated successfully');
+        router.push('/dashboard/admin/properties');
+      }
     } catch (error) {
       console.error('Error updating property:', error);
-      toast.error('Failed to update property');
+      toast.error(error.message || 'Failed to update property');
     } finally {
       setSaving(false);
     }
   };
+
+
 
   if (loading) {
     return (
@@ -527,41 +485,19 @@ const EditPropertyPage = () => {
 
           {currentStep === 5 && (
             <motion.div 
-               key="step4" 
+               key="step5" 
                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                className="space-y-6"
             >
                <h2 className="text-xl font-bold text-zinc-100 mb-6">Property Images</h2>
                
-               <div className="border-2 border-dashed border-white/10 rounded-3xl p-8 text-center hover:border-brand-gold/50 transition-colors bg-white/5 cursor-pointer relative">
-                  <input 
-                     type="file" multiple accept="image/*" onChange={handleImageUpload}
-                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  />
-                  <div className="flex flex-col items-center gap-3 pointer-events-none">
-                     <Upload size={32} className="text-zinc-400" />
-                     <p className="text-zinc-300 font-bold">Add more images</p>
-                  </div>
-               </div>
-
-                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                      {images.filter(img => typeof img === 'string' && img.length > 0).map((img, i) => (
-                         <div key={i} className="relative aspect-video bg-zinc-900 rounded-xl overflow-hidden group border border-white/5">
-                            <SmartImage 
-                               src={img} 
-                               alt={`Property ${i + 1}`} 
-                               fill 
-                               className="object-cover" 
-                            />
-                            <button 
-                               onClick={() => removeImage(i)}
-                               className="absolute top-2 right-2 w-8 h-8 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all z-10 font-bold"
-                            >
-                               <X size={16} />
-                            </button>
-                         </div>
-                      ))}
-                   </div>
+               <MultiImgBBUpload
+                  onImagesChange={setImages}
+                  defaultImages={initialImages}
+                  isSaved={isSubmitted}
+                  label="Property Gallery"
+                  maxFiles={10}
+               />
             </motion.div>
           )}
         </AnimatePresence>

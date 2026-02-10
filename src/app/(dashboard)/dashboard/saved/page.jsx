@@ -21,14 +21,17 @@ const SavedPropertiesPage = () => {
       setLoading(true);
       if (activeTab === 'saved') {
         const data = await api.user.getSavedProperties();
-        setProperties(data.data.properties || []);
+        console.log('Saved properties data:', data);
+        setProperties(data?.data?.properties || data?.properties || []);
       } else if (activeTab === 'collections') {
         if (selectedWishlist) {
           const data = await api.wishlists.getProperties(selectedWishlist._id);
-          setProperties(data.data.properties || []);
+          console.log('Wishlist properties data:', data);
+          setProperties(data?.data?.properties || data?.properties || []);
         } else {
           const data = await api.wishlists.getAll();
-          setWishlists(data.data.wishlists || []);
+          console.log('Wishlists data:', data);
+          setWishlists(data?.data?.wishlists || data?.wishlists || []);
         }
       }
     } catch (error) {

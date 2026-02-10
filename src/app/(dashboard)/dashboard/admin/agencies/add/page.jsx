@@ -10,6 +10,7 @@ import ImgBBUpload from '@/components/shared/ImgBBUpload';
 const AddAgencyPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -30,6 +31,7 @@ const AddAgencyPage = () => {
     try {
       setLoading(true);
       await api.agencies.create(formData);
+      setIsSubmitted(true);
       toast.success('Agency created successfully');
       router.push('/dashboard/admin/agencies');
     } catch (error) {
@@ -97,6 +99,7 @@ const AddAgencyPage = () => {
                   label="Agency Logo"
                   defaultImage={formData.logo}
                   onUpload={(url) => setFormData(prev => ({ ...prev, logo: url }))}
+                  isSaved={isSubmitted}
                 />
               </div>
            </div>

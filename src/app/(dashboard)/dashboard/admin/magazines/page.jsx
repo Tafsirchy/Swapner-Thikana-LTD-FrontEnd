@@ -7,7 +7,6 @@ import { api } from '@/lib/api';
 import SmartImage from '@/components/shared/SmartImage';
 import { toast } from 'react-hot-toast';
 import LuxuryPagination from '@/components/shared/LuxuryPagination';
-import LuxuryPagination from '@/components/shared/LuxuryPagination';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 import ResponsiveTable from '@/components/shared/ResponsiveTable';
 
@@ -25,7 +24,7 @@ const AdminMagazinesPage = () => {
   const fetchMagazines = async (page = 1) => {
     try {
       setLoading(true);
-      const response = await api.magazines.getAll({
+      const response = await api.magazines.getAllAdmin({
         search: searchQuery || undefined,
         page,
         limit: 10

@@ -12,6 +12,7 @@ const EditMagazinePage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -64,6 +65,7 @@ const EditMagazinePage = () => {
     try {
       setSaving(true);
       await api.magazines.update(id, formData);
+      setIsSubmitted(true);
       toast.success('Magazine updated successfully');
       router.push('/dashboard/admin/magazines');
     } catch (error) {
@@ -155,6 +157,7 @@ const EditMagazinePage = () => {
                   defaultImage={formData.coverImage}
                   onUpload={(url) => setFormData(prev => ({ ...prev, coverImage: url }))}
                   required
+                  isSaved={isSubmitted}
                 />
               </div>
 

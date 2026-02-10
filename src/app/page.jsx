@@ -150,7 +150,7 @@ export default function Home() {
               Discover Your <span className="text-brand-gold">Dream</span> Address
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-zinc-300 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed font-light px-2">
-              Elevating the art of living. shwapner Thikana Ltd brings you the most exclusive 
+              Elevating the art of living. Shwapner Thikana Ltd brings you the most exclusive 
               properties and innovative projects in Dhaka&apos;s premier neighborhoods.
             </p>
           </motion.div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Building2, Save, X, Plus, Trash2, MapPin, Type, Calendar, Info, Upload, Loader2, Home } from 'lucide-react';
 import Image from 'next/image';
@@ -15,7 +15,9 @@ import LuxurySelect from '@/components/shared/LuxurySelect';
 const AddProjectPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [galleryUploading, setGalleryUploading] = useState(false);
+  const sessionGalleryIds = useRef(new Set()); // Track IDs uploaded for cleanup
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -97,6 +99,21 @@ const AddProjectPage = () => {
   const addFeature = () => setFormData({ ...formData, features: [...formData.features, ''] });
   const removeFeature = (index) => setFormData({ ...formData, features: formData.features.filter((_, i) => i !== index) });
 
+  // Gallery Cleanup on Unmount
+  useEffect(() => {
+    return () => {
+      // If we uploaded something in this session and it wasn't 'saved' to DB
+      if (!isSubmitted && sessionGalleryIds.current.size > 0) {
+        console.log('[AddProject] Cleaning up unsaved gallery images:', sessionGalleryIds.current.size);
+        sessionGalleryIds.current.forEach(id => {
+          api.uploads.delete(id).catch(err => {
+            console.error('[AddProject] Gallery cleanup failed on unmount:', err);
+          });
+        });
+      }
+    };
+  }, [isSubmitted]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -113,6 +130,7 @@ const AddProjectPage = () => {
       payload.features = payload.features.filter(f => f.trim() !== '');
 
       await api.projects.create(payload);
+      setIsSubmitted(true); // Prevent unmount cleanup
       toast.success('Project created successfully');
       router.push('/dashboard/projects'); // Redirect to My Projects
     } catch (error) {
@@ -511,6 +529,7 @@ const AddProjectPage = () => {
                     defaultImage={formData.thumbnail}
                     onUpload={(url) => setFormData(prev => ({ ...prev, thumbnail: url }))}
                     required
+                    isSaved={isSubmitted}
                  />
                  <p className="text-[10px] text-zinc-500 mt-2 uppercase tracking-tight">Used in project cards and primary headers.</p>
               </div>
@@ -520,20 +539,34 @@ const AddProjectPage = () => {
                     Gallery Images
                  </label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {formData.images.map((img, index) => (
-                       (typeof img === 'string' && img.trim() !== '') ? (
-                       <div key={index} className="relative group rounded-xl overflow-hidden aspect-video bg-zinc-900 border border-white/5">
-                          <Image src={img} alt={`Gallery image ${index + 1}`} fill className="object-cover" />
-                          <button 
-                             type="button"
-                             onClick={() => setFormData(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }))}
-                             className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                             <X size={14} />
-                          </button>
-                       </div>
-                       ) : null
-                    ))}
+                    {formData.images.map((img, index) => {
+                       const imageUrl = typeof img === 'string' ? img : (img.url || img.original);
+                       if (!imageUrl) return null;
+                       
+                       return (
+                        <div key={index} className="relative group rounded-xl overflow-hidden aspect-video bg-zinc-900 border border-white/5">
+                           <Image src={imageUrl} alt={`Gallery image ${index + 1}`} fill className="object-cover" />
+                           <button 
+                              type="button"
+                              onClick={async () => {
+                                 if (img && typeof img === 'object' && img.id) {
+                                    try {
+                                       toast.loading('Removing from cloud...');
+                                       await api.uploads.delete(img.id);
+                                       toast.success('Removed from storage');
+                                    } catch (err) {
+                                       console.error('Gallery image cleanup failed:', err);
+                                    }
+                                 }
+                                 setFormData(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
+                              }}
+                              className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                           >
+                              <X size={14} />
+                           </button>
+                        </div>
+                       );
+                    })}
                   <div className={`relative aspect-video rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center hover:border-brand-gold/30 hover:bg-white/5 transition-all text-zinc-600 hover:text-brand-gold ${galleryUploading ? 'opacity-50 pointer-events-none' : ''}`}>
                        <input 
                           type="file" 
@@ -566,9 +599,12 @@ const AddProjectPage = () => {
                                    const res = await api.uploads.upload(fData, {
                                       headers: { 'Content-Type': 'multipart/form-data' }
                                    });
-                                   if(res.success) {
-                                      setFormData(prev => ({ ...prev, images: [...prev.images, res.data.url] }));
-                                   } else {
+                                    if(res.success) {
+                                       const imgData = res.data?.url; // This is the full object with id and url
+                                       const imageId = typeof imgData === 'object' ? imgData.id : null;
+                                       if (imageId) sessionGalleryIds.current.add(imageId);
+                                       setFormData(prev => ({ ...prev, images: [...prev.images, imgData] }));
+                                    } else {
                                       toast.error(`Failed to upload image ${i+1}`);
                                    }
                                 }

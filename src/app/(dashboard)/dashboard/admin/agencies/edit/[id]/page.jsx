@@ -12,6 +12,7 @@ const EditAgencyPage = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -59,6 +60,7 @@ const EditAgencyPage = () => {
     try {
       setSaving(true);
       await api.agencies.update(id, formData);
+      setIsSubmitted(true);
       toast.success('Agency updated successfully');
       router.push('/dashboard/admin/agencies');
     } catch (error) {
@@ -133,6 +135,7 @@ const EditAgencyPage = () => {
                   label="Agency Logo"
                   defaultImage={formData.logo}
                   onUpload={(url) => setFormData(prev => ({ ...prev, logo: url }))}
+                  isSaved={isSubmitted}
                 />
               </div>
            </div>
