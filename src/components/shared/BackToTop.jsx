@@ -55,7 +55,7 @@ const BackToTop = () => {
             className="w-14 h-14 !p-0 shadow-[0_4px_20px_rgba(245,158,11,0.4)] hover:shadow-[0_8px_30px_rgba(245,158,11,0.6)] !flex !items-center !justify-center"
             aria-label="Back to top"
           >
-            <ArrowUp size={24} strokeWidth={2.5} className="text-royal-deep" />
+            <ArrowUp size={24} strokeWidth={2.5} className="text-brand-gold group-hover:text-white transition-colors" />
           </LiquidButton>
         </motion.div>
       )}

@@ -211,7 +211,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
                     </td>
                     <td className="px-8 py-5 text-center">
                       <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full text-sm font-bold text-zinc-300">
-                        {property.views.toLocaleString()}
+                        {property.views?.toLocaleString() || '0'}
                       </div>
                     </td>
                     <td className="px-8 py-5">
@@ -238,7 +238,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
                     <div className="text-xs text-zinc-500 mt-1">{property.location?.area || 'Premium Location'}</div>
                   </div>
                   <div className="text-brand-gold font-bold text-xs whitespace-nowrap">
-                    BDT {property.price?.toLocaleString()}
+                    BDT {property.price?.toLocaleString() || '0'}
                   </div>
                 </div>
                 <div className="flex items-center justify-between gap-4">
@@ -252,7 +252,7 @@ const AnalyticsView = ({ isAdmin = false }) => {
                 </div>
                 <div className="flex items-center justify-between pt-1">
                   <div className="text-xs text-zinc-500">Engagement</div>
-                  <div className="text-xs font-bold text-zinc-300">{property.views.toLocaleString()} Views</div>
+                  <div className="text-xs font-bold text-zinc-300">{property.views?.toLocaleString() || '0'} Views</div>
                 </div>
               </div>
             ))}

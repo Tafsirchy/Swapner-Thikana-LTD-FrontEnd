@@ -107,18 +107,20 @@ const PropertyCard = ({ property }) => {
                 }
               }}
               baseColor={isInCompare ? 'bg-brand-emerald' : 'bg-white/10'}
-              liquidColor={isInCompare ? 'fill-white/20' : 'fill-brand-emerald/40'}
+              liquidColor={isInCompare ? 'fill-white/30' : 'fill-brand-emerald/40'}
+              liquidBg={isInCompare ? 'bg-white/30' : 'bg-brand-emerald/40'}
               className={`backdrop-blur-md border shadow-lg w-11 h-11 !p-0 ${
-                isInCompare ? 'border-brand-emerald text-white' : 'border-white/20 text-white'
+                isInCompare ? 'border-brand-emerald text-royal-deep' : 'border-white/20 text-white'
               }`}
             >
-              {isInCompare ? <Check size={16} /> : <Plus size={16} />}
+              {isInCompare ? <Check size={16} className="text-royal-deep" /> : <Plus size={16} className="text-white" />}
             </LiquidButton>
 
             <LiquidButton 
               onClick={handleToggleWishlist}
               baseColor={isSaved ? 'bg-brand-gold' : 'bg-white/10'}
               liquidColor={isSaved ? 'fill-white/30' : 'fill-brand-gold/40'}
+              liquidBg={isSaved ? 'bg-white/30' : 'bg-brand-gold/40'}
               className={`backdrop-blur-md border shadow-lg w-11 h-11 !p-0 ${
                 isSaved ? 'border-brand-gold text-royal-deep' : 'border-white/20 text-white'
               }`}

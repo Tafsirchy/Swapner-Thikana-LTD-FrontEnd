@@ -54,15 +54,23 @@ const SettingsPage = () => {
     e.stopPropagation();
     if (!window.confirm('Are you sure you want to remove your profile photo?')) return;
     
+    // Optimistic Update: Immediately remove image from UI
+    const originalUser = { ...user };
+    if (user) {
+      updateUser({ ...user, avatar: null, image: null }, false); // False means don't hit API yet
+    }
+    setPreviewImage(null);
     setIsLoading(true);
+
     try {
       await api.user.deleteProfileImage();
-      setPreviewImage(null);
-      await checkAuth(); // Refresh user state from backend
+      await checkAuth(); // Sync with backend
       toast.success('Profile image removed');
     } catch (error) {
       console.error('Delete image failed:', error);
       toast.error('Failed to remove image');
+      // Revert if failed
+      if (originalUser) updateUser(originalUser, false);
     } finally {
       setIsLoading(false);
     }
@@ -184,7 +192,7 @@ const SettingsPage = () => {
                  
                  {/* Upload & Actions Overlay */}
                  <div 
-                    className="absolute inset-0 bg-black/50 flex lg:hidden group-hover:flex items-center justify-center gap-3 transition-all z-20 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/50 flex lg:hidden group-hover:flex items-center justify-center gap-3 transition-all z-20 backdrop-blur-sm rounded-3xl"
                  >
                     {/* Upload Button */}
                     <button

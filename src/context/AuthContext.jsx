@@ -81,10 +81,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateUser = async (userData) => {
+  const updateUser = async (userData, shouldCallApi = true) => {
+    if (!shouldCallApi) {
+      setUser(userData);
+      return { success: true };
+    }
     try {
       const response = await api.user.updateProfile(userData);
       setUser(response.data.user);
+      // Update the user stored in localStorage if applicable (though this context usually relies on state)
       return { success: true };
     } catch (error) {
       return { success: false, error: error.response?.data?.message };
