@@ -15,7 +15,7 @@ const FeatureShowcase = () => {
   const [isPaused, setIsPaused] = useState(false);
 
   const [progress, setProgress] = useState(0);
-  const ROTATION_TIME = 6000; // 6 seconds
+  const ROTATION_TIME = 3000; // 3 seconds
   const PROGRESS_INTERVAL = 10; // Update every 10ms for smooth progress bar
 
   // Fetch Featured Properties
