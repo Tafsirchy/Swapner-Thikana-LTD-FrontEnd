@@ -15,6 +15,12 @@ import imageCompression from 'browser-image-compression';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import SmartImage from '@/components/shared/SmartImage';
+import dynamic from 'next/dynamic';
+
+const InteractiveMapPicker = dynamic(() => import('@/components/map/InteractiveMapPicker'), {
+  ssr: false,
+  loading: () => <div className="h-[300px] w-full bg-zinc-900 animate-pulse rounded-xl" />
+});
 
 const EditPropertyPage = () => {
   const router = useRouter();
@@ -392,34 +398,47 @@ const EditPropertyPage = () => {
                         }}
                         className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-base"
                      />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                     <div>
-                        <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">City</label>
-                        <LuxurySelect
-                           value={formData.location.city}
-                           onChange={(val) => handleLocationChange('city', val)}
-                           options={[
-                              { label: 'Dhaka', value: 'Dhaka' },
-                              { label: 'Chattogram', value: 'Chattogram' },
-                              { label: 'Sylhet', value: 'Sylhet' }
-                           ]}
-                           className="rounded-xl text-base"
+                     
+                     {/* Interactive Map Picker - Moved Up for Visibility */}
+                     <div className="mt-4 mb-6">
+                        <InteractiveMapPicker 
+                           latitude={formData.location.latitude}
+                           longitude={formData.location.longitude}
+                           onLocationChange={(lat, lng) => {
+                              handleLocationChange('latitude', lat);
+                              handleLocationChange('longitude', lng);
+                           }}
                         />
                      </div>
-                     <div>
-                        <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">Area / Neighborhood</label>
-                        <input 
-                           type="text" 
-                           value={formData.location.area}
-                           onChange={(e) => handleLocationChange('area', e.target.value)}
-                           className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-base"
-                        />
+
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                           <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">City</label>
+                           <LuxurySelect
+                              value={formData.location.city}
+                              onChange={(val) => handleLocationChange('city', val)}
+                              options={[
+                                 { label: 'Dhaka', value: 'Dhaka' },
+                                 { label: 'Chattogram', value: 'Chattogram' },
+                                 { label: 'Sylhet', value: 'Sylhet' }
+                              ]}
+                              className="rounded-xl text-base"
+                           />
+                        </div>
+                        <div>
+                           <label className="block text-xs font-bold uppercase text-zinc-400 mb-2">Area / Neighborhood</label>
+                           <input 
+                              type="text" 
+                              value={formData.location.area}
+                              onChange={(e) => handleLocationChange('area', e.target.value)}
+                              className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-zinc-100 text-base"
+                           />
+                        </div>
                      </div>
                   </div>
-               </div>
-            </motion.div>
-          )}
+                 </div>
+               </motion.div>
+             )}
 
           {currentStep === 3 && (
             <motion.div 

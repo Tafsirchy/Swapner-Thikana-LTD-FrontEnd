@@ -12,6 +12,12 @@ import { toast } from 'react-hot-toast';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import MultiImgBBUpload from '@/components/shared/MultiImgBBUpload';
+import dynamic from 'next/dynamic';
+
+const InteractiveMapPicker = dynamic(() => import('@/components/map/InteractiveMapPicker'), {
+  ssr: false,
+  loading: () => <div className="h-[300px] w-full bg-zinc-900 animate-pulse rounded-xl" />
+});
 
 const AddPropertyPage = () => {
   const router = useRouter();
@@ -301,22 +307,17 @@ const AddPropertyPage = () => {
                         }}
                         className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-brand-gold/50 text-base"
                      />
-                     {/* Coordinate Fields - Compact/Progressive */}
-                     <div className="bg-black/20 rounded-xl p-3 border border-white/5 mt-3">
-                        <div className="flex items-center justify-between mb-2">
-                           <label className="text-[10px] font-bold uppercase text-zinc-500 tracking-widest">Map Coordinates</label>
-                           <span className="text-[10px] text-brand-gold bg-brand-gold/10 px-2 py-0.5 rounded italic">Auto-calculated</span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                           <div className="bg-black/20 rounded px-3 py-2 border border-white/5">
-                              <span className="block text-[8px] text-zinc-500 uppercase font-black mb-0.5">Latitude</span>
-                              <span className="text-xs text-zinc-300 font-mono">{formData.location.latitude || '0.000'}</span>
-                           </div>
-                           <div className="bg-black/20 rounded px-3 py-2 border border-white/5">
-                              <span className="block text-[8px] text-zinc-500 uppercase font-black mb-0.5">Longitude</span>
-                              <span className="text-xs text-zinc-300 font-mono">{formData.location.longitude || '0.000'}</span>
-                           </div>
-                        </div>
+                     
+                     {/* Interactive Map Picker */}
+                     <div className="mt-4">
+                        <InteractiveMapPicker 
+                           latitude={formData.location.latitude}
+                           longitude={formData.location.longitude}
+                           onLocationChange={(lat, lng) => {
+                              handleLocationChange('latitude', lat);
+                              handleLocationChange('longitude', lng);
+                           }}
+                        />
                      </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

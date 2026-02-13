@@ -15,6 +15,12 @@ import { toast } from 'react-hot-toast';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import MultiImgBBUpload from '@/components/shared/MultiImgBBUpload';
+import dynamic from 'next/dynamic';
+
+const InteractiveMapPicker = dynamic(() => import('@/components/map/InteractiveMapPicker'), {
+  ssr: false,
+  loading: () => <div className="h-[300px] w-full bg-zinc-800 animate-pulse rounded-xl" />
+});
 
 const EditPropertyPage = () => {
   const router = useRouter();
@@ -347,16 +353,16 @@ const EditPropertyPage = () => {
                         }}
                         className="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-2.5 sm:py-3 outline-none focus:border-brand-gold/50 text-base"
                      />
-                     {/* Hidden Coordinate Fields for Debug/Verify */}
-                     <div className="grid grid-cols-2 gap-4 mt-2">
-                        <div>
-                           <label className="block text-[10px] uppercase text-zinc-500 mb-1">Latitude</label>
-                           <input type="text" readOnly value={formData.location.latitude} className="w-full bg-black/20 text-zinc-500 text-xs px-2 py-1.5 rounded border border-white/5" />
-                        </div>
-                        <div>
-                           <label className="block text-[10px] uppercase text-zinc-500 mb-1">Longitude</label>
-                           <input type="text" readOnly value={formData.location.longitude} className="w-full bg-black/20 text-zinc-500 text-xs px-2 py-1.5 rounded border border-white/5" />
-                        </div>
+                     {/* Interactive Map Picker */}
+                     <div className="mt-4 mb-6">
+                        <InteractiveMapPicker 
+                           latitude={formData.location.latitude}
+                           longitude={formData.location.longitude}
+                           onLocationChange={(lat, lng) => {
+                              handleLocationChange('latitude', lat);
+                              handleLocationChange('longitude', lng);
+                           }}
+                        />
                      </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

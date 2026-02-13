@@ -125,3 +125,6 @@ dist
 
 # Local Logs
 dev_output.log
+
+.vercel
+.env*.local

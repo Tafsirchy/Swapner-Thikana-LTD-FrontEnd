@@ -258,9 +258,10 @@ const PropertyDetailClient = ({ initialProperty }) => {
                 Prime Location
               </h2>
               <NearbyPlaces 
-                lat={property.coordinates?.lat} 
-                lng={property.coordinates?.lng}
-                address={`${property.location.address}, ${property.location.city}`} 
+                lat={property.location?.latitude || property.coordinates?.lat} 
+                lng={property.location?.longitude || property.coordinates?.lng}
+                address={`${property.location?.address || ''}, ${property.location?.area || ''}, ${property.location?.city || ''}`}
+                radius={5000} 
               />
               <div className="mt-8 rounded-2xl overflow-hidden grayscale brightness-75 hover:grayscale-0 transition-all duration-700">
                 <PropertyMap property={property} height="400px" />

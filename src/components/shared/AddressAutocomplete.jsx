@@ -37,20 +37,17 @@ const AddressAutocomplete = ({ value, onChange, onSelect, className, placeholder
 
       setIsLoading(true);
       try {
-        const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+        const response = await axios.get('/api/locations/geocode', {
           params: {
             q: debouncedQuery,
-            format: 'json',
-            addressdetails: 1,
-            limit: 5,
-            countrycodes: 'bd' // Limit to Bangladesh for this specific project
-          },
-          headers: {
-            'Accept-Language': 'en' // Prefer English results
           }
         });
         setSuggestions(response.data);
       } catch (error) {
+        if (error.response?.status === 429) {
+          console.warn('Nominatim rate limit exceeded. Please try again later.');
+          // Optionally set an error state here to show user
+        }
         console.error('Error fetching address suggestions:', error);
         setSuggestions([]);
       } finally {

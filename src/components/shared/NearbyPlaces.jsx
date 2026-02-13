@@ -22,7 +22,7 @@ const CATEGORIES = [
   { id: 'transit', name: 'Transit', icon: <Train size={18} />, query: 'node["highway"~"bus_stop"]["public_transport"~"stop_position"]' },
 ];
 
-const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
+const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address, radius = 5000 }) => {
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
   const [places, setPlaces] = useState({});
   const [error, setError] = useState(null);
@@ -81,8 +81,6 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
     return null;
   };
 
-  // Custom Icons logic would go here (omitted for brevity, using default for now or importing if available)
-
   // Geocoding Fallback
   useEffect(() => {
     const resolveCoords = async () => {
@@ -93,7 +91,7 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
 
       if (address) {
         try {
-          const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`);
+          const response = await fetch(`/api/locations/geocode?q=${encodeURIComponent(address)}`);
           const data = await response.json();
           if (data && data[0]) {
             setCoords({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) });
@@ -124,8 +122,6 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
       return Math.round(R * c * 10) / 10;
     };
 
-    // fetchFromOverpass removed - functionality moved to /api/locations/nearby
-
     const performNearbySearch = async () => {
       if (!coords.lat || !coords.lng) return;
 
@@ -136,7 +132,7 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
         let data;
         try {
             // Fetch from our internal backend proxy (which handles caching and multiple providers)
-            const response = await fetch(`/api/locations/nearby?lat=${coords.lat}&lng=${coords.lng}`);
+            const response = await fetch(`/api/locations/nearby?lat=${coords.lat}&lng=${coords.lng}&radius=${radius}`);
             if (!response.ok) throw new Error('Network response was not ok');
             data = await response.json();
             
@@ -180,7 +176,7 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
     };
     
     performNearbySearch();
-  }, [coords]);
+  }, [coords, radius]);
 
   useEffect(() => {
     fetchAllNearby();

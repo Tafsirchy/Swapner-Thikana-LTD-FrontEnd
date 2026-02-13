@@ -94,8 +94,11 @@ const PropertiesMapView = ({ properties, onMapChange, onPolygonChange }) => {
   };
 
   const getPropertyCoordinates = (property) => {
+    if (property.location?.latitude && property.location?.longitude) {
+      return [parseFloat(property.location.latitude), parseFloat(property.location.longitude)];
+    }
     if (property.coordinates?.lat && property.coordinates?.lng) {
-      return [property.coordinates.lat, property.coordinates.lng];
+      return [parseFloat(property.coordinates.lat), parseFloat(property.coordinates.lng)];
     }
     return getCityCoordinates(property.location?.city);
   };
