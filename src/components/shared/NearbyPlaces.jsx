@@ -10,6 +10,9 @@ import {
   Loader2
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { renderToStaticMarkup } from 'react-dom/server';
+import L from 'leaflet';
+import { useMap } from 'react-leaflet';
 
 const CATEGORIES = [
   { id: 'education', name: 'Education', icon: <GraduationCap size={18} />, query: 'node["amenity"~"school|university|college"]' },
@@ -31,6 +34,52 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
   const TileLayer = dynamic(() => import('react-leaflet').then(mod => mod.TileLayer), { ssr: false });
   const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { ssr: false });
   const Popup = dynamic(() => import('react-leaflet').then(mod => mod.Popup), { ssr: false });
+
+  // Helper to create custom Leaflet icons using Lucide React components
+  const createCustomIcon = (iconNode, color = '#D4AF37') => {
+    const iconHtml = renderToStaticMarkup(
+      <div className="relative flex items-center justify-center w-8 h-8 bg-zinc-900 border-2 border-white rounded-full shadow-lg" style={{ borderColor: color }}>
+        <div className="text-white transform scale-75">
+           {iconNode}
+        </div>
+        <div className="absolute -bottom-1 w-2 h-2 bg-zinc-900 border-r-2 border-b-2 border-white transform rotate-45" style={{ borderColor: color }}></div>
+      </div>
+    );
+
+    return L.divIcon({
+      html: iconHtml,
+      className: 'custom-leaflet-icon',
+      iconSize: [32, 32],
+      iconAnchor: [16, 36], // Point at bottom center
+      popupAnchor: [0, -36],
+    });
+  };
+
+  // Component to handle map interactions like fitting bounds
+  const MapController = ({ markers }) => {
+    const map = useMap();
+    
+    useEffect(() => {
+      if (!markers || markers.length === 0) return;
+      
+      const group = new L.FeatureGroup(
+        markers.map(m => L.marker([m.lat, m.lon]))
+      );
+      
+      // Add current location to bounds
+      if (coords.lat && coords.lng) {
+        group.addLayer(L.marker([coords.lat, coords.lng]));
+      }
+
+      map.fitBounds(group.getBounds().pad(0.1), {
+          padding: [50, 50],
+          maxZoom: 16,
+          duration: 1 // smooth animation
+      });
+    }, [markers, map]);
+
+    return null;
+  };
 
   // Custom Icons logic would go here (omitted for brevity, using default for now or importing if available)
 
@@ -75,89 +124,28 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
       return Math.round(R * c * 10) / 10;
     };
 
-    const fetchFromOverpass = async (query) => {
-      const servers = [
-        'https://overpass-api.de/api/interpreter',
-        'https://lz4.overpass-api.de/api/interpreter',
-        'https://overpass.kumi.systems/api/interpreter',
-        'https://overpass.osm.ch/api/interpreter',
-        'https://overpass.hotosm.org/api/interpreter'
-      ];
-
-      for (const server of servers) {
-        try {
-          const url = `${server}?data=[out:json][timeout:25];(${query});out body;`;
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000); // Increased to 15s
-
-          const response = await fetch(url, { signal: controller.signal });
-          clearTimeout(timeoutId);
-
-          if (response.ok) {
-            const data = await response.json();
-            if (data && data.elements) return data;
-          }
-          
-          // Small delay before trying next server if we got a non-200 response
-          await new Promise(resolve => setTimeout(resolve, 500));
-        } catch (err) {
-          console.warn(`Failed to fetch from ${server}:`, err.message);
-          continue; 
-        }
-      }
-      throw new Error('All Overpass servers failed');
-    };
+    // fetchFromOverpass removed - functionality moved to /api/locations/nearby
 
     const performNearbySearch = async () => {
       if (!coords.lat || !coords.lng) return;
-
-      const generateMockPlaces = (centerLat, centerLng) => {
-        const mockData = { elements: [] };
-        const types = [
-          { tag: 'amenity', val: 'school', name: 'International School' },
-          { tag: 'amenity', val: 'hospital', name: 'General Hospital' },
-          { tag: 'shop', val: 'supermarket', name: 'City Center Mall' },
-          { tag: 'leisure', val: 'park', name: 'Central Park' },
-          { tag: 'highway', val: 'bus_stop', name: 'Main Station' }
-        ];
-
-        // Generate 5 random places per category around the center
-        CATEGORIES.forEach(cat => {
-            for (let i = 0; i < 4; i++) {
-                const type = types.find(t => cat.query.includes(t.val)) || types[0];
-                const latOffset = (Math.random() - 0.5) * 0.02; // Roughly 2km spread
-                const lngOffset = (Math.random() - 0.5) * 0.02;
-                
-                mockData.elements.push({
-                    id: Math.random(),
-                    lat: centerLat + latOffset,
-                    lon: centerLng + lngOffset,
-                    tags: {
-                        [type.tag]: type.val,
-                        name: `${type.name} ${(Math.random() * 10).toFixed(0)}`,
-                    }
-                });
-            }
-        });
-        return mockData;
-      };
 
       try {
         setLoading(true);
         setError(null);
         
-        const radius = 5000;
-        const combinedQuery = CATEGORIES.map(cat => (
-          `(${cat.query}(around:${radius},${coords.lat},${coords.lng});)`
-        )).join('');
-
         let data;
         try {
-            data = await fetchFromOverpass(combinedQuery);
+            // Fetch from our internal backend proxy (which handles caching and multiple providers)
+            const response = await fetch(`/api/locations/nearby?lat=${coords.lat}&lng=${coords.lng}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            data = await response.json();
+            
+            // Check for API-specific error format
+            if (data.error) throw new Error(data.error);
         } catch (apiError) {
-            console.warn('Overpass API failed, using fallback data:', apiError.message);
-            // Fallback to mock data to prevent UI breakage
-            data = generateMockPlaces(coords.lat, coords.lng);
+            console.warn('Location API failed:', apiError.message);
+            // No fallback, just return empty to show "No places found"
+            data = { elements: [] };
         }
         
         const newPlaces = {};
@@ -176,7 +164,8 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
             lon: el.lon,
             name: el.tags.name || el.tags.amenity || el.tags.shop || el.tags.leisure || 'Unnamed place',
             distance: calculateDistance(coords.lat, coords.lng, el.lat, el.lon),
-            type: el.tags.amenity || el.tags.shop || el.tags.leisure || 'Place'
+            type: el.tags.amenity || el.tags.shop || el.tags.leisure || 'Place',
+            categoryIcon: cat.icon 
           })).sort((a, b) => a.distance - b.distance).slice(0, 10);
         });
 
@@ -276,17 +265,44 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address }) => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
                   />
                   
+                  {/* Auto-Fit Bounds Controller */}
+                  {places[activeCategory]?.length > 0 && (
+                    <MapController markers={places[activeCategory]} />
+                  )}
+
                   {/* Property Center Marker */}
-                  <Marker position={[coords.lat, coords.lng]}>
-                     <Popup>Property Location</Popup>
+                  <Marker 
+                    position={[coords.lat, coords.lng]}
+                    icon={createCustomIcon(<div className="w-3 h-3 bg-brand-gold rounded-full animate-pulse" />, '#D4AF37')}
+                  >
+                     <Popup className="custom-popup">
+                        <div className="text-royal-deep font-bold text-sm">Property Location</div>
+                     </Popup>
                   </Marker>
 
                   {/* Amenity Markers */}
                   {places[activeCategory]?.map((place, idx) => (
-                     <Marker key={idx} position={[place.lat, place.lon]}>
-                        <Popup>
-                           <span className="font-bold">{place.name}</span> <br/>
-                           <span className="text-xs capitalize">{place.type.replace(/_/g, ' ')}</span>
+                     <Marker 
+                        key={idx} 
+                        position={[place.lat, place.lon]}
+                        icon={createCustomIcon(place.categoryIcon || CATEGORIES.find(c => c.id === activeCategory)?.icon, '#ffffff')}
+                     >
+                        <Popup className="custom-popup">
+                           <div className="min-w-[150px]">
+                               <h5 className="font-bold text-royal-deep mb-1 text-sm">{place.name}</h5>
+                               <p className="text-xs text-zinc-600 capitalize mb-2">{place.type.replace(/_/g, ' ')}</p>
+                               <div className="flex items-center justify-between border-t border-zinc-200 pt-2 mt-2">
+                                  <span className="text-xs font-bold text-zinc-500">{place.distance} KM</span>
+                                  <a 
+                                    href={`https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lon}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs font-bold text-royal-blue hover:underline flex items-center gap-1"
+                                  >
+                                    Get Directions &rarr;
+                                  </a>
+                               </div>
+                           </div>
                         </Popup>
                      </Marker>
                   ))}

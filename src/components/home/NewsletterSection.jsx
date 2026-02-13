@@ -259,7 +259,7 @@ const NewsletterSection = () => {
                                                  <span className="text-[10px] font-bold tracking-wider uppercase">Member Joined</span>
                                              </motion.div>
                                          ) : (
-                                             <motion.div key="idle" className="flex items-center gap-2 text-royal-deep group-hover:text-white transition-colors">
+                                             <motion.div key="idle" className="flex items-center gap-2 text-brand-gold group-hover:text-white transition-colors">
                                                  <span className="text-[10px] font-black tracking-[0.2em] uppercase">Request Access</span>
                                                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                                              </motion.div>

@@ -107,60 +107,66 @@ const MasterPlanModal = ({ isOpen, onClose }) => {
           className="relative w-full sm:w-[95%] max-w-6xl max-h-[95vh] sm:max-h-[90vh] bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col"
           data-lenis-prevent
         >
-          {/* Header */}
-          <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/10 bg-zinc-900/95 backdrop-blur sticky top-0 z-10">
-            <div>
-              <h2 className="text-2xl font-cinzel font-bold text-white mb-1">
-                Master Plan Overview
-              </h2>
-              <p className="text-sm text-zinc-400">
-                {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} across Bangladesh
-              </p>
+          {/* Combined Header & Filters */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between p-4 sm:p-5 border-b border-white/10 bg-zinc-900/95 backdrop-blur sticky top-0 z-20 gap-4">
+            <div className="flex items-start justify-between lg:justify-start w-full lg:w-auto gap-4">
+              <div>
+                <h2 className="text-xl sm:text-2xl font-cinzel font-bold text-white mb-1">
+                  Master Plan Overview
+                </h2>
+                <p className="text-sm text-zinc-400">
+                  {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} across Bangladesh
+                </p>
+              </div>
+              
+              {/* Mobile Close Button (Visible only on small screens) */}
+              <button
+                onClick={onClose}
+                className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors -mr-2"
+                aria-label="Close modal"
+              >
+                <X className="w-6 h-6 text-white" />
+              </button>
             </div>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-              aria-label="Close modal"
-            >
-              <X className="w-6 h-6 text-white" />
-            </button>
-          </div>
 
-          {/* Filters */}
-          <div className="p-4 sm:p-6 border-b border-white/10 bg-zinc-900/50 sticky top-[72px] sm:top-[88px] z-10">
-            <div className="flex flex-wrap gap-4 items-center">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full lg:w-auto">
               {/* Region Filter */}
-              <div className="flex-1 min-w-[200px]">
-                <label className="text-xs text-zinc-400 mb-2 block flex items-center gap-2">
-                  <Filter size={14} />
-                  Filter by Region
-                </label>
+              <div className="min-w-[180px]">
                 <LuxurySelect
                   value={selectedRegion}
                   onChange={setSelectedRegion}
                   options={regions.map(r => ({ label: r.name, value: r.id }))}
                   placeholder="Select Region"
-                  className="rounded-lg py-2.5"
+                  className="rounded-lg py-2 text-sm"
                 />
               </div>
 
               {/* Featured Toggle */}
-              <div className="flex items-center gap-3">
-                <label className="text-xs text-zinc-400" id="featured-toggle-label">Featured Only</label>
+              <div className="flex items-center justify-between sm:justify-start gap-3 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+                <label className="text-xs text-zinc-400 font-medium cursor-pointer select-none" htmlFor="featured-toggle" onClick={() => setShowFeaturedOnly(!showFeaturedOnly)}>Featured Only</label>
                 <button
+                  id="featured-toggle"
                   onClick={() => setShowFeaturedOnly(!showFeaturedOnly)}
                   aria-pressed={showFeaturedOnly}
-                  aria-labelledby="featured-toggle-label"
-                  className={`relative w-12 h-6 rounded-full transition-colors focus:ring-2 focus:ring-brand-gold focus:outline-none ${
-                    showFeaturedOnly ? 'bg-brand-gold' : 'bg-white/10'
+                  className={`relative w-10 h-5 rounded-full transition-colors focus:ring-2 focus:ring-brand-gold focus:outline-none ${
+                    showFeaturedOnly ? 'bg-brand-gold' : 'bg-white/20'
                   }`}
                 >
                   <motion.div
-                    animate={{ x: showFeaturedOnly ? 24 : 2 }}
-                    className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-lg"
+                    animate={{ x: showFeaturedOnly ? 20 : 2 }}
+                    className="absolute top-1 w-3 h-3 bg-white rounded-full shadow-sm"
                   />
                 </button>
               </div>
+
+              {/* Desktop Close Button */}
+              <button
+                onClick={onClose}
+                className="hidden lg:block p-2 hover:bg-white/10 rounded-lg transition-colors ml-2"
+                aria-label="Close modal"
+              >
+                <X className="w-6 h-6 text-white" />
+              </button>
             </div>
           </div>
 

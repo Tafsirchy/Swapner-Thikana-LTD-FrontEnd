@@ -62,8 +62,8 @@ const ProjectCard = ({ project }) => {
     <>
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
       className="group relative bg-white/5 border border-white/10 overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden">

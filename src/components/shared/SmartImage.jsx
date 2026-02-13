@@ -68,7 +68,7 @@ const SmartImage = ({
       )}
 
       {loading && (
-        <div className="absolute inset-0 z-10 overflow-hidden bg-zinc-900/40 backdrop-blur-sm flex items-center justify-center">
+        <div className="absolute inset-0 z-0 overflow-hidden bg-zinc-900/40 flex items-center justify-center">
             {/* Shimmer Effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
             
@@ -89,7 +89,7 @@ const SmartImage = ({
         width={!fill ? width : undefined}
         height={!fill ? height : undefined}
         sizes={imageSizes}
-        className={`transition-all duration-700 ease-out z-[5] ${loading ? 'opacity-0 scale-105' : 'opacity-100 scale-100'} ${className}`}
+        className={`transition-opacity duration-500 z-10 ${loading ? 'opacity-0' : 'opacity-100'} ${className}`}
         onLoad={() => {
           setLoading(false);
           setLastSrc(imageUrl);
@@ -101,7 +101,7 @@ const SmartImage = ({
            setIsChanging(false);
         }}
         priority={priority}
-        loading={priority ? undefined : 'lazy'}
+        loading={priority ? 'eager' : 'lazy'}
       />
 
       {error && (

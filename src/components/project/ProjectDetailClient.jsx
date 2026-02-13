@@ -145,12 +145,12 @@ const ProjectDetailClient = ({ project }) => {
                 <Building2 size={14} />
                 {project.status || 'Ongoing Project'}
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-zinc-100 tracking-tight leading-tight">
+              <h1 className="text-4xl md:text-6xl font-bold text-zinc-100 tracking-tight leading-tight break-words hyphens-auto">
                 {project.title}
               </h1>
               <div className="flex items-center gap-3 text-zinc-400">
                 <MapPin size={18} className="text-brand-gold shrink-0" />
-                <span className="text-sm md:text-lg italic">{project.address || project.location?.address}</span>
+                <span className="text-sm md:text-lg italic break-all">{project.address || project.location?.address}</span>
               </div>
             </div>
 
@@ -198,7 +198,7 @@ const ProjectDetailClient = ({ project }) => {
 
               <LuxAccordion title="Project Overview" icon={ListChecks}>
                 <div 
-                  className="text-zinc-400 text-sm leading-relaxed pt-2"
+                  className="text-zinc-400 text-sm leading-relaxed pt-2 break-words"
                   dangerouslySetInnerHTML={{ __html: sanitize(project.description) }}
                 />
               </LuxAccordion>
@@ -222,7 +222,7 @@ const ProjectDetailClient = ({ project }) => {
                   </div>
                   <div className="border-t border-white/10 pt-8">
                      <h3 
-                        className="text-xl font-bold text-white mb-4 italic leading-relaxed"
+                        className="text-xl font-bold text-white mb-4 italic leading-relaxed break-words break-all"
                         dangerouslySetInnerHTML={{ __html: sanitize(project.description) }}
                      />
                      <div className="grid grid-cols-1 min-[540px]:grid-cols-2 gap-8 mt-10">

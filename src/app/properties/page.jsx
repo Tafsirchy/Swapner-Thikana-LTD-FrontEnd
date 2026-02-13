@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2, Building2, Trash2 } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
+import PropertyCardSkeleton from '@/components/properties/PropertyCardSkeleton';
 import FilterPills from '@/components/search/FilterPills';
 import SaveSearchModal from '@/components/search/SaveSearchModal';
 import LuxurySelect from '@/components/shared/LuxurySelect';
@@ -616,11 +617,12 @@ const PropertiesContent = () => {
 
           {/* Results Section */}
           {loading ? (
-            <div className="flex justify-center items-center min-h-[400px]">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-brand-gold mx-auto mb-4"></div>
-                <p className="text-zinc-400">Loading properties...</p>
-              </div>
+            <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-full">
+                  <PropertyCardSkeleton />
+                </div>
+              ))}
             </div>
           ) : filteredAndSortedProperties.length === 0 ? (
             <div className="text-center py-20 glass rounded-3xl border-white/5">
@@ -697,9 +699,17 @@ const PropertiesContent = () => {
 const PropertiesPage = () => {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-royal-deep pt-32 pb-24 flex items-center justify-center">
-        <Loader2 size={48} className="text-brand-gold animate-spin" />
-      </div>
+        <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24">
+            <div className="max-container px-4">
+                <div className="grid gap-8 mb-16 md:grid-cols-2 lg:grid-cols-3">
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className="h-full">
+                            <PropertyCardSkeleton />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     }>
       <PropertiesContent />
     </Suspense>

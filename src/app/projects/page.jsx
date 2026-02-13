@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Building2, Loader2, ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
 import ProjectCard from '@/components/shared/ProjectCard';
+import ProjectCardSkeleton from '@/components/shared/ProjectCardSkeleton';
 import ProjectFilters from '@/components/projects/ProjectFilters';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import { api } from '@/lib/api';
@@ -196,9 +197,12 @@ const ProjectsContent = () => {
              </div>
 
              {loading ? (
-                <div className="flex flex-col items-center justify-center py-20">
-                  <Loader2 size={48} className="text-brand-gold animate-spin" />
-                  <p className="mt-4 text-zinc-500 font-medium">Curating architectural masterpieces...</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="h-full">
+                      <ProjectCardSkeleton />
+                    </div>
+                  ))}
                 </div>
               ) : projects.length > 0 ? (
                 <>
@@ -257,9 +261,17 @@ const ProjectsContent = () => {
 const ProjectsPage = () => {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-royal-deep pt-32 pb-24 flex items-center justify-center">
-        <Loader2 size={48} className="text-brand-gold animate-spin" />
-      </div>
+        <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24">
+            <div className="max-container px-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {[...Array(6)].map((_, i) => (
+                        <div key={i} className="h-full">
+                            <ProjectCardSkeleton />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     }>
       <ProjectsContent />
     </Suspense>

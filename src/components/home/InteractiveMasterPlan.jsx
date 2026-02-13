@@ -143,6 +143,7 @@ const InteractiveMasterPlan = () => {
   };
 
   const handleProjectClick = async (projectId) => {
+    setActiveRegion(null); // Close sidebar when project is clicked
     try {
       setLoadingProjects(true); // Reuse loading state for modal too or add new one
       const response = await api.projects.getById(projectId);
@@ -465,7 +466,7 @@ const InteractiveMasterPlan = () => {
                         )}
                     </div>
 
-                    <LiquidButton className="w-full shadow-lg shadow-brand-gold/10" onClick={() => setShowFullPlan(true)}>
+                    <LiquidButton className="w-full shadow-lg shadow-brand-gold/10" onClick={() => { setShowFullPlan(true); setActiveRegion(null); }}>
                         View Full Master Plan
                     </LiquidButton>
                     </div>
