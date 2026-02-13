@@ -7,13 +7,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, MapPin, CheckCircle2, 
   Phone, Send, Loader2, ChevronLeft, ChevronRight,
-  Info, LayoutGrid, ListChecks, Share2, Download, ShieldCheck, X
+  Info, LayoutGrid, ListChecks, Share2, Download, ShieldCheck, X,
+  Armchair, Utensils, Bath, Bed, Wind, Layers
 } from 'lucide-react';
 import LiquidButton from '../shared/LiquidButton';
 import ShareButton from '../shared/ShareButton';
 import DownloadBrochure from '../shared/DownloadBrochure';
 import LuxAccordion from '../shared/LuxAccordion';
 import { api } from '@/lib/api';
+import dynamic from 'next/dynamic';
+
+const PropertyMap = dynamic(() => import('../map/PropertyMap'), { 
+  ssr: false,
+  loading: () => <div className="h-[400px] w-full bg-white/5 animate-pulse rounded-[3rem] border border-white/10" />
+});
+
+const NearbyPlaces = dynamic(() => import('../shared/NearbyPlaces'), { 
+  ssr: false,
+  loading: () => <div className="h-[400px] w-full bg-white/5 animate-pulse rounded-[3rem] border border-white/10" />
+});
+
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
 import logger from '@/utils/logger';
@@ -109,7 +122,7 @@ const ProjectDetailClient = ({ project }) => {
         </div>
 
         {/* Featured Actions (Top Right) */}
-        <div className="absolute top-8 right-4 md:right-8 z-50 flex items-center gap-3 md:gap-4">
+        <div className="absolute top-8 right-4 md:right-8 z-40 flex items-center gap-3 md:gap-4">
           <ShareButton 
              title={project.title} 
              text={`Explore ${project.title} - A Shwapner Thikana Masterpiece.`}
@@ -145,7 +158,7 @@ const ProjectDetailClient = ({ project }) => {
                 <Building2 size={14} />
                 {project.status || 'Ongoing Project'}
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-zinc-100 tracking-tight leading-tight break-words hyphens-auto">
+              <h1 className="text-4xl md:text-6xl font-bold text-zinc-100 tracking-tight leading-tight break-all break-words hyphens-auto">
                 {project.title}
               </h1>
               <div className="flex items-center gap-3 text-zinc-400">
@@ -160,32 +173,50 @@ const ProjectDetailClient = ({ project }) => {
                 <div className="grid grid-cols-1 min-[390px]:grid-cols-2 gap-3 mt-2">
                   {[
                     { label: "Land Size", value: project.landSize },
-                    { label: "Height", value: project.floorConfiguration },
+                    { label: "Building Height", value: project.floorConfiguration },
                     { label: "Total Units", value: project.totalUnits },
                     { label: "Units / Floor", value: project.unitsPerFloor },
                     { label: "Parking", value: project.parking },
                     { label: "Handover", value: project.handoverDate },
+                    { label: "Available Units", value: project.availableFlats },
+                    { label: "Price / SFT", value: project.pricePerSqFt ? `৳${project.pricePerSqFt}` : 'Consult' },
                   ].map((item, i) => (
-                    <div key={i} className="p-4 bg-white/5 border border-white/5 rounded-2xl">
+                    <div key={i} className={`p-4 bg-white/5 border border-white/5 rounded-2xl ${item.value ? 'opacity-100' : 'hidden'}`}>
                       <span className="block text-[8px] uppercase tracking-widest text-zinc-500 font-bold mb-1">{item.label}</span>
-                      <span className="text-zinc-100 font-bold text-xs">{item.value || 'N/A'}</span>
+                      <span className="text-zinc-100 font-bold text-xs">{item.value}</span>
                     </div>
                   ))}
                 </div>
               </LuxAccordion>
 
-              <LuxAccordion title="Configuration" icon={LayoutGrid}>
+              <LuxAccordion title="Specifications" icon={LayoutGrid}>
                 <div className="space-y-6 pt-2">
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="p-5 rounded-2xl bg-white/5 border border-white/5">
-                      <span className="block text-brand-gold font-bold text-sm mb-2">Unit Sizes</span>
-                      <p className="text-zinc-400 text-xs leading-relaxed">{project.flatSize || 'A: 1950, B: 1750 SFT'}</p>
-                    </div>
+                  <div className="grid grid-cols-1 min-[390px]:grid-cols-2 gap-3">
+                     {[
+                        { label: "Bedrooms", value: project.bedroomCount || project.bedroomCountNum, icon: Bed },
+                        { label: "Bathrooms", value: project.bathroomCount || project.bathroomCountNum, icon: Bath },
+                        { label: "Balcony", value: project.balconyCount, icon: Wind },
+                        { label: "Lifts", value: project.lift, icon: Layers },
+                     ].map((spec, i) => (
+                        <div key={i} className={`flex items-center gap-3 p-4 bg-white/5 border border-white/5 rounded-2xl ${spec.value ? 'opacity-100' : 'hidden'}`}>
+                           <spec.icon size={16} className="text-brand-gold" />
+                           <div>
+                              <span className="block text-[8px] uppercase tracking-widest text-zinc-500 font-bold">{spec.label}</span>
+                              <span className="text-zinc-100 font-bold text-xs">{spec.value}</span>
+                           </div>
+                        </div>
+                     ))}
                   </div>
+
+                  <div className="p-5 rounded-2xl bg-white/5 border border-white/5">
+                    <span className="block text-brand-gold font-bold text-[10px] uppercase tracking-widest mb-2">Unit Sizes</span>
+                    <p className="text-zinc-400 text-xs leading-relaxed">{project.flatSize || 'Standard Units'}</p>
+                  </div>
+
                   <div className="space-y-4">
                     <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest border-b border-zinc-800 pb-2">Apartment Features</h4>
                     <div className="grid grid-cols-1 min-[390px]:grid-cols-2 gap-y-3">
-                      {['Bedroom', 'Bathroom', 'Drawing', 'Dining', 'Kitchen', 'Balcony'].map((f, i) => (
+                      {(project.features?.length > 0 ? project.features : ['Drawing', 'Dining', 'Kitchen', 'Stair']).map((f, i) => (
                         <div key={i} className="flex items-center gap-2 text-xs text-zinc-400">
                           <CheckCircle2 size={12} className="text-brand-gold/60" />
                           {f}
@@ -198,7 +229,7 @@ const ProjectDetailClient = ({ project }) => {
 
               <LuxAccordion title="Project Overview" icon={ListChecks}>
                 <div 
-                  className="text-zinc-400 text-sm leading-relaxed pt-2 break-words"
+                  className="text-zinc-400 text-sm leading-relaxed pt-2 break-all break-words"
                   dangerouslySetInnerHTML={{ __html: sanitize(project.description) }}
                 />
               </LuxAccordion>
@@ -207,16 +238,22 @@ const ProjectDetailClient = ({ project }) => {
             {/* Desktop-Only Layout (Preserving original richness) */}
             <div className="hidden md:block space-y-12">
                <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/10 space-y-8">
-                  <div className="grid grid-cols-2 min-[480px]:grid-cols-3 sm:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                      {[
                        { label: "Land Size", value: project.landSize },
                        { label: "Floors", value: project.floorConfiguration },
                        { label: "Total Units", value: project.totalUnits },
                        { label: "Units/Floor", value: project.unitsPerFloor },
+                       { label: "Bedrooms", value: project.bedroomCount || project.bedroomCountNum },
+                       { label: "Bathrooms", value: project.bathroomCount || project.bathroomCountNum },
+                       { label: "Balcony", value: project.balconyCount },
+                       { label: "Available", value: project.availableFlats },
+                       { label: "Price / SFT", value: project.pricePerSqFt ? `৳${project.pricePerSqFt}` : 'Exclusive' },
+                       { label: "Handover", value: project.handoverDate },
                      ].map((item, i) => (
-                        <div key={i} className="flex flex-col gap-1">
+                        <div key={i} className={`flex flex-col gap-1 ${item.value ? 'opacity-100' : 'hidden'}`}>
                            <span className="text-[10px] uppercase text-zinc-500 font-bold tracking-widest">{item.label}</span>
-                           <span className="text-zinc-200 font-bold">{item.value || 'N/A'}</span>
+                           <span className="text-zinc-200 font-bold">{item.value}</span>
                         </div>
                      ))}
                   </div>
@@ -225,13 +262,20 @@ const ProjectDetailClient = ({ project }) => {
                         className="text-xl font-bold text-white mb-4 italic leading-relaxed break-words break-all"
                         dangerouslySetInnerHTML={{ __html: sanitize(project.description) }}
                      />
-                     <div className="grid grid-cols-1 min-[540px]:grid-cols-2 gap-8 mt-10">
+                     <div className="grid grid-cols-1 min-[540px]:grid-cols-3 gap-8 mt-10">
                         <div className="space-y-2">
                            <span className="text-brand-gold font-bold uppercase text-xs tracking-widest">Configuration</span>
-                           <p className="text-zinc-400 text-sm leading-relaxed">{project.flatSize}</p>
+                           <p className="text-zinc-400 text-sm leading-relaxed">{project.flatSize || 'Customizable Units'}</p>
                         </div>
                         <div className="space-y-2">
-                           <span className="text-brand-gold font-bold uppercase text-xs tracking-widest">Facilities</span>
+                           <span className="text-brand-gold font-bold uppercase text-xs tracking-widest">Infrastructure</span>
+                           <div className="flex flex-wrap gap-x-4 gap-y-1">
+                              {project.lift && <div className="text-zinc-400 text-sm flex items-center gap-1.5"><Layers size={14} /> {project.lift}</div>}
+                              {project.stair && <div className="text-zinc-400 text-sm flex items-center gap-1.5"><ChevronRight size={14} className="rotate-45" /> Stair Available</div>}
+                           </div>
+                        </div>
+                        <div className="space-y-2">
+                           <span className="text-brand-gold font-bold uppercase text-xs tracking-widest">Amenities</span>
                            <p className="text-zinc-400 text-sm leading-relaxed">{project.commonFacilities}</p>
                         </div>
                      </div>
@@ -259,6 +303,42 @@ const ProjectDetailClient = ({ project }) => {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Location & Surroundings */}
+            <div className="space-y-8 pt-12">
+               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-zinc-100 tracking-tight">Location & <span className="text-brand-gold">Surroundings</span></h2>
+                    <p className="text-zinc-500 mt-2 text-sm md:text-base">Explore the neighborhood and nearby essential amenities.</p>
+                  </div>
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                     <MapPin size={16} className="text-brand-gold" />
+                     <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">{project.location?.city || 'Dhaka'}</span>
+                  </div>
+               </div>
+
+               <div className="grid grid-cols-1 gap-8">
+                  {/* Map Component */}
+                  <div className="h-[400px] md:h-[500px] rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden border border-white/10 shadow-2xl relative group">
+                     <PropertyMap property={project} />
+                     <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <p className="text-white font-medium flex items-center gap-2">
+                           <MapPin size={16} className="text-brand-gold" />
+                           {project.address || project.location?.address}
+                        </p>
+                     </div>
+                  </div>
+
+                  {/* Nearby Places Grid */}
+                  <div className="grid grid-cols-1 gap-6">
+                     <NearbyPlaces 
+                        address={project.address || project.location?.address} 
+                        location={project.location}
+                        isProject={true}
+                     />
+                  </div>
+               </div>
             </div>
 
           </div>
@@ -333,7 +413,7 @@ const ProjectDetailClient = ({ project }) => {
       </div>
 
       {/* Sticky Bottom Bar (Mobile First - Crucial for Conversion) */}
-      <div className="fixed bottom-0 left-0 right-0 z-[100] md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-[1100] md:hidden">
          <div className="p-4 bg-zinc-950/90 backdrop-blur-2xl border-t border-white/10 flex gap-3 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
             <a 
               href="tel:01731227755" 
@@ -358,7 +438,7 @@ const ProjectDetailClient = ({ project }) => {
       <AnimatePresence>
         {showInquiryModal && (
           <div 
-            className="fixed inset-0 z-[1000] md:hidden"
+            className="fixed inset-0 z-[1200] md:hidden"
             role="dialog"
             aria-modal="true"
             aria-labelledby="mobile-project-inquiry-modal-title"
@@ -375,7 +455,7 @@ const ProjectDetailClient = ({ project }) => {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute bottom-0 left-0 right-0 bg-zinc-950 rounded-t-[2.5rem] border-t border-white/10 p-8 pb-32 z-[1001] overflow-y-auto max-h-[90vh] custom-scrollbar"
+              className="absolute bottom-0 left-0 right-0 bg-zinc-950 rounded-t-[2.5rem] border-t border-white/10 p-8 pb-32 z-[1201] overflow-y-auto max-h-[90vh] custom-scrollbar"
               data-lenis-prevent
             >
               <div className="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-6" />

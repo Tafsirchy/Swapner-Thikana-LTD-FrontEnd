@@ -120,14 +120,14 @@ const ProjectCard = ({ project }) => {
 
       <div className="p-4 sm:p-8 relative -mt-10 sm:-mt-12 md:-mt-20 z-10 mx-2 sm:mx-0">
         <div className="bg-royal-deep/90 backdrop-blur-2xl border border-white/10 p-5 sm:p-6 rounded-none shadow-2xl transition-transform duration-500 group-hover:-translate-y-1">
-          <h3 className="text-xl sm:text-2xl font-bold text-zinc-100 mb-2 sm:mb-3 leading-snug group-hover:text-brand-gold transition-colors">{title}</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-zinc-100 mb-2 sm:mb-3 leading-snug group-hover:text-brand-gold transition-colors break-all break-words">{title}</h3>
           
           <div className="flex items-center gap-2 text-zinc-400 text-xs sm:text-sm mb-4">
             <MapPin size={14} className="text-brand-gold" />
             <span>{location.city}</span>
           </div>
 
-          <p className="text-zinc-400 text-xs sm:text-sm line-clamp-2 mb-6 italic leading-relaxed opacity-80">
+          <p className="text-zinc-400 text-xs sm:text-sm line-clamp-2 mb-6 italic leading-relaxed opacity-80 break-words break-all">
             {description}
           </p>
 

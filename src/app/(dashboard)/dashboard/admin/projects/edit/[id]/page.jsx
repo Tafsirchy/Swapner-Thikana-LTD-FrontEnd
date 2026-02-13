@@ -11,6 +11,12 @@ import ImgBBUpload from '@/components/shared/ImgBBUpload';
 import imageCompression from 'browser-image-compression';
 import AddressAutocomplete from '@/components/shared/AddressAutocomplete';
 import LuxurySelect from '@/components/shared/LuxurySelect';
+import dynamic from 'next/dynamic';
+
+const InteractiveMapPicker = dynamic(() => import('@/components/map/InteractiveMapPicker'), { 
+  ssr: false,
+  loading: () => <div className="h-[300px] w-full bg-white/5 animate-pulse rounded-xl border border-white/10" />
+});
 
 const EditProjectPage = () => {
   const router = useRouter();
@@ -28,7 +34,9 @@ const EditProjectPage = () => {
     status: 'upcoming',
     location: {
       city: 'Dhaka',
-      address: ''
+      address: '',
+      latitude: '',
+      longitude: ''
     },
     handoverDate: '', // Handover Date
     
@@ -92,7 +100,9 @@ const EditProjectPage = () => {
           status: project.status || 'upcoming',
           location: {
             city: project.location?.city || 'Dhaka',
-            address: project.location?.address || ''
+            address: project.location?.address || '',
+            latitude: project.location?.latitude || '',
+            longitude: project.location?.longitude || ''
           },
           handoverDate: project.handoverDate || '',
           
@@ -334,13 +344,33 @@ const EditProjectPage = () => {
                              location: {
                                 ...prev.location,
                                 address: data.address,
-                                city: data.city || prev.location.city
+                                city: data.city || prev.location.city,
+                                latitude: data.lat || prev.location.latitude,
+                                longitude: data.lon || prev.location.longitude
                              }
                           }));
                        }}
                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 outline-none focus:border-brand-gold/50 transition-all font-medium"
                     />
                  </div>
+                 
+                 <div className="pt-2">
+                    <InteractiveMapPicker 
+                      latitude={formData.location.latitude}
+                      longitude={formData.location.longitude}
+                      onLocationChange={(lat, lng) => {
+                        setFormData(prev => ({
+                          ...prev,
+                          location: {
+                            ...prev.location,
+                            latitude: lat,
+                            longitude: lng
+                          }
+                        }));
+                      }}
+                    />
+                 </div>
+
                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-zinc-400 mb-2">City</label>

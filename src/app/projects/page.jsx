@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { Building2, Loader2, ChevronLeft, ChevronRight, ArrowUpDown } from 'lucide-react';
+import { Building2, Loader2, ChevronLeft, ChevronRight, ArrowUpDown, LayoutGrid, Map } from 'lucide-react';
 import ProjectCard from '@/components/shared/ProjectCard';
 import ProjectCardSkeleton from '@/components/shared/ProjectCardSkeleton';
 import ProjectFilters from '@/components/projects/ProjectFilters';
@@ -10,6 +10,16 @@ import LuxurySelect from '@/components/shared/LuxurySelect';
 import { api } from '@/lib/api';
 import { useSearchParams } from 'next/navigation';
 import StructuredData from '@/components/seo/StructuredData';
+import dynamic from 'next/dynamic';
+
+const ProjectsMapView = dynamic(() => import('@/components/map/ProjectsMapView'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[600px] rounded-3xl border border-white/10 bg-white/5 flex items-center justify-center">
+      <Loader2 className="animate-spin text-brand-gold" size={48} />
+    </div>
+  )
+});
 
 const SORT_OPTIONS = [
   { label: "Newest Project", value: "newest" },
@@ -22,7 +32,9 @@ const SORT_OPTIONS = [
 const ProjectsContent = () => {
   const searchParams = useSearchParams();
   const [projects, setProjects] = useState([]);
+  const [allFilteredProjects, setAllFilteredProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState('grid');
   const [filters, setFilters] = useState({
     status: searchParams.get('status') || '',
     city: searchParams.get('city') || '',
@@ -89,6 +101,12 @@ const ProjectsContent = () => {
           setTotalPages(res.data.pagination.pages);
         }
       }
+
+      // If in map mode, or to support map mode markers, fetch all matching projects
+      if (viewMode === 'map') {
+        const allRes = await api.projects.getAll({ ...params, limit: 1000, page: 1 });
+        setAllFilteredProjects(allRes.data.projects || []);
+      }
     } catch (error) {
       console.error('Error fetching projects:', error);
       setProjects([]);
@@ -99,7 +117,7 @@ const ProjectsContent = () => {
 
   useEffect(() => {
     fetchProjects();
-  }, [fetchProjects]);
+  }, [fetchProjects, viewMode]);
 
   // Handle filter change - reset to page 1
   const handleFilterChange = (newFilters) => {
@@ -185,15 +203,31 @@ const ProjectsContent = () => {
                    Showing <span className="text-zinc-100 font-bold">{projects.length}</span> results
                 </p>
                 
-                <div className="w-full sm:w-64">
-                   <LuxurySelect
-                     value={sort}
-                     onChange={setSort}
-                     options={SORT_OPTIONS}
-                     icon={<ArrowUpDown size={14} />}
-                     className="!py-3 !rounded-xl !text-xs font-bold uppercase tracking-widest bg-zinc-950/50"
-                   />
-                </div>
+                <div className="w-full sm:w-64 flex items-center gap-4">
+                    <div className="flex bg-white/5 border border-white/10 p-1 rounded-xl shadow-inner shrink-0">
+                        <button 
+                          onClick={() => setViewMode('grid')}
+                          className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-brand-gold text-royal-deep shadow-lg' : 'text-zinc-400 hover:text-zinc-200'}`}
+                          title="Grid View"
+                        >
+                          <LayoutGrid size={18} />
+                        </button>
+                        <button 
+                          onClick={() => setViewMode('map')}
+                          className={`p-2 rounded-lg transition-all ${viewMode === 'map' ? 'bg-brand-gold text-royal-deep shadow-lg' : 'text-zinc-400 hover:text-zinc-200'}`}
+                          title="Map View"
+                        >
+                          <Map size={18} />
+                        </button>
+                    </div>
+                    <LuxurySelect
+                      value={sort}
+                      onChange={setSort}
+                      options={SORT_OPTIONS}
+                      icon={<ArrowUpDown size={14} />}
+                      className="!py-3 !rounded-xl !text-xs font-bold uppercase tracking-widest bg-zinc-950/50 flex-1"
+                    />
+                 </div>
              </div>
 
              {loading ? (
@@ -204,6 +238,15 @@ const ProjectsContent = () => {
                     </div>
                   ))}
                 </div>
+              ) : viewMode === 'map' ? (
+                <div className="mb-20">
+                   <div className="mb-4 flex items-center justify-between">
+                      <p className="text-zinc-400 text-sm">
+                        Showing <span className="text-zinc-100 font-bold">{allFilteredProjects.length}</span> projects on map
+                      </p>
+                   </div>
+                   <ProjectsMapView projects={allFilteredProjects} />
+                </div>
               ) : projects.length > 0 ? (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
@@ -213,7 +256,7 @@ const ProjectsContent = () => {
                   </div>
     
                   {/* Pagination Controls */}
-                  {totalPages > 1 && (
+                  {viewMode === 'grid' && totalPages > 1 && (
                     <div className="flex justify-center items-center gap-4 sm:gap-6 pt-4">
                        <button 
                           onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
