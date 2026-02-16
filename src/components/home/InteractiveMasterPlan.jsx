@@ -333,7 +333,7 @@ const InteractiveMasterPlan = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={() => setActiveRegion(null)}
-                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[1090]"
                 />
                 
                 {/* Drawer */}
@@ -342,7 +342,7 @@ const InteractiveMasterPlan = () => {
                     animate={{ x: 0 }}
                     exit={{ x: '100%' }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="fixed top-0 right-0 h-screen w-full max-w-md bg-zinc-900 border-l border-white/10 z-[110] overflow-y-auto custom-scrollbar pointer-events-auto"
+                    className="fixed top-0 right-0 h-screen w-full max-w-md bg-zinc-900 border-l border-white/10 z-[1100] overflow-y-auto custom-scrollbar pointer-events-auto"
                     style={{
                         touchAction: 'pan-y',
                         WebkitOverflowScrolling: 'touch',

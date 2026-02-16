@@ -164,7 +164,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-[1000] transition-all duration-300 ${
+      className={`fixed top-0 w-full z-[5000] transition-all duration-300 ${
         isDashboard ? 'py-2' : 'py-3 md:py-3 lg:py-0'
       } ${
         isScrolled || isDashboard || isDetailsPage
@@ -173,52 +173,54 @@ const Navbar = () => {
       }`}
     >
       {/* Utility Bar - Absolute Top Right */}
-      {!isDashboard && (
-        <div className="absolute top-5 right-4 z-50 hidden lg:flex items-center gap-4">
-           {/* Utility Icons */}
-           {/* Utility Icons */}
 
-           <Link href={user ? "/dashboard/saved" : "/auth/login"} className="text-zinc-100 hover:text-brand-gold transition-colors relative group">
-             <Heart size={18} />
-             {user?.savedProperties?.length > 0 && (
-               <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-brand-gold text-royal-deep text-[9px] font-bold rounded-full flex items-center justify-center">
-                 {user.savedProperties.length}
-               </span>
-             )}
-           </Link>
-           
-           {/* Notification Bell */}
-           {user && <NotificationBell />}
-
-           {/* Auth Button */}
-           {isAuthenticated ? (
-            <LiquidButton
-               onClick={logout}
-               baseColor="bg-red-500/10"
-               liquidColor="fill-red-500/20"
-               className="!px-4 !py-1.5 border border-red-500/30 !text-red-400 !text-xs !font-semibold uppercase tracking-wider min-w-[44px] min-h-[44px] flex items-center justify-center"
-               rounded="rounded-full"
-            >
-               <User size={14} />
-               Logout
-            </LiquidButton>
-          ) : (
-            <LiquidButton
-              href="/auth/login"
-              baseColor="bg-brand-gold/10"
-              liquidColor="fill-brand-gold/30"
-              className="!px-4 !py-1.5 border border-brand-gold/30 !text-brand-gold !text-xs !font-bold uppercase tracking-wider"
-              rounded="rounded-full"
-            >
-              <User size={14} />
-              Login
-            </LiquidButton>
-          )}
-        </div>
-      )}
 
       {/* Main Navigation Container */}
       <div className="max-container h-full flex justify-center px-4 relative">
+        {/* Utility Bar - Absolute Top Right */}
+        {!isDashboard && (
+          <div className="absolute top-5 right-4 z-50 hidden lg:flex items-center gap-4">
+            {/* Utility Icons */}
+            {/* Utility Icons */}
+
+            <Link href={user ? "/dashboard/saved" : "/auth/login"} className="text-zinc-100 hover:text-brand-gold transition-colors relative group">
+              <Heart size={18} />
+              {user?.savedProperties?.length > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-brand-gold text-royal-deep text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {user.savedProperties.length}
+                </span>
+              )}
+            </Link>
+            
+            {/* Notification Bell */}
+            {user && <NotificationBell />}
+
+            {/* Auth Button */}
+            {isAuthenticated ? (
+              <LiquidButton
+                onClick={logout}
+                baseColor="bg-red-500/10"
+                liquidColor="fill-red-500/20"
+                className="!px-4 !py-1.5 border border-red-500/30 !text-red-400 !text-xs !font-semibold uppercase tracking-wider min-w-[44px] min-h-[44px] flex items-center justify-center"
+                rounded="rounded-full"
+              >
+                <User size={14} />
+                Logout
+              </LiquidButton>
+            ) : (
+              <LiquidButton
+                href="/auth/login"
+                baseColor="bg-brand-gold/10"
+                liquidColor="fill-brand-gold/30"
+                className="!px-4 !py-1.5 border border-brand-gold/30 !text-brand-gold !text-xs !font-bold uppercase tracking-wider"
+                rounded="rounded-full"
+              >
+                <User size={14} />
+                Login
+              </LiquidButton>
+            )}
+          </div>
+        )}
         
         {/* Mobile: Logo Centered, Menu Icon Left */}
         {!isDashboard && (

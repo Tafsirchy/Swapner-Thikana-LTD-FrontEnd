@@ -11,6 +11,7 @@ import { api } from '@/lib/api';
 import { useSearchParams } from 'next/navigation';
 import StructuredData from '@/components/seo/StructuredData';
 import dynamic from 'next/dynamic';
+import { isPointInBounds, isPointInPolygon } from '@/utils/geoUtils';
 
 const ProjectsMapView = dynamic(() => import('@/components/map/ProjectsMapView'), {
   ssr: false,
@@ -113,7 +114,7 @@ const ProjectsContent = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, filters, sort]);
+  }, [currentPage, filters, sort, viewMode]);
 
   useEffect(() => {
     fetchProjects();
@@ -146,6 +147,61 @@ const ProjectsContent = () => {
     });
     setCurrentPage(1);
   };
+
+  const [mapFilter, setMapFilter] = useState(null); // { type: 'bounds' | 'polygon', value: ... }
+
+  // Handle map bounds change
+  const handleMapChange = useCallback((bounds) => {
+    setMapFilter({ type: 'bounds', value: bounds });
+  }, []);
+
+  const handlePolygonChange = useCallback((polygon) => {
+    if (!polygon) {
+      setMapFilter(null);
+      return;
+    }
+    setMapFilter({ type: 'polygon', value: polygon });
+  }, []);
+
+  // Filter projects based on map view
+  const visibleProjects = React.useMemo(() => {
+    if (!mapFilter || !allFilteredProjects.length) return allFilteredProjects;
+
+    return allFilteredProjects.filter(project => {
+      // Get coordinates (matching MapView logic roughly, but strictly using data)
+      let lat, lng;
+      if (project.location?.latitude && project.location?.longitude) {
+        lat = parseFloat(project.location.latitude);
+        lng = parseFloat(project.location.longitude);
+      } else {
+        // Skip projects without precise location for strict spatial filtering
+        // Or could implement the city fallback here too if needed
+        return false; 
+      }
+      
+      const point = [lat, lng];
+
+      if (mapFilter.type === 'bounds') {
+        const [swLat, swLng, neLat, neLng] = mapFilter.value.split(',').map(Number);
+        // Create bounds object structure expected by geoUtils or just check manually
+        // Since isPointInBounds expects Leaflet-like object, let's just check manually here for simplicity/performance
+        // OR better, reuse the utility properly by mocking the object
+        return lat >= swLat && lat <= neLat && lng >= swLng && lng <= neLng;
+      }
+      
+      if (mapFilter.type === 'polygon') {
+        try {
+          const polygon = JSON.parse(mapFilter.value);
+          return isPointInPolygon(point, polygon);
+        } catch (e) {
+          console.error('Invalid polygon data', e);
+          return true;
+        }
+      }
+      
+      return true;
+    });
+  }, [allFilteredProjects, mapFilter]);
 
   // Scroll to top when page changes
   useEffect(() => {
@@ -186,7 +242,7 @@ const ProjectsContent = () => {
 
       <section className="max-container px-4">
         {/* Filters Top Bar */}
-        <div className="sticky top-20 sm:top-28 z-30 mb-8 px-2 sm:px-0">
+        <div className="sticky top-20 sm:top-28 z-[1100] mb-8 px-2 sm:px-0">
           <ProjectFilters 
             filters={filters} 
             onChange={handleFilterChange} 
@@ -200,7 +256,7 @@ const ProjectsContent = () => {
              {/* Sort & Controls */}
              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 pb-6 border-b border-white/5 gap-4">
                 <p className="text-zinc-500 text-sm font-medium">
-                   Showing <span className="text-zinc-100 font-bold">{projects.length}</span> results
+                   Showing <span className="text-zinc-100 font-bold">{viewMode === 'map' ? visibleProjects.length : projects.length}</span> results
                 </p>
                 
                 <div className="w-full sm:w-64 flex items-center gap-4">
@@ -242,10 +298,14 @@ const ProjectsContent = () => {
                 <div className="mb-20">
                    <div className="mb-4 flex items-center justify-between">
                       <p className="text-zinc-400 text-sm">
-                        Showing <span className="text-zinc-100 font-bold">{allFilteredProjects.length}</span> projects on map
+                        Showing <span className="text-zinc-100 font-bold">{visibleProjects.length}</span> projects on map
                       </p>
                    </div>
-                   <ProjectsMapView projects={allFilteredProjects} />
+                   <ProjectsMapView 
+                     projects={visibleProjects} 
+                     onMapChange={handleMapChange}
+                     onPolygonChange={handlePolygonChange}
+                   />
                 </div>
               ) : projects.length > 0 ? (
                 <>

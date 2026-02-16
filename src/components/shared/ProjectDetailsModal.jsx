@@ -47,28 +47,22 @@ const ProjectDetailsModal = ({ isOpen, onClose, project }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm"
+        className="fixed inset-0 z-[1100] flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm"
         onClick={onClose}
       >
         <motion.div 
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
-          className="bg-royal-deep w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 shadow-2xl relative custom-scrollbar"
+          className="bg-royal-deep w-full max-w-5xl max-h-[90vh] rounded-3xl border border-white/10 shadow-2xl relative flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()}
-          data-lenis-prevent
         >
-          {/* Close Button */}
-          <button 
-            onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-3 bg-black/50 backdrop-blur-md rounded-xl text-white/70 hover:text-white hover:bg-black/70 transition-all border border-white/10 active:scale-95 shadow-xl"
-            aria-label="Close modal"
-          >
-            <X size={20} />
-          </button>
 
-          {/* Banner Image */}
-          <div className="relative h-64 sm:h-80 w-full group">
+
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto custom-scrollbar relative" data-lenis-prevent>
+            {/* Banner Image */}
+            <div className="relative h-64 sm:h-80 w-full group">
             <SmartImage 
               src={project.thumbnail || '/placeholder-project.jpg'} 
               alt={project.title}
@@ -290,6 +284,16 @@ const ProjectDetailsModal = ({ isOpen, onClose, project }) => {
                 <div className="text-[10px] text-zinc-500 uppercase tracking-[0.2em]">Building Legacies Since 2012</div>
              </div>
           </div>
+          </div>
+          
+          {/* Close Button - Fixed Top Right */}
+          <button 
+            onClick={onClose}
+            className="absolute top-4 right-4 z-50 p-3 bg-black/50 backdrop-blur-md rounded-xl text-white/70 hover:text-white hover:bg-black/70 transition-all border border-white/10 active:scale-95 shadow-xl"
+            aria-label="Close modal"
+          >
+            <X size={20} />
+          </button>
         </motion.div>
       </motion.div>
     </AnimatePresence>

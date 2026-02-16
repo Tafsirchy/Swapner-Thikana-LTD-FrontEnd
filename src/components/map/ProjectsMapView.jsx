@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polygon } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
-import { Search as SearchIcon, Building2, MapPin, Calendar } from 'lucide-react';
+import { Search as SearchIcon, Building2, MapPin, Calendar, Pencil, Move, RotateCcw } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -29,11 +29,29 @@ const goldIcon = typeof window !== 'undefined' ? new L.Icon({
   shadowSize: [41, 41]
 }) : null;
 
-const MapController = ({ onMapChange }) => {
+import { Undo2 } from 'lucide-react';
+
+const MapController = ({ onMapChange, drawMode, setPolygonPoints, polygonPoints }) => {
   const [showSearchArea, setShowSearchArea] = useState(false);
+  const [mousePosition, setMousePosition] = useState(null);
+
   const map = useMapEvents({
-    moveend: () => setShowSearchArea(true),
-    zoomend: () => setShowSearchArea(true),
+    moveend: () => {
+      if (!drawMode) setShowSearchArea(true);
+    },
+    zoomend: () => {
+      if (!drawMode) setShowSearchArea(true);
+    },
+    click: (e) => {
+      if (drawMode) {
+        setPolygonPoints(prev => [...prev, [e.latlng.lat, e.latlng.lng]]);
+      }
+    },
+    mousemove: (e) => {
+      if (drawMode) {
+        setMousePosition([e.latlng.lat, e.latlng.lng]);
+      }
+    }
   });
 
   const handleSearchArea = () => {
@@ -46,24 +64,37 @@ const MapController = ({ onMapChange }) => {
 
   return (
     <>
-      {showSearchArea && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000]">
+      {showSearchArea && !drawMode && (
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-[1000]">
           <button 
             onClick={handleSearchArea}
-            className="bg-brand-gold text-royal-deep px-6 py-2 rounded-full font-bold shadow-2xl flex items-center gap-2 hover:bg-brand-gold-light transition-all animate-bounce"
+            className="bg-brand-gold text-royal-deep px-6 py-2.5 rounded-full font-bold shadow-2xl flex items-center gap-2 hover:bg-white transition-all animate-bounce"
           >
             <SearchIcon size={16} />
             Search this area
           </button>
         </div>
       )}
+      
+      {/* Rubber-banding Line */}
+      {drawMode && polygonPoints.length > 0 && mousePosition && (
+        <Polygon 
+          positions={[polygonPoints[polygonPoints.length - 1], mousePosition]} 
+          color="#D4AF37" 
+          weight={2} 
+          dashArray="5, 5" 
+          opacity={0.6}
+        />
+      )}
     </>
   );
 };
 
-const ProjectsMapView = ({ projects, onMapChange }) => {
+const ProjectsMapView = ({ projects, onMapChange, onPolygonChange }) => {
   // Default center (Dhaka)
   const [center] = useState([23.8103, 90.4125]);
+  const [drawMode, setDrawMode] = useState(false);
+  const [polygonPoints, setPolygonPoints] = useState([]);
 
   const getCityCoordinates = (city) => {
     const cityCoords = {
@@ -89,6 +120,26 @@ const ProjectsMapView = ({ projects, onMapChange }) => {
     return getCityCoordinates(project.location?.city);
   };
 
+  const handleFinishDraw = () => {
+    if (polygonPoints.length >= 3) {
+      if (onPolygonChange) {
+        onPolygonChange(JSON.stringify(polygonPoints));
+      }
+    }
+    setDrawMode(false);
+  };
+
+  const handleResetDraw = () => {
+    setPolygonPoints([]);
+    if (onPolygonChange) {
+      onPolygonChange('');
+    }
+  };
+
+  const handleUndoDraw = () => {
+    setPolygonPoints(prev => prev.slice(0, -1));
+  };
+
   if (!projects || projects.length === 0) {
     return (
       <div className="h-[600px] rounded-3xl border border-white/10 bg-white/5 flex items-center justify-center">
@@ -98,20 +149,78 @@ const ProjectsMapView = ({ projects, onMapChange }) => {
   }
 
   return (
-    <div className="relative h-[600px] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl">
+    <div className="relative h-[600px] rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl bg-zinc-900">
+      {/* Map Controls */}
+      <div className="absolute top-6 right-6 z-[1000] flex flex-col gap-3">
+        <div className="bg-zinc-900/90 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border border-white/10 flex flex-col gap-1">
+          <button 
+            onClick={() => setDrawMode(!drawMode)}
+            className={`p-3 rounded-xl transition-all duration-300 ${drawMode ? 'bg-brand-gold text-royal-deep shadow-lg scale-105' : 'text-zinc-400 hover:bg-white/10 hover:text-zinc-100'}`}
+            title={drawMode ? "Finish Drawing" : "Draw Search Area"}
+          >
+            {drawMode ? <Move size={20} className="animate-pulse" /> : <Pencil size={20} />}
+          </button>
+          
+          {polygonPoints.length > 0 && drawMode && (
+            <button 
+              onClick={handleUndoDraw}
+              className="p-3 text-zinc-400 hover:bg-white/10 hover:text-zinc-100 rounded-xl transition-all"
+              title="Undo Last Point"
+            >
+              <Undo2 size={20} />
+            </button>
+          )}
+
+          {polygonPoints.length > 0 && (
+            <button 
+              onClick={handleResetDraw}
+              className="p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+              title="Reset Area"
+            >
+              <RotateCcw size={20} />
+            </button>
+          )}
+        </div>
+
+        {drawMode && polygonPoints.length >= 3 && (
+          <button 
+            onClick={handleFinishDraw}
+            className="bg-emerald-500 hover:bg-emerald-400 text-white px-6 py-3 rounded-xl font-bold shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+          >
+            Apply Area
+          </button>
+        )}
+      </div>
+
+      {drawMode && (
+        <div className="absolute top-6 left-6 z-[1000] bg-zinc-900/90 backdrop-blur-md border border-brand-gold/30 text-zinc-100 px-6 py-3 rounded-2xl text-sm font-medium shadow-2xl flex items-center gap-3">
+          <div className="w-2 h-2 rounded-full bg-brand-gold animate-ping"></div>
+          {polygonPoints.length === 0 ? "Click to start drawing..." : "Click to add points, close shape to finish"}
+        </div>
+      )}
+
       <MapContainer
         center={center}
         zoom={12}
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={true}
-        className="z-10"
+        className="z-10 bg-zinc-900"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {onMapChange && <MapController onMapChange={onMapChange} />}
+        <MapController 
+          onMapChange={onMapChange} 
+          drawMode={drawMode}
+          setPolygonPoints={setPolygonPoints}
+          polygonPoints={polygonPoints}
+        />
+
+        {polygonPoints.length > 0 && (
+          <Polygon positions={polygonPoints} color="#D4AF37" fillOpacity={0.2} weight={2} />
+        )}
 
         <MarkerClusterGroup chunkedLoading maxClusterRadius={50}>
           {projects.map((project) => {

@@ -69,14 +69,26 @@ const LeadsPage = () => {
 
   const handleStatusChange = async (leadId, newStatus) => {
     if (user?.role === 'agent') return;
+
+    // Optimistic Update
+    const previousLeads = [...leads];
+    const previousSelectedLead = selectedLead ? { ...selectedLead } : null;
+
+    // Update Local State Instantly
+    setLeads(leads.map(l => l._id === leadId ? { ...l, status: newStatus } : l));
+    if (selectedLead?._id === leadId) {
+      setSelectedLead({ ...selectedLead, status: newStatus });
+    }
+
     try {
       await api.leads.updateStatus(leadId, newStatus);
-      setLeads(leads.map(l => l._id === leadId ? { ...l, status: newStatus } : l));
-      if (selectedLead?._id === leadId) {
-        setSelectedLead({ ...selectedLead, status: newStatus });
-      }
       toast.success(`Moved to ${newStatus}`);
     } catch {
+      // Revert on Failure
+      setLeads(previousLeads);
+      if (previousSelectedLead) {
+        setSelectedLead(previousSelectedLead);
+      }
       toast.error('Failed to update status');
     }
   };

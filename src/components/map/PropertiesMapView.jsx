@@ -29,8 +29,12 @@ const goldIcon = typeof window !== 'undefined' ? new L.Icon({
   shadowSize: [41, 41]
 }) : null;
 
-const MapController = ({ onMapChange, drawMode, setPolygonPoints }) => {
+import { Undo2 } from 'lucide-react';
+
+const MapController = ({ onMapChange, drawMode, setPolygonPoints, polygonPoints }) => {
   const [showSearchArea, setShowSearchArea] = useState(false);
+  const [mousePosition, setMousePosition] = useState(null);
+
   const map = useMapEvents({
     moveend: () => {
       if (!drawMode) setShowSearchArea(true);
@@ -41,6 +45,11 @@ const MapController = ({ onMapChange, drawMode, setPolygonPoints }) => {
     click: (e) => {
       if (drawMode) {
         setPolygonPoints(prev => [...prev, [e.latlng.lat, e.latlng.lng]]);
+      }
+    },
+    mousemove: (e) => {
+      if (drawMode) {
+        setMousePosition([e.latlng.lat, e.latlng.lng]);
       }
     }
   });
@@ -55,16 +64,27 @@ const MapController = ({ onMapChange, drawMode, setPolygonPoints }) => {
 
   return (
     <>
-      {showSearchArea && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000]">
+      {showSearchArea && !drawMode && (
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-[1000]">
           <button 
             onClick={handleSearchArea}
-            className="bg-brand-gold text-royal-deep px-6 py-2 rounded-full font-bold shadow-2xl flex items-center gap-2 hover:bg-brand-gold-light transition-all animate-bounce"
+            className="bg-brand-gold text-royal-deep px-6 py-2.5 rounded-full font-bold shadow-2xl flex items-center gap-2 hover:bg-white transition-all animate-bounce"
           >
             <SearchIcon size={16} />
             Search this area
           </button>
         </div>
+      )}
+
+      {/* Rubber-banding Line */}
+      {drawMode && polygonPoints.length > 0 && mousePosition && (
+        <Polygon 
+          positions={[polygonPoints[polygonPoints.length - 1], mousePosition]} 
+          color="#D4AF37" 
+          weight={2} 
+          dashArray="5, 5" 
+          opacity={0.6}
+        />
       )}
     </>
   );
@@ -115,6 +135,10 @@ const PropertiesMapView = ({ properties, onMapChange, onPolygonChange }) => {
     onPolygonChange('');
   };
 
+  const handleUndoDraw = () => {
+    setPolygonPoints(prev => prev.slice(0, -1));
+  };
+
   if (!properties || properties.length === 0) {
     return (
       <div className="h-[600px] rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center">
@@ -124,38 +148,53 @@ const PropertiesMapView = ({ properties, onMapChange, onPolygonChange }) => {
   }
 
   return (
-    <div className="relative h-[600px] rounded-2xl overflow-hidden border border-white/10">
+    <div className="relative h-[600px] rounded-2xl overflow-hidden border border-white/10 bg-zinc-900">
       {/* Map Controls */}
-      <div className="absolute top-4 right-4 z-[1000] flex flex-col gap-2">
-        <button 
-          onClick={() => setDrawMode(!drawMode)}
-          className={`p-3 rounded-xl shadow-lg transition-all ${drawMode ? 'bg-brand-gold text-royal-deep' : 'bg-zinc-900 text-zinc-100 hover:bg-zinc-800'}`}
-          title={drawMode ? "Finish Drawing" : "Draw Search Area"}
-        >
-          {drawMode ? <Move size={20} /> : <Pencil size={20} />}
-        </button>
-        {polygonPoints.length > 0 && (
+      <div className="absolute top-6 right-6 z-[1000] flex flex-col gap-3">
+        <div className="bg-zinc-900/90 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border border-white/10 flex flex-col gap-1">
           <button 
-            onClick={handleResetDraw}
-            className="p-3 bg-zinc-900 text-zinc-100 rounded-xl shadow-lg hover:bg-zinc-800"
-            title="Reset Area"
+            onClick={() => setDrawMode(!drawMode)}
+            className={`p-3 rounded-xl transition-all duration-300 ${drawMode ? 'bg-brand-gold text-royal-deep shadow-lg scale-105' : 'text-zinc-400 hover:bg-white/10 hover:text-zinc-100'}`}
+            title={drawMode ? "Finish Drawing" : "Draw Search Area"}
           >
-            <RotateCcw size={20} />
+            {drawMode ? <Move size={20} className="animate-pulse" /> : <Pencil size={20} />}
           </button>
-        )}
+
+          {polygonPoints.length > 0 && drawMode && (
+              <button 
+                onClick={handleUndoDraw}
+                className="p-3 text-zinc-400 hover:bg-white/10 hover:text-zinc-100 rounded-xl transition-all"
+                title="Undo Last Point"
+              >
+                <Undo2 size={20} />
+              </button>
+          )}
+
+          {polygonPoints.length > 0 && (
+            <button 
+              onClick={handleResetDraw}
+              className="p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+              title="Reset Area"
+            >
+              <RotateCcw size={20} />
+            </button>
+          )}
+        </div>
+
         {drawMode && polygonPoints.length >= 3 && (
           <button 
             onClick={handleFinishDraw}
-            className="bg-emerald-500 text-white px-4 py-2 rounded-xl font-bold shadow-lg"
+            className="bg-emerald-500 hover:bg-emerald-400 text-white px-6 py-3 rounded-xl font-bold shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2"
           >
-            Apply
+            Apply Area
           </button>
         )}
       </div>
 
       {drawMode && (
-        <div className="absolute top-4 left-4 z-[1000] bg-brand-gold/90 text-royal-deep px-4 py-2 rounded-xl text-xs font-bold animate-pulse">
-          Click on map to draw your search area...
+        <div className="absolute top-6 left-6 z-[1000] bg-zinc-900/90 backdrop-blur-md border border-brand-gold/30 text-zinc-100 px-6 py-3 rounded-2xl text-sm font-medium shadow-2xl flex items-center gap-3">
+          <div className="w-2 h-2 rounded-full bg-brand-gold animate-ping"></div>
+          {polygonPoints.length === 0 ? "Click to start drawing..." : "Click to add points, close shape to finish"}
         </div>
       )}
 
@@ -164,6 +203,7 @@ const PropertiesMapView = ({ properties, onMapChange, onPolygonChange }) => {
         zoom={12}
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={true}
+        className="z-10 bg-zinc-900"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -174,10 +214,11 @@ const PropertiesMapView = ({ properties, onMapChange, onPolygonChange }) => {
           onMapChange={onMapChange} 
           drawMode={drawMode}
           setPolygonPoints={setPolygonPoints}
+          polygonPoints={polygonPoints}
         />
 
         {polygonPoints.length > 0 && (
-          <Polygon positions={polygonPoints} color="#D4AF37" fillOpacity={0.2} />
+          <Polygon positions={polygonPoints} color="#D4AF37" fillOpacity={0.2} weight={2} />
         )}
 
         <MarkerClusterGroup chunkedLoading maxClusterRadius={50}>
