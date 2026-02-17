@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { CheckCircle2, XCircle, Loader2, ArrowRight } from 'lucide-react';
@@ -15,19 +15,23 @@ const VerifyEmailContent = () => {
   const token = searchParams.get('token');
   const [status, setStatus] = useState('verifying'); // 'verifying', 'success', 'error'
   const [message, setMessage] = useState('Verifying your dream address...');
+  const isVerifying = useRef(false);
 
   useEffect(() => {
     const runVerification = async () => {
-      console.log('Verification token from URL:', token);
-      
-      if (!token) {
-        setStatus('error');
-        setMessage('Invalid verification link.');
+      if (isVerifying.current || !token) {
+        if (!token) {
+          setStatus('error');
+          setMessage('Invalid verification link.');
+        }
         return;
       }
 
+      isVerifying.current = true;
+      console.log('Verification started for token:', token);
+      
       try {
-        console.log('Calling verifyEmail API with token:', token);
+        setStatus('verifying'); // Ensure status is correctly set
         const response = await api.auth.verifyEmail(token);
         console.log('Verification successful:', response);
         setStatus('success');

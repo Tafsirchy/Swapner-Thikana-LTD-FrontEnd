@@ -18,6 +18,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   const { scrollY } = useScroll();
 
@@ -234,7 +239,11 @@ const Navbar = () => {
                {isOpen ? <X size={26} /> : <Menu size={26} />}
              </button>
             
-            <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2">
+            <Link 
+              href="/" 
+              className="flex items-center absolute left-1/2 -translate-x-1/2"
+              onClick={() => setIsOpen(false)}
+            >
                 <Image src="/logo-new.webp" alt="Shwapner Thikana" width={110} height={64} className="h-12 sm:h-14 w-auto object-contain transition-all" priority />
             </Link>
 
