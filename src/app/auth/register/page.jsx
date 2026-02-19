@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -25,8 +25,21 @@ const RegisterPage = () => {
     role: 'customer'
   });
   
-  const { register } = useAuth();
+  const { register, isAuthenticated, loading } = useAuth();
   const router = useRouter();
+
+  // Fix 8: Redirect already-authenticated users away from the register page
+  useEffect(() => {
+    if (!loading && isAuthenticated) {
+      router.replace('/dashboard');
+    }
+  }, [isAuthenticated, loading, router]);
+
+  // While auth state is loading OR user is authenticated (redirect pending),
+  // render nothing so the register form never flashes on screen
+  if (loading || isAuthenticated) {
+    return <div className="min-h-screen bg-royal-deep" />;
+  }
 
   const passwordStrength = useMemo(() => {
     const pass = formData.password;

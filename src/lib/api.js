@@ -146,7 +146,7 @@ apiInstance.interceptors.response.use(
 
         // Only redirect if on a protected route and not already on auth page
         if (isProtectedRoute && !currentPath.startsWith("/auth/")) {
-          window.location.href = "/auth/login";
+          window.location.href = `/auth/login?redirect=${encodeURIComponent(currentPath)}`;
         }
       }
     }

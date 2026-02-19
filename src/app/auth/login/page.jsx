@@ -1,24 +1,40 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
 
-const LoginPage = () => {
+// Inner component — uses useSearchParams, so it must be inside a <Suspense> boundary
+const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [showResend, setShowResend] = useState(false);
   
-  const { login } = useAuth();
+  const { login, isAuthenticated, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Fix 8: Redirect already-authenticated users away from the login page
+  useEffect(() => {
+    if (!loading && isAuthenticated) {
+      const redirect = searchParams.get('redirect') || '/dashboard';
+      router.replace(redirect);
+    }
+  }, [isAuthenticated, loading, router, searchParams]);
+
+  // While auth state is loading OR user is authenticated (redirect pending),
+  // render nothing so the login form never flashes on screen
+  if (loading || isAuthenticated) {
+    return <div className="min-h-screen bg-royal-deep" />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +44,9 @@ const LoginPage = () => {
     
     if (result.success) {
       toast.success('Welcome back to Shwapner Thikana!');
-      router.push('/');
+      // Fix 7: Honor ?redirect= param so users return to their intended page
+      const redirect = searchParams.get('redirect') || '/dashboard';
+      router.push(redirect);
     } else {
       toast.error(result.error || 'Login failed');
       if (result.error?.toLowerCase().includes('verify')) {
@@ -200,5 +218,12 @@ const LoginPage = () => {
     </div>
   );
 };
+
+// Default export wraps LoginForm in Suspense to satisfy Next.js useSearchParams requirement
+const LoginPage = () => (
+  <Suspense fallback={<div className="min-h-screen bg-royal-deep" />}>
+    <LoginForm />
+  </Suspense>
+);
 
 export default LoginPage;
