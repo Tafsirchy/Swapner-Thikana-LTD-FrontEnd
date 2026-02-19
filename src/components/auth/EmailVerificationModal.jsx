@@ -83,7 +83,7 @@ const EmailVerificationModal = ({ isOpen, onClose, userEmail }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[6000] flex items-start md:items-center justify-center p-4 pt-28 md:pt-4 overflow-y-auto">
+        <div className="fixed inset-0 z-[6000] flex items-center justify-center p-4 md:p-8 overflow-y-auto">
           {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -98,7 +98,7 @@ const EmailVerificationModal = ({ isOpen, onClose, userEmail }) => {
             initial={{ scale: 0.95, opacity: 0, y: 30 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 30 }}
-            className="relative w-full max-w-sm bg-zinc-900/90 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+            className="relative w-full max-w-sm bg-zinc-900/90 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] my-auto"
           >
             {/* Close Button - only show after successful verification */}
             {verificationStatus === 'success' && (
@@ -110,7 +110,7 @@ const EmailVerificationModal = ({ isOpen, onClose, userEmail }) => {
               </button>
             )}
 
-            <div className="p-8 md:p-8 text-center space-y-6 md:space-y-4">
+            <div className="p-6 md:p-8 text-center space-y-6 md:space-y-4">
               {/* Icon */}
               <div className="flex justify-center">
                 {verificationStatus === 'pending' && (
@@ -144,7 +144,7 @@ const EmailVerificationModal = ({ isOpen, onClose, userEmail }) => {
                     <p className="text-brand-gold font-bold mt-2 text-sm break-all bg-white/5 py-1.5 px-3 rounded-lg border border-white/5 inline-block">{userEmail || '(No email provided)'}</p>
                   </div>
 
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-4 space-y-4 md:space-y-2 text-left">
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-5 space-y-4 md:space-y-3 text-left">
                     <div className="flex items-start gap-4 md:gap-3">
                       <div className="w-8 md:w-6 h-8 md:h-6 rounded-xl md:rounded-lg bg-brand-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5 border border-brand-gold/20">
                         <span className="text-brand-gold font-bold text-sm md:text-xs">1</span>
