@@ -379,6 +379,11 @@ export const api = {
     deleteLink: (id) =>
       apiInstance.delete(`master-plan/admin/region-projects/${id}`),
   },
+  newsletter: {
+    subscribe: (data) => apiInstance.post("newsletter/subscribe", data),
+    unsubscribe: (token) => apiInstance.get(`newsletter/unsubscribe?token=${token}`),
+    getSubscribers: (params) => apiInstance.get("newsletter/subscribers", { params }),
+  },
 };
 
 export default api;

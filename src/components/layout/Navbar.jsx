@@ -169,7 +169,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-[5000] transition-all duration-300 ${
+      className={`fixed top-0 w-full z-[90] transition-all duration-300 ${
         isDashboard ? 'py-2' : 'py-3 md:py-3 lg:py-0'
       } ${
         isScrolled || isDashboard || isDetailsPage

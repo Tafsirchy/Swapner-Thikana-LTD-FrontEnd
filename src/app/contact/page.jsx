@@ -84,7 +84,7 @@ const ContactPage = () => {
               </div>
               <h3 className="text-xl font-bold text-zinc-100 mb-2">Digital Inquiry</h3>
               <p className="text-zinc-500 text-sm leading-relaxed mb-4">Shwapnerthikana@gmail.com</p>
-              <a href="mailto:Shwapnerthikana@gmail.com" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">Send Email</a>
+              <a href="mailto:shwapnerthikanaltd@gmail.com" className="text-brand-gold text-xs font-bold uppercase tracking-widest hover:underline">Send Email</a>
             </div>
           </div>
 
@@ -124,6 +124,7 @@ const ContactPage = () => {
                     <label className="text-[10px] sm:text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Phone Number</label>
                     <input 
                       type="tel" 
+                      required
                       placeholder="+880 1XXX XXXXXX"
                       className="w-full bg-zinc-900 border border-white/5 rounded-xl sm:rounded-2xl px-5 py-3 sm:px-6 sm:py-4 outline-none focus:border-brand-gold/30 transition-all text-zinc-100 text-sm sm:text-base"
                       value={formData.phone}

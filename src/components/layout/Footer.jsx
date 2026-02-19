@@ -1,13 +1,33 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin, Send } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import api from '@/lib/api';
+import { toast } from 'react-hot-toast';
 
 const Footer = () => {
   const pathname = usePathname();
+  const [footerEmail, setFooterEmail] = useState('');
+  const [footerLoading, setFooterLoading] = useState(false);
+
+  const handleFooterSubscribe = async (e) => {
+    e.preventDefault();
+    if (!footerEmail) return;
+    setFooterLoading(true);
+    try {
+      await api.newsletter.subscribe({ email: footerEmail });
+      toast.success('Subscribed! Check your inbox.');
+      setFooterEmail('');
+    } catch (err) {
+      const msg = err?.response?.data?.error || 'Subscription failed.';
+      toast.error(msg);
+    } finally {
+      setFooterLoading(false);
+    }
+  };
 
   if (pathname?.includes('/dashboard')) {
     return null;
@@ -97,7 +117,7 @@ const Footer = () => {
                 </div>
                 <div className="text-sm">
                   <span className="block text-zinc-100 font-medium">Email Address</span>
-                  <a href="mailto:info@shwapner-thikana.com" className="text-zinc-400 hover:text-brand-gold transition-colors">shwapnerthikanaltd@gmail.com</a>
+                  <a href="mailto:shwapnerthikanaltd@gmail.com" className="text-zinc-400 hover:text-brand-gold transition-colors">shwapnerthikanaltd@gmail.com</a>
                 </div>
               </li>
             </ul>
@@ -107,14 +127,19 @@ const Footer = () => {
           <div className="flex flex-col gap-6">
             <h4 className="text-brand-gold font-semibold tracking-wide uppercase text-sm">Luxury Insights</h4>
             <p className="text-zinc-400 text-sm">Subscribe for exclusive listings and market reports.</p>
-            <form className="relative mt-2" onSubmit={(e) => e.preventDefault()}>
+            <form className="relative mt-2" onSubmit={handleFooterSubscribe}>
               <input 
                 type="email" 
                 placeholder="Email address"
+                value={footerEmail}
+                onChange={(e) => setFooterEmail(e.target.value)}
+                disabled={footerLoading}
                 className="w-full bg-zinc-900 border border-brand-gold/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-gold/40 transition-colors text-zinc-100 placeholder:text-zinc-600"
               />
               <button 
-                className="absolute right-1 top-1 bottom-1 px-4 bg-brand-gold text-royal-deep rounded-lg hover:bg-brand-gold-light transition-colors active:scale-95 duration-100"
+                type="submit"
+                disabled={footerLoading}
+                className="absolute right-1 top-1 bottom-1 px-4 bg-brand-gold text-royal-deep rounded-lg hover:bg-brand-gold-light transition-colors active:scale-95 duration-100 disabled:opacity-60"
                 aria-label="Subscribe"
               >
                 <Send size={16} />

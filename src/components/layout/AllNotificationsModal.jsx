@@ -84,7 +84,7 @@ const AllNotificationsModal = ({ isOpen, onClose, onRefreshBell }) => {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+      <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-8">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}

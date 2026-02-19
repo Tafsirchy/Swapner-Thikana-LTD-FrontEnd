@@ -6,6 +6,8 @@ import { Mail, ArrowRight, Check } from 'lucide-react';
 import Image from 'next/image';
 import SmartImage from '@/components/shared/SmartImage';
 import LiquidButton from '@/components/shared/LiquidButton';
+import api from '@/lib/api';
+import { toast } from 'react-hot-toast';
 
 const FloatingParticle = ({ delay, duration, size, initialX, initialY, mouseX, mouseY }) => {
   // Parallax effect for particles based on their "depth"
@@ -112,15 +114,21 @@ const NewsletterSection = () => {
     setParticles(generatedParticles);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email) return;
     setStatus('loading');
-    setTimeout(() => {
+    try {
+      const response = await api.newsletter.subscribe({ email });
       setStatus('success');
       setEmail('');
-      setTimeout(() => setStatus('idle'), 3000);
-    }, 1500);
+      toast.success(response.message || 'Subscribed! Check your inbox for confirmation.');
+      setTimeout(() => setStatus('idle'), 4000);
+    } catch (err) {
+      setStatus('idle');
+      const msg = err?.response?.data?.message || err?.response?.data?.error || 'Subscription failed. Please try again.';
+      toast.error(msg);
+    }
   };
 
   return (
@@ -205,12 +213,12 @@ const NewsletterSection = () => {
                         transition={{ duration: 0.8 }}
                     >
                         {/* More Compact Icon */}
-                        <div className="relative w-16 h-16 mx-auto mb-6">
-                             <div className="absolute inset-0 bg-brand-gold/30 rounded-2xl blur-xl animate-pulse" />
-                             <div className="relative w-full h-full bg-black/40 border border-white/20 rounded-2xl flex items-center justify-center text-brand-gold shadow-2xl">
-                                <Mail size={28} strokeWidth={1.5} />
+                             <div className="relative w-16 h-16 mx-auto mb-6">
+                                  <div className="absolute inset-0 bg-brand-gold/30 rounded-none blur-xl animate-pulse" />
+                                  <div className="relative w-full h-full bg-black/40 border border-white/20 rounded-none flex items-center justify-center text-brand-gold shadow-2xl">
+                                     <Mail size={28} strokeWidth={1.5} />
+                                  </div>
                              </div>
-                        </div>
 
                         <span className="text-brand-gold font-bold tracking-[0.2em] sm:tracking-[0.5em] uppercase text-[10px] mb-3 block">
                             The Portfolio Briefing
@@ -240,13 +248,14 @@ const NewsletterSection = () => {
                                     className="flex-1 bg-transparent pl-6 pr-4 py-3 text-white text-base placeholder:text-zinc-600 focus:outline-none disabled:opacity-50"
                                 />
                                 
-                                <LiquidButton 
-                                     type="submit"
-                                     disabled={status === 'loading' || status === 'success'}
-                                     baseColor={status === 'success' ? 'bg-emerald-600' : 'bg-brand-gold'}
-                                     liquidColor={status === 'success' ? 'fill-white/10' : 'fill-brand-gold'}
-                                     className="!px-6 !py-3 shadow-lg shadow-brand-gold/20 w-full sm:w-auto flex-shrink-0"
-                                 >
+                                 <LiquidButton 
+                                      type="submit"
+                                      disabled={status === 'loading' || status === 'success'}
+                                      baseColor={status === 'success' ? 'bg-emerald-600' : 'bg-brand-gold'}
+                                      liquidColor={status === 'success' ? 'fill-white/10' : 'fill-brand-gold'}
+                                      rounded="rounded-none"
+                                      className="!px-6 !py-3 shadow-lg shadow-brand-gold/20 w-full sm:w-auto flex-shrink-0"
+                                  >
                                      <AnimatePresence mode="wait">
                                          {status === 'loading' ? (
                                              <motion.div 

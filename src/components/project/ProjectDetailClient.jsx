@@ -383,6 +383,19 @@ const ProjectDetailClient = ({ project }) => {
                         />
                       </div>
                       <div>
+                        <label htmlFor="desktop-project-inquiry-email" className="sr-only">Email</label>
+                        <input 
+                           id="desktop-project-inquiry-email"
+                           type="email" 
+                           required
+                           placeholder="Email Address"
+                           autoComplete="email"
+                           className="w-full h-12 bg-zinc-950/50 border border-white/5 rounded-2xl px-5 text-sm text-white placeholder:text-zinc-500 focus:border-brand-gold/50 focus:ring-2 focus:ring-brand-gold/30 focus:ring-offset-2 focus:ring-offset-transparent outline-none transition-all" 
+                           value={inquiry.email}
+                           onChange={(e) => setInquiry({...inquiry, email: e.target.value})}
+                        />
+                      </div>
+                      <div>
                         <label htmlFor="desktop-project-inquiry-phone" className="sr-only">Phone</label>
                         <input 
                            id="desktop-project-inquiry-phone"

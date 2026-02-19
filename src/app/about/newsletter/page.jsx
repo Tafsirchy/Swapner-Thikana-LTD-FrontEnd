@@ -1,16 +1,48 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Mail, Shield, CheckCircle2 } from 'lucide-react';
+import { Send, Mail, Shield, CheckCircle2, Loader2 } from 'lucide-react';
+import { api } from '@/lib/api';
+import { toast } from 'react-hot-toast';
 
 const NewsletterPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAgreed, setIsAgreed] = useState(true);
+
   const benefits = [
     "First access to off-market luxury listings",
     "Monthly architectural market analysis",
     "Private invitations to property debuts",
     "Expert tips on sustainable estate management"
   ];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!isAgreed) {
+      toast.error('Please agree to the communications terms.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await api.newsletter.subscribe({
+        name: formData.name,
+        email: formData.email
+      });
+      toast.success(response.message || 'Subscription successful! Welcome to the club.');
+      setFormData({ name: '', email: '' });
+    } catch (err) {
+      const msg = err?.response?.data?.message || err?.response?.data?.error || 'Subscription failed. Please try again.';
+      toast.error(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-royal-deep pt-24 sm:pt-32 pb-16 sm:pb-24">
@@ -45,12 +77,15 @@ const NewsletterPage = () => {
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
               
               <h3 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8 italic">Subscribe for Insights</h3>
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="space-y-2">
                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Full Name</label>
                    <input 
                     type="text" 
+                    required
                     placeholder="e.g. Rahim Ahmed" 
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
                     className="w-full bg-white/5 border border-white/10 rounded-none px-6 py-5 text-white placeholder:text-zinc-600 focus:border-brand-gold/40 outline-none transition-all"
                    />
                 </div>
@@ -58,16 +93,32 @@ const NewsletterPage = () => {
                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest ml-1">Email Address</label>
                    <input 
                     type="email" 
+                    required
                     placeholder="rahim@example.com" 
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
                     className="w-full bg-white/5 border border-white/10 rounded-none px-6 py-5 text-white placeholder:text-zinc-600 focus:border-brand-gold/40 outline-none transition-all"
                    />
                 </div>
                 <div className="flex items-center gap-3 pt-4">
-                   <input type="checkbox" id="consent" className="w-5 h-5 rounded-none border-white/10 bg-white/5 text-brand-gold focus:ring-brand-gold/20" />
+                   <input 
+                    type="checkbox" 
+                    id="consent" 
+                    checked={isAgreed}
+                    onChange={(e) => setIsAgreed(e.target.checked)}
+                    className="w-5 h-5 rounded-none border-white/10 bg-white/5 text-brand-gold focus:ring-brand-gold/20" 
+                   />
                    <label htmlFor="consent" className="text-zinc-500 text-sm">I agree to receive marketing communications and market reports.</label>
                 </div>
-                <button className="w-full bg-brand-gold text-royal-deep py-4 sm:py-5 rounded-none font-bold text-base sm:text-lg hover:bg-brand-gold-light transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-gold/10 mt-6 sm:mt-8 active:scale-[0.98]">
-                   Join the List <Send size={20} />
+                <button 
+                  disabled={isSubmitting}
+                  className="w-full bg-brand-gold text-royal-deep py-4 sm:py-5 rounded-none font-bold text-base sm:text-lg hover:bg-brand-gold-light transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-gold/10 mt-6 sm:mt-8 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                   {isSubmitting ? (
+                     <>Processing... <Loader2 className="animate-spin" size={20} /></>
+                   ) : (
+                     <>Join the List <Send size={20} /></>
+                   )}
                 </button>
               </form>
               <div className="mt-8 flex items-center justify-center gap-2 text-zinc-500 text-xs">
