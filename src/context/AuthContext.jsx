@@ -13,6 +13,15 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user is logged in on mount
   useEffect(() => {
+    // If we just redirected from Google Auth, the URL will have ?login=success
+    const urlParams = new URLSearchParams(window.location.search);
+    const isLoginSuccess = urlParams.get('login') === 'success';
+
+    if (isLoginSuccess) {
+      // Clean up the URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
     checkAuth();
 
     // Listen for global 401 errors to clear state
