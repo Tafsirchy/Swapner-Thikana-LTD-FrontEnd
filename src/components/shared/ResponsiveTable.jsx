@@ -94,7 +94,7 @@ const ResponsiveTable = ({
 
       {/* Desktop Table View */}
       <div className={`${desktopViewClass} bg-white/5 border border-white/5 rounded-[2.5rem] shadow-2xl ${tableClassName}`}>
-        <div className="overflow-x-auto min-h-[300px] overflow-visible">
+        <div className="w-full overflow-visible pb-24">
           <table className="w-full text-left border-collapse">
             <thead className="bg-white/5">
               <tr>
