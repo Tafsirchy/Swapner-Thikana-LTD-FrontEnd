@@ -13,12 +13,16 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user is logged in on mount
   useEffect(() => {
-    // If we just redirected from Google Auth, the URL will have ?login=success
+    // If we just redirected from Google Auth, the URL will have ?login=success or ?error=...
     const urlParams = new URLSearchParams(window.location.search);
     const isLoginSuccess = urlParams.get('login') === 'success';
+    const authError = urlParams.get('error');
 
     if (isLoginSuccess) {
-      // Clean up the URL
+      import('react-hot-toast').then(({ toast }) => toast.success('Welcome back to Shwapner Thikana!'));
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (authError) {
+      import('react-hot-toast').then(({ toast }) => toast.error(decodeURIComponent(authError.replace(/_/g, ' '))));
       window.history.replaceState({}, document.title, window.location.pathname);
     }
     
