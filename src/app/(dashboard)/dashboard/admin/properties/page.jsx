@@ -26,10 +26,10 @@ import RejectionModal from "@/components/shared/RejectionModal";
 import ResponsiveTable from "@/components/shared/ResponsiveTable";
 
 const statusColors = {
-  pending: "bg-yellow-500/10 text-yellow-500",
-  published: "bg-emerald-500/10 text-emerald-500",
-  rejected: "bg-red-500/10 text-red-500",
-  sold: "bg-zinc-500/10 text-zinc-500",
+  pending: "bg-amber-500/10 text-amber-500 border border-amber-500/20",
+  published: "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20",
+  rejected: "bg-rose-500/10 text-rose-500 border border-rose-500/20",
+  sold: "bg-zinc-500/10 text-zinc-500 border border-zinc-500/20",
 };
 
 const AdminPropertiesPage = () => {
@@ -300,12 +300,14 @@ const AdminPropertiesPage = () => {
           {
             key: "title",
             label: "Property",
+            className: "min-w-[280px]",
             renderCell: (property) => (
-              <div>
-                <div className="font-bold text-zinc-100 truncate max-w-[200px] xl:max-w-none">
+              <div className="py-1">
+                <div className="font-bold text-zinc-100 text-base tracking-tight truncate max-w-[240px] xl:max-w-none group-hover:text-brand-gold transition-colors">
                   {property.title}
                 </div>
-                <div className="text-xs text-zinc-500 uppercase tracking-tight mt-0.5">
+                <div className="flex items-center gap-1.5 text-[10px] text-zinc-500 font-bold uppercase tracking-wider mt-1">
+                  <MapPin size={10} className="text-brand-gold/50" />
                   {property.location.area}
                 </div>
               </div>
@@ -314,15 +316,19 @@ const AdminPropertiesPage = () => {
           {
             key: "agent",
             label: "Agent",
+            align: "center",
+            className: "min-w-[150px]",
             renderCell: (property) => (
-              <div className="text-xs">{property.agent?.name || "Unknown"}</div>
+              <div className="text-zinc-400 font-medium truncate max-w-[140px]">{property.agent?.name || "Unknown"}</div>
             ),
           },
           {
             key: "price",
             label: "Price",
+            align: "center",
+            className: "min-w-[100px]",
             renderCell: (property) => (
-              <span className="font-bold text-zinc-100">
+              <span className="font-bold text-zinc-100 text-base whitespace-nowrap">
                 ৳{(property.price / 10000000).toFixed(2)}Cr
               </span>
             ),
@@ -330,9 +336,11 @@ const AdminPropertiesPage = () => {
           {
             key: "status",
             label: "Status",
+            align: "center",
+            className: "min-w-[120px]",
             renderCell: (property) => (
               <span
-                className={`${statusColors[property.status]} px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider`}
+                className={`${statusColors[property.status]} px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-widest whitespace-nowrap`}
               >
                 {property.status}
               </span>
@@ -341,20 +349,23 @@ const AdminPropertiesPage = () => {
           {
             key: "featured",
             label: "Featured",
+            align: "center",
+            className: "w-[100px]",
             renderCell: (property) => (
               <button
                 onClick={() =>
                   handleToggleFeatured(property._id, property.featured)
                 }
-                className={`p-2 rounded-lg transition-all ${
+                className={`p-2 rounded-xl transition-all duration-300 mx-auto block ${
                   property.featured
-                    ? "bg-yellow-500/20 text-yellow-500"
-                    : "bg-white/5 text-zinc-500 hover:bg-white/10"
+                    ? "bg-amber-500/20 text-amber-500 shadow-lg shadow-amber-500/10"
+                    : "text-zinc-600 hover:text-amber-500 hover:bg-white/5"
                 }`}
               >
                 <Star
-                  size={16}
+                  size={18}
                   fill={property.featured ? "currentColor" : "none"}
+                  strokeWidth={property.featured ? 0 : 2}
                 />
               </button>
             ),
@@ -362,47 +373,51 @@ const AdminPropertiesPage = () => {
           {
             key: "actions",
             label: "Actions",
+            align: "right",
+            className: "min-w-[180px]",
             renderCell: (property) => (
-              <div className="flex items-center justify-end gap-2">
-                <Link
-                  href={`/properties/${property.slug || property._id}`}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-white"
-                  title="View"
-                >
-                  <Eye size={18} />
-                </Link>
-                <Link
-                  href={`/dashboard/admin/properties/edit/${property._id}`}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-colors text-zinc-400 hover:text-brand-gold"
-                  title="Edit"
-                >
-                  <Building2 size={18} />
-                </Link>
-                <button
-                  onClick={() => handleDelete(property._id)}
-                  className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-zinc-400 hover:text-red-500"
-                  title="Delete"
-                >
-                  <Trash2 size={18} />
-                </button>
+              <div className="flex items-center justify-end gap-1.5 ml-auto w-fit">
+                <div className="flex items-center gap-1.5 bg-white/5 p-1 rounded-xl border border-white/5">
+                  <Link
+                    href={`/properties/${property.slug || property._id}`}
+                    className="p-1.5 hover:bg-white/10 rounded-lg transition-all text-zinc-500 hover:text-white"
+                    title="View"
+                  >
+                    <Eye size={16} />
+                  </Link>
+                  <Link
+                    href={`/dashboard/admin/properties/edit/${property._id}`}
+                    className="p-1.5 hover:bg-white/10 rounded-lg transition-all text-zinc-500 hover:text-brand-gold"
+                    title="Edit"
+                  >
+                    <Building2 size={16} />
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(property._id)}
+                    className="p-1.5 hover:bg-rose-500/10 rounded-lg transition-all text-zinc-500 hover:text-rose-500"
+                    title="Delete"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
 
                 {property.status === "pending" && (
-                  <>
+                  <div className="flex items-center gap-1.5 ml-1 pl-1 border-l border-white/10">
                     <button
                       onClick={() => handleApprove(property._id)}
-                      className="p-2 rounded-lg bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-lg shadow-emerald-500/10"
+                      className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-all shadow-lg shadow-emerald-500/10"
                       title="Approve"
                     >
-                      <CheckCircle size={18} />
+                      <CheckCircle size={16} />
                     </button>
                     <button
                       onClick={() => handleReject(property._id)}
-                      className="p-2 rounded-lg bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg shadow-red-500/10"
+                      className="p-2 rounded-lg bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shadow-lg shadow-rose-500/10"
                       title="Reject"
                     >
-                      <XCircle size={18} />
+                      <XCircle size={16} />
                     </button>
-                  </>
+                  </div>
                 )}
               </div>
             ),

@@ -93,15 +93,18 @@ const ResponsiveTable = ({
       </div>
 
       {/* Desktop Table View */}
-      <div className={`${desktopViewClass} bg-white/5 border border-white/5 rounded-[2.5rem] shadow-2xl ${tableClassName}`}>
-        <div className="w-full overflow-visible pb-24">
-          <table className="w-full text-left border-collapse">
+      <div className={`${desktopViewClass} bg-white/5 border border-white/5 rounded-[2.5rem] shadow-2xl ${tableClassName} overflow-hidden`}>
+        <div className="w-full overflow-x-auto pb-4">
+          <table className="w-full text-left border-collapse min-w-[800px]">
             <thead className="bg-white/5">
               <tr>
                 {columns.map((col, i) => (
                   <th
                     key={i}
-                    className={`px-6 py-5 font-bold uppercase tracking-widest text-[10px] text-brand-gold/70 border-b border-white/5 ${col.headerClassName || ''} ${i === 0 ? 'pl-8' : ''} ${i === columns.length - 1 ? 'pr-8 text-right' : ''}`}
+                    className={`px-6 py-5 font-bold uppercase tracking-widest text-[10px] text-brand-gold border-b border-white/5 whitespace-nowrap ${col.headerClassName || ''} 
+                    ${i === 0 ? 'pl-10' : ''} 
+                    ${i === columns.length - 1 ? 'pr-10' : ''}
+                    ${col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : 'text-left'}`}
                   >
                     {col.label}
                   </th>
@@ -120,7 +123,10 @@ const ResponsiveTable = ({
                     {columns.map((col, colIndex) => (
                       <td
                         key={colIndex}
-                        className={`px-6 py-4 text-sm ${col.className || ''} ${colIndex === 0 ? 'pl-8' : ''} ${colIndex === columns.length - 1 ? 'pr-8 text-right' : ''}`}
+                        className={`px-6 py-4 text-sm ${col.className || ''} 
+                        ${colIndex === 0 ? 'pl-10' : ''} 
+                        ${colIndex === columns.length - 1 ? 'pr-10' : ''}
+                        ${col.align === 'center' ? 'text-center' : col.align === 'right' ? 'text-right' : 'text-left'}`}
                       >
                         {col.renderCell ? col.renderCell(item, rowIndex) : (
                           <span className="text-zinc-300">{item[col.key]}</span>

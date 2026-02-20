@@ -87,8 +87,9 @@ const EditPropertyPage = () => {
             address: property.location?.address || '',
             city: property.location?.city || 'Dhaka',
             area: property.location?.area || '',
-            latitude: property.location?.latitude || '',
-            longitude: property.location?.longitude || ''
+            // Mapping from coordinates object if available, otherwise from location
+            latitude: property.coordinates?.lat || property.location?.latitude || '',
+            longitude: property.coordinates?.lng || property.location?.longitude || ''
           },
           bedrooms: property.bedrooms || '',
           bathrooms: property.bathrooms || '',
@@ -183,7 +184,14 @@ const EditPropertyPage = () => {
       }
     } catch (error) {
       console.error('Error updating property:', error);
-      toast.error(error.message || 'Failed to update property');
+      const serverMessage = error.response?.data?.message;
+      const validationErrors = error.response?.data?.errors;
+      
+      if (validationErrors && Array.isArray(validationErrors)) {
+        toast.error(validationErrors[0]);
+      } else {
+        toast.error(serverMessage || error.message || 'Failed to update property');
+      }
     } finally {
       setSaving(false);
     }
