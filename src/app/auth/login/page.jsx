@@ -25,7 +25,7 @@ const LoginForm = () => {
   // Fix 8: Redirect already-authenticated users away from the login page
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      const redirect = searchParams.get('redirect') || '/dashboard';
+      const redirect = searchParams.get('redirect') || '/';
       
       // Fallback: If Next.js router hangs in production, use hard redirect after 1.5s
       const timeoutId = setTimeout(() => {
@@ -47,11 +47,11 @@ const LoginForm = () => {
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-brand-gold/30 border-t-brand-gold rounded-full animate-spin"></div>
           <p className="text-brand-gold font-cinzel tracking-widest text-sm animate-pulse">
-            {isRedirecting ? 'Redirecting to Dashboard...' : 'Verifying Account...'}
+            {isRedirecting ? 'Redirecting...' : 'Verifying Account...'}
           </p>
           {isRedirecting && (
             <button 
-              onClick={() => window.location.href = searchParams.get('redirect') || '/dashboard'}
+              onClick={() => window.location.href = searchParams.get('redirect') || '/'}
               className="text-white/40 text-[10px] hover:text-white underline transition-colors"
             >
               Click here if not redirected automatically
@@ -71,7 +71,7 @@ const LoginForm = () => {
     if (result.success) {
       toast.success('Welcome back to Shwapner Thikana!');
       // Fix 7: Honor ?redirect= param so users return to their intended page
-      const redirect = searchParams.get('redirect') || '/dashboard';
+      const redirect = searchParams.get('redirect') || '/';
       router.push(redirect);
     } else {
       toast.error(result.error || 'Login failed');
@@ -220,7 +220,7 @@ const LoginForm = () => {
 
           <div className="w-full">
             <a 
-              href="/api/auth/google"
+              href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/google`}
               className="w-full flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl transition-all text-sm font-medium text-zinc-100"
             >
               <svg size={18} viewBox="0 0 24 24" className="w-5 h-5">

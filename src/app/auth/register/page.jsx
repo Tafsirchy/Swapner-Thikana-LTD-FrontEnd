@@ -31,7 +31,7 @@ const RegisterPage = () => {
   // Fix 8: Redirect already-authenticated users away from the register page
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      router.replace('/dashboard');
+      router.replace('/');
     }
   }, [isAuthenticated, loading, router]);
 
