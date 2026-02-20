@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { Calendar, User, ArrowRight, Bookmark } from 'lucide-react';
 import LiquidButton from './LiquidButton';
 
-const BlogCard = ({ post }) => {
+const BlogCard = ({ post, variants }) => {
   const {
     title,
     slug,
@@ -21,9 +21,7 @@ const BlogCard = ({ post }) => {
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      variants={variants}
       className="group relative bg-[#0a0f1a] border border-white/5 overflow-hidden transition-all duration-700 hover:border-brand-gold/20 flex flex-col h-full"
     >
       {/* Decorative Gradient Background */}

@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Search, ChevronLeft, ChevronRight, Layout } from 'lucide-react';
 import BlogCard from '@/components/shared/BlogCard';
+import BlogCardSkeleton from '@/components/shared/BlogCardSkeleton';
 import LuxurySelect from '@/components/shared/LuxurySelect';
 import { api } from '@/lib/api';
+import { containerVariants, itemVariants } from '@/utils/animations';
 
 const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -16,7 +18,6 @@ const BlogPage = () => {
     category: '',
     page: 1,
     limit: 6
-
   });
 
   const fetchBlogs = useCallback(async () => {
@@ -124,53 +125,79 @@ const BlogPage = () => {
 
       <section>
         <div className="max-container px-4">
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-               {[...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-white/5 rounded-3xl h-[450px] animate-pulse border border-white/5"></div>
-               ))}
-            </div>
-          ) : blogs.length > 0 ? (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
-                {blogs.map((post) => (
-                  <BlogCard key={post._id} post={post} />
-                ))}
-              </div>
-              
-              {/* Pagination Controls */}
-              {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-4">
-                   <button 
-                      onClick={() => handlePageChange(Math.max(1, filters.page - 1))}
-                      disabled={filters.page === 1}
-                      aria-label="Previous page"
-                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-                   >
-                      <ChevronLeft size={20} />
-                   </button>
-                   
-                   <span className="text-xs sm:text-sm font-bold text-zinc-500 tracking-wider sm:tracking-widest">
-                      PAGE <span className="text-brand-gold">{filters.page}</span> / {totalPages}
-                   </span>
+          <div className="relative min-h-[400px]">
+            <AnimatePresence>
+              {loading ? (
+                <motion.div 
+                  key="loading"
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+                >
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div key={i} variants={itemVariants} className="h-full">
+                      <BlogCardSkeleton />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : blogs.length > 0 ? (
+                <motion.div 
+                    key="content"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+                    {blogs.map((post) => (
+                      <BlogCard key={post._id} post={post} variants={itemVariants} />
+                    ))}
+                  </div>
+                  
+                  {/* Pagination Controls */}
+                  {totalPages > 1 && (
+                    <div className="flex justify-center items-center gap-4">
+                      <button 
+                          onClick={() => handlePageChange(Math.max(1, filters.page - 1))}
+                          disabled={filters.page === 1}
+                          aria-label="Previous page"
+                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                      >
+                          <ChevronLeft size={20} />
+                      </button>
+                      
+                      <span className="text-xs sm:text-sm font-bold text-zinc-500 tracking-wider sm:tracking-widest">
+                          PAGE <span className="text-brand-gold">{filters.page}</span> / {totalPages}
+                      </span>
 
-                   <button 
-                      onClick={() => handlePageChange(Math.min(totalPages, filters.page + 1))}
-                      disabled={filters.page === totalPages}
-                      aria-label="Next page"
-                      className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-                   >
-                      <ChevronRight size={20} />
-                   </button>
-                </div>
+                      <button 
+                          onClick={() => handlePageChange(Math.min(totalPages, filters.page + 1))}
+                          disabled={filters.page === totalPages}
+                          aria-label="Next page"
+                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+                      >
+                          <ChevronRight size={20} />
+                      </button>
+                    </div>
+                  )}
+                </motion.div>
+              ) : (
+                <motion.div 
+                  key="no-results"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-center py-20 glass rounded-3xl border-white/5"
+                >
+                    <h3 className="text-2xl font-bold text-zinc-400 italic">No articles found</h3>
+                    <p className="text-zinc-500 mt-2">Try adjusting your search or check back later for new insights.</p>
+                </motion.div>
               )}
-            </>
-          ) : (
-             <div className="text-center py-20 glass rounded-3xl border-white/5">
-                <h3 className="text-2xl font-bold text-zinc-400 italic">No articles found</h3>
-                <p className="text-zinc-500 mt-2">Try adjusting your search or check back later for new insights.</p>
-             </div>
-          )}
+            </AnimatePresence>
+          </div>
         </div>
       </section>
 

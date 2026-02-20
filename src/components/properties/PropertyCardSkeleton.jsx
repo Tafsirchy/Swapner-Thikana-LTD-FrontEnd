@@ -3,9 +3,9 @@ import Skeleton from '@/components/shared/Skeleton';
 
 const PropertyCardSkeleton = () => {
   return (
-    <div className="bg-zinc-900 border border-white/5 rounded-3xl overflow-hidden h-full flex flex-col relative group">
+    <div className="group relative bg-card border border-white/10 overflow-hidden h-full flex flex-col relative">
       {/* Image Skeleton */}
-      <div className="relative h-[250px] w-full overflow-hidden">
+      <div className="relative aspect-[4/3] w-full overflow-hidden sm:m-2">
         <Skeleton className="w-full h-full rounded-none" />
         
         {/* Badges */}
@@ -15,36 +15,35 @@ const PropertyCardSkeleton = () => {
       </div>
 
       {/* Content Skeleton */}
-      <div className="p-6 flex flex-col flex-grow relative">
+      <div className="p-4 sm:p-6 flex flex-col flex-grow relative">
         {/* Price & Address */}
         <div className="mb-6">
           <Skeleton className="w-3/4 h-8 mb-2" />
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 mb-6">
              <Skeleton className="w-4 h-4 rounded-full" />
              <Skeleton className="w-1/2 h-4" />
           </div>
-        </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-3 gap-4 py-6 border-y border-white/5 mb-6">
-          <div className="text-center px-2">
-             <Skeleton className="w-8 h-8 rounded-full mx-auto mb-2" />
-             <Skeleton className="w-12 h-3 mx-auto" />
-          </div>
-          <div className="text-center px-2 border-l border-white/5">
-             <Skeleton className="w-8 h-8 rounded-full mx-auto mb-2" />
-             <Skeleton className="w-12 h-3 mx-auto" />
-          </div>
-          <div className="text-center px-2 border-l border-white/5">
-             <Skeleton className="w-8 h-8 rounded-full mx-auto mb-2" />
-             <Skeleton className="w-12 h-3 mx-auto" />
+          {/* Features Grid */}
+          <div className="flex items-center justify-between pt-6 border-t border-white/5 mb-6">
+            <div className="flex items-center gap-2">
+               <Skeleton className="w-8 h-8 rounded-full mx-auto" />
+               <Skeleton className="w-8 h-3" />
+            </div>
+            <div className="flex items-center gap-2">
+               <Skeleton className="w-8 h-8 rounded-full mx-auto" />
+               <Skeleton className="w-8 h-3" />
+            </div>
+            <div className="flex items-center gap-2">
+               <Skeleton className="w-8 h-8 rounded-full mx-auto" />
+               <Skeleton className="w-8 h-3" />
+            </div>
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="mt-auto flex items-center justify-between gap-4 pt-4">
-          <Skeleton className="w-1/3 h-10 rounded-xl" />
-          <Skeleton className="w-1/3 h-10 rounded-xl" />
+        <div className="mt-auto">
+          <Skeleton className="w-full h-11 rounded-none" />
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, Suspense } from 'react';
-import { motion } from 'framer-motion';
-import { Building2, Loader2, ChevronLeft, ChevronRight, ArrowUpDown, LayoutGrid, Map } from 'lucide-react';
+import React, { useState, useEffect, useCallback, Suspense, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Building2, Loader2, ChevronLeft, ChevronRight, ArrowUpDown, LayoutGrid, Map, Search } from 'lucide-react';
 import ProjectCard from '@/components/shared/ProjectCard';
 import ProjectCardSkeleton from '@/components/shared/ProjectCardSkeleton';
 import ProjectFilters from '@/components/projects/ProjectFilters';
@@ -12,6 +12,7 @@ import { useSearchParams } from 'next/navigation';
 import StructuredData from '@/components/seo/StructuredData';
 import dynamic from 'next/dynamic';
 import { isPointInBounds, isPointInPolygon } from '@/utils/geoUtils';
+import { containerVariants, itemVariants } from '@/utils/animations';
 
 const ProjectsMapView = dynamic(() => import('@/components/map/ProjectsMapView'), {
   ssr: false,
@@ -286,74 +287,109 @@ const ProjectsContent = () => {
                  </div>
              </div>
 
-             {loading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="h-full">
-                      <ProjectCardSkeleton />
-                    </div>
-                  ))}
-                </div>
-              ) : viewMode === 'map' ? (
-                <div className="mb-20">
-                   <div className="mb-4 flex items-center justify-between">
-                      <p className="text-zinc-400 text-sm">
-                        Showing <span className="text-zinc-100 font-bold">{visibleProjects.length}</span> projects on map
-                      </p>
-                   </div>
-                   <ProjectsMapView 
-                     projects={visibleProjects} 
-                     onMapChange={handleMapChange}
-                     onPolygonChange={handlePolygonChange}
-                   />
-                </div>
-              ) : projects.length > 0 ? (
-                <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                    {projects.map((project) => (
-                      <ProjectCard key={project._id} project={project} />
-                    ))}
-                  </div>
-    
-                  {/* Pagination Controls */}
-                  {viewMode === 'grid' && totalPages > 1 && (
-                    <div className="flex justify-center items-center gap-4 sm:gap-6 pt-4">
-                       <button 
-                          onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                          disabled={currentPage === 1}
-                          aria-label="Previous Page"
-                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
-                       >
-                         <ChevronLeft size={20} />
-                       </button>
-                       
-                       <span className="text-xs sm:text-sm font-bold text-zinc-500 tracking-[0.2em] sm:tracking-widest uppercase">
-                          PAGE <span className="text-brand-gold">{currentPage}</span> / {totalPages}
-                       </span>
-    
-                       <button 
-                          onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                          disabled={currentPage === totalPages}
-                          aria-label="Next Page"
-                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
-                       >
-                         <ChevronRight size={20} />
-                       </button>
-                    </div>
+             <div className="relative min-h-[400px]">
+               <AnimatePresence>
+                 {loading ? (
+                    <motion.div 
+                      key="loading"
+                      variants={containerVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+                    >
+                      {[...Array(6)].map((_, i) => (
+                        <motion.div key={i} variants={itemVariants} className="h-full">
+                          <ProjectCardSkeleton />
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  ) : viewMode === 'map' ? (
+                    <motion.div 
+                      key="map-view"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="mb-20"
+                    >
+                       <div className="mb-4 flex items-center justify-between">
+                          <p className="text-zinc-400 text-sm">
+                            Showing <span className="text-zinc-100 font-bold">{visibleProjects.length}</span> projects on map
+                          </p>
+                       </div>
+                       <ProjectsMapView 
+                         projects={visibleProjects} 
+                         onMapChange={handleMapChange}
+                         onPolygonChange={handlePolygonChange}
+                       />
+                    </motion.div>
+                  ) : projects.length > 0 ? (
+                    <motion.div 
+                      key="grid-view"
+                      variants={containerVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                    >
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                        {projects.map((project) => (
+                          <ProjectCard 
+                            key={project._id} 
+                            project={project} 
+                            variants={itemVariants}
+                          />
+                        ))}
+                      </div>
+        
+                      {/* Pagination Controls */}
+                      {viewMode === 'grid' && totalPages > 1 && (
+                        <div className="flex justify-center items-center gap-4 sm:gap-6 pt-4">
+                           <button 
+                              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                              disabled={currentPage === 1}
+                              aria-label="Previous Page"
+                              className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
+                           >
+                             <ChevronLeft size={20} />
+                           </button>
+                           
+                           <span className="text-xs sm:text-sm font-bold text-zinc-500 tracking-[0.2em] sm:tracking-widest uppercase">
+                              PAGE <span className="text-brand-gold">{currentPage}</span> / {totalPages}
+                           </span>
+        
+                           <button 
+                              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                              disabled={currentPage === totalPages}
+                              aria-label="Next Page"
+                              className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-brand-gold hover:border-brand-gold/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 focus-visible:ring-offset-royal-deep"
+                           >
+                             <ChevronRight size={20} />
+                           </button>
+                        </div>
+                      )}
+                    </motion.div>
+                  ) : (
+                    <motion.div 
+                      key="no-results"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="text-center py-20 glass rounded-[3rem] border-white/5"
+                    >
+                      <h3 className="text-2xl font-bold text-zinc-400 italic">No projects match your criteria</h3>
+                      <p className="text-zinc-500 mt-2">Try adjusting your filters to find what you&apos;re looking for.</p>
+                      <button 
+                        onClick={clearFilters}
+                        className="mt-6 text-brand-gold font-bold hover:underline"
+                      >
+                        Clear all filters
+                      </button>
+                    </motion.div>
                   )}
-                </>
-              ) : (
-                <div className="text-center py-20 glass rounded-[3rem] border-white/5">
-                  <h3 className="text-2xl font-bold text-zinc-400 italic">No projects match your criteria</h3>
-                  <p className="text-zinc-500 mt-2">Try adjusting your filters to find what you&apos;re looking for.</p>
-                  <button 
-                    onClick={clearFilters}
-                    className="mt-6 text-brand-gold font-bold hover:underline"
-                  >
-                    Clear all filters
-                  </button>
-                </div>
-              )}
+               </AnimatePresence>
+             </div>
           </div>
         </div>
       </section>

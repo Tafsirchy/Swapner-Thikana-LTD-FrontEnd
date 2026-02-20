@@ -89,7 +89,7 @@ const SmartImage = ({
         width={!fill ? width : undefined}
         height={!fill ? height : undefined}
         sizes={imageSizes}
-        className={`transition-opacity duration-500 z-10 ${loading ? 'opacity-0' : 'opacity-100'} ${className}`}
+        className={`transition-opacity duration-300 z-10 ${loading ? 'opacity-0' : 'opacity-100'} ${className}`}
         onLoad={() => {
           setLoading(false);
           setLastSrc(imageUrl);

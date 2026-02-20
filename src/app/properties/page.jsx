@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Search, SlidersHorizontal, LayoutGrid, List, X, Bookmark, Map, Loader2, Building2, Trash2 } from 'lucide-react';
 import PropertyCard from '@/components/shared/PropertyCard';
 import PropertyCardSkeleton from '@/components/properties/PropertyCardSkeleton';
+import { containerVariants, itemVariants } from '@/utils/animations';
 import FilterPills from '@/components/search/FilterPills';
 import SaveSearchModal from '@/components/search/SaveSearchModal';
 import LuxurySelect from '@/components/shared/LuxurySelect';
@@ -616,47 +617,79 @@ const PropertiesContent = () => {
           </div>
 
           {/* Results Section */}
-          {loading ? (
-            <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="h-full">
-                  <PropertyCardSkeleton />
-                </div>
-              ))}
-            </div>
-          ) : filteredAndSortedProperties.length === 0 ? (
-            <div className="text-center py-20 glass rounded-3xl border-white/5">
-              <div className="mx-auto w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6">
-                <Search size={32} className="text-zinc-500" />
-              </div>
-              <p className="text-2xl text-zinc-400 mb-4">No properties found</p>
-              <p className="text-zinc-500 mb-6">Try adjusting your filters or search criteria</p>
-              <button 
-                onClick={handleClearAllFilters}
-                className="px-6 py-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl font-medium hover:bg-red-500/20 hover:text-red-300 transition-all flex items-center gap-2 mx-auto"
-              >
-                <Trash2 size={16} />
-                Clear all filters
-              </button>
-            </div>
-          ) : viewMode === 'map' ? (
-            <div className="mb-12">
-              <div className="mb-4 text-zinc-300 text-sm">
-                Showing {filteredAndSortedProperties.length} {filteredAndSortedProperties.length === 1 ? 'property' : 'properties'} on map
-              </div>
-              <PropertiesMapView 
-                properties={filteredAndSortedProperties} 
-                onMapChange={(bounds) => setFilters(prev => ({ ...prev, bounds, polygon: '', page: 1 }))}
-                onPolygonChange={(polygon) => setFilters(prev => ({ ...prev, polygon, bounds: '', page: 1 }))}
-              />
-            </div>
-          ) : (
-            <div className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-              {paginatedProperties.map((property) => (
-                <PropertyCard key={property._id} property={property} />
-              ))}
-            </div>
-          )}
+          <div className="relative min-h-[400px]">
+            <AnimatePresence>
+              {loading ? (
+                <motion.div 
+                  key="loading"
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}
+                >
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div key={i} variants={itemVariants} className="h-full">
+                      <PropertyCardSkeleton />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : filteredAndSortedProperties.length === 0 ? (
+                <motion.div 
+                  key="no-results"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-center py-20 glass rounded-3xl border-white/5"
+                >
+                  <div className="mx-auto w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6">
+                    <Search size={32} className="text-zinc-500" />
+                  </div>
+                  <p className="text-2xl text-zinc-400 mb-4">No properties found</p>
+                  <p className="text-zinc-500 mb-6">Try adjusting your filters or search criteria</p>
+                  <button 
+                    onClick={handleClearAllFilters}
+                    className="px-6 py-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl font-medium hover:bg-red-500/20 hover:text-red-300 transition-all flex items-center gap-2 mx-auto"
+                  >
+                    <Trash2 size={16} />
+                    Clear all filters
+                  </button>
+                </motion.div>
+              ) : viewMode === 'map' ? (
+                <motion.div 
+                  key="map-view"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="mb-12"
+                >
+                  <div className="mb-4 text-zinc-300 text-sm">
+                    Showing {filteredAndSortedProperties.length} {filteredAndSortedProperties.length === 1 ? 'property' : 'properties'} on map
+                  </div>
+                  <PropertiesMapView 
+                    properties={filteredAndSortedProperties} 
+                    onMapChange={(bounds) => setFilters(prev => ({ ...prev, bounds, polygon: '', page: 1 }))}
+                    onPolygonChange={(polygon) => setFilters(prev => ({ ...prev, polygon, bounds: '', page: 1 }))}
+                  />
+                </motion.div>
+              ) : (
+                <motion.div 
+                  key="grid-view"
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className={`grid gap-8 mb-16 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}
+                >
+                  {paginatedProperties.map((property) => (
+                    <PropertyCard key={property._id} property={property} variants={itemVariants} />
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
           {/* Pagination */}
           {filteredAndSortedProperties.length > filters.limit && (

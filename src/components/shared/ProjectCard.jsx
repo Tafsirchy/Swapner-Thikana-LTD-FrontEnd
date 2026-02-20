@@ -12,7 +12,7 @@ import { AnimatePresence } from 'framer-motion';
 import LiquidButton from './LiquidButton';
 import { addToCompare, removeFromCompare, subscribeToCompare } from '@/utils/compareStore';
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, variants }) => {
   const { user } = useAuth();
   const [isInCompare, setIsInCompare] = useState(false);
   const [showWishlistModal, setShowWishlistModal] = useState(false);
@@ -61,9 +61,7 @@ const ProjectCard = ({ project }) => {
   return (
     <>
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
+      variants={variants}
       className="group relative bg-white/5 border border-white/10 overflow-hidden hover:border-brand-gold/30 transition-all duration-500"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden">
