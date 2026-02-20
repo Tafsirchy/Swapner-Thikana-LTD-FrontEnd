@@ -130,9 +130,8 @@ const ReviewSection = ({ propertyId }) => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
   return (
-    <div className="space-y-6 md:space-y-8">
+    <div className="space-y-6 md:space-y-6 lg:space-y-4">
       {/* Header & Stats - Mobile First */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
@@ -274,7 +273,7 @@ const ReviewSection = ({ propertyId }) => {
           </div>
         ) : (
           reviews.map((review) => (
-            <div key={review._id} className="p-5 md:p-8 bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[2.5rem] space-y-4 relative group/review">
+            <div key={review._id} className="p-5 md:p-6 lg:p-4 bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl space-y-4 relative group/review">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3 md:gap-4">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center text-brand-gold overflow-hidden shrink-0">

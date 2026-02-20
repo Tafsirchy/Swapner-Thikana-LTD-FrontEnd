@@ -152,9 +152,6 @@ const AddressAutocomplete = ({ value, onChange, onSelect, className, placeholder
                </div>
              </button>
            ))}
-           <div className="px-3 py-1 bg-black/20 text-[10px] text-zinc-600 text-right uppercase tracking-wider font-bold">
-              Powered by OpenStreetMap
-           </div>
         </div>
       )}
     </div>

@@ -22,8 +22,7 @@ const EditAgentPage = () => {
     phone: '',
     bio: '',
     image: '',
-    status: 'Verified',
-    rating: 0
+    status: 'Verified'
   });
 
   useEffect(() => {
@@ -40,8 +39,7 @@ const EditAgentPage = () => {
           phone: agent.phone || '',
           bio: agent.bio || '',
           image: agent.image || '',
-          status: agent.status || 'Verified',
-          rating: agent.rating || 0
+          status: agent.status || 'Verified'
         });
       } catch (error) {
         console.error('Error fetching agent:', error);
@@ -58,7 +56,7 @@ const EditAgentPage = () => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'rating' ? parseFloat(value) || 0 : value
+      [name]: value
     }));
   };
 
@@ -217,20 +215,6 @@ const EditAgentPage = () => {
                       className="rounded-xl"
                    />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2 font-sans italic">Performance Rating (0-5)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="5"
-                  name="rating"
-                  value={formData.rating}
-                  onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
-                />
               </div>
            </div>
         </div>

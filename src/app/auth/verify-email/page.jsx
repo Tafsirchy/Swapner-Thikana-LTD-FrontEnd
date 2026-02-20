@@ -28,12 +28,10 @@ const VerifyEmailContent = () => {
       }
 
       isVerifying.current = true;
-      console.log('Verification started for token:', token);
       
       try {
         setStatus('verifying'); // Ensure status is correctly set
         const response = await api.auth.verifyEmail(token);
-        console.log('Verification successful:', response);
         setStatus('success');
         setMessage('Registration Successful! Redirecting to login...');
         
@@ -46,27 +44,8 @@ const VerifyEmailContent = () => {
         }, 3000);
         
       } catch (error) {
-        // Log complete error for debugging
-        console.error('Verification error - Full error:', error);
-        console.error('Error response:', error.response);
-        console.error('Error message:', error.message);
-        
         // Determine error type and message
-        let errorMessage = 'Verification failed. The link may be expired.';
-        
-        if (error.response) {
-          // Server responded with error status
-          console.error('Server error data:', error.response.data);
-          errorMessage = error.response.data?.message || errorMessage;
-        } else if (error.request) {
-          // Request made but no response received
-          console.error('No response received from server');
-          errorMessage = 'Unable to connect to server. Please check your internet connection.';
-        } else {
-          // Error in request setup
-          console.error('Request setup error');
-          errorMessage = 'An unexpected error occurred. Please try again.';
-        }
+        const errorMessage = error.response?.data?.message || 'Verification failed. The link may be expired or invalid.';
         
         setStatus('error');
         setMessage(errorMessage);

@@ -495,7 +495,30 @@ const AdminDashboard = () => {
 };
 
 const DashboardPage = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-brand-gold/30 border-t-brand-gold rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!user?.role) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
+        <h2 className="text-xl font-bold text-zinc-100 mb-2">Account Configuration Pending</h2>
+        <p className="text-zinc-500 max-w-md">Your account role is being synchronized. Please try refreshing the page or contact support if this persists.</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="mt-6 px-6 py-2 bg-brand-gold text-royal-deep font-bold rounded-lg hover:bg-brand-gold-light transition-all"
+        >
+          Refresh Page
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>

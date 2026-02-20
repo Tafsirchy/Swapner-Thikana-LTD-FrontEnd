@@ -9,13 +9,8 @@ const cleanEnvVar = (val) => {
 const getBaseURL = () => {
   const envUrl = cleanEnvVar(process.env.NEXT_PUBLIC_API_URL);
   if (process.env.NODE_ENV === "production") {
-    if (!envUrl) {
-      console.error(
-        "[API] CRITICAL: NEXT_PUBLIC_API_URL is missing in production!",
-      );
-      return "/api/"; // Absolute path for Vercel internal mapping
-    }
-    return envUrl.replace(/\/?$/, "/");
+    // Force use of local proxy in production to solve cross-domain cookie issues
+    return "/api/";
   }
   return (envUrl || "http://localhost:5000/api").replace(/\/?$/, "/");
 };

@@ -58,8 +58,6 @@ const AdminUsersPage = () => {
         setTotalPages(response.data.pagination.pages);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching users:", error);
-        toast.error("Failed to load users");
         setLoading(false);
       }
     },
@@ -90,13 +88,6 @@ const AdminUsersPage = () => {
         error?.response?.data?.message ||
         error?.message ||
         "Failed to update user role";
-      console.error("[handleRoleChange] Error:", {
-        userId,
-        newRole,
-        status: error?.response?.status,
-        message: errorMessage,
-        fullError: error,
-      });
       toast.error(`Role update failed: ${errorMessage}`);
     }
   };

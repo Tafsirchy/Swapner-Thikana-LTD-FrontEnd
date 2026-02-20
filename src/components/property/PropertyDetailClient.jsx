@@ -269,7 +269,7 @@ const PropertyDetailClient = ({ initialProperty }) => {
             </div>
 
             {/* Reviews Section */}
-            <div className="p-6 md:p-10 bg-white/5 rounded-[2rem] md:rounded-[3rem] border border-white/10">
+            <div className="p-6 md:p-8 lg:p-6 bg-white/5 rounded-2xl md:rounded-3xl border border-white/10">
               <ReviewSection propertyId={property._id} />
             </div>
           </div>
@@ -364,16 +364,6 @@ const PropertyDetailClient = ({ initialProperty }) => {
                   {submitting ? <Loader2 className="animate-spin" /> : <><Send size={18} /> Send Inquiry</>}
                 </button>
               </form>
-            </div>
-
-            {/* Social Share */}
-            <div className="flex justify-center gap-4">
-              <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-zinc-300 text-sm hover:border-brand-gold transition-all">
-                <Heart size={16} /> Save
-              </button>
-              <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-zinc-300 text-sm hover:border-brand-gold transition-all">
-                <Share2 size={16} /> Share
-              </button>
             </div>
           </div>
         </div>

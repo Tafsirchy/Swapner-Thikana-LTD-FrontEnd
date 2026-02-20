@@ -79,10 +79,7 @@ const RegisterPage = () => {
     const registerData = { ...formData };
     delete registerData.confirmPassword;
     
-    // console.log('Attempting registration with data:', registerData);
     const result = await register(registerData);
-    
-    // console.log('Registration result:', result);
     
     if (result.success) {
       // Store email and show verification modal instead of redirecting

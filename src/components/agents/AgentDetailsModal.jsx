@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Phone, Briefcase, Star, ShieldCheck, MapPin } from 'lucide-react';
+import { X, Mail, Phone, Briefcase, ShieldCheck, MapPin } from 'lucide-react';
 import SmartImage from '../shared/SmartImage';
 
 const AgentDetailsModal = ({ agent, isOpen, onClose }) => {
@@ -51,9 +51,6 @@ const AgentDetailsModal = ({ agent, isOpen, onClose }) => {
                 {/* Status Badge */}
                 <div className="absolute bottom-6 left-6 z-20">
                   <div className="flex flex-col gap-2">
-                    <span className="bg-brand-gold text-royal-deep text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest inline-flex items-center gap-1">
-                      <Star size={10} fill="currentColor" /> {agent.rating || '4.9'}
-                    </span>
                     <span className="bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest inline-flex items-center gap-1">
                       <ShieldCheck size={10} /> Verified
                     </span>

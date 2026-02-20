@@ -310,10 +310,6 @@ const NearbyPlaces = ({ lat: initialLat, lng: initialLng, address, radius = 5000
             )}
          </div>
       </div>
-
-      <p className="text-[10px] text-zinc-600 text-center uppercase tracking-widest font-bold pt-4">
-        Powered by OpenStreetMap data
-      </p>
     </div>
   );
 };

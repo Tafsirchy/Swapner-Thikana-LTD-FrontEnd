@@ -84,6 +84,16 @@ const nextConfig = {
       'three': 'three'
     }
   },
+  async rewrites() {
+    return [
+      {
+        // Proxy all /api requests to the actual backend in production
+        // This solves cross-domain cookie issues by making the API same-site
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL || 'https://shwapner-thikana-backend.vercel.app/api'}/:path*`,
+      },
+    ];
+  },
 };
 
 import { createRequire } from 'module';

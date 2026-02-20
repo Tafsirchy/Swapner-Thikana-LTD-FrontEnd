@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { BookOpen, Download, Calendar, User, ArrowLeft, Loader2, Share2 } from 'lucide-react';
+import { BookOpen, Download, Calendar, User, ArrowLeft, Loader2, Share2, Copy } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { api } from '@/lib/api';
@@ -14,6 +14,7 @@ const MagazineDetailsPage = () => {
   const router = useRouter();
   const [magazine, setMagazine] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isShareHovered, setIsShareHovered] = useState(false);
 
   useEffect(() => {
     const fetchMagazine = async () => {
@@ -90,9 +91,35 @@ const MagazineDetailsPage = () => {
                    navigator.clipboard.writeText(window.location.href);
                    toast.success('Link copied to clipboard');
                 }}
-                className="p-5 bg-white/5 border border-white/10 text-zinc-300 hover:bg-white/10 transition-all active:scale-95"
+                onMouseEnter={() => setIsShareHovered(true)}
+                onMouseLeave={() => setIsShareHovered(false)}
+                className="p-5 bg-white/5 border border-white/10 text-zinc-300 hover:bg-brand-gold/10 hover:text-brand-gold hover:border-brand-gold/30 transition-all active:scale-95 duration-300"
               >
-                <Share2 size={24} />
+                <div className="relative">
+                  <motion.div
+                    initial={false}
+                    animate={{ 
+                      scale: isShareHovered ? 0 : 1,
+                      opacity: isShareHovered ? 0 : 1,
+                      rotate: isShareHovered ? -90 : 0
+                    }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Share2 size={24} />
+                  </motion.div>
+                  <motion.div
+                    initial={false}
+                    animate={{ 
+                      scale: isShareHovered ? 1 : 0,
+                      opacity: isShareHovered ? 1 : 0,
+                      rotate: isShareHovered ? 0 : 90
+                    }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <Copy size={24} />
+                  </motion.div>
+                </div>
               </button>
             </div>
           </motion.div>

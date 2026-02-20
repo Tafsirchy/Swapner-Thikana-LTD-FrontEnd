@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, Star, ArrowRight, User, Handshake } from 'lucide-react';
+import { Mail, Phone, ArrowRight, User, Handshake } from 'lucide-react';
 import { api } from '@/lib/api';
 import Image from 'next/image';
 import AgentDetailsModal from '@/components/agents/AgentDetailsModal';
@@ -102,9 +102,6 @@ const AgentsPage = () => {
                         {agent.name}
                       </h3>
                       <p className="text-zinc-500 text-sm">{agent.experience || 'Experienced'} in Field</p>
-                    </div>
-                    <div className="p-2 bg-white/5 rounded-full text-brand-gold border border-white/5">
-                      <Star size={16} fill="currentColor" />
                     </div>
                   </div>
 

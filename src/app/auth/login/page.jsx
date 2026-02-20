@@ -26,14 +26,40 @@ const LoginForm = () => {
   useEffect(() => {
     if (!loading && isAuthenticated) {
       const redirect = searchParams.get('redirect') || '/dashboard';
+      
+      // Fallback: If Next.js router hangs in production, use hard redirect after 1.5s
+      const timeoutId = setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = redirect;
+        }
+      }, 1500);
+
       router.replace(redirect);
+      return () => clearTimeout(timeoutId);
     }
   }, [isAuthenticated, loading, router, searchParams]);
 
-  // While auth state is loading OR user is authenticated (redirect pending),
-  // render nothing so the login form never flashes on screen
+  // Handle loading vs redirecting states
   if (loading || isAuthenticated) {
-    return <div className="min-h-screen bg-royal-deep" />;
+    const isRedirecting = !loading && isAuthenticated;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-royal-deep">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-brand-gold/30 border-t-brand-gold rounded-full animate-spin"></div>
+          <p className="text-brand-gold font-cinzel tracking-widest text-sm animate-pulse">
+            {isRedirecting ? 'Redirecting to Dashboard...' : 'Verifying Account...'}
+          </p>
+          {isRedirecting && (
+            <button 
+              onClick={() => window.location.href = searchParams.get('redirect') || '/dashboard'}
+              className="text-white/40 text-[10px] hover:text-white underline transition-colors"
+            >
+              Click here if not redirected automatically
+            </button>
+          )}
+        </div>
+      </div>
+    );
   }
 
   const handleSubmit = async (e) => {
@@ -194,7 +220,7 @@ const LoginForm = () => {
 
           <div className="w-full">
             <a 
-              href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/google`}
+              href="/api/auth/google"
               className="w-full flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl transition-all text-sm font-medium text-zinc-100"
             >
               <svg size={18} viewBox="0 0 24 24" className="w-5 h-5">

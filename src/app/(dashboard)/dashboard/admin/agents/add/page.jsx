@@ -20,15 +20,14 @@ const OnboardAgentPage = () => {
     phone: '',
     bio: '',
     image: '',
-    status: 'Verified',
-    rating: 0
+    status: 'Verified'
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'rating' ? parseFloat(value) || 0 : value
+      [name]: value
     }));
   };
 
@@ -184,20 +183,6 @@ const OnboardAgentPage = () => {
                       className="rounded-xl"
                    />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-brand-gold uppercase tracking-widest mb-2 font-sans italic">Initial Rating (0-5)</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  min="0"
-                  max="5"
-                  name="rating"
-                  value={formData.rating}
-                  onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-zinc-100 text-base outline-none focus:border-brand-gold/50 transition-all font-medium font-sans"
-                />
               </div>
            </div>
         </div>
