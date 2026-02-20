@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 
 /**
- * Next.js Middleware - Server-side route protection
- * Verified for: Next.js 15+ (Turbopack compatible)
+ * Next.js Proxy - Server-side route protection
+ * Updated for Next.js 16 (proxy.js convention)
  * Runs BEFORE any page renders, preventing unauthorized access to sensitive areas.
  */
-export function middleware(request) {
+export default function proxy(request) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('token');
 
