@@ -73,7 +73,7 @@ const AdminAgentsListPage = () => {
         actions={
           <Link
             href="/dashboard/admin/agents/add"
-            className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10 font-sans italic"
+            className="flex items-center gap-2 px-6 py-3 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all shadow-lg shadow-brand-gold/10 font-sans"
           >
             <PlusCircle size={18} /> ONBOARD NEW AGENT
           </Link>

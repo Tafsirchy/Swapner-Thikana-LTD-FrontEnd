@@ -259,7 +259,7 @@ const DashboardLayout = ({ children }) => {
               </nav>
             </div>
 
-            <div className="px-4 pb-20 space-y-2 border-t border-white/5 pt-4 relative z-10 bg-zinc-900">
+            <div className="px-4 mb-2 pb-20 space-y-2 border-t border-white/5 pt-4 relative z-10 bg-zinc-900">
                <button
                 type="button"
                 onClick={() => logout?.()}

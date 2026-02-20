@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, X, Mail, Phone, MapPin, Send } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import api from '@/lib/api';
 import { toast } from 'react-hot-toast';
