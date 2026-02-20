@@ -204,30 +204,30 @@ const Navbar = () => {
             {user && <NotificationBell />}
 
             {/* Auth Button */}
-            {mounted && (
-              isAuthenticated ? (
-                <LiquidButton
-                  onClick={logout}
-                  baseColor="bg-red-500/10"
-                  liquidColor="fill-red-500/20"
-                  className="!px-4 !py-1.5 border border-red-500/30 !text-red-400 !text-xs !font-semibold uppercase tracking-wider min-w-[44px] min-h-[44px] flex items-center justify-center"
-                  rounded="rounded-full"
-                >
-                  <User size={14} />
-                  Logout
-                </LiquidButton>
-              ) : (
-                <LiquidButton
-                  href="/auth/login"
-                  baseColor="bg-brand-gold/10"
-                  liquidColor="fill-brand-gold/30"
-                  className="!px-4 !py-1.5 border border-brand-gold/30 !text-brand-gold !text-xs !font-bold uppercase tracking-wider"
-                  rounded="rounded-full"
-                >
-                  <User size={14} />
-                  Login
-                </LiquidButton>
-              )
+            {!mounted ? (
+              <div className="w-[100px] h-[44px] rounded-full bg-white/10 animate-pulse border border-white/5"></div>
+            ) : isAuthenticated ? (
+              <LiquidButton
+                onClick={logout}
+                baseColor="bg-red-500/10"
+                liquidColor="fill-red-500/20"
+                className="!px-4 !py-1.5 border border-red-500/30 !text-red-400 !text-xs !font-semibold uppercase tracking-wider min-w-[44px] min-h-[44px] flex items-center justify-center"
+                rounded="rounded-full"
+              >
+                <User size={14} />
+                Logout
+              </LiquidButton>
+            ) : (
+              <LiquidButton
+                href="/auth/login"
+                baseColor="bg-brand-gold/10"
+                liquidColor="fill-brand-gold/30"
+                className="!px-4 !py-1.5 border border-brand-gold/30 !text-brand-gold !text-xs !font-bold uppercase tracking-wider min-w-[100px] h-[44px] flex items-center justify-center"
+                rounded="rounded-full"
+              >
+                <User size={14} />
+                Login
+              </LiquidButton>
             )}
           </div>
         )}
@@ -350,28 +350,28 @@ const Navbar = () => {
             
             <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-4">
                {/* Mobile Utilities */}
-              {mounted && (
-                isAuthenticated ? (
-                  <LiquidButton
-                    onClick={() => {
-                      logout();
-                      setIsOpen(false);
-                    }}
-                    baseColor="bg-red-500/10"
-                    liquidColor="fill-red-500/20"
-                    className="w-full !py-4 !text-red-500 !text-lg !font-bold"
-                  >
-                    Sign Out
-                  </LiquidButton>
-                ) : (
-                  <LiquidButton
-                    href="/auth/login"
-                    className="w-full !py-4 !text-lg !font-bold"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Login / Register
-                  </LiquidButton>
-                )
+              {!mounted ? (
+                <div className="w-full h-[60px] bg-white/5 animate-pulse rounded-none"></div>
+              ) : isAuthenticated ? (
+                <LiquidButton
+                  onClick={() => {
+                    logout();
+                    setIsOpen(false);
+                  }}
+                  baseColor="bg-red-500/10"
+                  liquidColor="fill-red-500/20"
+                  className="w-full !py-4 !text-red-500 !text-lg !font-bold"
+                >
+                  Sign Out
+                </LiquidButton>
+              ) : (
+                <LiquidButton
+                  href="/auth/login"
+                  className="w-full !py-4 !text-lg !font-bold"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Login / Register
+                </LiquidButton>
               )}
             </div>
           </motion.div>
