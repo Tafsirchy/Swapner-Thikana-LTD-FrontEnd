@@ -13,7 +13,7 @@ import NotificationBell from './NotificationBell';
 import LiquidButton from '../shared/LiquidButton';
 
 const Navbar = () => {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, loading } = useAuth();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -204,7 +204,7 @@ const Navbar = () => {
             {user && <NotificationBell />}
 
             {/* Auth Button */}
-            {!mounted ? (
+            {!mounted || loading ? (
               <div className="w-[100px] h-[44px] rounded-full bg-white/10 animate-pulse border border-white/5"></div>
             ) : isAuthenticated ? (
               <LiquidButton

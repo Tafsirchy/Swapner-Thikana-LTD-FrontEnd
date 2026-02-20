@@ -19,13 +19,19 @@ export const AuthProvider = ({ children }) => {
       const isLoginSuccess = urlParams.get('login') === 'success';
       const authError = urlParams.get('error');
       const exchangeCode = urlParams.get('code');
+      const isNewUser = urlParams.get('new') === 'true';
 
       if (isLoginSuccess && exchangeCode) {
         try {
           // Explicitly exchange the code for a cookie - this ensures the cookie is set correctly via XHR
           const response = await api.auth.googleExchange(exchangeCode);
           setUser(response.data.user);
-          import('react-hot-toast').then(({ toast }) => toast.success('Welcome back to Shwapner Thikana!'));
+          
+          const welcomeMsg = isNewUser 
+            ? 'Welcome to Shwapner Thikana! Your account has been created.' 
+            : 'Welcome back to Shwapner Thikana!';
+            
+          import('react-hot-toast').then(({ toast }) => toast.success(welcomeMsg));
         } catch (err) {
           import('react-hot-toast').then(({ toast }) => toast.error('Failed to initialize session. Please try again.'));
         }
@@ -38,7 +44,7 @@ export const AuthProvider = ({ children }) => {
         window.history.replaceState({}, document.title, window.location.pathname);
       }
       
-      checkAuth();
+      await checkAuth();
     };
 
     initAuth();
