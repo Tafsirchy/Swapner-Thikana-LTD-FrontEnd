@@ -245,7 +245,7 @@ const NewsletterSection = () => {
                                     onBlur={() => setIsFocused(false)}
                                     onChange={(e) => setEmail(e.target.value)}
                                     disabled={status === 'loading' || status === 'success'}
-                                    className="flex-1 bg-transparent pl-6 pr-4 py-3 text-white text-base placeholder:text-zinc-600 focus:outline-none disabled:opacity-50"
+                                    className="flex-1 w-full sm:w-auto bg-transparent pl-6 pr-4 h-[52px] sm:h-[56px] text-white text-base placeholder:text-zinc-600 focus:outline-none disabled:opacity-50"
                                 />
                                 
                                  <LiquidButton 
@@ -254,7 +254,7 @@ const NewsletterSection = () => {
                                       baseColor={status === 'success' ? 'bg-emerald-600' : 'bg-brand-gold'}
                                       liquidColor={status === 'success' ? 'fill-white/10' : 'fill-brand-gold'}
                                       rounded="rounded-none"
-                                      className="!px-6 !py-3 shadow-lg shadow-brand-gold/20 w-full sm:w-auto flex-shrink-0"
+                                      className="!px-6 !py-0 h-[52px] sm:h-[56px] shadow-lg shadow-brand-gold/20 w-full sm:w-auto flex-shrink-0"
                                   >
                                      <AnimatePresence mode="wait">
                                          {status === 'loading' ? (
