@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Instagram, Linkedin, X, Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin, Send } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import api from '@/lib/api';
 import { toast } from 'react-hot-toast';
@@ -56,11 +56,11 @@ const Footer = () => {
               <a href="https://www.facebook.com/share/v/1JxNwMtDdf/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Facebook">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Instagram">
+              <a href="https://www.instagram.com/shwapnerthikanaltd" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Instagram">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="X (Twitter)">
-                <X size={18} />
+              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Twitter">
+                <Twitter size={18} />
               </a>
             </div>
           </div>
