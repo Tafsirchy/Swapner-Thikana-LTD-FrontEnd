@@ -59,8 +59,8 @@ const Footer = () => {
               <a href="https://www.instagram.com/shwapnerthikanaltd" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Instagram">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Twitter">
-                <Twitter size={18} />
+              <a href="https://x.com/shwapnerthikana" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="X (Twitter)">
+                <X size={18} />
               </a>
             </div>
           </div>
