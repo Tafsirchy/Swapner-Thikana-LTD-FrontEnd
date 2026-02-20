@@ -53,7 +53,7 @@ const Footer = () => {
               sophistication, and world-class service.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Facebook">
+              <a href="https://www.facebook.com/share/v/1JxNwMtDdf/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Facebook">
                 <Facebook size={18} />
               </a>
               <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Instagram">
@@ -61,9 +61,6 @@ const Footer = () => {
               </a>
               <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="Twitter">
                 <Twitter size={18} />
-              </a>
-              <a href="#" className="p-3 rounded-full border border-brand-gold/20 text-brand-gold hover:bg-brand-gold hover:text-royal-deep transition-all duration-300" aria-label="LinkedIn">
-                <Linkedin size={18} />
               </a>
             </div>
           </div>
