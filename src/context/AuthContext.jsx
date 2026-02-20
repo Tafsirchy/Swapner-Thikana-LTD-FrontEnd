@@ -13,20 +13,35 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user is logged in on mount
   useEffect(() => {
-    // If we just redirected from Google Auth, the URL will have ?login=success or ?error=...
-    const urlParams = new URLSearchParams(window.location.search);
-    const isLoginSuccess = urlParams.get('login') === 'success';
-    const authError = urlParams.get('error');
+    const initAuth = async () => {
+      // If we just redirected from Google Auth, the URL will have ?login=success or ?error=...
+      const urlParams = new URLSearchParams(window.location.search);
+      const isLoginSuccess = urlParams.get('login') === 'success';
+      const authError = urlParams.get('error');
+      const exchangeCode = urlParams.get('code');
 
-    if (isLoginSuccess) {
-      import('react-hot-toast').then(({ toast }) => toast.success('Welcome back to Shwapner Thikana!'));
-      window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (authError) {
-      import('react-hot-toast').then(({ toast }) => toast.error(decodeURIComponent(authError.replace(/_/g, ' '))));
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-    
-    checkAuth();
+      if (isLoginSuccess && exchangeCode) {
+        try {
+          // Explicitly exchange the code for a cookie - this ensures the cookie is set correctly via XHR
+          const response = await api.auth.googleExchange(exchangeCode);
+          setUser(response.data.user);
+          import('react-hot-toast').then(({ toast }) => toast.success('Welcome back to Shwapner Thikana!'));
+        } catch (err) {
+          import('react-hot-toast').then(({ toast }) => toast.error('Failed to initialize session. Please try again.'));
+        }
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } else if (isLoginSuccess) {
+        import('react-hot-toast').then(({ toast }) => toast.success('Welcome back to Shwapner Thikana!'));
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } else if (authError) {
+        import('react-hot-toast').then(({ toast }) => toast.error(decodeURIComponent(authError.replace(/_/g, ' '))));
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      
+      checkAuth();
+    };
+
+    initAuth();
 
     // Listen for global 401 errors to clear state
     const handleLogout = () => {

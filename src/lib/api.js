@@ -154,6 +154,7 @@ export const api = {
     register: (data) => apiInstance.post("auth/register", data),
     login: (data) => apiInstance.post("auth/login", data),
     me: () => apiInstance.get("auth/me"),
+    googleExchange: (code) => apiInstance.post("auth/google/exchange", { code }),
     changePassword: (data) => apiInstance.post("auth/change-password", data),
     verifyEmail: (token) => apiInstance.post("auth/verify-email", { token }),
     resendVerification: (data) =>
