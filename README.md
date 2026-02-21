@@ -32,6 +32,28 @@ www.shwapnerthikana.com
 - **Professional Blog/Magazine**: Content platform for real estate trends and company updates.
 - **Tools**: Integrated Mortgage & Affordability calculators for users.
 
+---
+
+## 🗺️ Advanced Geospatial Features
+
+The platform integrates a sophisticated mapping system powered by **Leaflet** and **OpenStreetMap**, providing users with a premium, interactive property discovery experience.
+
+### 🔍 Interactive Search Capabilities
+- **Dynamic Area Search**: Automatically prompts users to "Search this area" as they pan or zoom the map, ensuring contextual results.
+- **Custom Polygon Drawing**: Advanced "Pencil" and "Move" tools allow users to draw precise search boundaries on the map to find properties within specific neighborhoods or custom zones.
+- **Smart Undo/Reset**: Seamless drawing experience with the ability to undo the last point or reset the entire search area.
+
+### 📍 Visualization & Interaction
+- **High-Performance Clustering**: Utilizes `react-leaflet-cluster` to elegantly handle hundreds of markers, preventing UI lag and visual clutter.
+- **Rich Media Popups**: Markers feature detailed popups with property thumbnails, pricing, status, and direct links to detail pages.
+- **Rubber-Banding UI**: Real-time visual feedback while drawing search areas for a professional, intuitive feel.
+
+### 🛠️ Administrative Precision
+- **Draggable Map Picker**: Integrated into the property/project creation flow, allowing admins to pinpoint exact coordinates by dragging a gold marker.
+- **Real-time Geocoding**: Seamlessly translates map positions into precise latitude and longitude coordinates.
+
+---
+
 ### 🔐 Authentication System
 - **Multi-Provider Auth**: Hybrid system featuring JWT-based Credentials and Google OAuth 2.0.
 - **Advanced Security**: Email verification, secure password reset, and rate-limited authentication endpoints.
