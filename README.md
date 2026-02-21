@@ -173,12 +173,5 @@ npm run dev
 
 ---
 
-## 👨‍💻 Author
-
-**Built with excellence by [Your Name/Company]**  
-A demonstration of master-level full-stack architecture, utilizing Next.js 16, React 19, and scalable Node.js patterns.
-
----
-
 ## 📄 License
 Private - © 2026 Shwapner Thikana Ltd
