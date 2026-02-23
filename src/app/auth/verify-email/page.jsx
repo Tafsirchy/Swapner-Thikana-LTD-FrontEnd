@@ -11,48 +11,48 @@ import { toast } from 'react-hot-toast';
 
 const VerifyEmailContent = () => {
   const searchParams = useSearchParams();
-  const router = useRouter(); // Add useRouter hook
+  const router = useRouter();
   const token = searchParams.get('token');
-  const [status, setStatus] = useState('verifying'); // 'verifying', 'success', 'error'
-  const [message, setMessage] = useState('Verifying your dream address...');
-  const isVerifying = useRef(false);
+  const [status, setStatus] = useState('idle'); // 'idle', 'verifying', 'success', 'error'
+  const [message, setMessage] = useState('Ready to verify your dream address.');
+
+  const runVerification = async () => {
+    if (!token) {
+      setStatus('error');
+      setMessage('Invalid verification link.');
+      return;
+    }
+
+    setStatus('verifying');
+    setMessage('Verifying your dream address...');
+    
+    try {
+      await api.auth.verifyEmail(token);
+      setStatus('success');
+      setMessage('Registration Successful! Redirecting to login...');
+      
+      // Show success toast
+      toast.success('Email Verified & Registration Complete!');
+      
+      // Redirect to login after short delay
+      setTimeout(() => {
+        router.push('/auth/login?verified=true');
+      }, 3000);
+      
+    } catch (error) {
+      // Determine error type and message
+      const errorMessage = error.response?.data?.message || 'Verification failed. The link may be expired or invalid.';
+      
+      setStatus('error');
+      setMessage(errorMessage);
+    }
+  };
 
   useEffect(() => {
-    const runVerification = async () => {
-      if (isVerifying.current || !token) {
-        if (!token) {
-          setStatus('error');
-          setMessage('Invalid verification link.');
-        }
-        return;
-      }
-
-      isVerifying.current = true;
-      
-      try {
-        setStatus('verifying'); // Ensure status is correctly set
-        const response = await api.auth.verifyEmail(token);
-        setStatus('success');
-        setMessage('Registration Successful! Redirecting to login...');
-        
-        // Show success toast
-        toast.success('Email Verified & Registration Complete!');
-        
-        // Redirect to login after short delay
-        setTimeout(() => {
-          router.push('/auth/login?verified=true');
-        }, 3000);
-        
-      } catch (error) {
-        // Determine error type and message
-        const errorMessage = error.response?.data?.message || 'Verification failed. The link may be expired or invalid.';
-        
-        setStatus('error');
-        setMessage(errorMessage);
-      }
-    };
-
-    runVerification();
+    if (!token) {
+      setStatus('error');
+      setMessage('Invalid verification link.');
+    }
   }, [token]);
 
   return (
@@ -73,6 +73,20 @@ const VerifyEmailContent = () => {
               <Image src="/logo-new.webp" alt="Shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
             </Link>
           </div>
+
+          {status === 'idle' && (
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold text-zinc-100">Verify Your Email</h2>
+              <p className="text-zinc-400">Please click the button below to confirm your email verification.</p>
+              <button
+                onClick={runVerification}
+                className="w-full py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95 shadow-lg shadow-brand-gold/20 flex items-center justify-center gap-2"
+              >
+                Confirm Verification
+                <ArrowRight size={18} />
+              </button>
+            </div>
+          )}
 
           {status === 'verifying' && (
             <div className="space-y-6">
@@ -116,8 +130,14 @@ const VerifyEmailContent = () => {
                   Back to Registration
                 </Link>
                 <Link
+                  href="/auth/login"
+                  className="w-full py-4 bg-brand-gold text-royal-deep font-bold rounded-xl hover:bg-brand-gold-light transition-all active:scale-95"
+                >
+                  Go to Login
+                </Link>
+                <Link
                   href="/"
-                  className="text-brand-gold hover:underline text-sm font-medium"
+                  className="text-brand-gold hover:underline text-sm font-medium mt-2"
                 >
                   Return to Homepage
                 </Link>

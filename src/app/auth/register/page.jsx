@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import EmailVerificationModal from '@/components/auth/EmailVerificationModal';
+import { isEmbeddedBrowser } from '@/utils/browserUtils';
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -294,6 +295,15 @@ const RegisterPage = () => {
           <div className="w-full">
             <a 
               href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/auth/google`}
+              onClick={(e) => {
+                if (isEmbeddedBrowser()) {
+                  e.preventDefault();
+                  toast.error(
+                    "Google Login is blocked inside this app's browser due to Google's security policy. Please tap the top-right menu (•••) and select 'Open in Safari' or 'Open in Chrome' to continue.",
+                    { duration: 8000, style: { maxWidth: '500px' } }
+                  );
+                }
+              }}
               className="w-full flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl transition-all text-sm font-medium text-zinc-100"
             >
               <svg size={18} viewBox="0 0 24 24" className="w-5 h-5">
