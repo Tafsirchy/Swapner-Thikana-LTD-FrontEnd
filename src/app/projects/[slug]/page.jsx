@@ -23,7 +23,7 @@ const ProjectDetailPage = async ({ params }) => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-royal-deep text-zinc-400 p-4">
         <div className="text-center max-w-md">
-          <h1 className="text-3xl font-bold text-zinc-100 mb-4">Project Not Found</h1>
+          <h1 className="text-3xl font-bold text-zinc-100 mb-4 mt-16">Project Not Found</h1>
           <p className="mb-8">The architectural project you are looking for does not exist, has been removed, or a server communication error occurred.</p>
           
           <div className="p-4 bg-white/5 rounded-2xl border border-white/10 text-xs text-left font-mono">

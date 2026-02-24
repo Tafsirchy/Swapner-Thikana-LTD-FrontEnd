@@ -8,9 +8,19 @@ const cleanEnvVar = (val) => {
 
 const getBaseURL = () => {
   const envUrl = cleanEnvVar(process.env.NEXT_PUBLIC_API_URL);
+  const fallbackSsrUrl = "https://shwapner-thikana-backend.vercel.app/api";
+
   if (process.env.NODE_ENV === "production") {
-    // Force use of local proxy in production to solve cross-domain cookie issues
-    return "/api/";
+    // 1. If running on the Server (Next.js SSR/Server Components)
+    if (typeof window === "undefined") {
+      // Must use absolute URL to backend
+      return (envUrl || fallbackSsrUrl).replace(/\/?$/, "/");
+    }
+    // 2. If running on the Client (Browser)
+    else {
+      // Force use of local proxy in production to solve cross-domain cookie issues
+      return "/api/";
+    }
   }
   return (envUrl || "http://localhost:5000/api").replace(/\/?$/, "/");
 };
@@ -63,6 +73,12 @@ apiInstance.interceptors.request.use(
 apiInstance.interceptors.response.use(
   (response) => response.data,
   async (error) => {
+    // SAFEGUARD: If config is undefined, this is a fatal setup error (like Invalid URL), not an HTTP error
+    if (!error.config) {
+      console.error("[API] Critical Axios Error (Likely Invalid URL or Setup):", error.message);
+      return Promise.reject(error);
+    }
+
     const { config, response } = error;
 
     // Configurable retry logic - can be disabled per request

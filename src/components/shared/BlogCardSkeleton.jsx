@@ -5,7 +5,7 @@ const BlogCardSkeleton = () => {
   return (
     <div className="bg-[#0a0f1a] border border-white/5 rounded-none overflow-hidden h-full flex flex-col relative group">
       {/* Image Skeleton */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
+      <div className="relative aspect-video sm:aspect-[4/3] w-full overflow-hidden">
         <Skeleton className="w-full h-full rounded-none" />
         
         {/* Floating Category Badge Skeleton */}
@@ -15,9 +15,9 @@ const BlogCardSkeleton = () => {
       </div>
 
       {/* Content Skeleton */}
-      <div className="relative px-8 pb-5 pt-8 flex-1 flex flex-col">
+      <div className="relative px-5 pb-5 pt-12 sm:px-8 sm:pt-8 flex-1 flex flex-col">
         {/* Date/Author Glass Panel Skeleton */}
-        <div className="absolute -top-5 left-4 right-4 sm:left-8 sm:right-8 bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+        <div className="absolute top-0 -translate-y-1/2 left-4 right-4 sm:left-8 sm:right-8 bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-4 sm:p-3 flex sm:flex-row items-start sm:items-center justify-between gap-1.5 sm:gap-0">
           <div className="flex items-center gap-3">
             <Skeleton className="w-4 h-4 rounded-full" />
             <Skeleton className="w-20 h-3" />
@@ -36,10 +36,10 @@ const BlogCardSkeleton = () => {
           <Skeleton className="w-4/5 h-4 mb-6" />
 
           {/* Footer Action Skeleton */}
-          <div className="mt-auto pt-3 border-t border-white/5">
-            <div className="flex items-center gap-4">
+          <div className="mt-auto pt-4 border-t border-white/5">
+            <div className="flex justify-between sm:justify-start items-center py-4 w-full gap-4">
               <Skeleton className="w-32 h-4" />
-              <Skeleton className="w-8 h-8 rounded-full ml-auto" />
+              <Skeleton className="w-10 h-10 sm:w-8 sm:h-8 rounded-full" />
             </div>
           </div>
         </div>
