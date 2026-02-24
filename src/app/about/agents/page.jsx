@@ -65,7 +65,12 @@ const AgentsPage = () => {
         {loading ? (
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
              {[...Array(3)].map((_, i) => (
-               <div key={i} className="h-[400px] bg-white/5 rounded-3xl animate-pulse border border-white/5"></div>
+               <div key={i} className="w-full aspect-[3/4] sm:aspect-[4/5] bg-zinc-900/50 rounded-none animate-pulse border border-white/5 relative overflow-hidden">
+                 <div className="absolute bottom-6 left-6 right-6 space-y-3">
+                   <div className="h-8 w-2/3 bg-white/10 rounded-lg"></div>
+                   <div className="h-4 w-1/3 bg-brand-gold/20 rounded-lg"></div>
+                 </div>
+               </div>
              ))}
            </div>
         ) : (
@@ -73,61 +78,87 @@ const AgentsPage = () => {
             {agents.map((agent, index) => (
               <motion.div
                 key={agent._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="group relative bg-zinc-900 border border-white/5 rounded-none overflow-hidden hover:border-brand-gold/30 transition-all duration-300"
+                initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="group relative w-full aspect-[3/4] sm:aspect-[4/5] rounded-none overflow-hidden bg-zinc-950 border border-white/5 hover:border-brand-gold/30 hover:shadow-[0_20px_40px_-15px_rgba(212,175,55,0.1)] transition-all duration-700"
               >
-                {/* Image */}
-                <div className="relative h-60 sm:h-64 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10"></div>
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
                   <Image 
                     src={agent.image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop'} 
                     alt={agent.name}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100 mix-blend-luminosity hover:mix-blend-normal"
                   />
-                  <div className="absolute bottom-4 left-4 z-20">
-                    <span className="bg-brand-gold text-royal-deep text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                      {agent.specialty || 'Real Estate Agent'}
-                    </span>
-                  </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-6 pb-8">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-xl font-bold text-zinc-100 group-hover:text-brand-gold transition-colors">
-                        {agent.name}
-                      </h3>
-                      <p className="text-zinc-500 text-sm">{agent.experience || 'Experienced'} in Field</p>
+                {/* Overlays */}
+                <div className="absolute inset-0 bg-gradient-to-t from-royal-deep via-royal-deep/80 to-transparent/10 opacity-100 transition-opacity duration-700 z-10 group-hover:via-royal-deep/60"></div>
+                <div className="absolute inset-0 bg-brand-gold/5 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"></div>
+                
+                {/* Specialty Badge - Top Left */}
+                <div className="absolute top-5 left-5 right-5 z-20 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
+                   <div className="bg-zinc-950/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 inline-flex items-center gap-2 shadow-2xl">
+                     <span className="w-1.5 h-1.5 rounded-full bg-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.6)] animate-pulse shrink-0"></span>
+                     <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-100 truncate">
+                       {agent.specialty || 'Real Estate Expert'}
+                     </span>
+                   </div>
+                </div>
+
+                {/* Content - Bottom Aligned */}
+                <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 flex flex-col justify-end z-20 h-full">
+                  {/* Name and Basic Info */}
+                  <div className="transform transition-transform duration-700 group-hover:-translate-y-2 mt-auto">
+                    <h3 className="text-2xl sm:text-3xl font-cinzel font-bold text-white mb-0 tracking-tight group-hover:text-brand-gold transition-colors duration-500 leading-[1.1]">
+                      {agent.name}
+                    </h3>
+                    <p className="text-brand-gold/80 text-[10px] sm:text-xs font-black tracking-widest uppercase">
+                      {agent.experience || 'Premium'} Experience
+                    </p>
+                  </div>
+
+                  {/* Hidden Details that reveal on Hover */}
+                  <div className="overflow-hidden">
+                    {/* The height animation trick */}
+                    <div className="max-h-0 opacity-0 group-hover:max-h-[350px] group-hover:opacity-100 transition-all duration-700 ease-out transform translate-y-8 group-hover:translate-y-0">
+                      
+                      <div className="w-12 h-px bg-brand-gold/30 my-2"></div>
+
+                      <p className="text-zinc-300 text-xs sm:text-sm leading-relaxed line-clamp-3 mb-3 font-serif italic selection:bg-brand-gold/30">
+                        "{agent.bio || 'Dedicated professional committed to delivering exceptional service and results in the luxury real estate market.'}"
+                      </p>
+
+                      <div className="flex flex-col gap-2 mb-5">
+                        <a href={`mailto:${agent.email}`} className="flex items-center gap-3 text-xs tracking-wider text-zinc-400 hover:text-white transition-colors group/link py-1 rounded-lg">
+                          <div className="w-7 h-7 shrink-0 rounded-full border border-white/10 flex items-center justify-center group-hover/link:border-brand-gold group-hover/link:text-brand-gold transition-colors">
+                            <Mail size={12} />
+                          </div>
+                          <span className="truncate">{agent.email}</span>
+                        </a>
+                        <a href={`tel:${agent.phone}`} className="flex items-center gap-3 text-xs tracking-wider text-zinc-400 hover:text-white transition-colors group/link py-1.5 rounded-lg">
+                          <div className="w-7 h-7 shrink-0 rounded-full border border-white/10 flex items-center justify-center group-hover/link:border-brand-gold group-hover/link:text-brand-gold transition-colors">
+                            <Phone size={12} />
+                          </div>
+                          <span className="truncate">{agent.phone}</span>
+                        </a>
+                      </div>
+                      
+                      <button 
+                        onClick={() => handleViewProfile(agent)}
+                        className="w-full h-12 rounded-xl bg-brand-gold/10 text-brand-gold border border-brand-gold/30 font-bold text-xs tracking-widest uppercase hover:bg-brand-gold hover:text-royal-deep transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-sm"
+                      >
+                        Explore Profile
+                        <ArrowRight size={14} />
+                      </button>
+
                     </div>
                   </div>
-
-                  <p className="text-zinc-400 text-sm mb-6 line-clamp-2">
-                    {agent.bio || 'Dedicated professional commitment to delivering exceptional service and results in the real estate market.'}
-                  </p>
-
-                  <div className="space-y-3 mb-6">
-                    <a href={`mailto:${agent.email}`} className="flex items-center gap-3 text-sm text-zinc-400 hover:text-white transition-colors">
-                      <Mail size={16} className="text-brand-gold" />
-                      {agent.email}
-                    </a>
-                    <a href={`tel:${agent.phone}`} className="flex items-center gap-3 text-sm text-zinc-400 hover:text-white transition-colors">
-                      <Phone size={16} className="text-brand-gold" />
-                      {agent.phone}
-                    </a>
-                  </div>
-
-                  <button 
-                    onClick={() => handleViewProfile(agent)}
-                    className="w-full py-3 rounded-xl bg-white/5 border border-white/5 text-zinc-100 font-bold hover:bg-brand-gold hover:text-royal-deep hover:border-brand-gold transition-all flex items-center justify-center gap-2"
-                  >
-                    View Profile
-                    <ArrowRight size={16} />
-                  </button>
                 </div>
+
+                {/* Decorative Elements */}
+                <div className="absolute top-0 left-0 w-full h-full border border-white/0 group-hover:border-white/10 rounded-none pointer-events-none transition-colors duration-500 z-30"></div>
               </motion.div>
             ))}
           </div>
