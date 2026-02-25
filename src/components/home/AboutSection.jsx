@@ -257,7 +257,8 @@ const AboutSection = () => {
                           src={leader.image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a'}
                           alt={leader.name}
                           fill
-                          priority={i === activeIndex}
+                          priority
+                          unoptimized
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
                           className="object-cover"
                         />
@@ -403,6 +404,7 @@ const AboutSection = () => {
                                 src={project.images?.[0] || '/placeholder.jpg'}
                                 alt={project.title}
                                 fill
+                                unoptimized
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />

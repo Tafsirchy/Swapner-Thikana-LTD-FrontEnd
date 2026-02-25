@@ -75,8 +75,23 @@ const FeatureShowcase = () => {
 
   if (loading) {
     return (
-      <section className="py-24 bg-royal-deep text-white flex justify-center items-center min-h-[600px]">
-        <Loader2 className="animate-spin text-brand-gold" size={48} />
+      <section className="py-12 md:pt-20 md:pb-24 bg-royal-deep text-white overflow-hidden relative min-h-[700px]">
+        <div className="max-container px-4 relative z-10 w-full">
+            <div className="mb-10 md:mb-16 text-center animate-pulse">
+                <div className="h-4 w-32 bg-white/5 mx-auto mb-4 rounded" />
+                <div className="h-12 w-64 md:w-96 bg-white/10 mx-auto mb-6 rounded" />
+                <div className="w-24 h-1 bg-white/5 mx-auto" />
+            </div>
+            <div className="h-[500px] md:h-[600px] lg:h-[700px]">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
+                    <div className="lg:col-span-8 relative h-full bg-white/5 border border-white/5 animate-pulse rounded-sm" />
+                    <div className="lg:col-span-4 hidden lg:grid grid-cols-[1.6fr_0.9fr] gap-4 h-full">
+                        <div className="bg-white/5 border border-white/5 animate-pulse rounded-sm" />
+                        <div className="bg-white/5 border border-white/5 animate-pulse rounded-sm" />
+                    </div>
+                </div>
+            </div>
+        </div>
       </section>
     );
   }
@@ -132,6 +147,7 @@ const FeatureShowcase = () => {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1000px"
                     className="object-cover"
                     priority
+                    unoptimized
                   />
                   {/* Subtle Gradient Overlay */}
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-500" />
@@ -224,6 +240,8 @@ const FeatureShowcase = () => {
                         fill
                         sizes="(max-width: 1024px) 100vw, 400px"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        priority
+                        unoptimized
                     />
                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                   </div>

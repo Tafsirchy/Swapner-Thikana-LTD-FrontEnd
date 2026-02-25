@@ -14,6 +14,7 @@ const SmartImage = ({
   className = '', 
   priority = false,
   noBg = false,
+  unoptimized = false,
   fallbackSrc = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200' 
 }) => {
   const [error, setError] = useState(false);
@@ -102,6 +103,7 @@ const SmartImage = ({
         }}
         priority={priority}
         loading={priority ? 'eager' : 'lazy'}
+        unoptimized={unoptimized}
       />
 
       {error && (
