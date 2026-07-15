@@ -147,7 +147,6 @@ const FeatureShowcase = () => {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 1000px"
                     className="object-cover"
                     priority
-                    unoptimized
                   />
                   {/* Subtle Gradient Overlay */}
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-500" />
@@ -241,7 +240,6 @@ const FeatureShowcase = () => {
                         sizes="(max-width: 1024px) 100vw, 400px"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                         priority
-                        unoptimized
                     />
                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
                   </div>

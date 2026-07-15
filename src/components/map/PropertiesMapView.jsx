@@ -7,7 +7,7 @@ import L from 'leaflet';
 import { Pencil, Move, RotateCcw, Search as SearchIcon } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
 import Link from 'next/link';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 
 // Fix for default marker icons
 if (typeof window !== 'undefined') {
@@ -233,7 +233,7 @@ const PropertiesMapView = ({ properties, onMapChange, onPolygonChange }) => {
                     <div className="w-full">
                       {property.images?.[0] && (
                         <div className="relative w-full h-32 mb-2 rounded-lg overflow-hidden">
-                          <Image
+                          <SmartImage
                             src={property.images[0]}
                             alt={property.title}
                             fill

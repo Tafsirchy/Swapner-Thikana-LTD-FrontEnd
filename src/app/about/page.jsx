@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Award, Users, Gem, ArrowRight, Crown, Cpu, Megaphone, Briefcase, Settings } from 'lucide-react';
 
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 
@@ -78,7 +78,7 @@ const AboutPage = () => {
               viewport={{ once: true }}
               className="relative aspect-[4/5] rounded-none overflow-hidden border border-white/10"
             >
-              <Image 
+              <SmartImage 
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" 
                 alt="Our Office" 
                 fill 
@@ -252,7 +252,7 @@ const AboutPage = () => {
                     >
                       <div className="relative group overflow-hidden bg-zinc-950/40 backdrop-blur-3xl p-4 ring-1 ring-white/5">
                         <div className="relative aspect-square overflow-hidden grayscale contrast-125 hover:grayscale-0 transition-all duration-1000">
-                          <Image 
+                          <SmartImage 
                             src={leader.image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200'} 
                             alt={leader.name} 
                             fill 
@@ -287,7 +287,7 @@ const AboutPage = () => {
                     >
                       <div className="relative group overflow-hidden bg-zinc-950/40 backdrop-blur-3xl p-4 ring-1 ring-white/5">
                         <div className="relative aspect-square overflow-hidden grayscale contrast-125 hover:grayscale-0 transition-all duration-1000">
-                          <Image src={leaders[1].image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200'} alt={leaders[1].name} fill className="object-cover" />
+                          <SmartImage src={leaders[1].image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200'} alt={leaders[1].name} fill className="object-cover" />
                         </div>
                         <div className="mt-6 flex flex-col items-center text-center">
                             <div className="mb-4 p-2 rounded-full bg-brand-gold/5 border border-brand-gold/10 text-brand-gold/40 group-hover:text-brand-gold transition-colors duration-500">
@@ -339,7 +339,7 @@ const AboutPage = () => {
                     >
                       <div className="relative group overflow-hidden bg-zinc-950 p-3 ring-1 ring-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]">
                         <div className="relative aspect-[4/5] overflow-hidden">
-                          <Image src={leaders[0].image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1200'} alt={leaders[0].name} fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-[2s] group-hover:scale-105" />
+                          <SmartImage src={leaders[0].image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1200'} alt={leaders[0].name} fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-[2s] group-hover:scale-105" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
                         </div>
 
@@ -369,7 +369,7 @@ const AboutPage = () => {
                     >
                       <div className="relative group overflow-hidden bg-zinc-950 p-6 shadow-2xl border border-white/5">
                         <div className="relative aspect-[16/9] overflow-hidden rounded-sm">
-                          <Image src={leaders[3].image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1200'} alt={leaders[3].name} fill className="object-cover grayscale group-hover:grayscale-0 transition-transform duration-[2s] group-hover:scale-110" />
+                          <SmartImage src={leaders[3].image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1200'} alt={leaders[3].name} fill className="object-cover grayscale group-hover:grayscale-0 transition-transform duration-[2s] group-hover:scale-110" />
                           <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-1000 z-10"></div>
                         </div>
                         <div className="mt-8 flex items-center justify-between relative z-20">
@@ -399,7 +399,7 @@ const AboutPage = () => {
                     >
                       <div className="relative group">
                         <div className="aspect-[3/4] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-[1.2s] relative shadow-2xl ring-1 ring-white/10">
-                          <Image src={leaders[2].image || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200'} alt={leaders[2].name} fill className="object-cover scale-110 group-hover:scale-100 transition-all duration-[1.2s]" />
+                          <SmartImage src={leaders[2].image || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1200'} alt={leaders[2].name} fill className="object-cover scale-110 group-hover:scale-100 transition-all duration-[1.2s]" />
                           <div className="absolute inset-0 bg-brand-gold/10 mix-blend-overlay"></div>
                         </div>
                         <div className="absolute left-0 sm:-left-8 bottom-16 p-4 sm:p-6 bg-zinc-950 ring-1 ring-white/10 shadow-2xl backdrop-blur-xl flex gap-6 sm:gap-8 items-center transition-all duration-500 group-hover:ring-brand-gold/50 z-20">

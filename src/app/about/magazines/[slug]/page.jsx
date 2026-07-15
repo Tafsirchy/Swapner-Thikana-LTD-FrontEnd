@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { BookOpen, Download, Calendar, User, ArrowLeft, Loader2, Share2, Copy } from 'lucide-react';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import Link from 'next/link';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
@@ -65,7 +65,7 @@ const MagazineDetailsPage = () => {
             className="lg:col-span-5"
           >
             <div className="relative aspect-[3/4] overflow-hidden shadow-2xl shadow-black/50 border border-white/5 group">
-              <Image 
+              <SmartImage 
                 src={magazine.coverImage || '/placeholder-magazine.jpg'}
                 alt={magazine.title}
                 fill

@@ -13,7 +13,7 @@ import {
   Sparkles,
   CheckCircle2
 } from 'lucide-react';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import Link from 'next/link';
 
 const PHILOSOPHY_DATA = {
@@ -180,7 +180,7 @@ const PhilosophyDetailPage = () => {
             >
               <div className="absolute inset-0 border-2 border-brand-gold/20 -translate-x-6 translate-y-6 z-0"></div>
               <div className="relative z-10 w-full h-full overflow-hidden shadow-2xl shadow-black/50">
-                <Image 
+                <SmartImage 
                   src={data.image}
                   alt={data.title}
                   fill
@@ -230,7 +230,7 @@ const PhilosophyDetailPage = () => {
                 </h2>
                 <div className="flex items-center justify-center gap-4 pt-4">
                     <div className="w-12 h-12 rounded-full overflow-hidden relative border-2 border-brand-gold">
-                        <Image src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1200" alt="CEO" fill className="object-cover" />
+                        <SmartImage src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1200" alt="CEO" fill className="object-cover" />
                     </div>
                     <div className="text-left">
                         <span className="block text-zinc-100 font-bold uppercase tracking-widest text-xs">Tafsir Chowdhury</span>

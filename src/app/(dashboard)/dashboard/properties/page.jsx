@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Building2, PlusCircle, Edit, Trash2, Eye, Filter } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import SmartImage from '@/components/shared/SmartImage';
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';

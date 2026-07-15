@@ -8,8 +8,7 @@ import {
   CheckCircle2, Users, Layers,
   Compass, Milestone, Trees, Layout
 } from 'lucide-react';
-import Image from 'next/image';
-import SmartImage from './SmartImage';
+import SmartImage from '@/components/shared/SmartImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { useAuth } from '@/hooks/useAuth';

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Globe, ExternalLink, Building2, ArrowRight } from 'lucide-react';
 import { api } from '@/lib/api';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 
 const AgenciesPage = () => {
   const [agencies, setAgencies] = useState([]);
@@ -70,7 +70,7 @@ const AgenciesPage = () => {
             >
               {/* Background Immersive Image */}
               <div className="absolute inset-0 z-0">
-                <Image
+                <SmartImage
                   src={agency.image || agency.logo || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000"}
                   alt={agency.name}
                   fill

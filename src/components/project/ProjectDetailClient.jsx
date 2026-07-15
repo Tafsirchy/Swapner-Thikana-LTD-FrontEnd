@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import SmartImage from '../shared/SmartImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 

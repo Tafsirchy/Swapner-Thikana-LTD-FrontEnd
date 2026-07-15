@@ -7,7 +7,7 @@ import {
   Building2, MapPin, DollarSign, Image as ImageIcon, 
   CheckCircle, ArrowRight, ArrowLeft, Save, Loader2, Star 
 } from 'lucide-react';
-// import Image from 'next/image'; // Unused
+// import SmartImage from '@/components/shared/SmartImage'; // Unused
 import SmartImage from '@/components/shared/SmartImage';
 
 import { api } from '@/lib/api';

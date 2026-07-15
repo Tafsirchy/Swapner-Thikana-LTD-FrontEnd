@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import { Facebook, Instagram, Linkedin, X, Mail, Phone, MapPin, Send } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import api from '@/lib/api';
@@ -46,7 +46,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="flex flex-col gap-6">
             <Link href="/" className="inline-block shrink-0">
-              <Image src="/logo-new.webp" alt="Shwapner Thikana" width={120} height={80} className="h-16 md:h-20 w-auto object-contain" />
+              <SmartImage src="/logo-new.webp" alt="Shwapner Thikana" width={120} height={80} className="h-16 md:h-20 w-auto object-contain" />
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed max-w-xs">
               Excellence in luxury real estate. We guide you to your dream address with integrity, 

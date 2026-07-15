@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, X, Loader2, Pencil } from 'lucide-react';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import SmartImage from './SmartImage';
 import { toast } from 'react-hot-toast';
 

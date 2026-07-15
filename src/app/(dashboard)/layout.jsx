@@ -10,7 +10,7 @@ import {
   BarChart3, Bell, MessageSquare, ChevronDown, ChevronUp, Info, LogOut, Home, Map, User
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import DashboardPageHeader from '@/components/dashboard/DashboardPageHeader';
 import SmartImage from '@/components/shared/SmartImage';

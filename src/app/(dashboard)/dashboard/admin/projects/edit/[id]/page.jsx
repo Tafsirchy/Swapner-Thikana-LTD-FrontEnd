@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Building2, Save, X, Plus, Trash2, MapPin, Type, Calendar, Info, Loader2, Edit2, Upload, Home } from 'lucide-react';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';
@@ -646,7 +646,7 @@ const EditProjectPage = () => {
 
                        return (
                         <div key={index} className="relative group rounded-xl overflow-hidden aspect-video bg-zinc-900 border border-white/5">
-                           <Image src={imageUrl} alt="" fill className="object-cover" />
+                           <SmartImage src={imageUrl} alt="" fill className="object-cover" />
                             <button 
                                type="button"
                                onClick={async () => {

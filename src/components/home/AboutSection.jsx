@@ -258,7 +258,6 @@ const AboutSection = () => {
                           alt={leader.name}
                           fill
                           priority
-                          unoptimized
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
                           className="object-cover"
                         />
@@ -404,13 +403,12 @@ const AboutSection = () => {
                                 src={project.images?.[0] || '/placeholder.jpg'}
                                 alt={project.title}
                                 fill
-                                unoptimized
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             
-                            {/* Glass Overlay on Hover */}
-                            <div className="absolute inset-x-4 bottom-4 bg-black/80 md:bg-black/60 lg:backdrop-blur-md rounded-xl p-6 translate-y-[110%] group-hover:translate-y-0 transition-transform duration-500 flex justify-between items-center border border-white/10 z-20">
+                            {/* Glass Overlay (Always visible on mobile/tablet, hover on desktop) */}
+                            <div className="absolute inset-x-4 bottom-4 bg-black/80 lg:bg-black/60 lg:backdrop-blur-md rounded-xl p-4 lg:p-6 translate-y-0 lg:translate-y-[110%] lg:group-hover:translate-y-0 transition-transform duration-500 flex justify-between items-center border border-white/10 z-20">
                                 <div>
                                     <h4 className="text-white text-xl font-bold mb-1">{project.title}</h4>
                                     <div className="flex items-center gap-2 text-zinc-300 text-xs uppercase tracking-wider">

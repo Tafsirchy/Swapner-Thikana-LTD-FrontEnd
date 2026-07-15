@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, ArrowRight, User, Handshake } from 'lucide-react';
 import { api } from '@/lib/api';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import AgentDetailsModal from '@/components/agents/AgentDetailsModal';
 
 const AgentsPage = () => {
@@ -85,7 +85,7 @@ const AgentsPage = () => {
               >
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
-                  <Image 
+                  <SmartImage 
                     src={agent.image || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop'} 
                     alt={agent.name}
                     fill

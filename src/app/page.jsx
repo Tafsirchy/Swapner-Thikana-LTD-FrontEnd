@@ -1,9 +1,8 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import SmartImage from '@/components/shared/SmartImage';
+import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import { Search, MapPin, Building, Users, Star } from 'lucide-react';
 import FeatureShowcase from '@/components/home/FeatureShowcase';
 import AboutSection from '@/components/home/AboutSection';
@@ -124,7 +123,7 @@ export default function Home() {
             }}
             className="absolute inset-0"
           >
-            <Image
+            <SmartImage
               src="/luxury_home_hero.webp"
               alt="Luxury Home Hero"
               fill

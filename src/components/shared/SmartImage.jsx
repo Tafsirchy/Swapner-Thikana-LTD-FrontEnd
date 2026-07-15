@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { ImageIcon } from 'lucide-react';
 
 const SmartImage = ({ 
   src, 
@@ -15,115 +14,60 @@ const SmartImage = ({
   priority = false,
   noBg = false,
   unoptimized = false,
-  fallbackSrc = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200' 
+  title,
+  fallbackSrc = '/assets/fallback.svg' 
 }) => {
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+
   // Handle both string and structured object sources
-  const imageUrl = (typeof src === 'object' && src !== null 
+  let imageUrl = (typeof src === 'object' && src !== null 
     ? (
-        width < 450 && src.thumbnail ? src.thumbnail :
-        width < 900 && src.medium ? src.medium :
+        (width && width < 450) && src.thumbnail ? src.thumbnail :
+        (width && width < 900) && src.medium ? src.medium :
         src.original || src.url
       )
     : src) || fallbackSrc;
 
-  const [lastSrc, setLastSrc] = useState(imageUrl);
-  const [isChanging, setIsChanging] = useState(false);
+  // Validate dynamic URL (prevent empty or undefined passing through)
+  if (!imageUrl || imageUrl === 'undefined' || imageUrl === 'null') {
+     imageUrl = fallbackSrc;
+  }
 
-  // Auto-generate alt text if missing
-  const displayAlt = alt || (typeof imageUrl === 'string' ? 
-    imageUrl.split('/').pop()?.split('.')?.[0]?.replace(/[-_]/g, ' ') || 'Luxury Property' 
-    : 'Luxury Property');
+  // Auto-generate alt text if missing (Rule: every img must have meaningful alt)
+  const displayAlt = alt !== undefined ? alt : (typeof imageUrl === 'string' ? 
+    imageUrl.split('/').pop()?.split('.')?.[0]?.replace(/[-_]/g, ' ') || 'Image' 
+    : 'Image');
 
-  // Loading guard for smooth transitions
-  React.useEffect(() => {
-    if (imageUrl !== lastSrc) {
-      setIsChanging(true);
-      setLoading(true);
-    }
-  }, [imageUrl, lastSrc]);
-
-  // Calculate standard sizes if not provided
+  // Calculate standard sizes if not provided (Rule: srcset and sizes attributes)
+  // Next.js automatically generates srcset based on sizes.
   const imageSizes = sizes || (fill ? '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw' : undefined);
 
+  // Parse custom classes that shouldn't be on the wrapper but on the img or vice versa
+  const roundedClass = className.split(' ').find(c => c.startsWith('rounded')) || '';
+  
   return (
     <div 
-      className={`relative overflow-hidden ${!noBg ? 'bg-zinc-900/50' : ''} ${fill ? 'w-full h-full' : ''}`}
-      style={!fill ? { width, height } : undefined}
+      className={`image-wrapper ${!noBg ? 'bg-[#f0f0f0]' : '!bg-transparent'} ${roundedClass} ${fill ? 'w-full h-full' : ''}`}
+      style={!fill ? { width: width ? `${width}px` : '100%', height: height ? `${height}px` : '100%', aspectRatio: width && height ? `${width}/${height}` : undefined } : undefined}
     >
-      {/* Previous Image (Loading Guard) */}
-      {isChanging && lastSrc && (
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={lastSrc}
-            alt=""
-            fill={fill}
-            width={!fill ? width : undefined}
-            height={!fill ? height : undefined}
-            className={`object-cover ${className}`}
-            priority={priority}
-            sizes={imageSizes}
-          />
-        </div>
-      )}
-
-      {loading && (
-        <div className="absolute inset-0 z-0 overflow-hidden bg-zinc-900/40 flex items-center justify-center">
-            {/* Shimmer Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
-            
-            {/* Central Loader - Slightly smaller for detail views */}
-            <div className="relative scale-75">
-                <div className="w-12 h-12 rounded-full border border-brand-gold/10 flex items-center justify-center">
-                    <div className="w-8 h-8 rounded-full border-2 border-brand-gold/20 border-t-brand-gold animate-spin" />
-                </div>
-            </div>
-        </div>
-      )}
-      
       <Image
         key={imageUrl}
         src={error ? fallbackSrc : imageUrl}
         alt={displayAlt}
-        fill={fill}
-        width={!fill ? width : undefined}
-        height={!fill ? height : undefined}
+        title={title}
+        fill={true}
         sizes={imageSizes}
-        className={`transition-opacity duration-300 z-10 ${loading ? 'opacity-0' : 'opacity-100'} ${className}`}
-        onLoad={() => {
-          setLoading(false);
-          setLastSrc(imageUrl);
-          setIsChanging(false);
-        }}
-        onError={() => {
+        className={`object-cover object-center w-full h-full block ${className}`}
+        onError={(e) => {
            setError(true);
-           setLoading(false);
-           setIsChanging(false);
+           e.target.onerror = null;
+           e.target.src = fallbackSrc;
         }}
         priority={priority}
         loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
         unoptimized={unoptimized}
       />
-
-      {error && (
-        <div className="absolute inset-0 bg-zinc-950 flex flex-col items-center justify-center gap-3 z-20">
-          <ImageIcon className="text-zinc-800" size={32} />
-          <span className="text-[10px] font-bold text-zinc-700 uppercase tracking-[0.3em]">Visual Unavailable</span>
-        </div>
-      )}
-
-      {/* Dev-only Image Monitoring Overlay */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="absolute bottom-1 right-1 z-30 pointer-events-none opacity-0 hover:opacity-100 transition-opacity">
-          <div className="bg-black/80 text-[8px] text-white px-1.5 py-0.5 rounded font-mono border border-white/10 flex flex-col items-end">
-             <span>{width}x{height}</span>
-             <span className={typeof src === 'object' ? 'text-brand-gold' : 'text-zinc-400'}>
-               {typeof src === 'object' ? 'Optimized Object' : 'Native String'}
-             </span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

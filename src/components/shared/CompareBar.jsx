@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Trash2, X, ArrowRight, Layers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { subscribeToCompare, removeFromCompare, clearCompare } from '@/utils/compareStore';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 
 const CompareBar = () => {
   const router = useRouter();
@@ -44,7 +44,7 @@ const CompareBar = () => {
                   animate={{ x: 0, opacity: 1 }}
                   className="relative w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl border-2 md:border-4 border-royal-deep overflow-hidden shadow-lg group"
                 >
-                  <Image
+                  <SmartImage
                     src={(() => {
                       const img = item.images?.[0];
                       if (!img) return 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop';

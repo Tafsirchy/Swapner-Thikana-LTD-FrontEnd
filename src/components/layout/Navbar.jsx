@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import { Menu, X, Heart, User } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 
@@ -249,7 +249,7 @@ const Navbar = () => {
               className="flex items-center absolute left-1/2 -translate-x-1/2"
               onClick={() => setIsOpen(false)}
             >
-                <Image src="/logo-new.webp" alt="Shwapner Thikana" width={110} height={64} className="h-12 sm:h-14 w-auto object-contain transition-all" priority />
+                <SmartImage src="/logo-new.webp" alt="Shwapner Thikana" width={110} height={64} className="h-12 sm:h-14 w-auto object-contain transition-all" priority />
             </Link>
 
             {/* Mobile Utilities */}
@@ -272,7 +272,7 @@ const Navbar = () => {
             {/* Centered Logo */}
             <div className="flex justify-center">
               <Link href="/" className="hover:scale-105 transition-transform duration-300">
-                  <Image src="/logo-new.webp" alt="Shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain" priority />
+                  <SmartImage src="/logo-new.webp" alt="Shwapner Thikana" width={160} height={90} className="h-24 w-auto object-contain" priority />
               </Link>
             </div>
 
@@ -287,7 +287,7 @@ const Navbar = () => {
         {/* Dashboard Logo View (Keep simple) */}
         {isDashboard && (
            <Link href="/" className="hidden lg:flex items-center mr-auto">
-               <Image src="/logo-new.webp" alt="Shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
+               <SmartImage src="/logo-new.webp" alt="Shwapner Thikana" width={96} height={56} className="h-12 w-auto object-contain" />
            </Link>
         )}
       </div>

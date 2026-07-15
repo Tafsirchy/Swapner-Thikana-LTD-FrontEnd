@@ -3,7 +3,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { Mail, ArrowRight, Check } from 'lucide-react';
-import Image from 'next/image';
 import SmartImage from '@/components/shared/SmartImage';
 import LiquidButton from '@/components/shared/LiquidButton';
 import api from '@/lib/api';

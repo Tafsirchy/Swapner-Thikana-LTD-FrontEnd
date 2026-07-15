@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import { motion } from 'framer-motion';
 import { 
   Calendar, Clock, ChevronLeft, 
@@ -109,7 +109,7 @@ const BlogDetailClient = ({ slug, initialPost }) => {
 
           {/* Featured Image */}
           <div className="relative aspect-[16/9] w-full rounded-2xl sm:rounded-[3rem] overflow-hidden border border-white/10 mb-12 sm:mb-16 shadow-2xl">
-             <Image 
+             <SmartImage 
                 src={post.thumbnail || post.image} 
                 alt={post.title} 
                 fill 

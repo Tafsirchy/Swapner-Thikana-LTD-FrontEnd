@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import SmartImage from '@/components/shared/SmartImage';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, User, Phone, ArrowRight, CheckCircle2, XCircle, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -124,7 +124,7 @@ const RegisterPage = () => {
           <div className="text-center mb-8">
             <div className="flex justify-center mb-8">
               <Link href="/" className="inline-block">
-                <Image src="/logo-new.webp" alt="Shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
+                <SmartImage src="/logo-new.webp" alt="Shwapner Thikana" width={120} height={60} className="h-[60px] w-auto object-contain" />
               </Link>
             </div>
             <h2 className="text-2xl font-bold text-zinc-100">Create Account</h2>
