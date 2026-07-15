@@ -7,7 +7,7 @@ import {
   Building2, MapPin, DollarSign, Image as ImageIcon, 
   CheckCircle, ArrowRight, ArrowLeft, Upload, X, Save, Loader2, Star 
 } from 'lucide-react';
-import SmartImage from '@/components/shared/SmartImage';
+
 
 import { api } from '@/lib/api';
 import { toast } from 'react-hot-toast';

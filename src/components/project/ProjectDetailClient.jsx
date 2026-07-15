@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import SmartImage from '@/components/shared/SmartImage';
-import SmartImage from '../shared/SmartImage';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, MapPin, CheckCircle2, 

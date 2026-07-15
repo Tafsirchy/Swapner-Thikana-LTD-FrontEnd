@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import LuxuryPagination from "@/components/shared/LuxuryPagination";
 import DashboardPageHeader from "@/components/dashboard/DashboardPageHeader";
-import SmartImage from "@/components/shared/SmartImage";
+
 
 const AdminReviewsPage = () => {
   const [reviews, setReviews] = useState([]);

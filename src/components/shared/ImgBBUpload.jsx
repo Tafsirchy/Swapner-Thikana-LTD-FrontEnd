@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, X, Loader2, Pencil } from 'lucide-react';
 import SmartImage from '@/components/shared/SmartImage';
-import SmartImage from './SmartImage';
+
 import { toast } from 'react-hot-toast';
 
 import { api } from '@/lib/api';
