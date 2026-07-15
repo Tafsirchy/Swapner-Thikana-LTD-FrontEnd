@@ -47,7 +47,7 @@ const SmartImage = ({
   
   return (
     <div 
-      className={`image-wrapper ${!noBg ? 'bg-[#f0f0f0]' : '!bg-transparent'} ${roundedClass} ${fill ? 'w-full h-full' : ''}`}
+      className={`image-wrapper ${!noBg && !className.includes('object-contain') ? 'bg-[#f0f0f0]' : '!bg-transparent'} ${roundedClass} ${fill ? 'w-full h-full' : ''}`}
       style={!fill ? { width: width ? `${width}px` : '100%', height: height ? `${height}px` : '100%', aspectRatio: width && height ? `${width}/${height}` : undefined } : undefined}
     >
       <Image
@@ -57,7 +57,7 @@ const SmartImage = ({
         title={title}
         fill={true}
         sizes={imageSizes}
-        className={`object-cover object-center w-full h-full block ${className}`}
+        className={`${className.includes('object-') ? '' : 'object-cover'} object-center w-full h-full block ${className}`}
         onError={(e) => {
            setError(true);
            e.target.onerror = null;
